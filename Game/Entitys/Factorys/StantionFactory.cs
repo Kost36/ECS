@@ -32,7 +32,7 @@ namespace Game.Entitys.Factorys
             entityBase.Add(new Components.Propertys.HealthReGeneration() { Value = 10 }); //Регенерация прочности
             entityBase.Add(new Components.Propertys.ShildReGeneration() { Value = 10 }); //Регенерация щитов
 
-            entityBase.Add(new Components) //Производство
+            //entityBase.Add(new Components) //Производство
         }
     }
 }

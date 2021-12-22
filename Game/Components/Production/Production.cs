@@ -1,63 +1,57 @@
 ﻿using ECSCore.BaseObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Components.Production
 {
     public class Production : ComponentBase
     {
-        public List
+        //public List
     }
 
 
     /// <summary>
     /// Аккумулятор / батарея с энергией
     /// </summary>
-    public class Battery : Product { }
+    public class ProductionBattery : Production { }
 
     //Сырьё 0 уровень (Добываемое)
     /// <summary>
     /// Руда
     /// </summary>
-    public class Ore : Product { }
+    public class ProductionOre : Production  { }
     /// <summary>
     /// Кремний
     /// </summary>
-    public class Silicon : Product { }
+    public class ProductionSilicon : Production  { }
     /// <summary>
     /// Метан
     /// </summary>
-    public class Methane : Product { }
+    public class ProductionMethane : Production  { }
     /// <summary>
     /// Водород
     /// </summary>
-    public class Hydrogen : Product { }
+    public class ProductionHydrogen : Production  { }
     /// <summary>
     /// Гелий
     /// </summary>
-    public class Helium : Product { }
+    public class ProductionHelium : Production  { }
 
     //Продукты 1 уровня (Производимое)
     /// <summary>
     /// Железо
     /// </summary>
-    public class Iron : Product { }
+    public class ProductionIron : Production  { }
     /// <summary>
     /// Пластмасса
     /// </summary>
-    public class Polymer : Product { }
+    public class ProductionPolymer : Production  { }
 
     //Продукты 2 уровня (Производимое)
     /// <summary>
     /// Пластик
     /// </summary>
-    public class Plastic : Product { }
+    public class ProductionPlastic : Production  { }
     /// <summary>
     /// Резина
     /// </summary>
-    public class Rubber : Product { }
-}
+    public class ProductionRubber : Production  { }
 }

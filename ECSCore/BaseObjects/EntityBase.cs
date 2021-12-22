@@ -17,7 +17,7 @@ namespace ECSCore.BaseObjects
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
-        public void Add(IComponent component)
+        public void Add(ComponentBase component)
         {
             throw new NotImplementedException();
         }
@@ -26,8 +26,8 @@ namespace ECSCore.BaseObjects
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <returns> BaseComponent / null </returns>
-        public IComponent Get<T>()
-            where T : IComponent
+        public ComponentBase Get<T>()
+            where T : ComponentBase
         {
             throw new NotImplementedException();
         }
@@ -37,7 +37,7 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <returns></returns>
         public void Remove<T>()
-            where T : IComponent
+            where T : ComponentBase
         {
             throw new NotImplementedException();
         }

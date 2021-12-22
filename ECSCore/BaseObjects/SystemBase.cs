@@ -53,8 +53,18 @@ namespace ECSCore.System
             IntervalTicks = attributeSystemCalculate.CalculateInterval * TimeSpan.TicksPerMillisecond;
         }
 
+        /// <summary>
+        /// Инициализация системы, необходима для получения ссылки на фильтр
+        /// </summary>
         public abstract void Initialization();
-        public abstract void Aсtion();
-        public abstract void PreAсtion();        
+        /// <summary>
+        /// Подготовка к выполнению, вызывается перед каждым выполнением
+        /// </summary>
+        public abstract void PreAсtion();
+        /// <summary>
+        /// Выполнение системы.
+        /// (Вызывается с интервалом, заданным через атрибут)
+        /// </summary>
+        public abstract void Aсtion();   
     }
 }

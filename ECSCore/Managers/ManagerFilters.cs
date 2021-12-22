@@ -1,4 +1,5 @@
-﻿using ECSCore.Interface;
+﻿using ECSCore.BaseObjects;
+using ECSCore.Interface;
 using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -62,7 +63,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public void Add(IComponent component, IEntity entity)
+        public void Add(ComponentBase component, EntityBase entity)
         {
             foreach (IFilter filter in _filters)
             {
@@ -74,7 +75,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="typeComponent"> Тип компонента </param>
-        public void Remove(IComponent component, IEntity entity)
+        public void Remove(ComponentBase component, EntityBase entity)
         {
             foreach (IFilter filter in _filters)
             {

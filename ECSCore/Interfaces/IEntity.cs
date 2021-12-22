@@ -1,4 +1,5 @@
-﻿using ECSCore.Interfaces;
+﻿using ECSCore.BaseObjects;
+using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,21 +22,21 @@ namespace ECSCore.Interface
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
-        public void Add(IComponent component);
+        public void Add(ComponentBase component);
         /// <summary>
         /// Получить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <returns> BaseComponent / null </returns>
-        public IComponent Get<T>()
-            where T : IComponent;
+        public ComponentBase Get<T>()
+            where T : ComponentBase;
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <returns></returns>
         public void Remove<T>()
-            where T : IComponent;
+            where T : ComponentBase;
         /// <summary>
         /// Уничтожить сущьность
         /// </summary>

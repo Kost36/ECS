@@ -1,4 +1,5 @@
-﻿using ECSCore.Interface;
+﻿using ECSCore.BaseObjects;
+using ECSCore.Interface;
 using System;
 using System.Collections.Generic;
 
@@ -27,13 +28,13 @@ namespace ECSCore.Interfaces
         /// </summary>
         /// <param name="component"></param>
         /// <param name="entity"></param>
-        public void Add(IComponent component, IEntity entity);
+        public void Add(ComponentBase component, EntityBase entity);
         /// <summary>
         /// Удали, если есть
         /// </summary>
         /// <param name="component"></param>
         /// <param name="entity"></param>
-        public void Remove(IComponent component, IEntity entity);
+        public void Remove(ComponentBase component, EntityBase entity);
         /// <summary>
         /// Удали, если есть
         /// </summary>

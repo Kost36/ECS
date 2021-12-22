@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entitys\Factory\" />
     <Folder Include="Systems\Move\" />
     <Folder Include="Systems\Trade\" />
   </ItemGroup>

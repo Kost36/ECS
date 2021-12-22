@@ -1,10 +1,5 @@
 ﻿using ECSCore.BaseObjects;
 using Game.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Components.ObjectStates
 {
@@ -18,7 +13,7 @@ namespace Game.Components.ObjectStates
         public float Z;
     }
     /// <summary>
-    /// Компонент направления
+    /// Компонент направления (Нормализованный)
     /// </summary>
     public class Direction : ComponentBase
     {
@@ -39,7 +34,7 @@ namespace Game.Components.ObjectStates
     /// <summary>
     /// Компонент энерги
     /// </summary>
-    public class Enargy
+    public class Energy : ComponentBase
     {
         public float ValueMax;
         public float Value;
@@ -47,7 +42,7 @@ namespace Game.Components.ObjectStates
     /// <summary>
     /// Компонент прочности/здоровья
     /// </summary>
-    public class Health
+    public class Health : ComponentBase
     {
         public float ValueMax;
         public float Value;
@@ -55,7 +50,7 @@ namespace Game.Components.ObjectStates
     /// <summary>
     /// Компонент щита
     /// </summary>
-    public class Shild
+    public class Shild : ComponentBase
     {
         public float ValueMax;
         public float Value;
@@ -64,17 +59,20 @@ namespace Game.Components.ObjectStates
     /// Компонент трюма (вместимости) 
     /// М.куб
     /// </summary>
-    public class Hold
+    public class Hold : ComponentBase
     {
         public float ValueMax;
-        public float Value;
+        public float ValueUse;
     }
     /// <summary>
     /// Компонент веса
     /// Кг
     /// </summary>
-    public class Weight
+    public class Weight : ComponentBase
     {
+        /// <summary>
+        /// Вес корабля (Кг)
+        /// </summary>
         public float Value;
     }
 }

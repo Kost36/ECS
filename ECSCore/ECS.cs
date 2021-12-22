@@ -1,4 +1,5 @@
-﻿using ECSCore.Interface;
+﻿using ECSCore.BaseObjects;
+using ECSCore.Interface;
 using ECSCore.Managers;
 using System;
 using System.Reflection;
@@ -77,7 +78,7 @@ namespace ECSCore
         /// </summary>
         /// <param name="entity"> Сущьность </param>
         /// <returns> IEntity (с присвоенным id) / null </returns>
-        public IEntity AddEntity(IEntity entity)
+        public EntityBase AddEntity(EntityBase entity)
         {
             return _managerEntitys.Add(entity);
         }

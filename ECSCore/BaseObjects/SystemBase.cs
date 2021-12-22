@@ -4,7 +4,7 @@ using ECSCore.Managers;
 using ECSCore.Exceptions;
 using System;
 using System.Reflection;
-using ECSCoreCore.Attributes;
+using ECSCore.Attributes;
 
 namespace ECSCore.System
 {

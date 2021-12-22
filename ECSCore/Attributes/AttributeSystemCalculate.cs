@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCoreCore.Attributes
+namespace ECSCore.Attributes
 {
     /// <summary>
     /// Атрибут частоты обработки системы 

@@ -1,4 +1,5 @@
-﻿using ECSCore.Interface;
+﻿using ECSCore.BaseObjects;
+using ECSCore.Interface;
 using System.Collections.Generic;
 
 namespace ECSCore.Managers
@@ -35,7 +36,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Коллекция сущьностей
         /// </summary>
-        private Dictionary<int, IEntity> _entities = new Dictionary<int, IEntity>();
+        private Dictionary<int, EntityBase> _entities = new Dictionary<int, EntityBase>();
         #endregion
 
         #region Свойства
@@ -49,7 +50,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="entity"> Экземпляр сущьности </param>
         /// <returns> IEntity (с присвоенным Id) / null </returns>
-        public IEntity Add(IEntity entity)
+        public EntityBase Add(EntityBase entity)
         {
             return Registration(entity); //Присвоим id и добавим в коллекцию
         }
@@ -58,9 +59,9 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
         /// <returns> IEntity / null </returns>
-        public IEntity Get(int id)
+        public EntityBase Get(int id)
         {
-            if (_entities.TryGetValue(id, out IEntity entity))
+            if (_entities.TryGetValue(id, out EntityBase entity))
             {
                 return entity;
             } //Если нашли в коллекции
@@ -82,7 +83,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="entity"></param>
         /// <returns> IEntity / null </returns>
-        private IEntity Registration(IEntity entity)
+        private EntityBase Registration(EntityBase entity)
         {
             if (_queueFreeID.Count > 0)
             {

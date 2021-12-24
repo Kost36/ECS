@@ -35,7 +35,7 @@ namespace Game.Components.Propertys
     /// </summary>
     public class Acceleration : ComponentBase
     {
-        public float Value;
+        public float Value = 0.05f;
     }
     /// <summary>
     /// Компонент замедления

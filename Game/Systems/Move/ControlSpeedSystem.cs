@@ -33,7 +33,11 @@ namespace Game.Systems.Move
                 int idEntity = Filter.ComponentsT0[i].Id;
                 if (Filter.ComponentsT0[i].Len < Filter.ComponentsT1[i].FactSpeed * 300)
                 {
-                    Filter.ComponentsT2[i].NeedSpeed = Filter.ComponentsT2[i].NeedSpeed - (float)(Filter.ComponentsT1[i].MaxSpeed * 0.9); //Снижаем на 10% от максимальной скорости
+                    if (Filter.ComponentsT1[i].FactSpeed < Filter.ComponentsT2[i].NeedSpeed)
+                    {
+                        Filter.ComponentsT2[i].NeedSpeed = Filter.ComponentsT1[i].FactSpeed;
+                    }
+                    Filter.ComponentsT2[i].NeedSpeed = Filter.ComponentsT2[i].NeedSpeed - (float)(Filter.ComponentsT1[i].MaxSpeed * 0.01); //Снижаем на 10% от максимальной скорости
                     if (ECS.GetComponent<Acceleration>(idEntity) == null)
                     {
                         ECS.AddComponent<Acceleration>(new Acceleration() { Id = idEntity });
@@ -43,9 +47,13 @@ namespace Game.Systems.Move
                         Filter.ComponentsT2[i].NeedSpeed = 0;
                     }
                 } //Если время оставшегося пути меньше 5 минут
-                if (Filter.ComponentsT0[i].Len < Filter.ComponentsT1[i].FactSpeed * 300)
+                if (Filter.ComponentsT0[i].Len > Filter.ComponentsT1[i].FactSpeed * 300)
                 {
-                    Filter.ComponentsT2[i].NeedSpeed = Filter.ComponentsT2[i].NeedSpeed + (float)(Filter.ComponentsT1[i].MaxSpeed * 0.9); //Снижаем на 10% от максимальной скорости
+                    if (Filter.ComponentsT1[i].FactSpeed > Filter.ComponentsT2[i].NeedSpeed)
+                    {
+                        Filter.ComponentsT2[i].NeedSpeed = Filter.ComponentsT1[i].FactSpeed;
+                    }
+                    Filter.ComponentsT2[i].NeedSpeed = Filter.ComponentsT2[i].NeedSpeed + (float)(Filter.ComponentsT1[i].MaxSpeed * 0.01); //Снижаем на 1% от максимальной скорости
                     if (ECS.GetComponent<Acceleration>(idEntity) == null)
                     {
                         ECS.AddComponent<Acceleration>(new Acceleration() { Id = idEntity });
@@ -55,6 +63,10 @@ namespace Game.Systems.Move
                         Filter.ComponentsT2[i].NeedSpeed = Filter.ComponentsT1[i].MaxSpeed;
                     }
                 } //Если время оставшегося пути больше 5 минут
+                //Рассчет необходимой скорости в направлении
+                Filter.ComponentsT2[i].dXSV = Filter.ComponentsT0[i].NormX * Filter.ComponentsT2[i].NeedSpeed;
+                Filter.ComponentsT2[i].dYSV = Filter.ComponentsT0[i].NormY * Filter.ComponentsT2[i].NeedSpeed;
+                Filter.ComponentsT2[i].dZSV = Filter.ComponentsT0[i].NormZ * Filter.ComponentsT2[i].NeedSpeed;
                 if (Filter.ComponentsT0[i].Len < 1)
                 {
                     ECS.RemoveComponent<Speed>(Filter.ComponentsT0[i].Id); //Удалим скорость

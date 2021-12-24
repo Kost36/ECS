@@ -29,48 +29,48 @@ namespace Game.Systems.Move
                 //Ускорение
                 if (Filter.ComponentsT0[i].dXSV < Filter.ComponentsT2[i].dX)
                 {
-                    Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX + Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT2[i].dX > Filter.ComponentsT0[i].dXSV)
+                    Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX - Filter.ComponentsT1[i].Value;
+                    if (Filter.ComponentsT0[i].dXSV > Filter.ComponentsT2[i].dX)
                     {
                         Filter.ComponentsT2[i].dX = Filter.ComponentsT0[i].dXSV;
                     }
                 }
-                else if (Filter.ComponentsT2[i].dX > Filter.ComponentsT0[i].dXSV)
+                else if (Filter.ComponentsT0[i].dXSV > Filter.ComponentsT2[i].dX)
                 {
-                    Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX - Filter.ComponentsT1[i].Value; 
-                    if (Filter.ComponentsT2[i].dX < Filter.ComponentsT0[i].dXSV)
+                    Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX + Filter.ComponentsT1[i].Value; 
+                    if (Filter.ComponentsT0[i].dXSV < Filter.ComponentsT2[i].dX)
                     {
                         Filter.ComponentsT2[i].dX = Filter.ComponentsT0[i].dXSV;
                     }
                 }
                 if (Filter.ComponentsT0[i].dYSV < Filter.ComponentsT2[i].dY)
                 {
-                    Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY + Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT2[i].dY > Filter.ComponentsT0[i].dYSV)
+                    Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY - Filter.ComponentsT1[i].Value;
+                    if (Filter.ComponentsT0[i].dYSV > Filter.ComponentsT2[i].dY)
                     {
                         Filter.ComponentsT2[i].dY = Filter.ComponentsT0[i].dYSV;
                     }
                 }
-                else if (Filter.ComponentsT2[i].dY > Filter.ComponentsT0[i].dYSV)
+                else if (Filter.ComponentsT0[i].dYSV > Filter.ComponentsT2[i].dY)
                 {
-                    Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY - Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT2[i].dY < Filter.ComponentsT0[i].dYSV)
+                    Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY + Filter.ComponentsT1[i].Value;
+                    if (Filter.ComponentsT0[i].dYSV < Filter.ComponentsT2[i].dY)
                     {
                         Filter.ComponentsT2[i].dY = Filter.ComponentsT0[i].dYSV;
                     }
                 }
                 if (Filter.ComponentsT0[i].dZSV < Filter.ComponentsT2[i].dZ)
                 {
-                    Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ + Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT2[i].dZ > Filter.ComponentsT0[i].dZSV)
+                    Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ - Filter.ComponentsT1[i].Value;
+                    if (Filter.ComponentsT0[i].dZSV > Filter.ComponentsT2[i].dZ)
                     {
                         Filter.ComponentsT2[i].dZ = Filter.ComponentsT0[i].dZSV;
                     }
                 }
-                else if (Filter.ComponentsT2[i].dZ > Filter.ComponentsT0[i].dZSV)
+                else if (Filter.ComponentsT0[i].dZSV > Filter.ComponentsT2[i].dZ)
                 {
-                    Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ - Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT2[i].dZ < Filter.ComponentsT0[i].dZSV)
+                    Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ + Filter.ComponentsT1[i].Value;
+                    if (Filter.ComponentsT0[i].dZSV < Filter.ComponentsT2[i].dZ)
                     {
                         Filter.ComponentsT2[i].dZ = Filter.ComponentsT0[i].dZSV;
                     }

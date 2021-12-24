@@ -56,6 +56,24 @@ namespace ECSCore.Managers
             return Search(id, typeof(T));
         }
         /// <summary>
+        /// Получить все компоненты сущьности
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<ComponentBase> Get(int idEntity)
+        {
+            List<ComponentBase> componentBases = new();
+            foreach (Components components in _collections)
+            {
+                ComponentBase componentBase = components.Get(idEntity); //Вернем компонент из коллекции с определенным id
+                if (componentBase!=null)
+                {
+                    componentBases.Add(componentBase);
+                } 
+            } //Пройдемся по существующим коллекциям
+            return componentBases;
+        }
+        /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>

@@ -1,6 +1,7 @@
 ﻿using ECSCore.Interface;
 using ECSCore.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace ECSCore.BaseObjects
 {
@@ -50,5 +51,10 @@ namespace ECSCore.BaseObjects
         {
             ECS.Instance.RemoveEntity(this.Id);
         }
+
+        /// <summary>
+        /// Для отслеживания в тестах
+        /// </summary>
+        private List<ComponentBase> _components { get { return ECS.Instance.GetComponents(Id); } }
     }
 }

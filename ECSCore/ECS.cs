@@ -2,6 +2,7 @@
 using ECSCore.Interface;
 using ECSCore.Managers;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace ECSCore
@@ -123,6 +124,15 @@ namespace ECSCore
             where T : ComponentBase
         {
             return _managerComponents.Get<T>(idEntity);
+        }
+        /// <summary>
+        /// Получить все компоненты сущьности
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<ComponentBase> GetComponents(int idEntity)
+        {
+            return _managerComponents.Get(idEntity);
         }
         /// <summary>
         /// Удалить компонент (Если есть)

@@ -99,10 +99,26 @@ namespace ECSCore.Tests
         public void Test7AddComponentToFilter()
         {
             Entity = (Ship)ECS.GetEntity(5);
+            Entity.Add<Pozition>(new Pozition() { X = 0, Y = 0, Z = 0 });
+            Entity.Add<PozitionSV>(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
+            Entity = (Ship)ECS.GetEntity(6);
             Entity.Add<Pozition>(new Pozition() { X = 10, Y = 10, Z = 10 });
             Entity.Add<PozitionSV>(new PozitionSV() { X = 100, Y = 100, Z = 100 });
             Thread.Sleep(2500);
             Console.WriteLine("");
+        }
+
+        [TestMethod()]
+        public void Test9RemoveComponentFromFilter()
+        {
+            Entity.Remove<PozitionSV>();
+            Entity.Remove<Way>();
+            while (true)
+            {
+                Thread.Sleep(15000);
+                Entity = (Ship)ECS.GetEntity(5);
+                Console.WriteLine("");
+            }
         }
     }
 }

@@ -75,12 +75,12 @@ namespace ECSCore.Managers
         /// Удалить заданный тип компонента, имеющий заданный id сущьности из фильтров
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        public void Remove(ComponentBase component,int id)
+        public void Remove<T>(int id)
         {
             EntityBase entity = (EntityBase)_ecs.GetEntity(id);
             foreach (IFilter filter in _filters)
             {
-                filter.Remove(component, entity); //Удаляем (Попытка, удалить или нет проверяет группа) 
+                filter.Remove<T>(entity); //Удаляем (Попытка, удалить или нет проверяет группа) 
             } //Проходимся по всем группам 
         }
         /// <summary>

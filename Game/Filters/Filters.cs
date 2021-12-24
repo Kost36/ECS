@@ -14,6 +14,7 @@ namespace Game.Filters
 {
     public class FilterMove : Filter<Pozition, Speed> { }
     public class FilterControlSpeed : Filter<Way, Speed, SpeedSV> { }
+    public class FilterAddWay : Filter<PozitionSV, Pozition> { }
     public class FilterControlWay : Filter<PozitionSV, Pozition, Way> { }
     public class FilterAccelerate : Filter<SpeedSV, Acceleration, Speed> { }
 }

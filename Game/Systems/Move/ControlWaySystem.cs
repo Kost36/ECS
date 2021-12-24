@@ -45,7 +45,7 @@ namespace Game.Systems.Move
                 Filter.ComponentsT2[i].NormY = Filter.ComponentsT2[i].LenY / Filter.ComponentsT2[i].Len;
                 Filter.ComponentsT2[i].NormZ = Filter.ComponentsT2[i].LenZ / Filter.ComponentsT2[i].Len;
 
-                if(ECS.GetComponent<Speed>(idEntity) == null)
+                if (ECS.GetComponent<Speed>(idEntity) == null)
                 {
                     ECS.AddComponent<Speed>(new Speed() { MaxSpeed = 10, Id = idEntity });
                 } //Если скорости нету

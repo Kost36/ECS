@@ -133,7 +133,7 @@ namespace ECSCore
             where T : ComponentBase
         {
             _managerComponents.Remove<T>(idEntity);
-            //_managerFilters.Remove(idEntity);
+            _managerFilters.Remove<T>(idEntity);
         }
         #endregion
         #endregion

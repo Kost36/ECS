@@ -34,7 +34,7 @@ namespace ECSCore.Interfaces
         /// </summary>
         /// <param name="component"></param>
         /// <param name="entity"></param>
-        public void Remove(ComponentBase component, EntityBase entity);
+        public void Remove<T>(EntityBase entity);
         /// <summary>
         /// Удали, если есть
         /// </summary>

@@ -95,6 +95,7 @@ namespace ECSCore.Managers
                     {
                         componentBase = component; //Передали компонент
                     }
+                    return;
                 } //Если тип совпал
             } //Пройдемся по существующим коллекциям
             Components componentsNew = new Components(component); //Создадим новую коллекцию

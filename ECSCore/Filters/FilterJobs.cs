@@ -1,5 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
+using System;
 
 namespace ECSCore.Filters
 {
@@ -26,16 +27,16 @@ namespace ECSCore.Filters
     /// </summary>
     public class JobTryRemove : IJobToFilter
     {
-        public JobTryRemove(ComponentBase component, EntityBase entity)
+        public JobTryRemove(Type typeComponent, EntityBase entity)
         {
-            Component = component;
+            TypeComponent = typeComponent;
             Entity = entity;
         }
-        ComponentBase Component { get; set; }
+        Type TypeComponent { get; set; }
         EntityBase Entity { get; set; }
         public void Action(FilterBase filter)
         {
-            filter.TryRemove(Component, Entity);
+            filter.TryRemove(TypeComponent, Entity);
         }
     }
     /// <summary>

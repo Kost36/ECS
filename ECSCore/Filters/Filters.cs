@@ -56,11 +56,11 @@ namespace ECSCore.Filters
                 Add(component);
             } //Если тип совпадает
         }
-        public override void TryRemove(ComponentBase component, EntityBase entity)
+        public override void TryRemove(Type typeComponent, EntityBase entity)
         {
-            if (typeof(T0) == component.GetType())
+            if (typeComponent == typeof(T0))
             {
-                Remove(component.Id);
+                Remove(entity.Id);
             } //Если тип совпадает
         }
         public override void TryRemove(int id)
@@ -72,13 +72,19 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase component)
         {
-            ComponentsT0.Add((T0)component);
-            Count++;
+            if (ComponentsT0.Exists(t=> t.Id == component.Id) == false)
+            {
+                ComponentsT0.Add((T0)component);
+                Count++;
+            }
         }
         private void Remove(int id)
         {
-            ComponentsT0.RemoveAll(t => t.Id == id);
-            Count--;
+            int countRemove = ComponentsT0.RemoveAll(t => t.Id == id);
+            if (countRemove > 0)
+            {
+                countRemove--;
+            }
         }
         #endregion
     }
@@ -148,24 +154,23 @@ namespace ECSCore.Filters
                 return;
             } //Если тип совпадает
         }
-        public override void TryRemove(ComponentBase component, EntityBase entity)
+        public override void TryRemove(Type typeComponent, EntityBase entity)
         {
-            Type type = component.GetType();
-            if (type == typeof(T0))
+            if (typeComponent == typeof(T0))
             {
                 ComponentBase componentT1 = entity.Get<T1>();
                 if (componentT1 != null)
                 {
-                    Remove(component.Id);
+                    Remove(entity.Id);
                 } //Если есть второй компонент у сущьности
                 return;
             } //Если тип совпадает
-            if (type == typeof(T1))
+            if (typeComponent == typeof(T1))
             {
                 ComponentBase componentT0 = entity.Get<T0>();
                 if (componentT0 != null)
                 {
-                    Remove(component.Id);
+                    Remove(entity.Id);
                 } //Если есть второй компонент у сущьности
                 return;
             } //Если тип совпадает
@@ -179,15 +184,21 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase componentT0, ComponentBase componentT1)
         {
-            ComponentsT0.Add((T0)componentT0);
-            ComponentsT1.Add((T1)componentT1);
-            Count++;
+            if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+            {
+                ComponentsT0.Add((T0)componentT0);
+                ComponentsT1.Add((T1)componentT1);
+                Count++;
+            }
         }
         private void Remove(int id)
         {
-            ComponentsT0.RemoveAll(t => t.Id == id);
+            int countRemove = ComponentsT0.RemoveAll(t => t.Id == id);
             ComponentsT1.RemoveAll(t => t.Id == id);
-            Count--;
+            if (countRemove > 0)
+            {
+                Count--;
+            }
         }
         #endregion
     }
@@ -283,10 +294,9 @@ namespace ECSCore.Filters
                 return;
             } //Если тип совпадает
         }
-        public override void TryRemove(ComponentBase component, EntityBase entity)
+        public override void TryRemove(Type typeComponent, EntityBase entity)
         {
-            Type type = component.GetType();
-            if (type == typeof(T0))
+            if (typeComponent == typeof(T0))
             {
                 ComponentBase componentT1 = entity.Get<T1>();
                 if (componentT1 != null)
@@ -294,12 +304,12 @@ namespace ECSCore.Filters
                     ComponentBase componentT2 = entity.Get<T2>();
                     if (componentT2 != null)
                     {
-                        Remove(component.Id);
+                        Remove(entity.Id);
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
                 return;
             } //Если тип совпадает
-            if (type == typeof(T1))
+            if (typeComponent == typeof(T1))
             {
                 ComponentBase componentT0 = entity.Get<T0>();
                 if (componentT0 != null)
@@ -307,12 +317,12 @@ namespace ECSCore.Filters
                     ComponentBase componentT2 = entity.Get<T2>();
                     if (componentT2 != null)
                     {
-                        Remove(component.Id);
+                        Remove(entity.Id);
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
                 return;
             } //Если тип совпадает
-            if (type == typeof(T2))
+            if (typeComponent == typeof(T2))
             {
                 ComponentBase componentT0 = entity.Get<T0>();
                 if (componentT0 != null)
@@ -320,7 +330,7 @@ namespace ECSCore.Filters
                     ComponentBase componentT1 = entity.Get<T1>();
                     if (componentT1 != null)
                     {
-                        Remove(component.Id);
+                        Remove(entity.Id);
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
                 return;
@@ -335,17 +345,23 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase componentT0, ComponentBase componentT1, ComponentBase componentT2)
         {
-            ComponentsT0.Add((T0)componentT0);
-            ComponentsT1.Add((T1)componentT1);
-            ComponentsT2.Add((T2)componentT2);
-            Count++;
+            if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+            {
+                ComponentsT0.Add((T0)componentT0);
+                ComponentsT1.Add((T1)componentT1);
+                ComponentsT2.Add((T2)componentT2);
+                Count++;
+            }
         }
         private void Remove(int id)
         {
-            ComponentsT0.RemoveAll(t => t.Id == id);
+            int countRemove = ComponentsT0.RemoveAll(t => t.Id == id);
             ComponentsT1.RemoveAll(t => t.Id == id);
             ComponentsT2.RemoveAll(t => t.Id == id);
-            Count--;
+            if (countRemove > 0)
+            {
+                Count--;
+            }
         }
         #endregion
     }
@@ -475,10 +491,9 @@ namespace ECSCore.Filters
                 return;
             } //Если тип совпадает
         }
-        public override void TryRemove(ComponentBase component, EntityBase entity)
+        public override void TryRemove(Type typeComponent, EntityBase entity)
         {
-            Type type = component.GetType();
-            if (type == typeof(T0))
+            if (typeComponent == typeof(T0))
             {
                 ComponentBase componentT1 = entity.Get<T1>();
                 if (componentT1 != null)
@@ -489,12 +504,12 @@ namespace ECSCore.Filters
                         ComponentBase componentT3 = entity.Get<T3>();
                         if (componentT3 != null)
                         {
-                            Remove(component.Id);
+                            Remove(entity.Id);
                         } //Если есть третий компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
             } //Если тип совпадает
-            if (type == typeof(T1))
+            if (typeComponent == typeof(T1))
             {
                 ComponentBase componentT0 = entity.Get<T0>();
                 if (componentT0 != null)
@@ -505,12 +520,12 @@ namespace ECSCore.Filters
                         ComponentBase componentT3 = entity.Get<T3>();
                         if (componentT3 != null)
                         {
-                            Remove(component.Id);
+                            Remove(entity.Id);
                         } //Если есть третий компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
             } //Если тип совпадает
-            if (type == typeof(T2))
+            if (typeComponent == typeof(T2))
             {
                 ComponentBase componentT0 = entity.Get<T0>();
                 if (componentT0 != null)
@@ -521,12 +536,12 @@ namespace ECSCore.Filters
                         ComponentBase componentT3 = entity.Get<T3>();
                         if (componentT3 != null)
                         {
-                            Remove(component.Id);
+                            Remove(entity.Id);
                         } //Если есть третий компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
             } //Если тип совпадает
-            if (type == typeof(T3))
+            if (typeComponent == typeof(T3))
             {
                 ComponentBase componentT0 = entity.Get<T0>();
                 if (componentT0 != null)
@@ -537,7 +552,7 @@ namespace ECSCore.Filters
                         ComponentBase componentT2 = entity.Get<T2>();
                         if (componentT2 != null)
                         {
-                            Remove(component.Id);
+                            Remove(entity.Id);
                         } //Если есть третий компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
@@ -552,19 +567,25 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase componentT0, ComponentBase componentT1, ComponentBase componentT2, ComponentBase componentT3)
         {
-            ComponentsT0.Add((T0)componentT0);
-            ComponentsT1.Add((T1)componentT1);
-            ComponentsT2.Add((T2)componentT2);
-            ComponentsT2.Add((T2)componentT3);
-            Count++;
+            if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+            {
+                ComponentsT0.Add((T0)componentT0);
+                ComponentsT1.Add((T1)componentT1);
+                ComponentsT2.Add((T2)componentT2);
+                ComponentsT2.Add((T2)componentT3);
+                Count++;
+            }
         }
         private void Remove(int id)
         {
-            ComponentsT0.RemoveAll(t => t.Id == id);
+            int countRemove = ComponentsT1.RemoveAll(t => t.Id == id);
             ComponentsT1.RemoveAll(t => t.Id == id);
             ComponentsT2.RemoveAll(t => t.Id == id);
             ComponentsT3.RemoveAll(t => t.Id == id);
-            Count--;
+            if (countRemove > 0)
+            {
+                Count--;
+            }
         }
         #endregion
     }

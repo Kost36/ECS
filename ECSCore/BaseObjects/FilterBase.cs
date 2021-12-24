@@ -55,9 +55,9 @@ namespace ECSCore.BaseObjects
         /// </summary>
         /// <param name="component"></param>
         /// <param name="entity"></param>
-        public void Remove(ComponentBase type, EntityBase entity)
+        public void Remove<T>(EntityBase entity)
         {
-            JobToFilters.Enqueue(new JobTryRemove(type, entity));
+            JobToFilters.Enqueue(new JobTryRemove(typeof(T), entity));
         }
         /// <summary>
         /// Удалить из фильтра компоненты с Id
@@ -69,7 +69,7 @@ namespace ECSCore.BaseObjects
         }
 
         public abstract void TryAdd(ComponentBase component, EntityBase entity);
-        public abstract void TryRemove(ComponentBase component, EntityBase entity);
+        public abstract void TryRemove(Type typeComponent, EntityBase entity);
         public abstract void TryRemove(int id);
     }
 }

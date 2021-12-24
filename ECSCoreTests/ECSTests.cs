@@ -101,6 +101,7 @@ namespace ECSCore.Tests
             Entity = (Ship)ECS.GetEntity(5);
             Entity.Add<Pozition>(new Pozition() { X = 10, Y = 10, Z = 10 });
             Entity.Add<PozitionSV>(new PozitionSV() { X = 100, Y = 100, Z = 100 });
+            Thread.Sleep(2500);
             Console.WriteLine("");
         }
     }

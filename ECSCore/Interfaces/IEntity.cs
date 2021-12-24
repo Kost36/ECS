@@ -22,7 +22,8 @@ namespace ECSCore.Interface
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
-        public void Add(ComponentBase component);
+        public void Add<T>(T component)
+            where T : ComponentBase;
         /// <summary>
         /// Получить компонент (Если есть)
         /// </summary>

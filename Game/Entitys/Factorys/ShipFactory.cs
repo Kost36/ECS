@@ -11,12 +11,12 @@ namespace Game.Entitys.Factorys
     /// <summary>
     /// Фабрика корабля
     /// </summary>
-    public class ShipFactory
+    public static class ShipFactory
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public ShipFactory()
+        public static void AddShip()
         {
             ECS ecs = ECS.Instance;
             EntityBase entityBase = ecs.AddEntity(new Ship());

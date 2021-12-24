@@ -7,7 +7,7 @@ namespace ECSCore.BaseObjects
     /// <summary>
     /// Базовый класс сущьности
     /// </summary>
-    public class EntityBase : IEntity
+    public abstract class EntityBase : IEntity
     {
         /// <summary>
         /// Идентификатор сущьности
@@ -17,9 +17,11 @@ namespace ECSCore.BaseObjects
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
-        public void Add(ComponentBase component)
+        public void Add<T>(T component)
+            where T : ComponentBase
         {
-            throw new NotImplementedException();
+            component.Id = this.Id;
+            ECS.Instance.AddComponent<T>(component);
         }
         /// <summary>
         /// Получить компонент (Если есть)
@@ -29,7 +31,7 @@ namespace ECSCore.BaseObjects
         public ComponentBase Get<T>()
             where T : ComponentBase
         {
-            throw new NotImplementedException();
+            return ECS.Instance.GetComponent<T>(this.Id);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
@@ -39,14 +41,14 @@ namespace ECSCore.BaseObjects
         public void Remove<T>()
             where T : ComponentBase
         {
-            throw new NotImplementedException();
+            ECS.Instance.RemoveComponent<T>(this.Id);
         }
         /// <summary>
         /// Уничтожить сущьность
         /// </summary>
         public void Death()
         {
-            throw new NotImplementedException();
+            ECS.Instance.RemoveEntity(this.Id);
         }
     }
 }

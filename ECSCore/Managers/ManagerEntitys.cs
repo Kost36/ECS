@@ -107,7 +107,6 @@ namespace ECSCore.Managers
         /// <param name="entity"> экземпляр сущьности </param>
         private bool RemoveEntity(int id)
         {
-            _ecs.RemoveComponentsOfId(id); //Удалить компоненты данной сущьности из системы
             _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
             return _entities.Remove(id); //Удалим сущьность из коллекции
         }

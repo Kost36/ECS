@@ -63,8 +63,9 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public void Add(ComponentBase component, EntityBase entity)
+        public void Add(ComponentBase component)
         {
+            EntityBase entity = (EntityBase)_ecs.GetEntity(component.Id);
             foreach (IFilter filter in _filters)
             {
                 filter.Add(component, entity); //Добавляем (Попытка, добавить или нет проверяет группа) 
@@ -74,9 +75,9 @@ namespace ECSCore.Managers
         /// Удалить заданный тип компонента, имеющий заданный id сущьности из фильтров
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        /// <param name="typeComponent"> Тип компонента </param>
-        public void Remove(ComponentBase component, EntityBase entity)
+        public void Remove(ComponentBase component,int id)
         {
+            EntityBase entity = (EntityBase)_ecs.GetEntity(id);
             foreach (IFilter filter in _filters)
             {
                 filter.Remove(component, entity); //Удаляем (Попытка, удалить или нет проверяет группа) 
@@ -120,7 +121,7 @@ namespace ECSCore.Managers
         {
             Type typeIFilter = typeof(IFilter); //Получим тип интерфейса
             Type[] types = assembly.GetTypes(); //Получаем все типы сборки 
-            List<Type> typesFilters = types.Where(t => t.IsAssignableFrom(typeIFilter) && !t.IsInterface && !t.IsAbstract).ToList();
+            List<Type> typesFilters = types.Where(t => typeIFilter.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList();
             foreach(Type typeFilter in typesFilters)
             {
                 IFilter filter = (IFilter)Activator.CreateInstance(typeFilter); //Создадим объект

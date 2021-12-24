@@ -16,6 +16,8 @@ namespace Game.Components.Propertys
         public float dX;
         public float dY;
         public float dZ;
+        public float FactSpeed;
+        public float MaxSpeed;
     }
     /// <summary>
     /// Компонент скорости вращения

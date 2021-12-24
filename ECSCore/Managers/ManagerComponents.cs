@@ -1,4 +1,5 @@
-﻿using ECSCore.Interfaces;
+﻿using ECSCore.BaseObjects;
+using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -40,7 +41,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public void Add(IComponent component)
+        public void Add(ComponentBase component)
         {
             Registration(component); //Добавим в коллекцию
         }
@@ -50,18 +51,18 @@ namespace ECSCore.Managers
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="typeComponent"> Тип компонента </param>
         /// <returns> IComponent / null </returns>
-        public IComponent Get(int id, Type typeComponent)
+        public ComponentBase Get<T>(int id)
         {
-            return Search(id, typeComponent);
+            return Search(id, typeof(T));
         }
         /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="typeComponent"> Тип компонента </param>
-        public bool Remove(int id, Type typeComponent)
+        public bool Remove<T>(int id)
         {
-            return RemoveComponent(id, typeComponent); //Удалим компонент
+            return RemoveComponent(id, typeof(T)); //Удалим компонент
         }
         /// <summary>
         /// Удалить все компоненты с id
@@ -79,14 +80,21 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        private void Registration(IComponent component)
+        private void Registration(ComponentBase component)
         {
             foreach (Components components in _collections)
             {
                 if (components.IsType(component.GetType()))
                 {
-                    components.Add(component); //Добавим компонент в коллекцию
-                    return;
+                    ComponentBase componentBase = components.Get(component.Id);
+                    if (componentBase == null)
+                    {
+                        components.Add(component); //Добавим компонент в коллекцию
+                    }
+                    else
+                    {
+                        componentBase = component; //Передали компонент
+                    }
                 } //Если тип совпал
             } //Пройдемся по существующим коллекциям
             Components componentsNew = new Components(component); //Создадим новую коллекцию
@@ -99,7 +107,7 @@ namespace ECSCore.Managers
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="typeComponent"> Тип компонента </param>
         /// <returns> IComponent / null </returns>
-        private IComponent Search(int id, Type typeComponent)
+        private ComponentBase Search(int id, Type typeComponent)
         {
             foreach (Components components in _collections)
             {
@@ -158,7 +166,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Коллекция компонентов
         /// </summary>
-        private SortedList<int, IComponent> _components = new SortedList<int, IComponent>();
+        private SortedList<int, ComponentBase> _components = new SortedList<int, ComponentBase>();
         #endregion
 
         #region Публичные методы
@@ -180,7 +188,7 @@ namespace ECSCore.Managers
         /// Добавить компонент в коллекцию
         /// </summary>
         /// <returns></returns>
-        public void Add(IComponent component)
+        public void Add(ComponentBase component)
         {
             _components.Add(component.Id, component);
         }
@@ -188,9 +196,9 @@ namespace ECSCore.Managers
         /// Получить компонент из коллекции
         /// </summary>
         /// <returns> IComponent / null</returns>
-        public IComponent Get(int id)
+        public ComponentBase Get(int id)
         {
-            if (_components.TryGetValue(id, out IComponent component)) {
+            if (_components.TryGetValue(id, out ComponentBase component)) {
                 return component;
             };
             return null;

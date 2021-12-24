@@ -1,6 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 
-namespace Game.Components.Production
+namespace Game.Components.Productions
 {
     public class Production : ComponentBase
     {

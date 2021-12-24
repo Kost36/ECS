@@ -10,7 +10,7 @@ namespace ECSCore.BaseObjects
     /// <summary>
     /// Базовый класс компонентов
     /// </summary>
-    public class ComponentBase : IComponent
+    public abstract class ComponentBase : IComponent
     {
         /// <summary>
         /// Идентификатор сущьности

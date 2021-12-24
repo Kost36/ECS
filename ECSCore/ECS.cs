@@ -34,8 +34,8 @@ namespace ECSCore
             } //Если экземпляра нету
             _ecs._managerEntitys = new(_ecs); //Инициализация менеджера сущьностей
             _ecs._managerComponents = new(_ecs); //Инициализация менеджера компонент
-            _ecs._mnagerFilters = new(_ecs, assembly); //Создадим менеджера фильтров
-            _ecs._managerSystems = new(_ecs, assembly, _ecs._mnagerFilters); //Создадим менеджера систем
+            _ecs._managerFilters = new(_ecs, assembly); //Создадим менеджера фильтров
+            _ecs._managerSystems = new(_ecs, assembly, _ecs._managerFilters); //Создадим менеджера систем
 
             //_ecs.ECSetting = ecsSetting; //Зададим параметры работы ECS
         }
@@ -61,7 +61,7 @@ namespace ECSCore
         /// <summary>
         /// Менеджер фильтров компонент
         /// </summary>
-        private ManagerFilters _mnagerFilters;
+        private ManagerFilters _managerFilters;
         /// <summary>
         /// Менеджер систем
         /// </summary>
@@ -73,6 +73,7 @@ namespace ECSCore
         #endregion
 
         #region Публичные методы
+        #region Сущьности
         /// <summary>
         /// Добавить сущьность
         /// </summary>
@@ -95,19 +96,46 @@ namespace ECSCore
         /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        public bool RemoveEntity(int id)
+        public void RemoveEntity(int id)
         {
-            return _managerEntitys.Remove(id);
+            _managerComponents.Remove(id);
+            _managerEntitys.Remove(id);
         }
         #endregion
 
+        #region Компоненты
         /// <summary>
-        /// Удалить все компоненты по идентификатору сущьности
+        /// Добавить компонент
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
-        public void RemoveComponentsOfId(int id)
+        /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
+        public void AddComponent<T>(T component)
+            where T : ComponentBase
         {
-            throw new NotImplementedException();
+            _managerComponents.Add(component);
+            _managerFilters.Add(component);
         }
+        /// <summary>
+        /// Получить компонент (Если есть)
+        /// </summary>
+        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <returns> BaseComponent / null </returns>
+        public ComponentBase GetComponent<T>(int idEntity)
+            where T : ComponentBase
+        {
+            return _managerComponents.Get<T>(idEntity);
+        }
+        /// <summary>
+        /// Удалить компонент (Если есть)
+        /// </summary>
+        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <returns></returns>
+        public void RemoveComponent<T>(int idEntity)
+            where T : ComponentBase
+        {
+            _managerComponents.Remove<T>(idEntity);
+            //_managerFilters.Remove(idEntity);
+        }
+        #endregion
+        #endregion
     }
 }

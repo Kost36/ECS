@@ -5,7 +5,7 @@ namespace Game.Components.Products
     /// <summary>
     /// Продукт
     /// </summary>
-    public class Product : ComponentBase
+    public abstract class Product : ComponentBase
     {
         /// <summary>
         /// Количество товара

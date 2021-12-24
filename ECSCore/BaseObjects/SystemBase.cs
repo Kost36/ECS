@@ -26,12 +26,17 @@ namespace ECSCore.System
         /// </summary>
         public ManagerFilters ManagerFilters { get; set; }
         /// <summary>
+        /// Ядро
+        /// </summary>
+        public ECS ECS { get; set; }
+        /// <summary>
         /// Метод введения зависимостей
         /// </summary>
         /// <param name="managerFilters"></param>
-        public void Injection(ManagerFilters managerFilters)
+        public void Injection(ManagerFilters managerFilters, ECS eCS)
         {
             ManagerFilters = managerFilters;
+            ECS = eCS;
         }
         /// <summary>
         /// Предварительная инициализация системы

@@ -63,12 +63,13 @@ namespace ECSCore.Managers
         {
             Type typeISystem = typeof(ISystem); //Получим тип интерфейса
             Type[] types = assembly.GetTypes(); //Получаем все типы сборки 
-            List<Type> typesSystems = types.Where(t => t.IsAssignableFrom(typeISystem) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
+            List<Type> typesSystems = types.Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
             foreach (Type typeSystem in typesSystems)
             {
                 ISystem system = (ISystem)Activator.CreateInstance(typeSystem); //Создадим объект
                 system.PreInitialization(); //Предварительная инициализация
-                system.Injection(managerFilters); //Инекция данных
+                system.Injection(managerFilters, _ecs); //Инекция данных
+                system.Initialization(); //Инициализация систем
                 AddSystem(system); //Добавим в список
             } //Пройдемся по всем системам 
         }

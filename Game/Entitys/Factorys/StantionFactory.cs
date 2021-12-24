@@ -11,12 +11,12 @@ namespace Game.Entitys.Factorys
     /// <summary>
     /// Фабрика станции
     /// </summary>
-    public class StantionFactory
+    public static class StantionFactory
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public StantionFactory(Components.ObjectStates.Pozition pozition)
+        public static void AddStantion(Components.ObjectStates.Pozition pozition)
         {
             ECS ecs = ECS.Instance;
             EntityBase entityBase = ecs.AddEntity(new Stantion());
@@ -31,6 +31,8 @@ namespace Game.Entitys.Factorys
             entityBase.Add(new Components.Propertys.EnargyReGeneration() { Value = 10 }); //Регенерация энергии
             entityBase.Add(new Components.Propertys.HealthReGeneration() { Value = 10 }); //Регенерация прочности
             entityBase.Add(new Components.Propertys.ShildReGeneration() { Value = 10 }); //Регенерация щитов
+
+            entityBase.Add(new Components.Products.Battery() { Count = 10000 });
 
             //entityBase.Add(new Components) //Производство
         }

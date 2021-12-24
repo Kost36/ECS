@@ -19,6 +19,30 @@ namespace Game.Components.Tasks
         public float Z;
     }
     /// <summary>
+    /// Компонент заданной скорости
+    /// (Value/Sec)
+    /// </summary>
+    public class SpeedSV : ComponentBase
+    {
+        public float dXSV;
+        public float dYSV;
+        public float dZSV;
+        public float NeedSpeed;
+    }
+    /// <summary>
+    /// Компонент вектора заданного перемещения
+    /// </summary>
+    public class Way : ComponentBase
+    {
+        public float Len;
+        public float LenX;
+        public float LenY;
+        public float LenZ;
+        public float NormX;
+        public float NormY;
+        public float NormZ;
+    }
+    /// <summary>
     /// Компонент задание покупки
     /// </summary>
     public class TaskBuy : ComponentBase

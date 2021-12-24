@@ -28,7 +28,7 @@ namespace ECSCore.Interface
         /// Иньекция данных
         /// </summary>
         /// <param name="managerFilters"></param>
-        public abstract void Injection(ManagerFilters managerFilters);
+        public abstract void Injection(ManagerFilters managerFilters, ECS eCS);
         public abstract void PreInitialization();
         /// <summary>
         /// Инициализация системы

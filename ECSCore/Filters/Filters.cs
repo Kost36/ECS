@@ -48,11 +48,18 @@ namespace ECSCore.Filters
             } //Если в списке 2 компонента
             return false;
         }
+        public override bool ComponetTypeIsInteresting(Type typeComponet)
+        {
+            if (typeof(T0) == typeComponet)
+            {
+                return true;
+            }
+            return false;
+        }
         public override List<Type> GetTypesComponents()
         {
             return new List<Type>() { typeof(T0) };
         }
-
         public override void TryAdd(ComponentBase component, EntityBase entity)
         {
             if (typeof(T0) == component.GetType())
@@ -129,6 +136,14 @@ namespace ECSCore.Filters
                 }
                 return true;
             } //Если в списке 2 компонента
+            return false;
+        }
+        public override bool ComponetTypeIsInteresting(Type typeComponet)
+        {
+            if (typeof(T0) == typeComponet || typeof(T1) == typeComponet)
+            {
+                return true;
+            }
             return false;
         }
         public override List<Type> GetTypesComponents()
@@ -247,6 +262,14 @@ namespace ECSCore.Filters
                 }
                 return true;
             } //Если в списке 3 компонента
+            return false;
+        }
+        public override bool ComponetTypeIsInteresting(Type typeComponet)
+        {
+            if (typeof(T0) == typeComponet || typeof(T1) == typeComponet || typeof(T2) == typeComponet)
+            {
+                return true;
+            }
             return false;
         }
         public override List<Type> GetTypesComponents()
@@ -414,6 +437,14 @@ namespace ECSCore.Filters
                 }
                 return true;
             } //Если в списке 4 компонента
+            return false;
+        }
+        public override bool ComponetTypeIsInteresting(Type typeComponet)
+        {
+            if (typeof(T0) == typeComponet || typeof(T1) == typeComponet || typeof(T2) == typeComponet || typeof(T3) == typeComponet)
+            {
+                return true;
+            }
             return false;
         }
         public override List<Type> GetTypesComponents()

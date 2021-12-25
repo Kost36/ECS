@@ -134,6 +134,15 @@ namespace ECSCore.Tests
                 }
                 Debug.WriteLine(ECS.GetInfo(true));
                 Thread.Sleep(1000);
+                if (ECS.ManagerEntitys.CountEntitys > 10000)
+                {
+                    break;
+                }
+            }
+            while (true)
+            {
+                Debug.WriteLine(ECS.GetInfo(true));
+                Thread.Sleep(1000);
             }
         }
     }

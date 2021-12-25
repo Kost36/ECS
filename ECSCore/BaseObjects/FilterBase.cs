@@ -41,6 +41,11 @@ namespace ECSCore.BaseObjects
         /// <param name="typesComponet"></param>
         public abstract bool CheckFilter(List<Type> typesComponet);
         /// <summary>
+        /// Проверяет группу на необходимость обрабатывать компонент
+        /// </summary>
+        /// <param name="typesComponet"></param>
+        public abstract bool ComponetTypeIsInteresting(Type typeComponet);
+        /// <summary>
         /// Получить список типов компонент в фильтре
         /// </summary>
         public abstract List<Type> GetTypesComponents();
@@ -51,10 +56,13 @@ namespace ECSCore.BaseObjects
         /// <param name="entity"></param>
         public void Add(ComponentBase component, EntityBase entity)
         {
-            lock (JobToFilters)
+            if (ComponetTypeIsInteresting(component.GetType()))
             {
-                JobToFilters.Enqueue(new JobTryAdd(component, entity));
-            }
+                lock (JobToFilters)
+                {
+                    JobToFilters.Enqueue(new JobTryAdd(component, entity));
+                }
+            } //Если фильтр интересуется данным компонентом
         }
         /// <summary>
         /// Удалить компонент из фильтра
@@ -63,10 +71,13 @@ namespace ECSCore.BaseObjects
         /// <param name="entity"></param>
         public void Remove<T>(EntityBase entity)
         {
-            lock (JobToFilters)
+            if (ComponetTypeIsInteresting(typeof(T)))
             {
-                JobToFilters.Enqueue(new JobTryRemove(typeof(T), entity));
-            }
+                lock (JobToFilters)
+                {
+                    JobToFilters.Enqueue(new JobTryRemove(typeof(T), entity));
+                }
+            } //Если фильтр интересуется данным компонентом
         }
         /// <summary>
         /// Удалить из фильтра компоненты с Id

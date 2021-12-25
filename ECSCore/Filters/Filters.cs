@@ -155,42 +155,38 @@ namespace ECSCore.Filters
             Type type = component.GetType();
             if (type == typeof(T0))
             {
-                ComponentBase componentT1 = entity.Get<T1>();
-                if (componentT1 != null)
+                if (entity.Get(out T1 componentT1))
                 {
                     Add(component, componentT1);
+                    return;
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (type == typeof(T1))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
                     Add(componentT0, component);
+                    return;
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
         }
         public override void TryRemove(Type typeComponent, EntityBase entity)
         {
             if (typeComponent == typeof(T0))
             {
-                ComponentBase componentT1 = entity.Get<T1>();
-                if (componentT1 != null)
+                if (entity.Get(out T1 componentT1))
                 {
                     Remove(entity.Id);
+                    return;
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (typeComponent == typeof(T1))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
                     Remove(entity.Id);
+                    return;
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
         }
         public override void TryRemove(int id)
@@ -281,84 +277,72 @@ namespace ECSCore.Filters
             Type type = component.GetType();
             if (type == typeof(T0))
             {
-                ComponentBase componentT1 = entity.Get<T1>();
-                if (componentT1 != null)
+                if (entity.Get(out T1 componentT1))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
                         Add(component, componentT1, componentT2);
+                        return;
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (type == typeof(T1))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
                         Add(componentT0, component, componentT2);
+                        return;
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (type == typeof(T2))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT1 = entity.Get<T1>();
-                    if (componentT1 != null)
+                    if (entity.Get(out T1 componentT1))
                     {
                         Add(componentT0, componentT1, component);
+                        return;
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
         }
         public override void TryRemove(Type typeComponent, EntityBase entity)
         {
             if (typeComponent == typeof(T0))
             {
-                ComponentBase componentT1 = entity.Get<T1>();
-                if (componentT1 != null)
+                if (entity.Get(out T1 componentT1))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
                         Remove(entity.Id);
+                        return;
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (typeComponent == typeof(T1))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
                         Remove(entity.Id);
+                        return;
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (typeComponent == typeof(T2))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT1 = entity.Get<T1>();
-                    if (componentT1 != null)
+                    if (entity.Get(out T1 componentT1))
                     {
                         Remove(entity.Id);
+                        return;
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
         }
         public override void TryRemove(int id)
@@ -456,136 +440,117 @@ namespace ECSCore.Filters
             Type type = component.GetType();
             if (type == typeof(T0))
             {
-                ComponentBase componentT1 = entity.Get<T1>();
-                if (componentT1 != null)
+                if (entity.Get(out T1 componentT1))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
-                        ComponentBase componentT3 = entity.Get<T3>();
-                        if (componentT3 != null)
+                        if (entity.Get(out T3 componentT3))
                         {
                             Add(component, componentT1, componentT2, componentT3);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (type == typeof(T1))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
-                        ComponentBase componentT3 = entity.Get<T3>();
-                        if (componentT3 != null)
+                        if (entity.Get(out T3 componentT3))
                         {
                             Add(componentT0, component, componentT2, componentT3);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (type == typeof(T2))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT1 = entity.Get<T1>();
-                    if (componentT1 != null)
+                    if (entity.Get(out T1 componentT1))
                     {
-                        ComponentBase componentT3 = entity.Get<T3>();
-                        if (componentT3 != null)
+                        if (entity.Get(out T3 componentT3))
                         {
                             Add(componentT0, componentT1, component, componentT3);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
             if (type == typeof(T3))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT1 = entity.Get<T1>();
-                    if (componentT1 != null)
+                    if (entity.Get(out T1 componentT1))
                     {
-                        ComponentBase componentT2 = entity.Get<T2>();
-                        if (componentT2 != null)
+                        if (entity.Get(out T2 componentT2))
                         {
                             Add(componentT0, componentT1, componentT2, component);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
-                return;
             } //Если тип совпадает
         }
         public override void TryRemove(Type typeComponent, EntityBase entity)
         {
             if (typeComponent == typeof(T0))
             {
-                ComponentBase componentT1 = entity.Get<T1>();
-                if (componentT1 != null)
+                if (entity.Get(out T1 componentT1))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
-                        ComponentBase componentT3 = entity.Get<T3>();
-                        if (componentT3 != null)
+                        if (entity.Get(out T3 componentT3))
                         {
                             Remove(entity.Id);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
             } //Если тип совпадает
             if (typeComponent == typeof(T1))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT2 = entity.Get<T2>();
-                    if (componentT2 != null)
+                    if (entity.Get(out T2 componentT2))
                     {
-                        ComponentBase componentT3 = entity.Get<T3>();
-                        if (componentT3 != null)
+                        if (entity.Get(out T3 componentT3))
                         {
                             Remove(entity.Id);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
             } //Если тип совпадает
             if (typeComponent == typeof(T2))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT1 = entity.Get<T1>();
-                    if (componentT1 != null)
+                    if (entity.Get(out T1 componentT1))
                     {
-                        ComponentBase componentT3 = entity.Get<T3>();
-                        if (componentT3 != null)
+                        if (entity.Get(out T3 componentT3))
                         {
                             Remove(entity.Id);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
+                return;
             } //Если тип совпадает
             if (typeComponent == typeof(T3))
             {
-                ComponentBase componentT0 = entity.Get<T0>();
-                if (componentT0 != null)
+                if (entity.Get(out T0 componentT0))
                 {
-                    ComponentBase componentT1 = entity.Get<T1>();
-                    if (componentT1 != null)
+                    if (entity.Get(out T1 componentT1))
                     {
-                        ComponentBase componentT2 = entity.Get<T2>();
-                        if (componentT2 != null)
+                        if (entity.Get(out T2 componentT2))
                         {
                             Remove(entity.Id);
-                        } //Если есть третий компонент у сущьности
+                            return;
+                        } //Если есть четвертый компонент у сущьности
                     } //Если есть третий компонент у сущьности
                 } //Если есть второй компонент у сущьности
             } //Если тип совпадает

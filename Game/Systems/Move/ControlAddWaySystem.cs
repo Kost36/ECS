@@ -31,9 +31,9 @@ namespace Game.Systems.Move
             for (int i = 0; i < Filter.Count; i++)
             {
                 int idEntity = Filter.ComponentsT0[i].Id;
-                if (ECS.GetComponent<Way>(idEntity) == null)
+                if (ECS.GetComponent(idEntity, out Way component) == false)
                 {
-                    ECS.AddComponent<Way>(new Way() { Id = idEntity });
+                    ECS.AddComponent(new Way() { Id = idEntity });
                 } //Если нету компонента путь
             }
         }

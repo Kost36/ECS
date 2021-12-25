@@ -38,9 +38,9 @@ namespace Game.Systems.Move
                         Filter.ComponentsT2[i].SVSpeed = Filter.ComponentsT1[i].SpeedFact;
                     }
                     Filter.ComponentsT2[i].SVSpeed = Filter.ComponentsT2[i].SVSpeed - (float)(Filter.ComponentsT1[i].SpeedMax * 0.01); //Снижаем на 10% от максимальной скорости
-                    if (ECS.GetComponent<Acceleration>(idEntity) == null)
+                    if (ECS.GetComponent(idEntity, out Acceleration acceleration) == false)
                     {
-                        ECS.AddComponent<Acceleration>(new Acceleration() { Id = idEntity });
+                        ECS.AddComponent(new Acceleration() { Id = idEntity });
                     } //Если нету ускорения
                     if (Filter.ComponentsT2[i].SVSpeed < 0)
                     {
@@ -54,9 +54,9 @@ namespace Game.Systems.Move
                         Filter.ComponentsT2[i].SVSpeed = Filter.ComponentsT1[i].SpeedFact;
                     }
                     Filter.ComponentsT2[i].SVSpeed = Filter.ComponentsT2[i].SVSpeed + (float)(Filter.ComponentsT1[i].SpeedMax * 0.01); //Снижаем на 1% от максимальной скорости
-                    if (ECS.GetComponent<Acceleration>(idEntity) == null)
+                    if (ECS.GetComponent(idEntity, out Acceleration acceleration) == false)
                     {
-                        ECS.AddComponent<Acceleration>(new Acceleration() { Id = idEntity });
+                        ECS.AddComponent(new Acceleration() { Id = idEntity });
                     } //Если нету ускорения
                     if (Filter.ComponentsT2[i].SVSpeed > Filter.ComponentsT1[i].SpeedMax)
                     {

@@ -62,17 +62,14 @@ namespace ECSCore.Managers
             return Registration(entity); //Присвоим id и добавим в коллекцию
         }
         /// <summary>
-        /// Получить сущьность по id
+        /// Получить сущьность по id, если есть
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
-        /// <returns> IEntity / null </returns>
-        public EntityBase Get(int id)
+        /// <param name="id"> Идентификатор сущьности</param>
+        /// <param name="entityBase"> Сущьность (Если есть) / null </param>
+        /// <returns> Флаг наличия сущьности </returns>
+        public bool Get(int id, out EntityBase entityBase)
         {
-            if (_entities.TryGetValue(id, out EntityBase entity))
-            {
-                return entity;
-            } //Если нашли в коллекции
-            return null; //Вернем null
+            return _entities.TryGetValue(id, out entityBase);
         }
         /// <summary>
         /// Удаление сущьности по id

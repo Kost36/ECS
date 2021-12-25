@@ -28,8 +28,9 @@ namespace ECSCore.Interface
         /// Получить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
-        /// <returns> BaseComponent / null </returns>
-        public ComponentBase Get<T>()
+        /// <param name="component"> Компонент(если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool Get<T>(out T component)
             where T : ComponentBase;
         /// <summary>
         /// Удалить компонент (Если есть)

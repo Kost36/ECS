@@ -28,11 +28,12 @@ namespace ECSCore.BaseObjects
         /// Получить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
-        /// <returns> BaseComponent / null </returns>
-        public ComponentBase Get<T>()
+        /// <param name="component"> Компонент(если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool Get<T>(out T component)
             where T : ComponentBase
         {
-            return ECS.Instance.GetComponent<T>(this.Id);
+            return ECS.Instance.GetComponent<T>(this.Id, out component);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
@@ -55,6 +56,6 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
-        public List<ComponentBase> _components { get { return ECS.Instance.GetComponents(Id); } }
+        public List<ComponentBase> Components { get { return ECS.Instance.GetComponents(Id); } }
     }
 }

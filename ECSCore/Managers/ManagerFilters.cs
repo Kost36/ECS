@@ -85,11 +85,13 @@ namespace ECSCore.Managers
         /// <returns></returns>
         public void Add(ComponentBase component)
         {
-            EntityBase entity = (EntityBase)_ecs.GetEntity(component.Id);
-            foreach (IFilter filter in _filters)
+            if (_ecs.GetEntity(component.Id, out EntityBase entity))
             {
-                filter.Add(component, entity); //Добавляем (Попытка, добавить или нет проверяет группа) 
-            } //Проходимся по всем группам 
+                foreach (IFilter filter in _filters)
+                {
+                    filter.Add(component, entity); //Добавляем (Попытка, добавить или нет проверяет группа) 
+                } //Проходимся по всем группам 
+            }
         }
         /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности из фильтров
@@ -97,11 +99,13 @@ namespace ECSCore.Managers
         /// <param name="id"> Идентификатор сущьности </param>
         public void Remove<T>(int id)
         {
-            EntityBase entity = (EntityBase)_ecs.GetEntity(id);
-            foreach (IFilter filter in _filters)
+            if (_ecs.GetEntity(id, out EntityBase entity))
             {
-                filter.Remove<T>(entity); //Удаляем (Попытка, удалить или нет проверяет группа) 
-            } //Проходимся по всем группам 
+                foreach (IFilter filter in _filters)
+                {
+                    filter.Remove<T>(entity); //Удаляем (Попытка, удалить или нет проверяет группа) 
+                } //Проходимся по всем группам 
+            }
         }
         /// <summary>
         /// Удалить все компоненты с id, из фильтров

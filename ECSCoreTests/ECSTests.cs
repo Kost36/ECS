@@ -13,6 +13,7 @@ using ECSCore.Interface;
 using Game.Components.ObjectStates;
 using Game.Components.Tasks;
 using System.Diagnostics;
+using Game.Filters;
 
 namespace ECSCore.Tests
 {
@@ -45,13 +46,13 @@ namespace ECSCore.Tests
             ECS.AddEntity(new Ship());
             ECS.AddEntity(new Ship());
             ECS.AddEntity(new Ship());
-            Console.WriteLine("");
+            Assert.IsTrue(ECS.ManagerEntitys.CountEntitys == 6);
         }
 
         [TestMethod()]
         public void Test_2GetEntity()
         {
-            Ship ship = (Ship)ECS.GetEntity(Entity.Id);
+            Assert.IsTrue(ECS.GetEntity(Entity.Id, out EntityBase ship));
             Assert.IsNotNull(ship);
             Assert.IsTrue(ship.Id==1);
         }
@@ -61,66 +62,86 @@ namespace ECSCore.Tests
         {
             ECS.RemoveEntity(Entity.Id);
             ECS.RemoveEntity(3);
-            IEntity entity = ECS.GetEntity(Entity.Id);
-            Assert.IsNull(entity);
+            Assert.IsFalse(ECS.GetEntity(Entity.Id, out EntityBase entityBase));
+            Assert.IsNull(entityBase);
+            Assert.IsTrue(ECS.ManagerEntitys.CountEntitys == 4);
         }
 
         [TestMethod()]
         public void Test_4AddComponent()
         {
-            Entity = (Ship)ECS.GetEntity(2);
-            Entity.Add<Pozition>(new Pozition() { X = 0, Y = 0, Z = 0 });
-            Entity.Add<Pozition>(new Pozition() { X = 1, Y = 1, Z = 1 });
-            ECS.AddComponent<Pozition>(new Pozition() { X = 10, Y = 10, Z = 10, Id = 4 });
-            Console.WriteLine("");
+            Assert.IsTrue(ECS.GetEntity(2, out Entity));
+            Entity.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
+            Assert.IsTrue(Entity.Components.Count == 1);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 1);
+            Entity.Add(new Pozition() { X = 1, Y = 1, Z = 1 });
+            Assert.IsTrue(Entity.Components.Count == 1);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 1);
+            ECS.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10, Id = 4 });
+            Assert.IsTrue(ECS.GetEntity(4, out EntityBase entityBase));
+            Assert.IsTrue(entityBase.Components.Count == 1);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 2);
         }
 
         [TestMethod()]
         public void Test_5GetComponent()
         {
-            Pozition pozition = (Pozition)Entity.Get<Pozition>();
-            Pozition pozition1 = (Pozition)ECS.GetComponent<Pozition>(4);
-            ComponentBase componentBase = ECS.GetComponent<Pozition>(1);
+            Assert.IsTrue(Entity.Get(out Pozition pozition));
             Assert.IsNotNull(pozition);
+            Assert.IsTrue(ECS.GetComponent(4, out Pozition pozition1));
             Assert.IsNotNull(pozition1);
-            Assert.IsNull(componentBase);
+            Assert.IsFalse(ECS.GetComponent(1, out Pozition pozition2));
+            Assert.IsNull(pozition2);
         }
 
         [TestMethod()]
         public void Test_6RemoveComponent()
         {
             Entity.Remove<Pozition>();
-            ECS.RemoveComponent<Pozition>(4);
-            ComponentBase componentBase = ECS.GetComponent<Pozition>(Entity.Id);
-            ComponentBase componentBase1 = ECS.GetComponent<Pozition>(4);
-            Assert.IsNull(componentBase);
-            Assert.IsNull(componentBase1);
+            Assert.IsTrue(Entity.Components.Count == 0);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 1);
+            ECS.RemoveComponent<Pozition>(4); 
+            Assert.IsTrue(ECS.GetEntity(4, out EntityBase entityBase));
+            Assert.IsTrue(entityBase.Components.Count == 0);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 0);
+            ECS.GetComponent(Entity.Id, out Pozition pozition);
+            ECS.GetComponent(4, out Pozition pozition1);
+            Assert.IsNull(pozition);
+            Assert.IsNull(pozition1);
         }
 
         [TestMethod()]
         public void Test_7AddComponentToFilter()
         {
-            Entity = (Ship)ECS.GetEntity(5);
-            Entity.Add<Pozition>(new Pozition() { X = 0, Y = 0, Z = 0 });
-            Entity.Add<PozitionSV>(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
-            Entity = (Ship)ECS.GetEntity(6);
-            Entity.Add<Pozition>(new Pozition() { X = 10, Y = 10, Z = 10 });
-            Entity.Add<PozitionSV>(new PozitionSV() { X = 100, Y = 100, Z = 100 });
+            ECS.GetEntity(5, out Entity);
+            Entity.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
+            Assert.IsTrue(Entity.Components.Count == 1);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 1);
+            Entity.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
+            Assert.IsTrue(Entity.Components.Count == 2);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 2);
+            Assert.IsTrue(ECS.GetEntity(6, out Entity));
+            Entity.Add(new Pozition() { X = 10, Y = 10, Z = 10 });
+            Assert.IsTrue(Entity.Components.Count == 1);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 3);
+            Entity.Add(new PozitionSV() { X = 100, Y = 100, Z = 100 });
+            Assert.IsTrue(Entity.Components.Count == 2);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 4);
             Thread.Sleep(2500);
-            Console.WriteLine("");
+            Assert.IsTrue(ECS.ManagerFilters.GetFilter<FilterMove>().Count == 2);
         }
 
         [TestMethod()]
         public void Test_9RemoveComponentFromFilter()
         {
             Entity.Remove<PozitionSV>();
+            Assert.IsTrue(Entity.Components.Count == 4);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 9);
             Entity.Remove<Way>();
-            //while (true)
-            //{
-                Thread.Sleep(5000);
-                Entity = (Ship)ECS.GetEntity(5);
-                Debug.WriteLine(ECS.GetInfo(true));
-            //}
+            Assert.IsTrue(Entity.Components.Count == 3);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 8);
+            Thread.Sleep(1000);
+            Debug.WriteLine(ECS.GetInfo(true));
         }
 
         [TestMethod()]
@@ -128,13 +149,13 @@ namespace ECSCore.Tests
         {
             while (true)
             {
-                for (int i=0; i<100; i++)
+                for (int i=0; i<10; i++)
                 {
                     ShipFactory.AddShip();
                 }
                 Debug.WriteLine(ECS.GetInfo(true));
-                Thread.Sleep(1000);
-                if (ECS.ManagerEntitys.CountEntitys > 10000)
+                Thread.Sleep(100);
+                if (ECS.ManagerEntitys.CountEntitys > 100000)
                 {
                     break;
                 }

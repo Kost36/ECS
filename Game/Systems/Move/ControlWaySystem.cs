@@ -45,13 +45,13 @@ namespace Game.Systems.Move
                 Filter.ComponentsT2[i].NormY = Filter.ComponentsT2[i].LenY / Filter.ComponentsT2[i].Len;
                 Filter.ComponentsT2[i].NormZ = Filter.ComponentsT2[i].LenZ / Filter.ComponentsT2[i].Len;
 
-                if (ECS.GetComponent<Speed>(idEntity) == null)
+                if (ECS.GetComponent(idEntity, out Speed speed) == false)
                 {
-                    ECS.AddComponent<Speed>(new Speed() { SpeedMax = 10, Id = idEntity });
+                    ECS.AddComponent(new Speed() { SpeedMax = 10, Id = idEntity });
                 } //Если скорости нету
-                if (ECS.GetComponent<SpeedSV>(idEntity) == null)
+                if (ECS.GetComponent(idEntity, out SpeedSV speedSV) == false)
                 {
-                    ECS.AddComponent<SpeedSV>(new SpeedSV() { Id = idEntity });
+                    ECS.AddComponent(new SpeedSV() { Id = idEntity });
                 } //Если задания скорости нету
             }
         }

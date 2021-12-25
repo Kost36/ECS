@@ -12,5 +12,13 @@ namespace Game.Components.Ai
     /// </summary>
     public class ShipAi : ComponentBase
     {
+
+    }
+    /// <summary>
+    /// Компонент интеллекта торговли корабля
+    /// </summary>
+    public class ShipAiTrade : ComponentBase
+    {
+
     }
 }

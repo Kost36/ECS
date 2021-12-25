@@ -101,13 +101,14 @@ namespace ECSCore
             return _managerEntitys.Add(entity);
         }
         /// <summary>
-        /// Получить сущьность по Id
+        /// Получить сущьность по Id, если есть
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        /// <returns> IEntity / null </returns>
-        public IEntity GetEntity(int id)
+        /// <param name="entityBase"> Сущьность (Если есть) / null </param>
+        /// <returns> Флаг наличия сущьности </returns>
+        public bool GetEntity(int id, out EntityBase entityBase)
         {
-            return _managerEntitys.Get(id);
+            return _managerEntitys.Get(id, out entityBase);
         }
         /// <summary>
         /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
@@ -132,14 +133,16 @@ namespace ECSCore
             _managerFilters.Add(component);
         }
         /// <summary>
-        /// Получить компонент (Если есть)
+        /// Получить компонент, если есть
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
-        /// <returns> BaseComponent / null </returns>
-        public ComponentBase GetComponent<T>(int idEntity)
+        /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
+        /// <param name="component"> Компонент (Если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool GetComponent<T>(int idEntity, out T component)
             where T : ComponentBase
         {
-            return _managerComponents.Get<T>(idEntity);
+            return _managerComponents.Get<T>(idEntity, out component);
         }
         /// <summary>
         /// Получить все компоненты сущьности

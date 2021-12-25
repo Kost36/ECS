@@ -84,14 +84,16 @@ namespace ECSCore.Managers
             Registration(component); //Добавим в коллекцию
         }
         /// <summary>
-        /// Получить компонент заданного типа, имеющий заданный id сущьности
+        /// Получить компонент, если есть
         /// </summary>
+        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <param name="id"> Идентификатор сущьности </param>
-        /// <param name="typeComponent"> Тип компонента </param>
-        /// <returns> IComponent / null </returns>
-        public ComponentBase Get<T>(int id)
+        /// <param name="component"> Компонент (Если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool Get<T>(int id, out T component)
+            where T : ComponentBase
         {
-            return Search(id, typeof(T));
+            return Search<T>(id, out component);
         }
         /// <summary>
         /// Получить все компоненты сущьности
@@ -103,11 +105,10 @@ namespace ECSCore.Managers
             List<ComponentBase> componentBases = new();
             foreach (Components components in _collections)
             {
-                ComponentBase componentBase = components.Get(idEntity); //Вернем компонент из коллекции с определенным id
-                if (componentBase!=null)
+                if (components.Get<ComponentBase>(idEntity, out ComponentBase component))
                 {
-                    componentBases.Add(componentBase);
-                } 
+                    componentBases.Add(component);
+                } //Если компонент есть
             } //Пройдемся по существующим коллекциям
             return componentBases;
         }
@@ -142,14 +143,14 @@ namespace ECSCore.Managers
             {
                 if (components.IsType(component.GetType()))
                 {
-                    ComponentBase componentBase = components.Get(component.Id);
-                    if (componentBase == null)
+                    if (components.Get(component.Id, out ComponentBase componentBase))
                     {
-                        components.Add(component); //Добавим компонент в коллекцию
-                    }
+                        //TODO Присвоить значение, вместо присвоения ссылки
+                        componentBase = component; //Передали компонент
+                    } //Если компонент есть
                     else
                     {
-                        componentBase = component; //Передали компонент
+                        components.Add(component); //Добавим компонент в коллекцию
                     }
                     return;
                 } //Если тип совпал
@@ -159,21 +160,25 @@ namespace ECSCore.Managers
             componentsNew.Add(component); //Добавим компонент в новую коллекцию
         }
         /// <summary>
-        /// Получить компонент заданного типа, имеющий определенный id сущьности
+        /// Получить компонент, если есть
         /// </summary>
+        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <param name="id"> Идентификатор сущьности </param>
-        /// <param name="typeComponent"> Тип компонента </param>
-        /// <returns> IComponent / null </returns>
-        private ComponentBase Search(int id, Type typeComponent)
+        /// <param name="component"> Компонент (Если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        private bool Search<T>(int id, out T component)
+            where T : ComponentBase
         {
+            Type typeComponent = typeof(T);
             foreach (Components components in _collections)
             {
                 if (components.IsType(typeComponent))
                 {
-                    return components.Get(id); //Вернем компонент из коллекции с определенным id
+                    return components.Get<T>(id, out component); //Вернем компонент из коллекции с определенным id
                 } //Если тип совпал
             } //Пройдемся по существующим коллекциям
-            return null;
+            component = default;
+            return false;
         }
         /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности
@@ -268,15 +273,22 @@ namespace ECSCore.Managers
             _components.Add(component.Id, component);
         }
         /// <summary>
-        /// Получить компонент из коллекции
+        /// Получить компонент, если есть
         /// </summary>
-        /// <returns> IComponent / null</returns>
-        public ComponentBase Get(int id)
+        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="component"> Компонент (Если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool Get<T>(int id, out T component)
+            where T : ComponentBase
         {
-            if (_components.TryGetValue(id, out ComponentBase component)) {
-                return component;
+            if (_components.TryGetValue(id, out ComponentBase componentOut)) 
+            {
+                component = (T)componentOut;
+                return true;
             };
-            return null;
+            component = default(T);
+            return false;
         }
         /// <summary>
         /// Удалить компонент из коллекции

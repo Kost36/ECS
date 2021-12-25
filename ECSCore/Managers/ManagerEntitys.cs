@@ -40,6 +40,13 @@ namespace ECSCore.Managers
         #endregion
 
         #region Свойства
+        /// <summary>
+        /// Количество существующих сущьностей
+        /// </summary>
+        public int CountEntitys
+        {
+            get { return _entities.Count; }
+        }
         #endregion
 
         #region Публичные методы
@@ -113,3 +120,9 @@ namespace ECSCore.Managers
         #endregion
     }
 }
+
+//TODO 1) Получение сущьность по формату TryGet(out EntityBase)
+
+//TODO 2) Получение компонента по формату TryGet(out ComponentBase)
+
+//TODO 3) Сущьность хранит ссылки на свои компоненты (ECS вызывает удаление компонента у сущьности)

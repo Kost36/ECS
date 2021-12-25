@@ -33,9 +33,47 @@ namespace ECSCore.Managers
         #endregion
 
         #region Свойства
+        /// <summary>
+        /// Количество коллекций компонент
+        /// </summary>
+        public int CountCollectionsComponent
+        {
+            get
+            {
+                return _collections.Count;
+            }
+        }
+        /// <summary>
+        /// Количество компонент
+        /// </summary>
+        public int CountComponents
+        {
+            get
+            {
+                return GetAllComponentCount();
+            }
+        }
         #endregion
 
         #region Публичные методы
+        /// <summary>
+        /// Получить количество компонент заданного типа
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public int GetCountComponents<T>()
+            where T : ComponentBase
+        {
+            Type typeNeedComponent = typeof(T);
+            foreach (Components components in _collections)
+            {
+                if (components.IsType(typeNeedComponent))
+                {
+                    return components.Count; //Вернем количество
+                } //Если тип соответствует
+            } //Пройдемся по существующим коллекциям
+            return 0;
+        }
         /// <summary>
         /// Добавить компонент в коллекцию
         /// </summary>
@@ -164,6 +202,18 @@ namespace ECSCore.Managers
                 components.Remove(id); //Вернем компонент из коллекцию с определенным id
             } //Пройдемся по существующим коллекциям
         }
+        /// <summary>
+        /// Получить общее количество компонент
+        /// </summary>
+        private int GetAllComponentCount()
+        {
+            int countAllComponents = 0;
+            foreach (Components components in _collections)
+            {
+                countAllComponents = countAllComponents + components.Count;
+            } //Пройдемся по существующим коллекциям
+            return countAllComponents;
+        }
         #endregion
     }
 
@@ -188,9 +238,16 @@ namespace ECSCore.Managers
         private SortedList<int, ComponentBase> _components = new SortedList<int, ComponentBase>();
         #endregion
 
+        #region Свойства
+        /// <summary>
+        /// Количество компонент в коллекции
+        /// </summary>
+        public int Count { get { return _components.Count; } }
+        #endregion
+
         #region Публичные методы
         /// <summary>
-        /// Проверить тип коллекции на соответствие типа зпдпнному объекту
+        /// Проверить тип коллекции на соответствие типа зпданному объекту
         /// </summary>
         /// <param name="component"> Компонент, который нужно проверить </param>
         /// <returns></returns>
@@ -202,7 +259,6 @@ namespace ECSCore.Managers
             } //Если тип совпадает
             return false;
         }
-
         /// <summary>
         /// Добавить компонент в коллекцию
         /// </summary>

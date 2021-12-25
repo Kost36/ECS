@@ -34,26 +34,26 @@ namespace Game.Components.ObjectStates
     /// <summary>
     /// Компонент энерги
     /// </summary>
-    public class Energy : ComponentBase
+    public class Enargy : ComponentBase
     {
-        public float ValueMax;
-        public float Value;
+        public float EnargyMax;
+        public float EnargyFact;
     }
     /// <summary>
     /// Компонент прочности/здоровья
     /// </summary>
     public class Health : ComponentBase
     {
-        public float ValueMax;
-        public float Value;
+        public float HealthMax;
+        public float HealthFact;
     }
     /// <summary>
     /// Компонент щита
     /// </summary>
     public class Shild : ComponentBase
     {
-        public float ValueMax;
-        public float Value;
+        public float ShildMax;
+        public float ShildFact;
     }
     /// <summary>
     /// Компонент трюма (вместимости) 
@@ -61,8 +61,8 @@ namespace Game.Components.ObjectStates
     /// </summary>
     public class Hold : ComponentBase
     {
-        public float ValueMax;
-        public float ValueUse;
+        public float HoldMax;
+        public float HoldUse;
     }
     /// <summary>
     /// Компонент веса
@@ -73,6 +73,6 @@ namespace Game.Components.ObjectStates
         /// <summary>
         /// Вес корабля (Кг)
         /// </summary>
-        public float Value;
+        public float WeightFact;
     }
 }

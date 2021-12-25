@@ -27,7 +27,7 @@ namespace Game.Components.Tasks
         public float dXSV;
         public float dYSV;
         public float dZSV;
-        public float NeedSpeed;
+        public float SVSpeed;
     }
     /// <summary>
     /// Компонент вектора заданного перемещения

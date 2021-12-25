@@ -16,7 +16,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Количество элементов в фильтре
         /// </summary>
-        public int Count { get; set; }
+        public abstract int Count { get; }
         /// <summary>
         /// Список заданий для фильтра
         /// </summary>
@@ -26,11 +26,14 @@ namespace ECSCore.BaseObjects
         /// </summary>
         public void Сalculate()
         {
-            while (JobToFilters.Count > 0)
+            lock (JobToFilters)
             {
-                IJobToFilter jobToFilter = JobToFilters.Dequeue();
-                jobToFilter.Action(this);
-            } //Пока в коллекции что то есть
+                while (JobToFilters.Count > 0)
+                {
+                    IJobToFilter jobToFilter = JobToFilters.Dequeue();
+                    jobToFilter.Action(this);
+                } //Пока в коллекции что то есть
+            }
         }
         /// <summary>
         /// Проверяет группу на выбранные типы компонент
@@ -48,7 +51,10 @@ namespace ECSCore.BaseObjects
         /// <param name="entity"></param>
         public void Add(ComponentBase component, EntityBase entity)
         {
-            JobToFilters.Enqueue(new JobTryAdd(component, entity));
+            lock (JobToFilters)
+            {
+                JobToFilters.Enqueue(new JobTryAdd(component, entity));
+            }
         }
         /// <summary>
         /// Удалить компонент из фильтра
@@ -57,7 +63,10 @@ namespace ECSCore.BaseObjects
         /// <param name="entity"></param>
         public void Remove<T>(EntityBase entity)
         {
-            JobToFilters.Enqueue(new JobTryRemove(typeof(T), entity));
+            lock (JobToFilters)
+            {
+                JobToFilters.Enqueue(new JobTryRemove(typeof(T), entity));
+            }
         }
         /// <summary>
         /// Удалить из фильтра компоненты с Id
@@ -65,7 +74,10 @@ namespace ECSCore.BaseObjects
         /// <param name="id"></param>
         public void RemoveOfId(int id)
         {
-            JobToFilters.Enqueue(new JobTryRemoveId(id));
+            lock (JobToFilters)
+            {
+                JobToFilters.Enqueue(new JobTryRemoveId(id));
+            }
         }
 
         public abstract void TryAdd(ComponentBase component, EntityBase entity);

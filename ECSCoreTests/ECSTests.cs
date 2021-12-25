@@ -12,6 +12,7 @@ using ECSCore.BaseObjects;
 using ECSCore.Interface;
 using Game.Components.ObjectStates;
 using Game.Components.Tasks;
+using System.Diagnostics;
 
 namespace ECSCore.Tests
 {
@@ -21,7 +22,7 @@ namespace ECSCore.Tests
         public static ECS ECS;
         public static EntityBase Entity;
         [TestMethod()]
-        public void Test0InitializationECS()
+        public void Test_0InitializationECS()
         {
             Ship ship = new Ship();
             ECS.Initialization(ship.GetType().Assembly);
@@ -32,10 +33,11 @@ namespace ECSCore.Tests
                 Console.WriteLine($"{i} - ОК");
             }
             Assert.IsNotNull(ECS);
+            Debug.WriteLine(ECS.GetInfo());
         }
 
         [TestMethod()]
-        public void Test1AddEntity()
+        public void Test_1AddEntity()
         {
             Entity = ECS.AddEntity(new Ship());
             ECS.AddEntity(new Ship());
@@ -47,7 +49,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test2GetEntity()
+        public void Test_2GetEntity()
         {
             Ship ship = (Ship)ECS.GetEntity(Entity.Id);
             Assert.IsNotNull(ship);
@@ -55,7 +57,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test3RemoveEntity()
+        public void Test_3RemoveEntity()
         {
             ECS.RemoveEntity(Entity.Id);
             ECS.RemoveEntity(3);
@@ -64,7 +66,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test4AddComponent()
+        public void Test_4AddComponent()
         {
             Entity = (Ship)ECS.GetEntity(2);
             Entity.Add<Pozition>(new Pozition() { X = 0, Y = 0, Z = 0 });
@@ -74,7 +76,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test5GetComponent()
+        public void Test_5GetComponent()
         {
             Pozition pozition = (Pozition)Entity.Get<Pozition>();
             Pozition pozition1 = (Pozition)ECS.GetComponent<Pozition>(4);
@@ -85,7 +87,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test6RemoveComponent()
+        public void Test_6RemoveComponent()
         {
             Entity.Remove<Pozition>();
             ECS.RemoveComponent<Pozition>(4);
@@ -96,7 +98,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test7AddComponentToFilter()
+        public void Test_7AddComponentToFilter()
         {
             Entity = (Ship)ECS.GetEntity(5);
             Entity.Add<Pozition>(new Pozition() { X = 0, Y = 0, Z = 0 });
@@ -109,15 +111,29 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test9RemoveComponentFromFilter()
+        public void Test_9RemoveComponentFromFilter()
         {
             Entity.Remove<PozitionSV>();
             Entity.Remove<Way>();
+            //while (true)
+            //{
+                Thread.Sleep(5000);
+                Entity = (Ship)ECS.GetEntity(5);
+                Debug.WriteLine(ECS.GetInfo(true));
+            //}
+        }
+
+        [TestMethod()]
+        public void Test_APerformance()
+        {
             while (true)
             {
-                Thread.Sleep(15000);
-                Entity = (Ship)ECS.GetEntity(5);
-                Console.WriteLine("");
+                for (int i=0; i<100; i++)
+                {
+                    ShipFactory.AddShip();
+                }
+                Debug.WriteLine(ECS.GetInfo(true));
+                Thread.Sleep(1000);
             }
         }
     }

@@ -26,53 +26,62 @@ namespace Game.Systems.Move
         {
             for (int i = 0; i < Filter.Count; i++)
             {
-                //Ускорение
-                if (Filter.ComponentsT0[i].dXSV < Filter.ComponentsT2[i].dX)
+                if( Filter.ComponentsT3[i].EnargyFact> Filter.ComponentsT1[i].EnargyUse)
                 {
-                    Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX - Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT0[i].dXSV > Filter.ComponentsT2[i].dX)
-                    {
-                        Filter.ComponentsT2[i].dX = Filter.ComponentsT0[i].dXSV;
-                    }
-                }
-                else if (Filter.ComponentsT0[i].dXSV > Filter.ComponentsT2[i].dX)
-                {
-                    Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX + Filter.ComponentsT1[i].Value; 
+                    //Ускорение
                     if (Filter.ComponentsT0[i].dXSV < Filter.ComponentsT2[i].dX)
                     {
-                        Filter.ComponentsT2[i].dX = Filter.ComponentsT0[i].dXSV;
+                        Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX - Filter.ComponentsT1[i].Acc;
+                        Filter.ComponentsT3[i].EnargyFact = Filter.ComponentsT3[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse;
+                        if (Filter.ComponentsT0[i].dXSV > Filter.ComponentsT2[i].dX)
+                        {
+                            Filter.ComponentsT2[i].dX = Filter.ComponentsT0[i].dXSV;
+                        }
                     }
-                }
-                if (Filter.ComponentsT0[i].dYSV < Filter.ComponentsT2[i].dY)
-                {
-                    Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY - Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT0[i].dYSV > Filter.ComponentsT2[i].dY)
+                    else if (Filter.ComponentsT0[i].dXSV > Filter.ComponentsT2[i].dX)
                     {
-                        Filter.ComponentsT2[i].dY = Filter.ComponentsT0[i].dYSV;
+                        Filter.ComponentsT2[i].dX = Filter.ComponentsT2[i].dX + Filter.ComponentsT1[i].Acc;
+                        Filter.ComponentsT3[i].EnargyFact = Filter.ComponentsT3[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse;
+                        if (Filter.ComponentsT0[i].dXSV < Filter.ComponentsT2[i].dX)
+                        {
+                            Filter.ComponentsT2[i].dX = Filter.ComponentsT0[i].dXSV;
+                        }
                     }
-                }
-                else if (Filter.ComponentsT0[i].dYSV > Filter.ComponentsT2[i].dY)
-                {
-                    Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY + Filter.ComponentsT1[i].Value;
                     if (Filter.ComponentsT0[i].dYSV < Filter.ComponentsT2[i].dY)
                     {
-                        Filter.ComponentsT2[i].dY = Filter.ComponentsT0[i].dYSV;
+                        Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY - Filter.ComponentsT1[i].Acc;
+                        Filter.ComponentsT3[i].EnargyFact = Filter.ComponentsT3[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse;
+                        if (Filter.ComponentsT0[i].dYSV > Filter.ComponentsT2[i].dY)
+                        {
+                            Filter.ComponentsT2[i].dY = Filter.ComponentsT0[i].dYSV;
+                        }
                     }
-                }
-                if (Filter.ComponentsT0[i].dZSV < Filter.ComponentsT2[i].dZ)
-                {
-                    Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ - Filter.ComponentsT1[i].Value;
-                    if (Filter.ComponentsT0[i].dZSV > Filter.ComponentsT2[i].dZ)
+                    else if (Filter.ComponentsT0[i].dYSV > Filter.ComponentsT2[i].dY)
                     {
-                        Filter.ComponentsT2[i].dZ = Filter.ComponentsT0[i].dZSV;
+                        Filter.ComponentsT2[i].dY = Filter.ComponentsT2[i].dY + Filter.ComponentsT1[i].Acc;
+                        Filter.ComponentsT3[i].EnargyFact = Filter.ComponentsT3[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse;
+                        if (Filter.ComponentsT0[i].dYSV < Filter.ComponentsT2[i].dY)
+                        {
+                            Filter.ComponentsT2[i].dY = Filter.ComponentsT0[i].dYSV;
+                        }
                     }
-                }
-                else if (Filter.ComponentsT0[i].dZSV > Filter.ComponentsT2[i].dZ)
-                {
-                    Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ + Filter.ComponentsT1[i].Value;
                     if (Filter.ComponentsT0[i].dZSV < Filter.ComponentsT2[i].dZ)
                     {
-                        Filter.ComponentsT2[i].dZ = Filter.ComponentsT0[i].dZSV;
+                        Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ - Filter.ComponentsT1[i].Acc;
+                        Filter.ComponentsT3[i].EnargyFact = Filter.ComponentsT3[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse;
+                        if (Filter.ComponentsT0[i].dZSV > Filter.ComponentsT2[i].dZ)
+                        {
+                            Filter.ComponentsT2[i].dZ = Filter.ComponentsT0[i].dZSV;
+                        }
+                    }
+                    else if (Filter.ComponentsT0[i].dZSV > Filter.ComponentsT2[i].dZ)
+                    {
+                        Filter.ComponentsT2[i].dZ = Filter.ComponentsT2[i].dZ + Filter.ComponentsT1[i].Acc;
+                        Filter.ComponentsT3[i].EnargyFact = Filter.ComponentsT3[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse;
+                        if (Filter.ComponentsT0[i].dZSV < Filter.ComponentsT2[i].dZ)
+                        {
+                            Filter.ComponentsT2[i].dZ = Filter.ComponentsT0[i].dZSV;
+                        }
                     }
                 }
 

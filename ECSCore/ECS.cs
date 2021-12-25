@@ -4,6 +4,7 @@ using ECSCore.Managers;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
 namespace ECSCore
 {
@@ -70,7 +71,22 @@ namespace ECSCore
         #endregion
 
         #region Свойства
-
+        /// <summary>
+        /// Менеджер сущьностей
+        /// </summary>
+        public ManagerEntitys ManagerEntitys { get { return _managerEntitys; } }
+        /// <summary>
+        /// Менеджер компонентов
+        /// </summary>
+        public ManagerComponents ManagerComponents { get { return _managerComponents; } }
+        /// <summary>
+        /// Менеджер фильтров компонент
+        /// </summary>
+        public ManagerFilters ManagerFilters { get { return _managerFilters; } }
+        /// <summary>
+        /// Менеджер систем
+        /// </summary>
+        public ManagerSystems ManagerSystems { get { return _managerSystems; } }
         #endregion
 
         #region Публичные методы
@@ -146,6 +162,51 @@ namespace ECSCore
             _managerFilters.Remove<T>(idEntity);
         }
         #endregion
+
+        /// <summary>
+        /// Получить полную информацию о состоянии ECSCore
+        /// </summary>
+        /// <returns></returns>
+        public StringBuilder GetInfo(bool smallInfo = false)
+        {
+            StringBuilder info = new StringBuilder();
+            if (smallInfo)
+            {
+                info = info.Append($"ECSCore: Version: {this.GetType().Assembly.GetName().Version} \r\n");
+                info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} \r\n");
+                info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
+                info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
+                info = info.Append($"CountComponentCollections: {this.ManagerComponents.CountCollectionsComponent} \r\n");
+                info = info.Append($"CountRegistredSystems: {this.ManagerSystems.CountSystems} \r\n");
+                info = info.Append($"CountEnableSystems: {this.ManagerSystems.CountEnableSystems} \r\n");
+                info = info.Append($"CountDisableSystems: {this.ManagerSystems.CountDisableSystems} \r\n");
+                info = info.Append($"CountFiltersForSystems: {this.ManagerFilters.CountFilters} \r\n");
+                info = info.Append($"CountEntitysInFilters: {this.ManagerFilters.CountEntitys} \r\n");
+                info = info.Append($"Systems info: \r\n");
+                info = info.Append($"{this.ManagerSystems.GetInfo(smallInfo)} \r\n");
+            }
+            else
+            {
+                info = info.Append($"ECSCore: \r\n");
+                info = info.Append($"Version: {this.GetType().Assembly.GetName().Version} \r\n");
+                info = info.Append($"Entitys: \r\n");
+                info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
+                info = info.Append($"Components: \r\n");
+                info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
+                info = info.Append($"CountComponentCollections: {this.ManagerComponents.CountCollectionsComponent} \r\n");
+                info = info.Append($"Systems: \r\n");
+                info = info.Append($"CountRegistredSystems: {this.ManagerSystems.CountSystems} \r\n");
+                info = info.Append($"CountEnableSystems: {this.ManagerSystems.CountEnableSystems} \r\n");
+                info = info.Append($"CountDisableSystems: {this.ManagerSystems.CountDisableSystems} \r\n");
+                info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} \r\n");
+                info = info.Append($"Filters: \r\n");
+                info = info.Append($"CountFiltersForSystems: {this.ManagerFilters.CountFilters} \r\n");
+                info = info.Append($"CountEntitysInFilters: {this.ManagerFilters.CountEntitys} \r\n");
+                info = info.Append($"Systems info: \r\n");
+                info = info.Append($"{this.ManagerSystems.GetInfo(smallInfo)} \r\n");
+            }
+            return info;
+        }
         #endregion
     }
 }

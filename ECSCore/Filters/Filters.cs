@@ -23,6 +23,10 @@ namespace ECSCore.Filters
 
         #region Свойства
         /// <summary>
+        /// Количество элементов в фильтре
+        /// </summary>
+        public override int Count { get { return ComponentsT0.Count; } }
+        /// <summary>
         /// Список компонентов T0
         /// </summary>
         public List<T0> ComponentsT0 = new List<T0>();
@@ -75,16 +79,11 @@ namespace ECSCore.Filters
             if (ComponentsT0.Exists(t=> t.Id == component.Id) == false)
             {
                 ComponentsT0.Add((T0)component);
-                Count++;
             }
         }
         private void Remove(int id)
         {
-            int countRemove = ComponentsT0.RemoveAll(t => t.Id == id);
-            if (countRemove > 0)
-            {
-                countRemove--;
-            }
+            ComponentsT0.RemoveAll(t => t.Id == id);
         }
         #endregion
     }
@@ -102,6 +101,10 @@ namespace ECSCore.Filters
         #endregion
 
         #region Свойства
+        /// <summary>
+        /// Количество элементов в фильтре
+        /// </summary>
+        public override int Count { get { return ComponentsT0.Count; } }
         /// <summary>
         /// Список компонентов T0
         /// </summary>
@@ -188,17 +191,12 @@ namespace ECSCore.Filters
             {
                 ComponentsT0.Add((T0)componentT0);
                 ComponentsT1.Add((T1)componentT1);
-                Count++;
             }
         }
         private void Remove(int id)
         {
-            int countRemove = ComponentsT0.RemoveAll(t => t.Id == id);
+            ComponentsT0.RemoveAll(t => t.Id == id);
             ComponentsT1.RemoveAll(t => t.Id == id);
-            if (countRemove > 0)
-            {
-                Count--;
-            }
         }
         #endregion
     }
@@ -217,6 +215,10 @@ namespace ECSCore.Filters
         #endregion
 
         #region Свойства
+        /// <summary>
+        /// Количество элементов в фильтре
+        /// </summary>
+        public override int Count { get { return ComponentsT0.Count; } }
         /// <summary>
         /// Список компонентов T0
         /// </summary>
@@ -350,18 +352,13 @@ namespace ECSCore.Filters
                 ComponentsT0.Add((T0)componentT0);
                 ComponentsT1.Add((T1)componentT1);
                 ComponentsT2.Add((T2)componentT2);
-                Count++;
             }
         }
         private void Remove(int id)
         {
-            int countRemove = ComponentsT0.RemoveAll(t => t.Id == id);
+            ComponentsT0.RemoveAll(t => t.Id == id);
             ComponentsT1.RemoveAll(t => t.Id == id);
             ComponentsT2.RemoveAll(t => t.Id == id);
-            if (countRemove > 0)
-            {
-                Count--;
-            }
         }
         #endregion
     }
@@ -381,6 +378,10 @@ namespace ECSCore.Filters
         #endregion
 
         #region Свойства
+        /// <summary>
+        /// Количество элементов в фильтре
+        /// </summary>
+        public override int Count { get { return ComponentsT0.Count; } }
         /// <summary>
         /// Список компонентов T0
         /// </summary>
@@ -573,19 +574,14 @@ namespace ECSCore.Filters
                 ComponentsT1.Add((T1)componentT1);
                 ComponentsT2.Add((T2)componentT2);
                 ComponentsT2.Add((T2)componentT3);
-                Count++;
             }
         }
         private void Remove(int id)
         {
-            int countRemove = ComponentsT1.RemoveAll(t => t.Id == id);
+            ComponentsT1.RemoveAll(t => t.Id == id);
             ComponentsT1.RemoveAll(t => t.Id == id);
             ComponentsT2.RemoveAll(t => t.Id == id);
             ComponentsT3.RemoveAll(t => t.Id == id);
-            if (countRemove > 0)
-            {
-                Count--;
-            }
         }
         #endregion
     }

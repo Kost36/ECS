@@ -16,8 +16,8 @@ namespace Game.Components.Propertys
         public float dX;
         public float dY;
         public float dZ;
-        public float FactSpeed;
-        public float MaxSpeed;
+        public float SpeedFact;
+        public float SpeedMax;
     }
     /// <summary>
     /// Компонент скорости вращения
@@ -35,7 +35,8 @@ namespace Game.Components.Propertys
     /// </summary>
     public class Acceleration : ComponentBase
     {
-        public float Value = 0.05f;
+        public float Acc = 0.05f;
+        public float EnargyUse = 5;
     }
     /// <summary>
     /// Компонент замедления
@@ -43,7 +44,8 @@ namespace Game.Components.Propertys
     /// </summary>
     public class Deceleration : ComponentBase
     {
-        public float Value;
+        public float Dec = 0.05f;
+        public float EnargyUse = 5;
     }
     /// <summary>
     /// Компонент регенерации энергии
@@ -51,7 +53,7 @@ namespace Game.Components.Propertys
     /// </summary>
     public class EnargyReGeneration : ComponentBase
     {
-        public float Value;
+        public float EnargyReGen = 15;
     }
     /// <summary>
     /// Компонент регенерации щита
@@ -59,13 +61,15 @@ namespace Game.Components.Propertys
     /// </summary>
     public class ShildReGeneration : ComponentBase
     {
-        public float Value;
+        public float ShildReGen = 1;
+        public float EnargyUse = 10;
     }
     /// <summary>
     /// Компонент ремонта/исцеления
     /// </summary>
     public class HealthReGeneration : ComponentBase
     {
-        public float Value;
+        public float HealthReGen = 1;
+        public float EnargyUse = 10;
     }
 }

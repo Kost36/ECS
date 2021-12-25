@@ -37,6 +37,26 @@ namespace ECSCore.Managers
         #endregion
 
         #region Свойства
+        /// <summary>
+        /// Количество коллекций компонент
+        /// </summary>
+        public int CountFilters
+        {
+            get
+            {
+                return _filters.Count;
+            }
+        }
+        /// <summary>
+        /// Количество объектов в фильртрах
+        /// </summary>
+        public int CountEntitys
+        {
+            get
+            {
+                return GetAllEntityCount();
+            }
+        }
         #endregion
 
         #region Публичные методы
@@ -127,6 +147,18 @@ namespace ECSCore.Managers
                 IFilter filter = (IFilter)Activator.CreateInstance(typeFilter); //Создадим объект
                 AddFilter(filter); //Добавим в список
             } //Пройдемся по всем группам 
+        }
+        /// <summary>
+        /// Получить общее количество сущьностей в фильтрах
+        /// </summary>
+        private int GetAllEntityCount()
+        {
+            int countAllEntitys = 0;
+            foreach (IFilter filter in _filters)
+            {
+                countAllEntitys = countAllEntitys + filter.Count;
+            } //Пройдемся по существующим коллекциям
+            return countAllEntitys;
         }
         #endregion
     }

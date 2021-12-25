@@ -12,24 +12,17 @@ namespace ECSCore.Interface
     /// Каждую систему необходимо пометить атрибутами:
     /// 1) [AttributeSystemPriority] ;
     /// 2) [AttributeSystemCalculate] ;
-    /// 3) [AttributeSystemInterestComponent] | [AttributeSystemInterestComponents] ;
+    /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public interface ISystem {
-        public int Priority { get; set; }
-        /// <summary>
-        /// Интервал выполнения
-        /// </summary>
-        public long IntervalTicks { get; set; }
-        /// <summary>
-        /// Менеджер фильтров
-        /// </summary>
-        public ManagerFilters ManagerFilters { get; set; }
+
         /// <summary>
         /// Иньекция данных
         /// </summary>
         /// <param name="managerFilters"></param>
         public abstract void Injection(ManagerFilters managerFilters, ECS eCS);
         public abstract void PreInitialization();
+        public void CalculateDeltaTime(DateTime dateTimeFact);
         /// <summary>
         /// Инициализация системы
         /// </summary>

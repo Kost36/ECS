@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECSCore", "ECSCore\ECSCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game", "Game\Game.csproj", "{BFF9D4BB-200E-4B1D-8C16-921EAE562FA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECSCoreTests", "ECSCoreTests\ECSCoreTests.csproj", "{C1788E43-598F-4CB8-AA69-BF5543087EEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECSCoreTests", "ECSCoreTests\ECSCoreTests.csproj", "{C1788E43-598F-4CB8-AA69-BF5543087EEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -47,7 +47,7 @@ namespace Game.Systems.Move
 
                 if (ECS.GetComponent<Speed>(idEntity) == null)
                 {
-                    ECS.AddComponent<Speed>(new Speed() { MaxSpeed = 10, Id = idEntity });
+                    ECS.AddComponent<Speed>(new Speed() { SpeedMax = 10, Id = idEntity });
                 } //Если скорости нету
                 if (ECS.GetComponent<SpeedSV>(idEntity) == null)
                 {

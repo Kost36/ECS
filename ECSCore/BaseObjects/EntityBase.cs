@@ -55,6 +55,6 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
-        private List<ComponentBase> _components { get { return ECS.Instance.GetComponents(Id); } }
+        public List<ComponentBase> _components { get { return ECS.Instance.GetComponents(Id); } }
     }
 }

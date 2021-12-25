@@ -13,7 +13,7 @@ namespace ECSCore.Interfaces
         /// <summary>
         /// Количество элементов в фильтре
         /// </summary>
-        public int Count { get; set; }
+        public abstract int Count { get;}
         /// <summary>
         /// Проверяет группу на выбранные типы компонент
         /// </summary>

@@ -125,6 +125,20 @@ namespace ECSCore.Managers
             }
             return info;
         }
+        /// <summary>
+        /// Очистить статистику выполнения систем
+        /// </summary>
+        public void ClearStatisticSystems()
+        {
+            _dateTimeStart = _dateTimePoint;
+            lock (_systemQueue)
+            {
+                foreach (SystemInfo systemInfo in _systemQueue)
+                {
+                    systemInfo.ClearStatistic();
+                }
+            }
+        }
         #endregion
 
         #region Приватные методы инициализации
@@ -342,6 +356,16 @@ namespace ECSCore.Managers
             _sumUseTimeTikcs += timeRunInTicks;
             if (timeRunInTicks > _timeMaxRunInTicks) { _timeMaxRunInTicks = timeRunInTicks; }
             PercentTimeUsePerformance = _sumUseTimeTikcs / sumWorkTimeTicks;
+        }
+        /// <summary>
+        /// Очистить статистику системы
+        /// </summary>
+        public void ClearStatistic()
+        {
+            SummUseCount = 0; 
+            _sumUseTimeTikcs = 0;
+            _timeMaxRunInTicks = 0;
+            PercentTimeUsePerformance = 0;
         }
         #endregion
     }

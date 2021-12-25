@@ -160,6 +160,7 @@ namespace ECSCore.Tests
                     break;
                 }
             }
+            ECS.ManagerSystems.ClearStatisticSystems();
             while (true)
             {
                 Debug.WriteLine(ECS.GetInfo(true));

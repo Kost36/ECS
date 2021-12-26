@@ -1,4 +1,5 @@
 ﻿using ECSCore.Attributes;
+using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.System;
 using Game.Components.Ai;
@@ -32,7 +33,8 @@ namespace Game.Systems.Regeneration
             for (int i = 0; i < Filter.Count; i++)
             {
                 int entityId = Filter.ComponentsT0[i].Id;
-                if (ECS.GetComponent(entityId, out Enargy enargy))
+                ECS.ManagerEntitys.Get(entityId, out EntityBase entityBase);
+                if (entityBase.Get(out Enargy enargy))
                 {
                     if (enargy.EnargyFact< enargy.EnargyMax)
                     {
@@ -43,37 +45,37 @@ namespace Game.Systems.Regeneration
                     }
                 } //Если энергии мало, и нету регенерации. => Добавить компонент
 
-                if (ECS.GetComponent(entityId, out Health health))
+                if (entityBase.Get(out Health health))
                 {
                     if (health.HealthFact < health.HealthMax)
                     {
-                        if (ECS.GetComponent(entityId, out HealthReGeneration healthReGeneration) == false)
+                        if (entityBase.Get(out HealthReGeneration healthReGeneration) == false)
                         {
-                            ECS.AddComponent(new HealthReGeneration { Id = entityId, HealthReGen = 1, EnargyUse = 5 });
+                            entityBase.AddComponent(new HealthReGeneration { Id = entityId, HealthReGen = 1, EnargyUse = 5 });
                         }
                     }
                 } //Если жизни не полные и нету регенерации => добавить компонент
 
-                if (ECS.GetComponent(entityId, out Shild shild))
+                if (entityBase.Get(out Shild shild))
                 {
                     if (shild.ShildFact < shild.ShildMax)
                     {
-                        if (ECS.GetComponent(entityId, out ShildReGeneration shildReGeneration) == false)
+                        if (entityBase.Get(out ShildReGeneration shildReGeneration) == false)
                         {
-                            ECS.AddComponent(new ShildReGeneration { Id = entityId, ShildReGen = 1, EnargyUse = 5 });
+                            entityBase.Add(new ShildReGeneration { Id = entityId, ShildReGen = 1, EnargyUse = 5 });
                         }
                     }
                 } //Если щиты не полные и нету регенерации => добавить компонент
 
-                if (ECS.GetComponent(entityId, out PozitionSV pozitionSV))
+                if (entityBase.Get(out PozitionSV pozitionSV))
                 {
-                    if (ECS.GetComponent(entityId, out Way way) == false)
+                    if (entityBase.Get(out Way way) == false)
                     {
-                        ECS.AddComponent(new Way { Id = entityId });
+                        entityBase.Add(new Way { Id = entityId });
                     }
                 } //Если есть задание на полет и нету way => добавить компонент
 
-                if (ECS.GetComponent(entityId, out ShipState shipState))
+                if (entityBase.Get(out ShipState shipState))
                 {
                     if (shipState.StateShip == Enums.StateShip.TRADE)
                     {

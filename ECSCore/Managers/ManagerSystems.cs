@@ -107,7 +107,7 @@ namespace ECSCore.Managers
                 {
                     if (small)
                     {
-                        info = info.Append($"PercentTimeUsePerformance: {systemInfo.PercentTimeUsePerformance.ToString("P")} MaxTimeUseInMs: {systemInfo.MaxTimeUseMs.ToString("F4")} Name: {systemInfo.System.GetType().FullName} IsEnable: {systemInfo.System.IsEnable} IntervalRunInMs: {systemInfo.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
+                        info = info.Append($"PercentTimeUsePerformance: {systemInfo.PercentTimeUsePerformance.ToString("P")}; MaxTimeUseInMs: {systemInfo.MaxTimeUseMs.ToString("F4")}; AverTimeUseInMs: {systemInfo.AverTimeUseMs.ToString("F4")}; Name: {systemInfo.System.GetType().FullName}; IsEnable: {systemInfo.System.IsEnable}; IntervalRunInMs: {systemInfo.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
                     }
                     else
                     {
@@ -316,6 +316,10 @@ namespace ECSCore.Managers
         /// </summary>
         private float _sumUseTimeTikcs;
         /// <summary>
+        /// Среднее время выполнения системы в тиках
+        /// </summary>
+        private long _timeAverRunInTicks;
+        /// <summary>
         /// Максимальное время выполнения системы в тиках
         /// </summary>
         private long _timeMaxRunInTicks;
@@ -335,7 +339,11 @@ namespace ECSCore.Managers
         /// </summary>
         public float PercentTimeUsePerformance { get; private set; }
         /// <summary>
-        /// Максимально время использования в мс
+        /// Среднее время выполнения системы в мс
+        /// </summary>
+        public float AverTimeUseMs { get { return _timeAverRunInTicks / TimeSpan.TicksPerMillisecond; } }
+        /// <summary>
+        /// Максимально время выполнения системы в мс
         /// </summary>
         public float MaxTimeUseMs { get { return _timeMaxRunInTicks / TimeSpan.TicksPerMillisecond; } }
         /// <summary>
@@ -354,6 +362,7 @@ namespace ECSCore.Managers
         {
             SummUseCount++; 
             _sumUseTimeTikcs += timeRunInTicks;
+            _timeAverRunInTicks = (_timeAverRunInTicks + timeRunInTicks) / SummUseCount;
             if (timeRunInTicks > _timeMaxRunInTicks) { _timeMaxRunInTicks = timeRunInTicks; }
             PercentTimeUsePerformance = _sumUseTimeTikcs / sumWorkTimeTicks;
         }
@@ -365,6 +374,7 @@ namespace ECSCore.Managers
             SummUseCount = 0; 
             _sumUseTimeTikcs = 0;
             _timeMaxRunInTicks = 0;
+            _timeAverRunInTicks = 0;
             PercentTimeUsePerformance = 0;
         }
         #endregion

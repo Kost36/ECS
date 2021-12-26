@@ -149,7 +149,7 @@ namespace ECSCore.Tests
         {
             while (true)
             {
-                for (int i=0; i<10; i++)
+                for (int i=0; i<1000; i++)
                 {
                     ShipFactory.AddShip();
                 }
@@ -160,6 +160,8 @@ namespace ECSCore.Tests
                     break;
                 }
             }
+            ECS.ManagerSystems.ClearStatisticSystems();
+            Thread.Sleep(60000);
             ECS.ManagerSystems.ClearStatisticSystems();
             while (true)
             {

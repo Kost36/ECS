@@ -12,7 +12,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 1 компонента
     /// </summary>
-    public abstract class Filter<T0> : FilterBase
+    public class Filter<T0> : FilterBase
         where T0 : ComponentBase
     {
         #region Конструктор
@@ -120,7 +120,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 2 компонент
     /// </summary>
-    public abstract class Filter<T0, T1> : FilterBase
+    public class Filter<T0, T1> : FilterBase
         where T0 : ComponentBase
         where T1 : ComponentBase
     {
@@ -263,7 +263,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 3 компонент
     /// </summary>
-    public abstract class Filter<T0, T1, T2> : FilterBase
+    public class Filter<T0, T1, T2> : FilterBase
         where T0 : ComponentBase
         where T1 : ComponentBase
         where T2 : ComponentBase
@@ -452,7 +452,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 4 компонент
     /// </summary>
-    public abstract class Filter<T0, T1, T2, T3> : FilterBase
+    public class Filter<T0, T1, T2, T3> : FilterBase
         where T0 : ComponentBase
         where T1 : ComponentBase
         where T2 : ComponentBase

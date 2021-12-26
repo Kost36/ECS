@@ -51,7 +51,7 @@ namespace Game.Systems.Regeneration
                     {
                         if (entityBase.Get(out HealthReGeneration healthReGeneration) == false)
                         {
-                            entityBase.AddComponent(new HealthReGeneration { Id = entityId, HealthReGen = 1, EnargyUse = 5 });
+                            entityBase.Add(new HealthReGeneration { Id = entityId, HealthReGen = 1, EnargyUse = 5 });
                         }
                     }
                 } //Если жизни не полные и нету регенерации => добавить компонент

@@ -52,7 +52,6 @@ namespace ECSCore.BaseObjects
         {
             ECS.Instance.RemoveEntity(this.Id);
         }
-
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>

@@ -33,7 +33,7 @@ namespace Game.Systems.Move
                 int idEntity = Filter.ComponentsT0[i].Id;
                 if (ECS.GetComponent(idEntity, out Way component) == false)
                 {
-                    ECS.AddComponent(new Way() { Id = idEntity });
+                    ECS.AddComponent(new Way() { Id = idEntity }, null);
                 } //Если нету компонента путь
             }
         }

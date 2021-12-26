@@ -92,7 +92,7 @@ namespace Game.Systems.Move
                     {
                         if (Filter.ComponentsT2[i].dZ == Filter.ComponentsT0[i].dXSV)
                         {
-                            ECSCore.ECS.Instance.RemoveComponent<Acceleration>(Filter.ComponentsT0[i].Id); //Удалить компонент ускорения
+                            ECSCore.ECS.Instance.RemoveComponent<Acceleration>(Filter.ComponentsT0[i].Id, null); //Удалить компонент ускорения
                         }
                     }
                 }

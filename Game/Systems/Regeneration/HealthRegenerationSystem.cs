@@ -39,7 +39,7 @@ namespace Game.Systems.Regeneration
                         if (Filter.ComponentsT0[i].HealthFact > Filter.ComponentsT0[i].HealthMax)
                         {
                             Filter.ComponentsT0[i].HealthFact = Filter.ComponentsT0[i].HealthMax;
-                            ECS.RemoveComponent<HealthReGeneration>(entityId);
+                            ECS.RemoveComponent<HealthReGeneration>(entityId, null);
                         }
                     }
                 }

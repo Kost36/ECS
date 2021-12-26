@@ -40,7 +40,7 @@ namespace Game.Systems.Regeneration
                     {
                         if (ECS.GetComponent(entityId, out EnargyReGeneration enargyReGeneration) == false)
                         {
-                            ECS.AddComponent(new EnargyReGeneration { Id = entityId, EnargyReGen = 10 });
+                            ECS.AddComponent(new EnargyReGeneration { Id = entityId, EnargyReGen = 10 }, null);
                         }
                     }
                 } //Если энергии мало, и нету регенерации. => Добавить компонент
@@ -81,7 +81,7 @@ namespace Game.Systems.Regeneration
                     {
                         if (ECS.GetComponent(entityId, out ShipAiTrade trade) == false)
                         {
-                            ECS.AddComponent(new ShipAiTrade { Id = entityId });
+                            ECS.AddComponent(new ShipAiTrade { Id = entityId }, null);
                         }
                     }
                 } //Если состояние торговли и нету компонента торговли => добавить компонент

@@ -77,7 +77,7 @@ namespace ECSCore.Tests
             Entity.Add(new Pozition() { X = 1, Y = 1, Z = 1 });
             Assert.IsTrue(Entity.Components.Count == 1);
             Assert.IsTrue(ECS.ManagerComponents.CountComponents == 1);
-            ECS.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10, Id = 4 });
+            ECS.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10, Id = 4 }, null);
             Assert.IsTrue(ECS.GetEntity(4, out EntityBase entityBase));
             Assert.IsTrue(entityBase.Components.Count == 1);
             Assert.IsTrue(ECS.ManagerComponents.CountComponents == 2);
@@ -100,7 +100,7 @@ namespace ECSCore.Tests
             Entity.Remove<Pozition>();
             Assert.IsTrue(Entity.Components.Count == 0);
             Assert.IsTrue(ECS.ManagerComponents.CountComponents == 1);
-            ECS.RemoveComponent<Pozition>(4); 
+            ECS.RemoveComponent<Pozition>(4, null); 
             Assert.IsTrue(ECS.GetEntity(4, out EntityBase entityBase));
             Assert.IsTrue(entityBase.Components.Count == 0);
             Assert.IsTrue(ECS.ManagerComponents.CountComponents == 0);

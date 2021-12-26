@@ -126,9 +126,17 @@ namespace ECSCore
         /// Добавить компонент
         /// </summary>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
-        public void AddComponent<T>(T component)
+        public void AddComponent<T>(T component, EntityBase entityBase)
             where T : ComponentBase
         {
+            if (entityBase == null)
+            {
+                if(_managerEntitys.Get(component.Id, out entityBase) == false)
+                {
+                    return;
+                }
+            }
+            entityBase.AddComponent(component);
             _managerComponents.Add(component);
             _managerFilters.Add(component);
         }
@@ -158,9 +166,17 @@ namespace ECSCore
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <returns></returns>
-        public void RemoveComponent<T>(int idEntity)
+        public void RemoveComponent<T>(int idEntity, EntityBase entityBase)
             where T : ComponentBase
         {
+            if (entityBase == null)
+            {
+                if (_managerEntitys.Get(idEntity, out entityBase) == false)
+                {
+                    return;
+                }
+            }
+            entityBase.RemoveComponent<T>();
             _managerComponents.Remove<T>(idEntity);
             _managerFilters.Remove<T>(idEntity);
         }

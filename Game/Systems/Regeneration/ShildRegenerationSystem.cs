@@ -39,7 +39,7 @@ namespace Game.Systems.Regeneration
                         if (Filter.ComponentsT0[i].ShildFact > Filter.ComponentsT0[i].ShildMax)
                         {
                             Filter.ComponentsT0[i].ShildFact = Filter.ComponentsT0[i].ShildMax;
-                            ECS.RemoveComponent<ShildReGeneration>(entityId);
+                            ECS.RemoveComponent<ShildReGeneration>(entityId, null);
                         }
                     }
                 }

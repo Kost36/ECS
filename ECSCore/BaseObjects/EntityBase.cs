@@ -22,7 +22,7 @@ namespace ECSCore.BaseObjects
             where T : ComponentBase
         {
             component.Id = this.Id;
-            ECS.Instance.AddComponent<T>(component);
+            ECS.Instance.AddComponent(component, this);
         }
         /// <summary>
         /// Получить компонент (Если есть)
@@ -33,7 +33,8 @@ namespace ECSCore.BaseObjects
         public bool Get<T>(out T component)
             where T : ComponentBase
         {
-            return ECS.Instance.GetComponent<T>(this.Id, out component);
+            //return ECS.Instance.GetComponent<T>(this.Id, out component);
+            return GetComponent<T>(out component);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
@@ -43,7 +44,7 @@ namespace ECSCore.BaseObjects
         public void Remove<T>()
             where T : ComponentBase
         {
-            ECS.Instance.RemoveComponent<T>(this.Id);
+            ECS.Instance.RemoveComponent<T>(this.Id, this);
         }
         /// <summary>
         /// Уничтожить сущьность
@@ -52,9 +53,59 @@ namespace ECSCore.BaseObjects
         {
             ECS.Instance.RemoveEntity(this.Id);
         }
+
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
-        public List<ComponentBase> Components { get { return ECS.Instance.GetComponents(Id); } }
+        public List<ComponentBase> Components { get; set; }
+
+        /// <summary>
+        /// Добавить компонент в коллекцию сущьности
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        public void AddComponent<T>(T component)
+            where T:ComponentBase
+        {
+            if (GetComponent(out T componentBase))
+            {
+                componentBase = component;
+                return;
+            } //Если нету
+            Components.Add(component);
+        }
+        /// <summary>
+        /// Удалить компонент из коллекции сущьности
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        public void RemoveComponent<T>()
+            where T : ComponentBase
+        {
+            if (GetComponent(out T componentBase))
+            {
+                Components.Remove(componentBase);
+            } //Если есть в коллекции
+        }
+        /// <summary>
+        /// Получить компонент из своего списка
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        /// <returns></returns>
+        private bool GetComponent<T>(out T component)
+            where T : ComponentBase
+        {
+            foreach (ComponentBase componentBase in Components)
+            {
+                if (componentBase is T)
+                {
+                    component = (T)componentBase;
+                    return true;
+                }
+            }
+            component = default(T);
+            return false;
+        }
     }
 }

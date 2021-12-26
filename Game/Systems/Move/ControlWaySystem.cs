@@ -47,11 +47,11 @@ namespace Game.Systems.Move
 
                 if (ECS.GetComponent(idEntity, out Speed speed) == false)
                 {
-                    ECS.AddComponent(new Speed() { SpeedMax = 10, Id = idEntity });
+                    ECS.AddComponent(new Speed() { SpeedMax = 10, Id = idEntity }, null);
                 } //Если скорости нету
                 if (ECS.GetComponent(idEntity, out SpeedSV speedSV) == false)
                 {
-                    ECS.AddComponent(new SpeedSV() { Id = idEntity });
+                    ECS.AddComponent(new SpeedSV() { Id = idEntity }, null);
                 } //Если задания скорости нету
             }
         }

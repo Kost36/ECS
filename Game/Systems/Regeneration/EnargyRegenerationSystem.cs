@@ -36,7 +36,7 @@ namespace Game.Systems.Regeneration
                     if (Filter.ComponentsT0[i].EnargyFact > Filter.ComponentsT0[i].EnargyMax)
                     {
                         Filter.ComponentsT0[i].EnargyFact = Filter.ComponentsT0[i].EnargyMax;
-                        ECS.RemoveComponent<EnargyReGeneration>(entityId);
+                        ECS.RemoveComponent<EnargyReGeneration>(entityId, null);
                     }
                 }
             }

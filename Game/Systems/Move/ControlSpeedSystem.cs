@@ -40,7 +40,7 @@ namespace Game.Systems.Move
                     Filter.ComponentsT2[i].SVSpeed = Filter.ComponentsT2[i].SVSpeed - (float)(Filter.ComponentsT1[i].SpeedMax * 0.01); //Снижаем на 10% от максимальной скорости
                     if (ECS.GetComponent(idEntity, out Acceleration acceleration) == false)
                     {
-                        ECS.AddComponent(new Acceleration() { Id = idEntity });
+                        ECS.AddComponent(new Acceleration() { Id = idEntity }, null);
                     } //Если нету ускорения
                     if (Filter.ComponentsT2[i].SVSpeed < 0)
                     {
@@ -56,7 +56,7 @@ namespace Game.Systems.Move
                     Filter.ComponentsT2[i].SVSpeed = Filter.ComponentsT2[i].SVSpeed + (float)(Filter.ComponentsT1[i].SpeedMax * 0.01); //Снижаем на 1% от максимальной скорости
                     if (ECS.GetComponent(idEntity, out Acceleration acceleration) == false)
                     {
-                        ECS.AddComponent(new Acceleration() { Id = idEntity });
+                        ECS.AddComponent(new Acceleration() { Id = idEntity }, null);
                     } //Если нету ускорения
                     if (Filter.ComponentsT2[i].SVSpeed > Filter.ComponentsT1[i].SpeedMax)
                     {
@@ -69,10 +69,10 @@ namespace Game.Systems.Move
                 Filter.ComponentsT2[i].dZSV = Filter.ComponentsT0[i].NormZ * Filter.ComponentsT2[i].SVSpeed;
                 if (Filter.ComponentsT0[i].Len < 1)
                 {
-                    ECS.RemoveComponent<Speed>(Filter.ComponentsT0[i].Id); //Удалим скорость
-                    ECS.RemoveComponent<SpeedSV>(Filter.ComponentsT0[i].Id); //Удалим заданную скорость
-                    ECS.RemoveComponent<Acceleration>(Filter.ComponentsT0[i].Id); //Удалим ускорение
-                    ECS.RemoveComponent<Way>(Filter.ComponentsT0[i].Id); //Удалим путь
+                    ECS.RemoveComponent<Speed>(Filter.ComponentsT0[i].Id, null); //Удалим скорость
+                    ECS.RemoveComponent<SpeedSV>(Filter.ComponentsT0[i].Id, null); //Удалим заданную скорость
+                    ECS.RemoveComponent<Acceleration>(Filter.ComponentsT0[i].Id, null); //Удалим ускорение
+                    ECS.RemoveComponent<Way>(Filter.ComponentsT0[i].Id, null); //Удалим путь
                 }
             }
         }

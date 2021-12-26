@@ -1,6 +1,5 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Filters;
-using ECSCore.Interface;
 using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        public ManagerFilters(ECS ecs, Assembly assembly, int startCapacityCollections)
+        internal ManagerFilters(ECS ecs, Assembly assembly, int startCapacityCollections)
         {
             _ecs = ecs;
             if (startCapacityCollections > 10)
@@ -74,7 +73,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public IFilter GetFilter<T>()
+        internal IFilter GetFilter<T>()
             where T : IFilter
         {
             Type type = typeof(T); //Получим тип
@@ -92,7 +91,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public IFilter GetFilter(Type type)
+        internal IFilter GetFilter(Type type)
         {
             foreach (IFilter filter in _filters)
             {

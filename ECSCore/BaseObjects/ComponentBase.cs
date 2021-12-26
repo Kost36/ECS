@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace ECSCore.BaseObjects
 {
     /// <summary>
-    /// Базовый класс компонентов
+    /// Базовый класс компонента.
+    /// Все компоненты наследовать от данного класса
     /// </summary>
     public abstract class ComponentBase : IComponent
     {

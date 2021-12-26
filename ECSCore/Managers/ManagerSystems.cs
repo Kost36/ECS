@@ -1,4 +1,4 @@
-﻿using ECSCore.Interface;
+﻿using ECSCore.Interfaces;
 using ECSCore.System;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Анализ и компоновка данных
         /// </summary>
-        public ManagerSystems(ECS ecs, Assembly assembly, ManagerFilters managerFilters)
+        internal ManagerSystems(ECS ecs, Assembly assembly, ManagerFilters managerFilters)
         {
             _ecs = ecs;
             _Init(assembly, managerFilters); //Инициализация 
@@ -153,10 +153,10 @@ namespace ECSCore.Managers
             List<Type> typesSystems = types.Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
             foreach (Type typeSystem in typesSystems)
             {
-                ISystem system = (ISystem)Activator.CreateInstance(typeSystem); //Создадим объект
-                system.PreInitialization(); //Предварительная инициализация
+                SystemBase system = (SystemBase)Activator.CreateInstance(typeSystem); //Создадим объект
+                system.GetAttributes(); //Подтяжка аттребут
                 system.Injection(managerFilters, _ecs); //Инекция данных
-                system.Initialization(); //Инициализация систем
+                system.GetFilter(); //Подтяжка фильтра
                 AddSystem(system); //Добавим в список
             } //Пройдемся по всем системам 
         }
@@ -221,9 +221,9 @@ namespace ECSCore.Managers
                     _stopwatchRunSystem.Reset();
                     _stopwatchRunSystem.Start();
                     _systemQueue[0].DateTimeNextRun = _systemQueue[0].DateTimeNextRun.AddTicks(_systemQueue[0].System.IntervalTicks); //Следующее время выполнения системы
+                    _systemQueue[0].System.CalculateFilter(); //Обработка фильтров
                     _systemQueue[0].System.CalculateDeltaTime(_dateTimePoint); //Расчет DeltaTime
-                    _systemQueue[0].System.PreAсtion(); //Подготовка к действию
-                    _systemQueue[0].System.Aсtion(); //Обработка системы
+                    _systemQueue[0].System.AсtionForeach(); //Обработка системы
                     _stopwatchRunSystem.Stop();
                     _sumWorkTimeTicks = _dateTimePoint.Ticks - _dateTimeStart.Ticks; //Сумарное время работы менеджера
                     _systemQueue[0].CalculatePerformance(_stopwatchRunSystem.ElapsedTicks, _sumWorkTimeTicks);
@@ -295,7 +295,7 @@ namespace ECSCore.Managers
     /// <summary>
     /// Класс информации о системе в очереди
     /// </summary>
-    public class SystemInfo
+    internal class SystemInfo
     {
         #region Конструкторы
         /// <summary>

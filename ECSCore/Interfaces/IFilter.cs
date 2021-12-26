@@ -1,5 +1,5 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interface;
+using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -8,7 +8,7 @@ namespace ECSCore.Interfaces
     /// <summary>
     /// Интерфейс фильтра группы компонент
     /// </summary>
-    public interface IFilter
+    internal interface IFilter
     {
         /// <summary>
         /// Колличество элементов в фильтре

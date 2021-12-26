@@ -6,7 +6,6 @@ using Game.Components.Ai;
 using Game.Components.ObjectStates;
 using Game.Components.Propertys;
 using Game.Components.Tasks;
-using Game.Filters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

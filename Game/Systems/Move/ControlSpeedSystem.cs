@@ -3,7 +3,6 @@ using ECSCore.Enums;
 using ECSCore.System;
 using Game.Components.Propertys;
 using Game.Components.Tasks;
-using Game.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

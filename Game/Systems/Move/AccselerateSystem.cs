@@ -4,8 +4,6 @@ using ECSCore.System;
 using Game.Components.ObjectStates;
 using Game.Components.Propertys;
 using Game.Components.Tasks;
-using Game.Filters;
-using System;
 
 namespace Game.Systems.Move
 {

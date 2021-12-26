@@ -1,5 +1,4 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interface;
 using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 1 компонента
     /// </summary>
-    public class Filter<T0> : FilterBase
+    internal class Filter<T0> : FilterBase
         where T0 : ComponentBase
     {
         #region Конструктор
@@ -120,7 +119,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 2 компонент
     /// </summary>
-    public class Filter<T0, T1> : FilterBase
+    internal class Filter<T0, T1> : FilterBase
         where T0 : ComponentBase
         where T1 : ComponentBase
     {
@@ -263,7 +262,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 3 компонент
     /// </summary>
-    public class Filter<T0, T1, T2> : FilterBase
+    internal class Filter<T0, T1, T2> : FilterBase
         where T0 : ComponentBase
         where T1 : ComponentBase
         where T2 : ComponentBase
@@ -452,7 +451,7 @@ namespace ECSCore.Filters
     /// <summary>
     /// Группа для 4 компонент
     /// </summary>
-    public class Filter<T0, T1, T2, T3> : FilterBase
+    internal class Filter<T0, T1, T2, T3> : FilterBase
         where T0 : ComponentBase
         where T1 : ComponentBase
         where T2 : ComponentBase

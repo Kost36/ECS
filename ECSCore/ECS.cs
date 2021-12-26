@@ -1,5 +1,6 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interface;
+using ECSCore.Exceptions;
+using ECSCore.Interfaces;
 using ECSCore.Managers;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,40 @@ namespace ECSCore
     /// <summary>
     /// Модуль Entity Component System
     /// </summary>
-    public class ECS
+    public class ECS : IECSSystem, IECS, IECSDebug
     {
+        #region Конструткоры
+        private ECS() { }
+        #endregion
+
         #region Singlton
         /// <summary>
         /// Получить экземпляр ECS
         /// </summary>
         /// <returns></returns>
-        public static ECS Instance
+        internal static ECS Instance
+        {
+            get
+            {
+                return _ecs; //Вернуть экземпляр
+            }
+        }
+        /// <summary>
+        /// Получить экземпляр ECS
+        /// </summary>
+        /// <returns></returns>
+        public static IECS InstanceIECS
+        {
+            get
+            {
+                return _ecs; //Вернуть экземпляр
+            }
+        }
+        /// <summary>
+        /// Получить отладочный экземпляр ECS
+        /// </summary>
+        /// <returns></returns>
+        public static IECSDebug InstanceDebug
         {
             get
             {
@@ -28,12 +55,19 @@ namespace ECSCore
         /// <summary>
         /// Инициализация ECS
         /// </summary>
+        /// <param name="assembly"> ссылка на сборку (Где находятся: Компоненты / Cистемы) </param>
+        /// <param name="startCapacityCollections"></param>
+        /// <exception cref="ExceptionECSIsInitializated"> </exception>
         public static void Initialization(Assembly assembly, int startCapacityCollections = 10) //ECSSetting ecsSetting, 
         {
             if (_ecs == null)
             {
                 _ecs = new(); //Создали
             } //Если экземпляра нету
+            else
+            {
+                throw new ExceptionECSIsInitializated("ECS was initialized before");
+            }
             if (startCapacityCollections > 10)
             {
                 _ecs._startCapacityCollections = startCapacityCollections;
@@ -45,10 +79,6 @@ namespace ECSCore
 
             //_ecs.ECSetting = ecsSetting; //Зададим параметры работы ECS
         }
-        #endregion
-
-        #region Конструткоры
-        private ECS() { }
         #endregion
 
         #region Поля
@@ -98,6 +128,7 @@ namespace ECSCore
         #endregion
 
         #region Публичные методы
+
         #region Сущьности
         /// <summary>
         /// Добавить сущьность
@@ -124,15 +155,30 @@ namespace ECSCore
         /// <param name="id"> Идентификатор сущьности </param>
         public void RemoveEntity(int id)
         {
-            _managerComponents.Remove(id);
             _managerEntitys.Remove(id);
             _managerFilters.Remove(id);
+            _managerComponents.Remove(id);
         }
         #endregion
 
         #region Компоненты
         /// <summary>
-        /// Добавить компонент
+        /// Добавить компонент.
+        /// </summary>
+        /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
+        public void AddComponent<T>(T component)
+            where T : ComponentBase
+        {
+            if (_managerEntitys.Get(component.Id, out EntityBase entityBase) == false)
+            {
+                return;
+            } //Получим сущьность от менеджера сущьностей
+            entityBase.AddComponent(component); //Добавить к сущьности
+            _managerComponents.Add(component); //Передать менеджеру компонент
+            _managerFilters.Add(component); //Передать менеджеру фильтров
+        }
+        /// <summary>
+        /// Добавить компонент.
         /// </summary>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
         public void AddComponent<T>(T component, EntityBase entityBase)
@@ -140,17 +186,18 @@ namespace ECSCore
         {
             if (entityBase == null)
             {
-                if(_managerEntitys.Get(component.Id, out entityBase) == false)
+                if (_managerEntitys.Get(component.Id, out entityBase) == false)
                 {
                     return;
-                }
-            }
-            entityBase.AddComponent(component);
-            _managerComponents.Add(component);
-            _managerFilters.Add(component);
+                } //Получим сущьность от менеджера сущьностей
+            } //Если сущьность не задана
+            entityBase.AddComponent(component); //Добавить к сущьности
+            _managerComponents.Add(component); //Передать менеджеру компонент
+            _managerFilters.Add(component); //Передать менеджеру фильтров
         }
         /// <summary>
-        /// Получить компонент, если есть
+        /// Получить компонент, если есть.
+        /// Возвращает компонент из менеджера компонентов
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
@@ -159,16 +206,23 @@ namespace ECSCore
         public bool GetComponent<T>(int idEntity, out T component)
             where T : ComponentBase
         {
-            return _managerComponents.Get<T>(idEntity, out component);
+            return _managerComponents.Get(idEntity, out component);
         }
         /// <summary>
-        /// Получить все компоненты сущьности
+        /// Удалить компонент (Если есть)
         /// </summary>
-        /// <param name="id"></param>
+        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
         /// <returns></returns>
-        public List<ComponentBase> GetComponents(int idEntity)
+        public void RemoveComponent<T>(int idEntity)
+            where T : ComponentBase
         {
-            return _managerComponents.Get(idEntity);
+            if (_managerEntitys.Get(idEntity, out EntityBase entityBase) == false)
+            {
+                return;
+            }
+            entityBase.RemoveComponent<T>();
+            _managerComponents.Remove<T>(idEntity);
+            _managerFilters.Remove<T>(idEntity);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
@@ -191,6 +245,7 @@ namespace ECSCore
         }
         #endregion
 
+        #region Состояние ECS
         /// <summary>
         /// Получить полную информацию о состоянии ECSCore
         /// </summary>
@@ -235,6 +290,8 @@ namespace ECSCore
             }
             return info;
         }
+        #endregion
+
         #endregion
     }
 }

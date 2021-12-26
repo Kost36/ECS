@@ -1,5 +1,5 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interface;
+using ECSCore.Interfaces;
 using System.Collections.Generic;
 
 namespace ECSCore.Managers
@@ -14,7 +14,7 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        public ManagerEntitys(ECS ecs, int startCountEntityCapacity)
+        internal ManagerEntitys(ECS ecs, int startCountEntityCapacity)
         {
             _ecs = ecs;
             if (startCountEntityCapacity > 10)

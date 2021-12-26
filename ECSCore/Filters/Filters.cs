@@ -29,10 +29,22 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0 = new List<T0>();
+        public List<T0> ComponentsT0;
+        /// <summary>
+        /// Бит блокировки между потоками
+        /// </summary>
+        public object LockBit { get; set; } = true;
         #endregion
 
         #region Публичные методы
+        public override void Init(int capacity)
+        {
+            if (capacity > 10)
+            {
+                Capacity = capacity;
+            }
+            ComponentsT0 = new List<T0>(Capacity);
+        }
         public override bool CheckFilter(List<Type> typesComponet)
         {
             if (typesComponet.Count == 1)
@@ -83,14 +95,20 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase component)
         {
-            if (ComponentsT0.Exists(t=> t.Id == component.Id) == false)
+            lock (LockBit)
             {
-                ComponentsT0.Add((T0)component);
+                if (ComponentsT0.Exists(t => t.Id == component.Id) == false)
+                {
+                    ComponentsT0.Add((T0)component);
+                }
             }
         }
         private void Remove(int id)
         {
-            ComponentsT0.RemoveAll(t => t.Id == id);
+            lock (LockBit)
+            {
+                ComponentsT0.RemoveAll(t => t.Id == id);
+            }
         }
         #endregion
     }
@@ -115,14 +133,27 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0 = new List<T0>();
+        public List<T0> ComponentsT0;
         /// <summary>
         /// Список компонентов T1
         /// </summary>
-        public List<T1> ComponentsT1 = new List<T1>();
+        public List<T1> ComponentsT1;
+        /// <summary>
+        /// Бит блокировки между потоками
+        /// </summary>
+        public object LockBit { get; set; } = true;
         #endregion
 
         #region Публичные методы
+        public override void Init(int capacity)
+        {
+            if (capacity > 10)
+            {
+                Capacity = capacity;
+            }
+            ComponentsT0 = new List<T0>(Capacity);
+            ComponentsT1 = new List<T1>(Capacity);
+        }
         public override bool CheckFilter(List<Type> typesComponet)
         {
             if (typesComponet.Count == 2)
@@ -198,16 +229,22 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase componentT0, ComponentBase componentT1)
         {
-            if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+            lock (LockBit)
             {
-                ComponentsT0.Add((T0)componentT0);
-                ComponentsT1.Add((T1)componentT1);
+                if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+                {
+                    ComponentsT0.Add((T0)componentT0);
+                    ComponentsT1.Add((T1)componentT1);
+                }
             }
         }
         private void Remove(int id)
         {
-            ComponentsT0.RemoveAll(t => t.Id == id);
-            ComponentsT1.RemoveAll(t => t.Id == id);
+            lock (LockBit)
+            {
+                ComponentsT0.RemoveAll(t => t.Id == id);
+                ComponentsT1.RemoveAll(t => t.Id == id);
+            }
         }
         #endregion
     }
@@ -233,18 +270,32 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0 = new List<T0>();
+        public List<T0> ComponentsT0;
         /// <summary>
         /// Список компонентов T1
         /// </summary>
-        public List<T1> ComponentsT1 = new List<T1>();
+        public List<T1> ComponentsT1;
         /// <summary>
         /// Список компонентов T2
         /// </summary>
-        public List<T2> ComponentsT2 = new List<T2>();
+        public List<T2> ComponentsT2;
+        /// <summary>
+        /// Бит блокировки между потоками
+        /// </summary>
+        public object LockBit { get; set; } = true;
         #endregion
 
         #region Публичные методы
+        public override void Init(int capacity)
+        {
+            if (capacity > 10)
+            {
+                Capacity = capacity;
+            }
+            ComponentsT0 = new List<T0>(Capacity);
+            ComponentsT1 = new List<T1>(Capacity);
+            ComponentsT2 = new List<T2>(Capacity);
+        }
         public override bool CheckFilter(List<Type> typesComponet)
         {
             if (typesComponet.Count == 3)
@@ -354,18 +405,24 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase componentT0, ComponentBase componentT1, ComponentBase componentT2)
         {
-            if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+            lock (LockBit)
             {
-                ComponentsT0.Add((T0)componentT0);
-                ComponentsT1.Add((T1)componentT1);
-                ComponentsT2.Add((T2)componentT2);
+                if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+                {
+                    ComponentsT0.Add((T0)componentT0);
+                    ComponentsT1.Add((T1)componentT1);
+                    ComponentsT2.Add((T2)componentT2);
+                }
             }
         }
         private void Remove(int id)
         {
-            ComponentsT0.RemoveAll(t => t.Id == id);
-            ComponentsT1.RemoveAll(t => t.Id == id);
-            ComponentsT2.RemoveAll(t => t.Id == id);
+            lock (LockBit)
+            {
+                ComponentsT0.RemoveAll(t => t.Id == id);
+                ComponentsT1.RemoveAll(t => t.Id == id);
+                ComponentsT2.RemoveAll(t => t.Id == id);
+            }
         }
         #endregion
     }
@@ -392,22 +449,37 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0 = new List<T0>();
+        public List<T0> ComponentsT0;
         /// <summary>
         /// Список компонентов T1
         /// </summary>
-        public List<T1> ComponentsT1 = new List<T1>();
+        public List<T1> ComponentsT1;
         /// <summary>
         /// Список компонентов T2
         /// </summary>
-        public List<T2> ComponentsT2 = new List<T2>();
+        public List<T2> ComponentsT2;
         /// <summary>
         /// Список компонентов T3
         /// </summary>
-        public List<T3> ComponentsT3 = new List<T3>();
+        public List<T3> ComponentsT3;
+        /// <summary>
+        /// Бит блокировки между потоками
+        /// </summary>
+        public object LockBit { get; set; } = true;
         #endregion
 
         #region Публичные методы
+        public override void Init(int capacity)
+        {
+            if (capacity > 10)
+            {
+                Capacity = capacity;
+            }
+            ComponentsT0 = new List<T0>(Capacity);
+            ComponentsT1 = new List<T1>(Capacity);
+            ComponentsT2 = new List<T2>(Capacity);
+            ComponentsT3 = new List<T3>(Capacity);
+        }
         public override bool CheckFilter(List<Type> typesComponet)
         {
             if (typesComponet.Count == 4)
@@ -564,20 +636,26 @@ namespace ECSCore.Filters
         #region Приватные методы
         private void Add(ComponentBase componentT0, ComponentBase componentT1, ComponentBase componentT2, ComponentBase componentT3)
         {
-            if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+            lock (LockBit)
             {
-                ComponentsT0.Add((T0)componentT0);
-                ComponentsT1.Add((T1)componentT1);
-                ComponentsT2.Add((T2)componentT2);
-                ComponentsT2.Add((T2)componentT3);
+                if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+                {
+                    ComponentsT0.Add((T0)componentT0);
+                    ComponentsT1.Add((T1)componentT1);
+                    ComponentsT2.Add((T2)componentT2);
+                    ComponentsT2.Add((T2)componentT3);
+                }
             }
         }
         private void Remove(int id)
         {
-            ComponentsT1.RemoveAll(t => t.Id == id);
-            ComponentsT1.RemoveAll(t => t.Id == id);
-            ComponentsT2.RemoveAll(t => t.Id == id);
-            ComponentsT3.RemoveAll(t => t.Id == id);
+            lock (LockBit)
+            {
+                ComponentsT1.RemoveAll(t => t.Id == id);
+                ComponentsT1.RemoveAll(t => t.Id == id);
+                ComponentsT2.RemoveAll(t => t.Id == id);
+                ComponentsT3.RemoveAll(t => t.Id == id);
+            }
         }
         #endregion
     }

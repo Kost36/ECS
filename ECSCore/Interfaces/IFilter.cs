@@ -11,9 +11,18 @@ namespace ECSCore.Interfaces
     public interface IFilter
     {
         /// <summary>
-        /// Количество элементов в фильтре
+        /// Колличество элементов в фильтре
         /// </summary>
-        public abstract int Count { get;}
+        public abstract int Count { get; }
+        /// <summary>
+        /// Стартовая вместимость элементов в фильтре
+        /// </summary>
+        public abstract int Capacity { get; set; }
+        /// <summary>
+        /// Инициализация фильтра
+        /// </summary>
+        /// <param name="capacity"></param>
+        public void Init(int capacity);
         /// <summary>
         /// Проверяет группу на выбранные типы компонент
         /// </summary>

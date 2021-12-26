@@ -28,15 +28,19 @@ namespace ECSCore
         /// <summary>
         /// Инициализация ECS
         /// </summary>
-        public static void Initialization(Assembly assembly) //ECSSetting ecsSetting, 
+        public static void Initialization(Assembly assembly, int startCapacityCollections = 10) //ECSSetting ecsSetting, 
         {
             if (_ecs == null)
             {
                 _ecs = new(); //Создали
             } //Если экземпляра нету
-            _ecs._managerEntitys = new(_ecs); //Инициализация менеджера сущьностей
-            _ecs._managerComponents = new(_ecs); //Инициализация менеджера компонент
-            _ecs._managerFilters = new(_ecs, assembly); //Создадим менеджера фильтров
+            if (startCapacityCollections > 10)
+            {
+                _ecs._startCapacityCollections = startCapacityCollections;
+            }
+            _ecs._managerEntitys = new(_ecs, _ecs._startCapacityCollections); //Инициализация менеджера сущьностей
+            _ecs._managerComponents = new(_ecs, _ecs._startCapacityCollections); //Инициализация менеджера компонент
+            _ecs._managerFilters = new(_ecs, assembly, _ecs._startCapacityCollections); //Создадим менеджера фильтров
             _ecs._managerSystems = new(_ecs, assembly, _ecs._managerFilters); //Создадим менеджера систем
 
             //_ecs.ECSetting = ecsSetting; //Зададим параметры работы ECS
@@ -68,6 +72,10 @@ namespace ECSCore
         /// Менеджер систем
         /// </summary>
         private ManagerSystems _managerSystems;
+        /// <summary>
+        /// Стартовая вместимость коллекций
+        /// </summary>
+        private int _startCapacityCollections;
         #endregion
 
         #region Свойства

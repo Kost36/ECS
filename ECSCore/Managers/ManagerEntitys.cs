@@ -14,9 +14,14 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        public ManagerEntitys(ECS ecs)
+        public ManagerEntitys(ECS ecs, int startCountEntityCapacity)
         {
             _ecs = ecs;
+            if (startCountEntityCapacity > 10)
+            {
+                _startCountCapacity = startCountEntityCapacity;
+            }
+            _entities = new Dictionary<int, EntityBase>(_startCountCapacity);
         }
         #endregion
 
@@ -34,9 +39,13 @@ namespace ECSCore.Managers
         /// </summary>
         private Queue<int> _queueFreeID = new Queue<int>();
         /// <summary>
+        /// Стартовая вместимость коллекции
+        /// </summary>
+        private int _startCountCapacity = 10;
+        /// <summary>
         /// Коллекция сущьностей
         /// </summary>
-        private Dictionary<int, EntityBase> _entities = new Dictionary<int, EntityBase>();
+        private Dictionary<int, EntityBase> _entities;
         #endregion
 
         #region Свойства

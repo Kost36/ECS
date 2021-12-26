@@ -18,9 +18,13 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        public ManagerFilters(ECS ecs, Assembly assembly)
+        public ManagerFilters(ECS ecs, Assembly assembly, int startCapacityCollections)
         {
             _ecs = ecs;
+            if (startCapacityCollections > 10)
+            {
+                _startCapacityCollections = startCapacityCollections;
+            }
             Init(assembly);
         }
         #endregion
@@ -30,6 +34,10 @@ namespace ECSCore.Managers
         /// Ссылка на ECSCore
         /// </summary>
         private ECS _ecs;
+        /// <summary>
+        /// Стартовая вместимость коллекций
+        /// </summary>
+        private int _startCapacityCollections = 10;
         /// <summary>
         /// Список фильтров групп компонент
         /// </summary>
@@ -149,6 +157,7 @@ namespace ECSCore.Managers
             foreach(Type typeFilter in typesFilters)
             {
                 IFilter filter = (IFilter)Activator.CreateInstance(typeFilter); //Создадим объект
+                filter.Init(_startCapacityCollections); //Инициализация
                 AddFilter(filter); //Добавим в список
             } //Пройдемся по всем группам 
         }

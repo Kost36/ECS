@@ -15,9 +15,14 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        public ManagerComponents(ECS ecs)
+        public ManagerComponents(ECS ecs, int startCountEntityCapacity)
         {
             _ecs = ecs;
+            if (startCountEntityCapacity > 10)
+            {
+                _startCountCapacity = startCountEntityCapacity;
+            }
+            _collections = new List<Components>(_startCountCapacity);
         }
         #endregion
 
@@ -27,9 +32,13 @@ namespace ECSCore.Managers
         /// </summary>
         private ECS _ecs;
         /// <summary>
+        /// Стартовая вместимость коллекции
+        /// </summary>
+        private int _startCountCapacity = 10;
+        /// <summary>
         /// Коллекция одинаковых компонентов
         /// </summary>
-        private List<Components> _collections = new List<Components>();
+        private List<Components> _collections;
         #endregion
 
         #region Свойства
@@ -40,7 +49,10 @@ namespace ECSCore.Managers
         {
             get
             {
-                return _collections.Count;
+                lock (_collections)
+                {
+                    return _collections.Count;
+                }
             }
         }
         /// <summary>
@@ -64,15 +76,18 @@ namespace ECSCore.Managers
         public int GetCountComponents<T>()
             where T : ComponentBase
         {
-            Type typeNeedComponent = typeof(T);
-            foreach (Components components in _collections)
+            lock (_collections)
             {
-                if (components.IsType(typeNeedComponent))
+                Type typeNeedComponent = typeof(T);
+                foreach (Components components in _collections)
                 {
-                    return components.Count; //Вернем количество
-                } //Если тип соответствует
-            } //Пройдемся по существующим коллекциям
-            return 0;
+                    if (components.IsType(typeNeedComponent))
+                    {
+                        return components.Count; //Вернем количество
+                    } //Если тип соответствует
+                } //Пройдемся по существующим коллекциям
+                return 0;
+            }
         }
         /// <summary>
         /// Добавить компонент в коллекцию
@@ -103,13 +118,16 @@ namespace ECSCore.Managers
         public List<ComponentBase> Get(int idEntity)
         {
             List<ComponentBase> componentBases = new();
-            foreach (Components components in _collections)
+            lock (_collections)
             {
-                if (components.Get<ComponentBase>(idEntity, out ComponentBase component))
+                foreach (Components components in _collections)
                 {
-                    componentBases.Add(component);
-                } //Если компонент есть
-            } //Пройдемся по существующим коллекциям
+                    if (components.Get<ComponentBase>(idEntity, out ComponentBase component))
+                    {
+                        componentBases.Add(component);
+                    } //Если компонент есть
+                } //Пройдемся по существующим коллекциям
+            }
             return componentBases;
         }
         /// <summary>
@@ -139,25 +157,28 @@ namespace ECSCore.Managers
         /// <returns></returns>
         private void Registration(ComponentBase component)
         {
-            foreach (Components components in _collections)
+            lock (_collections)
             {
-                if (components.IsType(component.GetType()))
+                foreach (Components components in _collections)
                 {
-                    if (components.Get(component.Id, out ComponentBase componentBase))
+                    if (components.IsType(component.GetType()))
                     {
-                        //TODO Присвоить значение, вместо присвоения ссылки
-                        componentBase = component; //Передали компонент
-                    } //Если компонент есть
-                    else
-                    {
-                        components.Add(component); //Добавим компонент в коллекцию
-                    }
-                    return;
-                } //Если тип совпал
-            } //Пройдемся по существующим коллекциям
-            Components componentsNew = new Components(component); //Создадим новую коллекцию
-            _collections.Add(componentsNew); //Добавим новую коллекцию в список
-            componentsNew.Add(component); //Добавим компонент в новую коллекцию
+                        if (components.Get(component.Id, out ComponentBase componentBase))
+                        {
+                            //TODO Присвоить значение, вместо присвоения ссылки
+                            componentBase = component; //Передали компонент
+                        } //Если компонент есть
+                        else
+                        {
+                            components.Add(component); //Добавим компонент в коллекцию
+                        }
+                        return;
+                    } //Если тип совпал
+                } //Пройдемся по существующим коллекциям
+                Components componentsNew = new Components(component); //Создадим новую коллекцию
+                _collections.Add(componentsNew); //Добавим новую коллекцию в список
+                componentsNew.Add(component); //Добавим компонент в новую коллекцию
+            }
         }
         /// <summary>
         /// Получить компонент, если есть
@@ -170,13 +191,16 @@ namespace ECSCore.Managers
             where T : ComponentBase
         {
             Type typeComponent = typeof(T);
-            foreach (Components components in _collections)
+            lock (_collections)
             {
-                if (components.IsType(typeComponent))
+                foreach (Components components in _collections)
                 {
-                    return components.Get<T>(id, out component); //Вернем компонент из коллекции с определенным id
-                } //Если тип совпал
-            } //Пройдемся по существующим коллекциям
+                    if (components.IsType(typeComponent))
+                    {
+                        return components.Get(id, out component); //Вернем компонент из коллекции с определенным id
+                    } //Если тип совпал
+                } //Пройдемся по существующим коллекциям
+            }
             component = default;
             return false;
         }
@@ -187,13 +211,16 @@ namespace ECSCore.Managers
         /// <param name="typeComponent"> Тип компонента </param>
         private bool RemoveComponent(int id, Type typeComponent)
         {
-            foreach (Components components in _collections)
+            lock (_collections)
             {
-                if (components.IsType(typeComponent))
+                foreach (Components components in _collections)
                 {
-                    return components.Remove(id); //Удалим компонент из коллекции с определенным id
-                } //Если тип совпал
-            } //Пройдемся по существующим коллекциям
+                    if (components.IsType(typeComponent))
+                    {
+                        return components.Remove(id); //Удалим компонент из коллекции с определенным id
+                    } //Если тип совпал
+                } //Пройдемся по существующим коллекциям
+            }
             return false;
         }
         /// <summary>
@@ -202,10 +229,13 @@ namespace ECSCore.Managers
         /// <param name="id"> Идентификатор сущьности </param>
         private void RemoveComponents(int id)
         {
-            foreach (Components components in _collections)
+            lock (_collections)
             {
-                components.Remove(id); //Вернем компонент из коллекцию с определенным id
-            } //Пройдемся по существующим коллекциям
+                foreach (Components components in _collections)
+                {
+                    components.Remove(id); //Вернем компонент из коллекцию с определенным id
+                } //Пройдемся по существующим коллекциям
+            }
         }
         /// <summary>
         /// Получить общее количество компонент
@@ -213,10 +243,13 @@ namespace ECSCore.Managers
         private int GetAllComponentCount()
         {
             int countAllComponents = 0;
-            foreach (Components components in _collections)
+            lock (_collections)
             {
-                countAllComponents = countAllComponents + components.Count;
-            } //Пройдемся по существующим коллекциям
+                foreach (Components components in _collections)
+                {
+                    countAllComponents = countAllComponents + components.Count;
+                } //Пройдемся по существующим коллекциям
+            }
             return countAllComponents;
         }
         #endregion
@@ -270,7 +303,17 @@ namespace ECSCore.Managers
         /// <returns></returns>
         public void Add(ComponentBase component)
         {
-            _components.Add(component.Id, component);
+            lock (_components)
+            {
+                if (_components.TryGetValue(component.Id, out ComponentBase componentBase))
+                {
+                    componentBase = component;
+                }
+                else
+                {
+                    _components.Add(component.Id, component);
+                }
+            }
         }
         /// <summary>
         /// Получить компонент, если есть
@@ -282,13 +325,16 @@ namespace ECSCore.Managers
         public bool Get<T>(int id, out T component)
             where T : ComponentBase
         {
-            if (_components.TryGetValue(id, out ComponentBase componentOut)) 
+            lock (_components)
             {
-                component = (T)componentOut;
-                return true;
-            };
-            component = default(T);
-            return false;
+                if (_components.TryGetValue(id, out ComponentBase componentOut))
+                {
+                    component = (T)componentOut;
+                    return true;
+                };
+                component = default(T);
+                return false;
+            }
         }
         /// <summary>
         /// Удалить компонент из коллекции
@@ -296,7 +342,10 @@ namespace ECSCore.Managers
         /// <returns></returns>
         public bool Remove(int id)
         {
-            return _components.Remove(id);
+            lock (_components)
+            {
+                return _components.Remove(id);
+            }
         }
         #endregion
     }

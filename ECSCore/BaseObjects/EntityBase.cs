@@ -34,7 +34,7 @@ namespace ECSCore.BaseObjects
             where T : ComponentBase
         {
             //return ECS.Instance.GetComponent<T>(this.Id, out component);
-            return GetComponent<T>(out component);
+            return GetComponent(out component);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
@@ -57,7 +57,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
-        public List<ComponentBase> Components { get; set; } = new List<ComponentBase>();
+        public List<ComponentBase> Components { get; } = new List<ComponentBase>();
 
         /// <summary>
         /// Добавить компонент в коллекцию сущьности
@@ -72,7 +72,10 @@ namespace ECSCore.BaseObjects
                 componentBase = component;
                 return;
             } //Если нету
-            Components.Add(component);
+            lock (Components)
+            {
+                Components.Add(component);
+            }
         }
         /// <summary>
         /// Удалить компонент из коллекции сущьности
@@ -84,7 +87,10 @@ namespace ECSCore.BaseObjects
         {
             if (GetComponent(out T componentBase))
             {
-                Components.Remove(componentBase);
+                lock (Components)
+                {
+                    Components.Remove(componentBase);
+                }
             } //Если есть в коллекции
         }
         /// <summary>
@@ -96,12 +102,15 @@ namespace ECSCore.BaseObjects
         private bool GetComponent<T>(out T component)
             where T : ComponentBase
         {
-            foreach (ComponentBase componentBase in Components)
+            lock (Components)
             {
-                if (componentBase is T)
+                foreach (ComponentBase componentBase in Components)
                 {
-                    component = (T)componentBase;
-                    return true;
+                    if (componentBase is T)
+                    {
+                        component = (T)componentBase;
+                        return true;
+                    }
                 }
             }
             component = default(T);

@@ -26,7 +26,7 @@ namespace ECSCore.Tests
         public void Test_0InitializationECS()
         {
             Ship ship = new Ship();
-            ECS.Initialization(ship.GetType().Assembly);
+            ECS.Initialization(ship.GetType().Assembly, 110000);
             ECS = ECS.Instance;
             for (int i = 0; i<10; i++)
             {
@@ -147,6 +147,7 @@ namespace ECSCore.Tests
         [TestMethod()]
         public void Test_APerformance()
         {
+            //Заполняем
             while (true)
             {
                 for (int i=0; i<1000; i++)
@@ -161,13 +162,39 @@ namespace ECSCore.Tests
                 }
             }
             ECS.ManagerSystems.ClearStatisticSystems();
+            //Ждем
             Thread.Sleep(60000);
+            //Наблюдаем
             ECS.ManagerSystems.ClearStatisticSystems();
-            while (true)
+            int j = 0;
+            while (j<100)
             {
                 Debug.WriteLine(ECS.GetInfo(true));
                 Thread.Sleep(1000);
+                j++;
             }
+            //Удаляем
+            int entityNumb = 0;
+            while (true)
+            {
+                for (int i = 0; i < 1000; i++)
+                {
+                    if(ECS.GetEntity(entityNumb, out EntityBase entityBase))
+                    {
+                        entityBase.Death();
+                    }
+                    entityNumb++;
+                }
+                Debug.WriteLine(ECS.GetInfo(true));
+                Thread.Sleep(100);
+                if (ECS.ManagerEntitys.CountEntitys == 0)
+                {
+                    break;
+                }
+            }
+            ECS.ManagerSystems.ClearStatisticSystems();
+            //Ждем
+            Thread.Sleep(30000);
         }
     }
 }

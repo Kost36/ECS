@@ -18,9 +18,14 @@ namespace ECSCore.BaseObjects
         /// </summary>
         public abstract int Count { get; }
         /// <summary>
+        /// Стартовая вместимость элементов в фильтре
+        /// </summary>
+        public int Capacity { get; set; } = 10;
+        /// <summary>
         /// Список заданий для фильтра
         /// </summary>
         public Queue<IJobToFilter> JobToFilters { get; set; } = new Queue<IJobToFilter>();
+
         /// <summary>
         /// Рассчитать входные данные
         /// </summary>
@@ -91,6 +96,7 @@ namespace ECSCore.BaseObjects
             }
         }
 
+        public abstract void Init(int capacity);
         public abstract void TryAdd(ComponentBase component, EntityBase entity);
         public abstract void TryRemove(Type typeComponent, EntityBase entity);
         public abstract void TryRemove(int id);

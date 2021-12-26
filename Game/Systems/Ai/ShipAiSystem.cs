@@ -33,7 +33,10 @@ namespace Game.Systems.Regeneration
             for (int i = 0; i < Filter.Count; i++)
             {
                 int entityId = Filter.ComponentsT0[i].Id;
-                ECS.ManagerEntitys.Get(entityId, out EntityBase entityBase);
+                if(ECS.ManagerEntitys.Get(entityId, out EntityBase entityBase) == false)
+                {
+                    continue;
+                }
                 if (entityBase.Get(out Enargy enargy))
                 {
                     if (enargy.EnargyFact< enargy.EnargyMax)

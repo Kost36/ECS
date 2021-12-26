@@ -57,7 +57,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
-        public List<ComponentBase> Components { get; set; }
+        public List<ComponentBase> Components { get; set; } = new List<ComponentBase>();
 
         /// <summary>
         /// Добавить компонент в коллекцию сущьности

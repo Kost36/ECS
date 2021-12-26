@@ -12,31 +12,31 @@ using System.Threading.Tasks;
 
 namespace Game.Systems.Move
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(1)]
-    public class ControlAddWaySystem : SystemBase
-    {
-        public FilterAddWay Filter;
+    //[AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    //[AttributeSystemPriority(1)]
+    //public class ControlAddWaySystem : SystemBase
+    //{
+    //    public FilterAddWay Filter;
 
-        public override void Initialization()
-        {
-            Filter = (FilterAddWay)ManagerFilters.GetFilter<FilterAddWay>();
-        }
-        public override void PreAсtion()
-        {
-            Filter.Сalculate();
-        }
-        public override void Aсtion()
-        {
-            return;
-            for (int i = 0; i < Filter.Count; i++)
-            {
-                int idEntity = Filter.ComponentsT0[0].Id;
-                if (ECS.GetComponent(idEntity, out Way component) == false)
-                {
-                    ECS.AddComponent(new Way() { Id = idEntity }, null);
-                } //Если нету компонента путь
-            }
-        }
-    }
+    //    public override void Initialization()
+    //    {
+    //        Filter = (FilterAddWay)ManagerFilters.GetFilter<FilterAddWay>();
+    //    }
+    //    public override void PreAсtion()
+    //    {
+    //        Filter.Сalculate();
+    //    }
+    //    public override void Aсtion()
+    //    {
+    //        return;
+    //        for (int i = 0; i < Filter.Count; i++)
+    //        {
+    //            int idEntity = Filter.ComponentsT0[0].Id;
+    //            if (ECS.GetComponent(idEntity, out Way component) == false)
+    //            {
+    //                ECS.AddComponent(new Way() { Id = idEntity }, null);
+    //            } //Если нету компонента путь
+    //        }
+    //    }
+    //}
 }

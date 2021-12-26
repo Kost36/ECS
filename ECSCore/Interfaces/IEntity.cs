@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCore.Interface
+namespace ECSCore.Interfaces
 {
     /// <summary>
     /// Интерфейс сущьности
     /// </summary>
-    public interface IEntity
+    internal interface IEntity
     {
         /// <summary>
         /// Идентификатор сущьности

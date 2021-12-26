@@ -15,7 +15,7 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        public ManagerComponents(ECS ecs, int startCountEntityCapacity)
+        internal ManagerComponents(ECS ecs, int startCountEntityCapacity)
         {
             _ecs = ecs;
             if (startCountEntityCapacity > 10)
@@ -259,10 +259,10 @@ namespace ECSCore.Managers
     /// Коллекция компонентов
     /// </summary>
     /// <typeparam name="T"> Тип компонентов в коллекции </typeparam>
-    public class Components
+    internal class Components
     {
         #region Конструктор
-        public Components(IComponent component)
+        internal Components(IComponent component)
         {
             _componentType = component.GetType();
         }

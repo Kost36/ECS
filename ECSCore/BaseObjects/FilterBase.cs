@@ -11,7 +11,7 @@ namespace ECSCore.BaseObjects
     /// <summary>
     /// Базовый класс фильтров
     /// </summary>
-    public abstract class FilterBase : IFilter
+    internal abstract class FilterBase : IFilter
     {
         /// <summary>
         /// Количество элементов в фильтре

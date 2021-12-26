@@ -1,12 +1,12 @@
-﻿using ECSCore.Interface;
-using ECSCore.Interfaces;
+﻿using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
 
 namespace ECSCore.BaseObjects
 {
     /// <summary>
-    /// Базовый класс сущьности
+    /// Базовый класс сущьности.
+    /// Все сущьности наследовать от данного класса
     /// </summary>
     public abstract class EntityBase : IEntity
     {
@@ -33,7 +33,6 @@ namespace ECSCore.BaseObjects
         public bool Get<T>(out T component)
             where T : ComponentBase
         {
-            //return ECS.Instance.GetComponent<T>(this.Id, out component);
             return GetComponent(out component);
         }
         /// <summary>
@@ -53,7 +52,6 @@ namespace ECSCore.BaseObjects
         {
             ECS.Instance.RemoveEntity(this.Id);
         }
-
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
@@ -64,7 +62,7 @@ namespace ECSCore.BaseObjects
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
-        public void AddComponent<T>(T component)
+        internal void AddComponent<T>(T component)
             where T:ComponentBase
         {
             if (GetComponent(out T componentBase))
@@ -82,7 +80,7 @@ namespace ECSCore.BaseObjects
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
-        public void RemoveComponent<T>()
+        internal void RemoveComponent<T>()
             where T : ComponentBase
         {
             if (GetComponent(out T componentBase))

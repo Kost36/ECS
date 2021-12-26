@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCore.Interface
+namespace ECSCore.Interfaces
 {
     /// <summary>
     /// Интерфейс системы;
@@ -14,26 +14,23 @@ namespace ECSCore.Interface
     /// 2) [AttributeSystemCalculate] ;
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
-    public interface ISystem {
+    internal interface ISystem {
 
         /// <summary>
-        /// Иньекция данных
+        /// Система включена (Работает)
         /// </summary>
-        /// <param name="managerFilters"></param>
-        public abstract void Injection(ManagerFilters managerFilters, ECS eCS);
-        public abstract void PreInitialization();
-        public void CalculateDeltaTime(DateTime dateTimeFact);
+        public bool IsEnable { get; set; }
         /// <summary>
-        /// Инициализация системы
+        /// Приоритет выполнения системы
         /// </summary>
-        public abstract void Initialization();
+        public int Priority { get; set; }
         /// <summary>
-        /// Предобработка системы
+        /// Интервал выполнения системы
         /// </summary>
-        public abstract void PreAсtion();
+        public long IntervalTicks { get; set; }
         /// <summary>
-        /// Обработка системы
+        /// Интерфейс взаимодействия с ECS из систем
         /// </summary>
-        public abstract void Aсtion();
+        public IECSSystem IECS { get; }
     }
 }

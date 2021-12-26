@@ -5,53 +5,76 @@ using System;
 namespace ECSCore.Filters
 {
     /// <summary>
-    /// Задание на добавление компонента
+    /// Задание на добавление компонента в фильтр
     /// </summary>
-    public class JobTryAdd : IJobToFilter
+    internal class JobTryAdd : IJobToFilter
     {
-        public JobTryAdd(ComponentBase component, EntityBase entity)
+        #region Конструкторы
+        internal JobTryAdd(ComponentBase component, EntityBase entity)
         {
-            Component = component;
-            Entity = entity;
+            _component = component;
+            _entity = entity;
         }
-        ComponentBase Component { get; set; }
-        EntityBase Entity { get; set; }
+        #endregion
 
+        #region Поля
+        private ComponentBase _component;
+        private EntityBase _entity;
+        #endregion
+
+        #region Действия
         public void Action(FilterBase filter)
         {
-            filter.TryAdd(Component, Entity);
+            filter.TryAdd(_component, _entity);
         }
+        #endregion
     }
     /// <summary>
-    /// Задание на удаление компонента
+    /// Задание на удаление компонента из фильтра
     /// </summary>
-    public class JobTryRemove : IJobToFilter
+    internal class JobTryRemove : IJobToFilter
     {
-        public JobTryRemove(Type typeComponent, EntityBase entity)
+        #region Конструкторы
+        internal JobTryRemove(Type typeComponent, EntityBase entity)
         {
-            TypeComponent = typeComponent;
-            Entity = entity;
+            _typeComponent = typeComponent;
+            _entity = entity;
         }
-        Type TypeComponent { get; set; }
-        EntityBase Entity { get; set; }
+        #endregion
+
+        #region Поля
+        private Type _typeComponent;
+        private EntityBase _entity;
+        #endregion
+
+        #region Действия
         public void Action(FilterBase filter)
         {
-            filter.TryRemove(TypeComponent, Entity);
+            filter.TryRemove(_typeComponent, _entity);
         }
+        #endregion
     }
     /// <summary>
-    /// Задание на удаление компонентов по Id
+    /// Задание на удаление компонентов сущьности из фильтра
     /// </summary>
-    public class JobTryRemoveId : IJobToFilter
+    internal class JobTryRemoveId : IJobToFilter
     {
-        public JobTryRemoveId(int id)
+        #region Конструкторы
+        internal JobTryRemoveId(int id)
         {
-            Id = id;
+            _id = id;
         }
-        int Id { get; set; }
+        #endregion
+
+        #region Поля
+        private int _id;
+        #endregion
+
+        #region Действия
         public void Action(FilterBase filter)
         {
-            filter.TryRemove(Id);
+            filter.TryRemove(_id);
         }
+        #endregion
     }
 }

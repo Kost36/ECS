@@ -1,12 +1,13 @@
-﻿using ECSCore.Attributes;
+﻿using ECSCore;
+using ECSCore.Attributes;
 using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.System;
+using ECSCore.Systems;
 using Game.Components.Ai;
 using Game.Components.ObjectStates;
 using Game.Components.Propertys;
 using Game.Components.Tasks;
-using Game.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,9 @@ namespace Game.Systems.Move
 {
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
     [AttributeSystemPriority(1)]
-    public class MovementSystem : SystemBaseGeneric<Pozition, Speed>
+    public class MovementSystem : System<Pozition, Speed>
     {
-        public override void ActionUser(Pozition pozition, Speed speed)
+        public override void Action(Pozition pozition, Speed speed)
         {
             pozition.X = pozition.X + speed.dX;
             pozition.Y = pozition.Y + speed.dY;
@@ -29,12 +30,12 @@ namespace Game.Systems.Move
 
     [AttributeSystemCalculate(SystemCalculateInterval.Min5Once)]
     [AttributeSystemPriority(5)]
-    public class ShipAiSystem : SystemBaseGeneric<ShipAi>
+    public class ShipAiSystem : System<ShipAi>
     {
-        public override void ActionUser(ShipAi shipAi)
+        public override void Action(ShipAi shipAi)
         {
             int entityId = shipAi.Id;
-            if (ECS.ManagerEntitys.Get(entityId, out EntityBase entityBase) == false)
+            if (IECS.GetEntity(entityId, out EntityBase entityBase) == false)
             {
                 return;
             }

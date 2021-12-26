@@ -10,7 +10,7 @@ namespace ECSCore.Interfaces
     /// <summary>
     /// Задание для фильтра
     /// </summary>
-    public interface IJobToFilter
+    internal interface IJobToFilter
     {
         /// <summary>
         /// Действие

@@ -1,5 +1,6 @@
 ﻿using ECSCore;
 using ECSCore.BaseObjects;
+using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Game.Entitys.Factorys
         /// </summary>
         public static void AddStantion(Components.ObjectStates.Pozition pozition)
         {
-            ECS ecs = ECS.Instance;
+            IECS ecs = ECS.InstanceIECS;
             EntityBase entityBase = ecs.AddEntity(new Stantion());
             entityBase.Add(pozition); //Позиция
 

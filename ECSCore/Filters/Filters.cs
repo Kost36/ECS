@@ -29,7 +29,7 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0;
+        public Dictionary<int, T0> ComponentsT0;
         /// <summary>
         /// Бит блокировки между потоками
         /// </summary>
@@ -43,7 +43,7 @@ namespace ECSCore.Filters
             {
                 Capacity = capacity;
             }
-            ComponentsT0 = new List<T0>(Capacity);
+            ComponentsT0 = new Dictionary<int, T0>(Capacity);
         }
         public override bool CheckFilter(List<Type> typesComponet)
         {
@@ -97,9 +97,14 @@ namespace ECSCore.Filters
         {
             lock (LockBit)
             {
-                if (ComponentsT0.Exists(t => t.Id == component.Id) == false)
+                if (ComponentsT0.TryGetValue(component.Id, out T0 t0))
                 {
-                    ComponentsT0.Add((T0)component);
+                    t0 = (T0)component;
+                    return;
+                }
+                else
+                {
+                    ComponentsT0.Add(component.Id, (T0)component);
                 }
             }
         }
@@ -107,7 +112,7 @@ namespace ECSCore.Filters
         {
             lock (LockBit)
             {
-                ComponentsT0.RemoveAll(t => t.Id == id);
+                ComponentsT0.Remove(id);
             }
         }
         #endregion
@@ -133,11 +138,11 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0;
+        public Dictionary<int, T0> ComponentsT0;
         /// <summary>
         /// Список компонентов T1
         /// </summary>
-        public List<T1> ComponentsT1;
+        public Dictionary<int, T1> ComponentsT1;
         /// <summary>
         /// Бит блокировки между потоками
         /// </summary>
@@ -151,8 +156,8 @@ namespace ECSCore.Filters
             {
                 Capacity = capacity;
             }
-            ComponentsT0 = new List<T0>(Capacity);
-            ComponentsT1 = new List<T1>(Capacity);
+            ComponentsT0 = new Dictionary<int, T0>(Capacity);
+            ComponentsT1 = new Dictionary<int, T1>(Capacity);
         }
         public override bool CheckFilter(List<Type> typesComponet)
         {
@@ -231,19 +236,26 @@ namespace ECSCore.Filters
         {
             lock (LockBit)
             {
-                if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+                int id = componentT0.Id;
+                if (ComponentsT0.TryGetValue(id, out T0 t0))
                 {
-                    ComponentsT0.Add((T0)componentT0);
-                    ComponentsT1.Add((T1)componentT1);
+                    if (ComponentsT1.TryGetValue(id, out T1 t1))
+                    {
+                        t0 = (T0)componentT0;
+                        t1 = (T1)componentT1;
+                        return;
+                    }
                 }
+                ComponentsT0.Add(id, (T0)componentT0);
+                ComponentsT1.Add(id, (T1)componentT1);
             }
         }
         private void Remove(int id)
         {
             lock (LockBit)
             {
-                ComponentsT0.RemoveAll(t => t.Id == id);
-                ComponentsT1.RemoveAll(t => t.Id == id);
+                ComponentsT0.Remove(id);
+                ComponentsT1.Remove(id);
             }
         }
         #endregion
@@ -270,15 +282,15 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0;
+        public Dictionary<int, T0> ComponentsT0;
         /// <summary>
         /// Список компонентов T1
         /// </summary>
-        public List<T1> ComponentsT1;
+        public Dictionary<int, T1> ComponentsT1;
         /// <summary>
         /// Список компонентов T2
         /// </summary>
-        public List<T2> ComponentsT2;
+        public Dictionary<int, T2> ComponentsT2;
         /// <summary>
         /// Бит блокировки между потоками
         /// </summary>
@@ -292,9 +304,9 @@ namespace ECSCore.Filters
             {
                 Capacity = capacity;
             }
-            ComponentsT0 = new List<T0>(Capacity);
-            ComponentsT1 = new List<T1>(Capacity);
-            ComponentsT2 = new List<T2>(Capacity);
+            ComponentsT0 = new Dictionary<int, T0>(Capacity);
+            ComponentsT1 = new Dictionary<int, T1>(Capacity);
+            ComponentsT2 = new Dictionary<int, T2>(Capacity);
         }
         public override bool CheckFilter(List<Type> typesComponet)
         {
@@ -407,21 +419,32 @@ namespace ECSCore.Filters
         {
             lock (LockBit)
             {
-                if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+                int id = componentT0.Id;
+                if (ComponentsT0.TryGetValue(id, out T0 t0))
                 {
-                    ComponentsT0.Add((T0)componentT0);
-                    ComponentsT1.Add((T1)componentT1);
-                    ComponentsT2.Add((T2)componentT2);
+                    if (ComponentsT1.TryGetValue(id, out T1 t1))
+                    {
+                        if (ComponentsT2.TryGetValue(id, out T2 t2))
+                        {
+                            t0 = (T0)componentT0;
+                            t1 = (T1)componentT1;
+                            t2 = (T2)componentT2;
+                            return;
+                        }
+                    }
                 }
+                ComponentsT0.Add(id, (T0)componentT0);
+                ComponentsT1.Add(id, (T1)componentT1);
+                ComponentsT2.Add(id, (T2)componentT2);
             }
         }
         private void Remove(int id)
         {
             lock (LockBit)
             {
-                ComponentsT0.RemoveAll(t => t.Id == id);
-                ComponentsT1.RemoveAll(t => t.Id == id);
-                ComponentsT2.RemoveAll(t => t.Id == id);
+                ComponentsT0.Remove(id);
+                ComponentsT1.Remove(id);
+                ComponentsT2.Remove(id);
             }
         }
         #endregion
@@ -449,19 +472,19 @@ namespace ECSCore.Filters
         /// <summary>
         /// Список компонентов T0
         /// </summary>
-        public List<T0> ComponentsT0;
+        public Dictionary<int, T0> ComponentsT0;
         /// <summary>
         /// Список компонентов T1
         /// </summary>
-        public List<T1> ComponentsT1;
+        public Dictionary<int, T1> ComponentsT1;
         /// <summary>
         /// Список компонентов T2
         /// </summary>
-        public List<T2> ComponentsT2;
+        public Dictionary<int, T2> ComponentsT2;
         /// <summary>
         /// Список компонентов T3
         /// </summary>
-        public List<T3> ComponentsT3;
+        public Dictionary<int, T3> ComponentsT3;
         /// <summary>
         /// Бит блокировки между потоками
         /// </summary>
@@ -475,10 +498,10 @@ namespace ECSCore.Filters
             {
                 Capacity = capacity;
             }
-            ComponentsT0 = new List<T0>(Capacity);
-            ComponentsT1 = new List<T1>(Capacity);
-            ComponentsT2 = new List<T2>(Capacity);
-            ComponentsT3 = new List<T3>(Capacity);
+            ComponentsT0 = new Dictionary<int, T0>(Capacity);
+            ComponentsT1 = new Dictionary<int, T1>(Capacity);
+            ComponentsT2 = new Dictionary<int, T2>(Capacity);
+            ComponentsT3 = new Dictionary<int, T3>(Capacity);
         }
         public override bool CheckFilter(List<Type> typesComponet)
         {
@@ -638,23 +661,38 @@ namespace ECSCore.Filters
         {
             lock (LockBit)
             {
-                if (ComponentsT0.Exists(t => t.Id == componentT0.Id) == false)
+                int id = componentT0.Id;
+                if (ComponentsT0.TryGetValue(id, out T0 t0))
                 {
-                    ComponentsT0.Add((T0)componentT0);
-                    ComponentsT1.Add((T1)componentT1);
-                    ComponentsT2.Add((T2)componentT2);
-                    ComponentsT2.Add((T2)componentT3);
+                    if (ComponentsT1.TryGetValue(id, out T1 t1))
+                    {
+                        if (ComponentsT2.TryGetValue(id, out T2 t2))
+                        {
+                            if (ComponentsT3.TryGetValue(id, out T3 t3))
+                            {
+                                t0 = (T0)componentT0;
+                                t1 = (T1)componentT1;
+                                t2 = (T2)componentT2;
+                                t3 = (T3)componentT3;
+                                return;
+                            }
+                        }
+                    }
                 }
+                ComponentsT0.Add(id, (T0)componentT0);
+                ComponentsT1.Add(id, (T1)componentT1);
+                ComponentsT2.Add(id, (T2)componentT2);
+                ComponentsT3.Add(id, (T3)componentT3);
             }
         }
         private void Remove(int id)
         {
             lock (LockBit)
             {
-                ComponentsT1.RemoveAll(t => t.Id == id);
-                ComponentsT1.RemoveAll(t => t.Id == id);
-                ComponentsT2.RemoveAll(t => t.Id == id);
-                ComponentsT3.RemoveAll(t => t.Id == id);
+                ComponentsT1.Remove(id);
+                ComponentsT1.Remove(id);
+                ComponentsT2.Remove(id);
+                ComponentsT3.Remove(id);
             }
         }
         #endregion

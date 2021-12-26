@@ -26,6 +26,7 @@ namespace Game.Systems.Move
         }
         public override void Aсtion()
         {
+            return;
             for (int i = 0; i < Filter.Count; i++)
             {
                 Filter.ComponentsT0[i].X = Filter.ComponentsT0[i].X + Filter.ComponentsT1[i].dX;

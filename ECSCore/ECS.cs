@@ -126,6 +126,7 @@ namespace ECSCore
         {
             _managerComponents.Remove(id);
             _managerEntitys.Remove(id);
+            _managerFilters.Remove(id);
         }
         #endregion
 

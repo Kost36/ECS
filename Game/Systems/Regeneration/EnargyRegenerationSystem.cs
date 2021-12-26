@@ -1,6 +1,7 @@
 ﻿using ECSCore.Attributes;
 using ECSCore.Enums;
 using ECSCore.System;
+using Game.Components.ObjectStates;
 using Game.Components.Propertys;
 using Game.Filters;
 using System;
@@ -27,17 +28,21 @@ namespace Game.Systems.Regeneration
         }
         public override void Aсtion()
         {
-            for (int i = 0; i < Filter.Count; i++)
+            foreach (Enargy enargy in Filter.ComponentsT0.Values)
             {
-                int entityId = Filter.ComponentsT0[i].Id;
-                if (Filter.ComponentsT0[i].EnargyFact < Filter.ComponentsT0[i].EnargyMax)
+                AсtionUser(enargy, Filter.ComponentsT1[enargy.Id]);
+            }
+        }
+
+        public void AсtionUser(Enargy enargy, EnargyReGeneration enargyReGeneration)
+        {
+            if (enargy.EnargyFact < enargy.EnargyMax)
+            {
+                enargy.EnargyFact = enargy.EnargyFact + enargyReGeneration.EnargyReGen;
+                if (enargy.EnargyFact > enargy.EnargyMax)
                 {
-                    Filter.ComponentsT0[i].EnargyFact = Filter.ComponentsT0[i].EnargyFact + Filter.ComponentsT1[i].EnargyReGen;
-                    if (Filter.ComponentsT0[i].EnargyFact > Filter.ComponentsT0[i].EnargyMax)
-                    {
-                        Filter.ComponentsT0[i].EnargyFact = Filter.ComponentsT0[i].EnargyMax;
-                        ECS.RemoveComponent<EnargyReGeneration>(entityId, null);
-                    }
+                    enargy.EnargyFact = enargy.EnargyMax;
+                    ECS.RemoveComponent<EnargyReGeneration>(enargy.Id, null);
                 }
             }
         }

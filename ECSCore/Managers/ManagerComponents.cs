@@ -273,7 +273,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Коллекция компонентов
         /// </summary>
-        private SortedList<int, ComponentBase> _components = new SortedList<int, ComponentBase>();
+        private Dictionary<int, ComponentBase> _components = new Dictionary<int, ComponentBase>();
         #endregion
 
         #region Свойства

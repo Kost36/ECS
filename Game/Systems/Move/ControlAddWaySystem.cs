@@ -28,9 +28,10 @@ namespace Game.Systems.Move
         }
         public override void Aсtion()
         {
+            return;
             for (int i = 0; i < Filter.Count; i++)
             {
-                int idEntity = Filter.ComponentsT0[i].Id;
+                int idEntity = Filter.ComponentsT0[0].Id;
                 if (ECS.GetComponent(idEntity, out Way component) == false)
                 {
                     ECS.AddComponent(new Way() { Id = idEntity }, null);

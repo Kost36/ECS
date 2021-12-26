@@ -1,6 +1,7 @@
 ﻿using ECSCore.Attributes;
 using ECSCore.Enums;
 using ECSCore.System;
+using Game.Components.ObjectStates;
 using Game.Components.Propertys;
 using Game.Filters;
 using System;
@@ -27,20 +28,24 @@ namespace Game.Systems.Regeneration
         }
         public override void Aсtion()
         {
-            for (int i = 0; i < Filter.Count; i++)
+            foreach (Health health in Filter.ComponentsT0.Values)
             {
-                int entityId = Filter.ComponentsT0[i].Id;
-                if (Filter.ComponentsT0[i].HealthFact < Filter.ComponentsT0[i].HealthMax)
+                AсtionUser(health, Filter.ComponentsT1[health.Id], Filter.ComponentsT2[health.Id]);
+            }
+        }
+
+        public void AсtionUser(Health health, HealthReGeneration healthReGeneration, Enargy enargy)
+        {
+            if (health.HealthFact < health.HealthMax)
+            {
+                if (enargy.EnargyFact > healthReGeneration.EnargyUse)
                 {
-                    if (Filter.ComponentsT2[i].EnargyFact > Filter.ComponentsT1[i].EnargyUse)
+                    health.HealthFact = health.HealthFact + healthReGeneration.HealthReGen;
+                    enargy.EnargyFact = enargy.EnargyFact - healthReGeneration.EnargyUse;
+                    if (health.HealthFact > health.HealthMax)
                     {
-                        Filter.ComponentsT0[i].HealthFact = Filter.ComponentsT0[i].HealthFact + Filter.ComponentsT1[i].HealthReGen;
-                        Filter.ComponentsT2[i].EnargyFact = Filter.ComponentsT2[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse;
-                        if (Filter.ComponentsT0[i].HealthFact > Filter.ComponentsT0[i].HealthMax)
-                        {
-                            Filter.ComponentsT0[i].HealthFact = Filter.ComponentsT0[i].HealthMax;
-                            ECS.RemoveComponent<HealthReGeneration>(entityId, null);
-                        }
+                        health.HealthFact = health.HealthMax;
+                        ECS.RemoveComponent<HealthReGeneration>(health.Id, null);
                     }
                 }
             }

@@ -1,6 +1,7 @@
 ﻿using ECSCore.Attributes;
 using ECSCore.Enums;
 using ECSCore.System;
+using Game.Components.ObjectStates;
 using Game.Components.Propertys;
 using Game.Filters;
 using System;
@@ -27,20 +28,24 @@ namespace Game.Systems.Regeneration
         }
         public override void Aсtion()
         {
-            for (int i = 0; i < Filter.Count; i++)
+            foreach (Shild shild in Filter.ComponentsT0.Values)
             {
-                int entityId = Filter.ComponentsT0[i].Id;
-                if (Filter.ComponentsT0[i].ShildFact < Filter.ComponentsT0[i].ShildMax)
+                AсtionUser(shild, Filter.ComponentsT1[shild.Id], Filter.ComponentsT2[shild.Id]);
+            }
+        }
+
+        public void AсtionUser(Shild shild, ShildReGeneration shildReGeneration, Enargy enargy)
+        {
+            if (shild.ShildFact < shild.ShildMax)
+            {
+                if (enargy.EnargyFact > shildReGeneration.EnargyUse)
                 {
-                    if (Filter.ComponentsT2[i].EnargyFact > Filter.ComponentsT1[i].EnargyUse)
+                    shild.ShildFact = shild.ShildFact + shildReGeneration.ShildReGen;
+                    enargy.EnargyFact = enargy.EnargyFact - shildReGeneration.EnargyUse;
+                    if (shild.ShildFact > shild.ShildMax)
                     {
-                        Filter.ComponentsT0[i].ShildFact = Filter.ComponentsT0[i].ShildFact + Filter.ComponentsT1[i].ShildReGen;
-                        Filter.ComponentsT2[i].EnargyFact = Filter.ComponentsT2[i].EnargyFact - Filter.ComponentsT1[i].EnargyUse; 
-                        if (Filter.ComponentsT0[i].ShildFact > Filter.ComponentsT0[i].ShildMax)
-                        {
-                            Filter.ComponentsT0[i].ShildFact = Filter.ComponentsT0[i].ShildMax;
-                            ECS.RemoveComponent<ShildReGeneration>(entityId, null);
-                        }
+                        shild.ShildFact = shild.ShildMax;
+                        ECS.RemoveComponent<ShildReGeneration>(shild.Id, null);
                     }
                 }
             }

@@ -28,6 +28,7 @@ namespace Game.Systems.Move
         }
         public override void Aсtion()
         {
+            return;
             for (int i = 0; i < Filter.Count; i++)
             {
                 int idEntity = Filter.ComponentsT0[i].Id;

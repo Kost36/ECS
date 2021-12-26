@@ -163,7 +163,7 @@ namespace ECSCore.Tests
             }
             ECS.ManagerSystems.ClearStatisticSystems();
             //Ждем
-            Thread.Sleep(60000);
+            Thread.Sleep(1000);
             //Наблюдаем
             ECS.ManagerSystems.ClearStatisticSystems();
             int j = 0;
@@ -174,6 +174,7 @@ namespace ECSCore.Tests
                 j++;
             }
             //Удаляем
+            ECS.ManagerSystems.ClearStatisticSystems();
             int entityNumb = 0;
             while (true)
             {

@@ -196,6 +196,10 @@ namespace ECSCore.Tests
             ECS.ManagerSystems.ClearStatisticSystems();
             //Ждем
             Thread.Sleep(30000);
+            Assert.IsTrue(ECS.ManagerEntitys.CountEntitys == 0);
+            Assert.IsTrue(ECS.ManagerComponents.CountComponents == 0);
+            Assert.IsTrue(ECS.ManagerFilters.CountEntitys==0);
+            Debug.WriteLine(ECS.GetInfo(true));
         }
     }
 }

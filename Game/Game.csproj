@@ -5,12 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Systems\Production\" />
-    <Folder Include="Systems\Trade\" />
+    <Compile Remove="Systems\Production\**" />
+    <Compile Remove="Systems\Trade\**" />
+    <EmbeddedResource Remove="Systems\Production\**" />
+    <EmbeddedResource Remove="Systems\Trade\**" />
+    <None Remove="Systems\Production\**" />
+    <None Remove="Systems\Trade\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ECSCore\ECSCore.csproj" />
+    <ProjectReference Include="..\LibMath\LibMath.csproj" />
   </ItemGroup>
 
 </Project>

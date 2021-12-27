@@ -135,7 +135,7 @@ namespace ECSCore
         /// </summary>
         /// <param name="entity"> Сущьность </param>
         /// <returns> IEntity (с присвоенным id) / null </returns>
-        public EntityBase AddEntity(EntityBase entity)
+        public Entity AddEntity(Entity entity)
         {
             return _managerEntitys.Add(entity);
         }
@@ -143,11 +143,11 @@ namespace ECSCore
         /// Получить сущьность по Id, если есть
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        /// <param name="entityBase"> Сущьность (Если есть) / null </param>
+        /// <param name="Entity"> Сущьность (Если есть) / null </param>
         /// <returns> Флаг наличия сущьности </returns>
-        public bool GetEntity(int id, out EntityBase entityBase)
+        public bool GetEntity(int id, out Entity Entity)
         {
-            return _managerEntitys.Get(id, out entityBase);
+            return _managerEntitys.Get(id, out Entity);
         }
         /// <summary>
         /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
@@ -167,13 +167,13 @@ namespace ECSCore
         /// </summary>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
         public void AddComponent<T>(T component)
-            where T : ComponentBase
+            where T : Component
         {
-            if (_managerEntitys.Get(component.Id, out EntityBase entityBase) == false)
+            if (_managerEntitys.Get(component.Id, out Entity Entity) == false)
             {
                 return;
             } //Получим сущьность от менеджера сущьностей
-            entityBase.AddComponent(component); //Добавить к сущьности
+            Entity.AddComponent(component); //Добавить к сущьности
             _managerComponents.Add(component); //Передать менеджеру компонент
             _managerFilters.Add(component); //Передать менеджеру фильтров
         }
@@ -181,17 +181,17 @@ namespace ECSCore
         /// Добавить компонент.
         /// </summary>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
-        public void AddComponent<T>(T component, EntityBase entityBase)
-            where T : ComponentBase
+        public void AddComponent<T>(T component, Entity Entity)
+            where T : Component
         {
-            if (entityBase == null)
+            if (Entity == null)
             {
-                if (_managerEntitys.Get(component.Id, out entityBase) == false)
+                if (_managerEntitys.Get(component.Id, out Entity) == false)
                 {
                     return;
                 } //Получим сущьность от менеджера сущьностей
             } //Если сущьность не задана
-            entityBase.AddComponent(component); //Добавить к сущьности
+            Entity.AddComponent(component); //Добавить к сущьности
             _managerComponents.Add(component); //Передать менеджеру компонент
             _managerFilters.Add(component); //Передать менеджеру фильтров
         }
@@ -199,47 +199,47 @@ namespace ECSCore
         /// Получить компонент, если есть.
         /// Возвращает компонент из менеджера компонентов
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool GetComponent<T>(int idEntity, out T component)
-            where T : ComponentBase
+            where T : Component
         {
             return _managerComponents.Get(idEntity, out component);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         public void RemoveComponent<T>(int idEntity)
-            where T : ComponentBase
+            where T : Component
         {
-            if (_managerEntitys.Get(idEntity, out EntityBase entityBase) == false)
+            if (_managerEntitys.Get(idEntity, out Entity Entity) == false)
             {
                 return;
             }
-            entityBase.RemoveComponent<T>();
+            Entity.RemoveComponent<T>();
             _managerComponents.Remove<T>(idEntity);
             _managerFilters.Remove<T>(idEntity);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
-        public void RemoveComponent<T>(int idEntity, EntityBase entityBase)
-            where T : ComponentBase
+        public void RemoveComponent<T>(int idEntity, Entity Entity)
+            where T : Component
         {
-            if (entityBase == null)
+            if (Entity == null)
             {
-                if (_managerEntitys.Get(idEntity, out entityBase) == false)
+                if (_managerEntitys.Get(idEntity, out Entity) == false)
                 {
                     return;
                 }
             }
-            entityBase.RemoveComponent<T>();
+            Entity.RemoveComponent<T>();
             _managerComponents.Remove<T>(idEntity);
             _managerFilters.Remove<T>(idEntity);
         }

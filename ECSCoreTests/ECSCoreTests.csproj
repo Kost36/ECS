@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECSCore\ECSCore.csproj" />
-    <ProjectReference Include="..\Game\Game.csproj" />
+    <ProjectReference Include="..\LibMath\LibMath.csproj" />
   </ItemGroup>
 
 </Project>

@@ -73,8 +73,8 @@ namespace ECSCore.Managers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public int GetCountComponents<T>()
-            where T : ComponentBase
+        internal int GetCountComponents<T>()
+            where T : Component
         {
             lock (_collections)
             {
@@ -94,19 +94,19 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public void Add(ComponentBase component)
+        internal void Add(Component component)
         {
             Registration(component); //Добавим в коллекцию
         }
         /// <summary>
         /// Получить компонент, если есть
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        public bool Get<T>(int id, out T component)
-            where T : ComponentBase
+        internal bool Get<T>(int id, out T component)
+            where T : Component
         {
             return Search<T>(id, out component);
         }
@@ -115,27 +115,27 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<ComponentBase> Get(int idEntity)
+        internal List<Component> Get(int idEntity)
         {
-            List<ComponentBase> componentBases = new();
+            List<Component> Components = new();
             lock (_collections)
             {
                 foreach (Components components in _collections)
                 {
-                    if (components.Get<ComponentBase>(idEntity, out ComponentBase component))
+                    if (components.Get<Component>(idEntity, out Component component))
                     {
-                        componentBases.Add(component);
+                        Components.Add(component);
                     } //Если компонент есть
                 } //Пройдемся по существующим коллекциям
             }
-            return componentBases;
+            return Components;
         }
         /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="typeComponent"> Тип компонента </param>
-        public bool Remove<T>(int id)
+        internal bool Remove<T>(int id)
         {
             return RemoveComponent(id, typeof(T)); //Удалим компонент
         }
@@ -143,7 +143,7 @@ namespace ECSCore.Managers
         /// Удалить все компоненты с id
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        public void Remove(int id)
+        internal void Remove(int id)
         {
             RemoveComponents(id);
         }
@@ -155,7 +155,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        private void Registration(ComponentBase component)
+        private void Registration(Component component)
         {
             lock (_collections)
             {
@@ -163,10 +163,10 @@ namespace ECSCore.Managers
                 {
                     if (components.IsType(component.GetType()))
                     {
-                        if (components.Get(component.Id, out ComponentBase componentBase))
+                        if (components.Get(component.Id, out Component Component))
                         {
                             //TODO Присвоить значение, вместо присвоения ссылки
-                            componentBase = component; //Передали компонент
+                            Component = component; //Передали компонент
                         } //Если компонент есть
                         else
                         {
@@ -183,12 +183,12 @@ namespace ECSCore.Managers
         /// <summary>
         /// Получить компонент, если есть
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         private bool Search<T>(int id, out T component)
-            where T : ComponentBase
+            where T : Component
         {
             Type typeComponent = typeof(T);
             lock (_collections)
@@ -273,7 +273,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Коллекция компонентов
         /// </summary>
-        private Dictionary<int, ComponentBase> _components = new Dictionary<int, ComponentBase>();
+        private Dictionary<int, Component> _components = new Dictionary<int, Component>();
         #endregion
 
         #region Свойства
@@ -301,13 +301,13 @@ namespace ECSCore.Managers
         /// Добавить компонент в коллекцию
         /// </summary>
         /// <returns></returns>
-        public void Add(ComponentBase component)
+        public void Add(Component component)
         {
             lock (_components)
             {
-                if (_components.TryGetValue(component.Id, out ComponentBase componentBase))
+                if (_components.TryGetValue(component.Id, out Component Component))
                 {
-                    componentBase = component;
+                    Component = component;
                 }
                 else
                 {
@@ -318,16 +318,16 @@ namespace ECSCore.Managers
         /// <summary>
         /// Получить компонент, если есть
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool Get<T>(int id, out T component)
-            where T : ComponentBase
+            where T : Component
         {
             lock (_components)
             {
-                if (_components.TryGetValue(id, out ComponentBase componentOut))
+                if (_components.TryGetValue(id, out Component componentOut))
                 {
                     component = (T)componentOut;
                     return true;

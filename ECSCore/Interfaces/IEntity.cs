@@ -23,22 +23,22 @@ namespace ECSCore.Interfaces
         /// </summary>
         /// <param name="component"></param>
         public void Add<T>(T component)
-            where T : ComponentBase;
+            where T : Component;
         /// <summary>
         /// Получить компонент (Если есть)
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool Get<T>(out T component)
-            where T : ComponentBase;
+            where T : Component;
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от ComponentBase) </typeparam>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         public void Remove<T>()
-            where T : ComponentBase;
+            where T : Component;
         /// <summary>
         /// Уничтожить сущьность
         /// </summary>

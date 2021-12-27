@@ -21,7 +21,7 @@ namespace ECSCore.Managers
             {
                 _startCountCapacity = startCountEntityCapacity;
             }
-            _entities = new Dictionary<int, EntityBase>(_startCountCapacity);
+            _entities = new Dictionary<int, Entity>(_startCountCapacity);
         }
         #endregion
 
@@ -45,7 +45,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Коллекция сущьностей
         /// </summary>
-        private Dictionary<int, EntityBase> _entities;
+        private Dictionary<int, Entity> _entities;
         #endregion
 
         #region Свойства
@@ -66,7 +66,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="entity"> Экземпляр сущьности </param>
         /// <returns> IEntity (с присвоенным Id) / null </returns>
-        public EntityBase Add(EntityBase entity)
+        internal Entity Add(Entity entity)
         {
             return Registration(entity); //Присвоим id и добавим в коллекцию
         }
@@ -74,17 +74,17 @@ namespace ECSCore.Managers
         /// Получить сущьность по id, если есть
         /// </summary>
         /// <param name="id"> Идентификатор сущьности</param>
-        /// <param name="entityBase"> Сущьность (Если есть) / null </param>
+        /// <param name="Entity"> Сущьность (Если есть) / null </param>
         /// <returns> Флаг наличия сущьности </returns>
-        public bool Get(int id, out EntityBase entityBase)
+        internal bool Get(int id, out Entity Entity)
         {
-            return _entities.TryGetValue(id, out entityBase);
+            return _entities.TryGetValue(id, out Entity);
         }
         /// <summary>
         /// Удаление сущьности по id
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        public bool Remove(int id)
+        internal bool Remove(int id)
         {
             return RemoveEntity(id); //Удалим сущьность
         }
@@ -96,7 +96,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="entity"></param>
         /// <returns> IEntity / null </returns>
-        private EntityBase Registration(EntityBase entity)
+        private Entity Registration(Entity entity)
         {
             if (_queueFreeID.Count > 0)
             {
@@ -126,9 +126,3 @@ namespace ECSCore.Managers
         #endregion
     }
 }
-
-//TODO 1) Получение сущьность по формату TryGet(out EntityBase)
-
-//TODO 2) Получение компонента по формату TryGet(out ComponentBase)
-
-//TODO 3) Сущьность хранит ссылки на свои компоненты (ECS вызывает удаление компонента у сущьности)

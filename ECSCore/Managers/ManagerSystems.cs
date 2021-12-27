@@ -146,7 +146,7 @@ namespace ECSCore.Managers
         /// инициализация систем
         /// </summary>
         /// <param name="assembly"></param>
-        private void _Init(Assembly assembly, ManagerFilters managerFilters)
+        internal void _Init(Assembly assembly, ManagerFilters managerFilters)
         {
             Type typeISystem = typeof(ISystem); //Получим тип интерфейса
             Type[] types = assembly.GetTypes(); //Получаем все типы сборки 
@@ -241,11 +241,6 @@ namespace ECSCore.Managers
                     _flagHaveDelay = false; //Успеваем выполнять
                     Thread.Sleep(1); //Спим 1 мс
                     _dateTimePoint = DateTime.Now; //Новая метка времени
-
-                    //_flagHaveDelay = false;
-                    //TimeSpan timeSpan = _systemQueue[0].DateTimeNextRun - _dateTimePoint; //Интервал сна
-                    //Thread.Sleep(timeSpan); //Спим
-                    //_dateTimePoint = DateTime.Now; //Метка времени
                 }
             } //Постоянно в цикле 
         }

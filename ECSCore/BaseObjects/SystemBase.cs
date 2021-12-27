@@ -36,8 +36,8 @@ namespace ECSCore.System
         /// </summary>
         public long IntervalTicks { get; set; }
         /// <summary>
-        /// Интервал времени между предидущим выполнением и фактическим
-        /// Размерность: Sec
+        /// Интервал времени между предидущим выполнением и фактическим.
+        /// Размерность: sec
         /// </summary>
         public float DeltaTime { get; private set; }
         /// <summary>

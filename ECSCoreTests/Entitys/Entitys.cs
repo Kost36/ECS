@@ -5,13 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Entitys
+namespace ECSCore.Tests.Entitys
 {
     /// <summary>
     /// Сущьность корабля
     /// </summary>
-    public class Ship : EntityBase
-    {
-
-    }
+    public class Ship : Entity { }
 }

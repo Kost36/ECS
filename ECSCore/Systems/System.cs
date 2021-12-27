@@ -12,7 +12,7 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0> : SystemBase
-        where T0 : ComponentBase
+        where T0 : Component
     {
         /// <summary>
         /// Фильтр
@@ -56,8 +56,8 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0, T1> : SystemBase
-        where T0 : ComponentBase
-        where T1 : ComponentBase
+        where T0 : Component
+        where T1 : Component
     {
         /// <summary>
         /// Фильтр
@@ -101,9 +101,9 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0, T1, T2> : SystemBase
-        where T0 : ComponentBase
-        where T1 : ComponentBase
-        where T2 : ComponentBase
+        where T0 : Component
+        where T1 : Component
+        where T2 : Component
     {
         /// <summary>
         /// Фильтр
@@ -147,10 +147,10 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0, T1, T2, T3> : SystemBase
-        where T0 : ComponentBase
-        where T1 : ComponentBase
-        where T2 : ComponentBase
-        where T3 : ComponentBase
+        where T0 : Component
+        where T1 : Component
+        where T2 : Component
+        where T3 : Component
     {
         /// <summary>
         /// Фильтр
@@ -185,5 +185,53 @@ namespace ECSCore.Systems
         /// Работа системы
         /// </summary>
         public abstract void Action(T0 t0, T1 t1, T2 t2, T3 t3);
+    }
+    /// <summary>
+    /// Базовый класс систем
+    /// Каждую систему необходимо пометить атрибутами:
+    /// 1) [AttributeSystemPriority] ;
+    /// 2) [AttributeSystemCalculate] ;
+    /// 3) [AttributeSystemEnable] ;
+    /// </summary>
+    public abstract class System<T0, T1, T2, T3, T4> : SystemBase
+        where T0 : Component
+        where T1 : Component
+        where T2 : Component
+        where T3 : Component
+        where T4 : Component
+    {
+        /// <summary>
+        /// Фильтр
+        /// </summary>
+        internal Filter<T0, T1, T2, T3, T4> Filter { get; set; } = new Filter<T0, T1, T2, T3, T4>();
+        /// <summary>
+        /// Инициализация системы, необходима для получения ссылки на фильтр
+        /// </summary>
+        internal override void GetFilter()
+        {
+            Filter = (Filter<T0, T1, T2, T3, T4>)(ECS.ManagerFilters.GetFilter(typeof(Filter<T0, T1, T2, T3, T4>)));
+        }
+        /// <summary>
+        /// Подготовка к выполнению, вызывается перед каждым выполнением
+        /// </summary>
+        internal override void CalculateFilter()
+        {
+            Filter.Сalculate();
+        }
+        /// <summary>
+        /// Выполнение системы.
+        /// (Вызывается с интервалом, заданным через атрибут)
+        /// </summary>
+        internal override void AсtionForeach()
+        {
+            foreach (T0 t0 in Filter.ComponentsT0.Values)
+            {
+                Action(t0, Filter.ComponentsT1[t0.Id], Filter.ComponentsT2[t0.Id], Filter.ComponentsT3[t0.Id], Filter.ComponentsT4[t0.Id]);
+            }
+        }
+        /// <summary>
+        /// Работа системы
+        /// </summary>
+        public abstract void Action(T0 t0, T1 t1, T2 t2, T3 t3, T4 t4);
     }
 }

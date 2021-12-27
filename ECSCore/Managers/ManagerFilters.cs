@@ -107,9 +107,9 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public void Add(ComponentBase component)
+        internal void Add(Component component)
         {
-            if (_ecs.GetEntity(component.Id, out EntityBase entity))
+            if (_ecs.GetEntity(component.Id, out Entity entity))
             {
                 foreach (IFilter filter in _filters)
                 {
@@ -121,9 +121,9 @@ namespace ECSCore.Managers
         /// Удалить заданный тип компонента, имеющий заданный id сущьности из фильтров
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        public void Remove<T>(int id)
+        internal void Remove<T>(int id)
         {
-            if (_ecs.GetEntity(id, out EntityBase entity))
+            if (_ecs.GetEntity(id, out Entity entity))
             {
                 foreach (IFilter filter in _filters)
                 {
@@ -135,7 +135,7 @@ namespace ECSCore.Managers
         /// Удалить все компоненты с id, из фильтров
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        public void Remove(int id)
+        internal void Remove(int id)
         {
             foreach (IFilter filter in _filters)
             {
@@ -186,7 +186,10 @@ namespace ECSCore.Managers
                         filterRunTimeImplementation = typeof(Filter<,,>);
                         break;
                     case 4:
-                        filterRunTimeImplementation = typeof(Filter<,,>);
+                        filterRunTimeImplementation = typeof(Filter<,,,>);
+                        break;
+                    case 5:
+                        filterRunTimeImplementation = typeof(Filter<,,,,>);
                         break;
                 }
                 Type makeme = filterRunTimeImplementation.MakeGenericType(GenericTypes);

@@ -1,14 +1,15 @@
 ﻿using ECSCore;
 using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
-using Game.Components;
+using ECSCoreTests.Components;
+using ECSCoreTests.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Entitys.Factorys
+namespace ECSCore.Tests.Entitys.Factorys
 {
     /// <summary>
     /// Фабрика корабля
@@ -39,7 +40,7 @@ namespace Game.Entitys.Factorys
             Entity.Add(new ShildReGeneration() { ShildReGen = 1 }); //Регенерация щитов
             Entity.Add(new SpeedRotation()); //Скорость поворота
 
-            Entity.Add(new ShipState { StateShip = Enums.StateShip.TRADE }); //Торговать
+            Entity.Add(new ShipState { StateShip = StateShip.TRADE }); //Торговать
         }
     }
 }

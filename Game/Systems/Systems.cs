@@ -16,6 +16,7 @@ namespace Game.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
     [AttributeSystemPriority(5)]
     [AttributeSystemEnable]
+    [AttributeSystemEarlyExecution(5)]
     public class MoveSystem : System<Pozition, Speed>
     {
         public override void Action(Pozition pozition, Speed speed)
@@ -29,6 +30,7 @@ namespace Game.Systems
     [AttributeSystemCalculate(0.2f)]
     [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
+    [AttributeSystemEarlyExecution(20)]
     public class ShipAiSystem : System<ShipAi>
     {
         public override void Action(ShipAi shipAi)
@@ -88,9 +90,10 @@ namespace Game.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
+    [AttributeSystemPriority(10)]
+    [AttributeSystemEarlyExecution(20)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     public class EnargyRegenerationSystem : System<Enargy, EnargyReGeneration>
     {
         public override void Action(Enargy enargy, EnargyReGeneration enargyReGeneration)
@@ -107,9 +110,10 @@ namespace Game.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
+    [AttributeSystemPriority(10)]
+    [AttributeSystemEarlyExecution(20)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     public class HealthRegenerationSystem : System<Health, HealthReGeneration, Enargy>
     {
         public override void Action(Health health, HealthReGeneration healthReGeneration, Enargy enargy)
@@ -131,9 +135,10 @@ namespace Game.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
+    [AttributeSystemPriority(10)]
+    [AttributeSystemEarlyExecution(20)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     public class ShildRegenerationSystem : System<Shild, ShildReGeneration, Enargy>
     {
         public override void Action(Shild shild, ShildReGeneration shildReGeneration, Enargy enargy)
@@ -155,9 +160,10 @@ namespace Game.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(9)]
     [AttributeSystemEnable]
+    [AttributeSystemPriority(9)]
+    [AttributeSystemEarlyExecution(20)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     public class ControlWaySystem : System<Pozition, PozitionSV, Way>
     {
         public override void Action(Pozition pozition, PozitionSV pozitionSV, Way way)

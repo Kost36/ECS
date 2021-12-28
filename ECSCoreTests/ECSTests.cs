@@ -27,11 +27,8 @@ namespace ECSCore.Tests
             ECS.Initialization(ship.GetType().Assembly, 1100000);
             IECS = ECS.InstanceIECS;
             IECSDebug = ECS.InstanceDebug;
-            for (int i = 0; i<10; i++)
-            {
-                Thread.Sleep(100);
-                Console.WriteLine($"{i} - ОК");
-            }
+            Thread.Sleep(1000);
+            Console.WriteLine("ОК");
             Assert.IsNotNull(IECS);
             Debug.WriteLine(IECSDebug.GetInfo());
         }
@@ -157,7 +154,7 @@ namespace ECSCore.Tests
                     ShipFactory.AddShip();
                 }
                 Debug.WriteLine(IECSDebug.GetInfo(true));
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 if (IECSDebug.ManagerEntitys.CountEntitys > 1000000)
                 {
                     break;
@@ -169,7 +166,7 @@ namespace ECSCore.Tests
             //Наблюдаем
             IECSDebug.ManagerSystems.ClearStatisticSystems();
             int j = 0;
-            while (j<10)
+            while (j<20)
             {
                 Debug.WriteLine(IECSDebug.GetInfo(true));
                 Thread.Sleep(1000);

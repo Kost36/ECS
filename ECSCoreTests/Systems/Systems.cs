@@ -140,9 +140,9 @@ namespace ECSCoreTests.Systems
             if (shild.ShildFact < shild.ShildMax)
             {
                 float enargyUse = shildReGeneration.EnargyUse * DeltaTime;
-                if (enargy.EnargyFact > shildReGeneration.EnargyUse)
+                if (enargy.EnargyFact > enargyUse)
                 {
-                    shild.ShildFact += shildReGeneration.ShildReGen;
+                    shild.ShildFact += shildReGeneration.ShildReGen * DeltaTime;
                     enargy.EnargyFact -= enargyUse;
                     if (shild.ShildFact > shild.ShildMax)
                     {

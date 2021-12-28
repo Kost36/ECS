@@ -257,6 +257,7 @@ namespace ECSCore
             {
                 info = info.Append($"ECSCore: Version: {this.GetType().Assembly.GetName().Version} \r\n");
                 info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} \r\n");
+                info = info.Append($"ECSHaveN'tTimeToBeCalculateFilterSystems: {this.ManagerSystems.IsNotHaveTimeToBeCalculateFilters} \r\n");
                 info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
                 info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
                 info = info.Append($"CountComponentCollections: {this.ManagerComponents.CountCollectionsComponent} \r\n");
@@ -282,6 +283,7 @@ namespace ECSCore
                 info = info.Append($"CountEnableSystems: {this.ManagerSystems.CountEnableSystems} \r\n");
                 info = info.Append($"CountDisableSystems: {this.ManagerSystems.CountDisableSystems} \r\n");
                 info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} \r\n");
+                info = info.Append($"ECSHaveN'tTimeToBeCalculateFilterSystems: {this.ManagerSystems.IsNotHaveTimeToBeCalculateFilters} \r\n");
                 info = info.Append($"Filters: \r\n");
                 info = info.Append($"CountFiltersForSystems: {this.ManagerFilters.CountFilters} \r\n");
                 info = info.Append($"CountEntitysInFilters: {this.ManagerFilters.CountEntitys} \r\n");

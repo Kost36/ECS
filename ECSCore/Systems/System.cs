@@ -28,9 +28,16 @@ namespace ECSCore.Systems
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
-        internal override void CalculateFilter()
+        internal override void CalculateFilter(long limitTimeTicks = 0)
         {
-            Filter.Сalculate();
+            if (limitTimeTicks==0)
+            {
+                Filter.Сalculate();
+            }
+            else
+            {
+                Filter.Сalculate(limitTimeTicks);
+            }
         }
         /// <summary>
         /// Выполнение системы.
@@ -73,9 +80,16 @@ namespace ECSCore.Systems
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
-        internal override void CalculateFilter()
+        internal override void CalculateFilter(long limitTimeTicks = 0)
         {
-            Filter.Сalculate();
+            if (limitTimeTicks == 0)
+            {
+                Filter.Сalculate();
+            }
+            else
+            {
+                Filter.Сalculate(limitTimeTicks);
+            }
         }
         /// <summary>
         /// Выполнение системы.
@@ -119,9 +133,16 @@ namespace ECSCore.Systems
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
-        internal override void CalculateFilter()
+        internal override void CalculateFilter(long limitTimeTicks = 0)
         {
-            Filter.Сalculate();
+            if (limitTimeTicks == 0)
+            {
+                Filter.Сalculate();
+            }
+            else
+            {
+                Filter.Сalculate(limitTimeTicks);
+            }
         }
         /// <summary>
         /// Выполнение системы.
@@ -166,9 +187,16 @@ namespace ECSCore.Systems
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
-        internal override void CalculateFilter()
+        internal override void CalculateFilter(long limitTimeTicks = 0)
         {
-            Filter.Сalculate();
+            if (limitTimeTicks == 0)
+            {
+                Filter.Сalculate();
+            }
+            else
+            {
+                Filter.Сalculate(limitTimeTicks);
+            }
         }
         /// <summary>
         /// Выполнение системы.
@@ -214,9 +242,16 @@ namespace ECSCore.Systems
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
-        internal override void CalculateFilter()
+        internal override void CalculateFilter(long limitTimeTicks = 0)
         {
-            Filter.Сalculate();
+            if (limitTimeTicks == 0)
+            {
+                Filter.Сalculate();
+            }
+            else
+            {
+                Filter.Сalculate(limitTimeTicks);
+            }
         }
         /// <summary>
         /// Выполнение системы.

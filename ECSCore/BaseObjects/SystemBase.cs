@@ -36,6 +36,10 @@ namespace ECSCore.System
         /// </summary>
         public long IntervalTicks { get; set; }
         /// <summary>
+        /// Возможное предварительное выполнение системы (Предварительный интервал ticks)
+        /// </summary>
+        public long EarlyExecutionTicks { get; set; }
+        /// <summary>
         /// Интервал времени между предидущим выполнением и фактическим.
         /// Размерность: sec
         /// </summary>
@@ -103,6 +107,15 @@ namespace ECSCore.System
             {
                 IsEnable = attributeSystemEnable.IsEnable;
             }//Если у системы есть атрибута активации 
+            AttributeSystemEarlyExecution attributeSystemEarlyExecution = type.GetCustomAttribute<AttributeSystemEarlyExecution>();
+            if (attributeSystemEarlyExecution == null)
+            {
+                EarlyExecutionTicks = 0;
+            } //Если у системы нету атрибута предварительного выполнения 
+            else
+            {
+                EarlyExecutionTicks = (long)(((float)IntervalTicks / 100f) * attributeSystemEarlyExecution.PercentThresholdTime);
+            }//Если у системы есть атрибута предварительного выполнения  
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
@@ -121,7 +134,7 @@ namespace ECSCore.System
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
-        internal abstract void CalculateFilter();
+        internal abstract void CalculateFilter(long limitTimeTicks = 0);
         /// <summary>
         /// Выполнение системы.
         /// (Вызывается с интервалом, заданным через атрибут)

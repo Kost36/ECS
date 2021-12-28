@@ -2,6 +2,7 @@
 using ECSCore.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace ECSCore.BaseObjects
     /// </summary>
     internal abstract class FilterBase : IFilter
     {
+        private Stopwatch _stopwatch = new Stopwatch();
         /// <summary>
         /// Количество элементов в фильтре
         /// </summary>
@@ -37,6 +39,25 @@ namespace ECSCore.BaseObjects
                 {
                     IJobToFilter jobToFilter = JobToFilters.Dequeue();
                     jobToFilter.Action(this);
+                } //Пока в коллекции что то есть
+            }
+        } //TODO Lock только на получение объекта из очереди. Add Performance
+        /// <summary>
+        /// Рассчитать входные данные
+        /// </summary>
+        public void Сalculate(long limitTimeTicks)
+        {
+            lock (JobToFilters)
+            {
+                _stopwatch.Start();
+                while (JobToFilters.Count > 0)
+                {
+                    IJobToFilter jobToFilter = JobToFilters.Dequeue();
+                    jobToFilter.Action(this);
+                    if (_stopwatch.ElapsedTicks > limitTimeTicks)
+                    {
+                        return;
+                    }
                 } //Пока в коллекции что то есть
             }
         } //TODO Lock только на получение объекта из очереди. Add Performance

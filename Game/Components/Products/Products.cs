@@ -20,56 +20,112 @@ namespace Game.Components.Products
         /// </summary>
         public float PriceSell;
 
-
-        public abstract float Weight { get; }
-        public abstract float Volume { get; }
-    }
-
-    /// <summary>
-    /// Аккумулятор / батарея с энергией
-    /// </summary>
-    public class Battery : Product
-    {
-        private static readonly float _weight = 0;
-        private static readonly float _volume = 0;
-
         /// <summary>
         /// Вес одной еденицы товара.
         /// Кг.
         /// </summary>
-        public override float Weight  => _weight;
+        public abstract float Weight { get; }
         /// <summary>
         /// Объем одной еденицы товара.
         /// М.Куб.
         /// </summary>
+        public abstract float Volume { get; }
+    }
+
+    //Восполняемое
+    /// <summary>
+    /// Аккумулятор / батарея без энергии.
+    /// 3 кВт
+    /// </summary>
+    public class BatteryEmpty : Product
+    {
+        private static readonly float _weight = 74;
+        private static readonly float _volume = 0.04f;
+        public override float Weight => _weight;
         public override float Volume => _volume;
+
+        //За основу взят:
+        //               DELTA DTM 12250 i
+        //Параметры:
+        //          Выходное напряжение    12  В
+        //          Емкость                250 А/ч
+        //          Энергия                3 кВт
+        //          Длина	               520 мм
+        //          Ширина	               269 мм
+        //          Высота	               288 мм
+        //          Объем                ~ 0.04 м³ 
+        //          Вес                    41  кг
+        //          Стандартная цена     ~ 682,75 USD
+    }
+    /// <summary>
+    /// Аккумулятор / батарея с энергией.
+    /// 3 кВт
+    /// </summary>
+    public class Battery : Product
+    {
+        private static readonly float _weight = 74;
+        private static readonly float _volume = 0.04f;
+        public override float Weight => _weight;
+        public override float Volume => _volume;
+
+        //За основу взят:
+        //               DELTA DTM 12250 i
+        //Параметры:
+        //          Выходное напряжение    12  В
+        //          Емкость                250 А/ч
+        //          Энергия                3 кВт
+        //          Длина	               520 мм
+        //          Ширина	               269 мм
+        //          Высота	               288 мм
+        //          Объем                ~ 0.04 м³ 
+        //          Вес                    41  кг
+        //          Стандартная цена     ~ 682,75 USD
     }
 
     //Сырьё 0 уровень (Добываемое)
+
     /// <summary>
     /// Руда
     /// </summary>
     public class Ore : Product
     {
-        private static readonly float _weight = 0;
-        private static readonly float _volume = 0;
-
-        /// <summary>
-        /// Вес одной еденицы товара.
-        /// Кг.
-        /// </summary>
+        private static readonly float _weight = 1700;
+        private static readonly float _volume = 1;
         public override float Weight => _weight;
-
-        /// <summary>
-        /// Вес одной еденицы товара.
-        /// Кг.
-        /// </summary>
         public override float Volume => _volume;
+
+        //Параметры:
+        //          Тип:                   
+        //          Объем                ~ 1 м³ 
+        //          Вес                  ~ 1700  кг
+        //          Стандартная цена     ~ 112,99 USD
+
+        //Производимый товар: 
+        //                    => Железо
+        //                    => Медь
+        //                    => 
+        //                    =>
     }
     /// <summary>
-    /// Кремний
+    /// Песок
     /// </summary>
-    public class Silicon : Product { }
+    public class Sand : Product
+    {
+        private static readonly float _weight = 1600;
+        private static readonly float _volume = 1;
+        public override float Weight => _weight;
+        public override float Volume => _volume;
+
+        //Параметры:
+        //          Тип:                   
+        //          Объем                ~ 1 м³ 
+        //          Вес                  ~ 1600 кг
+        //          Стандартная цена     ~ 6,83 USD
+        
+        //Производимый товар: 
+        //                   Кремний => 1т кремния из 20т песка
+    }
+
     /// <summary>
     /// Метан
     /// </summary>
@@ -83,33 +139,49 @@ namespace Game.Components.Products
     /// </summary>
     public class Helium : Product { }
 
-    //Продукты 1 уровня (Производимое)
+    ////Продукты 1 уровня (Производимое)
+    ///// <summary>
+    ///// Железо
+    ///// </summary>
+    //public class Iron : Product { }
+    ///// <summary>
+    ///// Пластмасса
+    ///// </summary>
+    //public class Polymer : Product { }
     /// <summary>
-    /// Железо
+    /// Кремний
     /// </summary>
-    public class Iron : Product { }
-    /// <summary>
-    /// Пластмасса
-    /// </summary>
-    public class Polymer : Product { }
+    public class Silicon : Product
+    {
+        private static readonly float _weight = 1700;
+        private static readonly float _volume = 1;
+        public override float Weight => _weight;
+        public override float Volume => _volume;
 
-    //Продукты 2 уровня (Производимое)
-    /// <summary>
-    /// Пластик
-    /// </summary>
-    public class Plastic : Product { }
-    /// <summary>
-    /// Резина
-    /// </summary>
-    public class Rubber : Product { }
+        //Параметры:
+        //          Тип:                   
+        //          Объем                ~ 1 м³ 
+        //          Вес                  ~  кг
+        //          Стандартная цена     ~  USD
+    }
 
-    Продукты 3 уровня(Производимые)
+    ////Продукты 2 уровня (Производимое)
+    ///// <summary>
+    ///// Пластик
+    ///// </summary>
+    //public class Plastic : Product { }
+    ///// <summary>
+    ///// Резина
+    ///// </summary>
+    //public class Rubber : Product { }
 
-    Продукты 4 уровня(Производимые) => Высокотехнологичные
+    // Продукты 3 уровня(Производимые)
 
-    Продукты 5 уровня(Производимые) => Оружие, дроны, турели, модули
+    // Продукты 4 уровня(Производимые) => Высокотехнологичные
 
-   Продукты 6 уровня(Производимые) => Станции, корабли
+    // Продукты 5 уровня(Производимые) => Оружие, дроны, турели, модули
+
+    //Продукты 6 уровня(Производимые) => Станции, корабли
 }
 
 /* //Код для копирования, при создании продукта

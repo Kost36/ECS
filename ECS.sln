@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTests", "GameTests\Game
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECSCoreUnityIntegration", "ECSCoreUnityIntegration\ECSCoreUnityIntegration.csproj", "{1E6A94E5-0654-4DA2-B264-784C99DAE908}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameUnityIntegration", "GameUnityIntegration\GameUnityIntegration.csproj", "{2601F7CC-760C-4A35-AFB6-7A7509393F61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibMathUnityInteration", "LibMathUnityInteration\LibMathUnityInteration.csproj", "{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{1E6A94E5-0654-4DA2-B264-784C99DAE908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E6A94E5-0654-4DA2-B264-784C99DAE908}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E6A94E5-0654-4DA2-B264-784C99DAE908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2601F7CC-760C-4A35-AFB6-7A7509393F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2601F7CC-760C-4A35-AFB6-7A7509393F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2601F7CC-760C-4A35-AFB6-7A7509393F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2601F7CC-760C-4A35-AFB6-7A7509393F61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

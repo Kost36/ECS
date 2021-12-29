@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1E6A94E5-0654-4DA2-B264-784C99DAE908}</ProjectGuid>
+    <ProjectGuid>{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ECSCoreUnityIntegration</RootNamespace>
-    <AssemblyName>ECSCoreUnityIntegration</AssemblyName>
+    <RootNamespace>LibMathUnityInteration</RootNamespace>
+    <AssemblyName>LibMathUnityInteration</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,44 +29,20 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\AttributeSystemCalculate.cs" />
-    <Compile Include="Attributes\AttributeSystemEarlyExecution.cs" />
-    <Compile Include="Attributes\AttributeSystemEnable.cs" />
-    <Compile Include="Attributes\AttributeSystemPriority.cs" />
-    <Compile Include="BaseObjects\Component.cs" />
-    <Compile Include="BaseObjects\Entity.cs" />
-    <Compile Include="BaseObjects\FilterBase.cs" />
-    <Compile Include="BaseObjects\SystemBase.cs" />
-    <Compile Include="ECS.cs" />
-    <Compile Include="Enums\Enums.cs" />
-    <Compile Include="Exceptions\Exceptions.cs" />
-    <Compile Include="Filters\FilterJobs.cs" />
-    <Compile Include="Filters\Filters.cs" />
-    <Compile Include="Interfaces\IComponent.cs" />
-    <Compile Include="Interfaces\IECS.cs" />
-    <Compile Include="Interfaces\IECSDebug.cs" />
-    <Compile Include="Interfaces\IECSSystem.cs" />
-    <Compile Include="Interfaces\IEntity.cs" />
-    <Compile Include="Interfaces\IFilter.cs" />
-    <Compile Include="Interfaces\IJobToFilter.cs" />
-    <Compile Include="Interfaces\ISystem.cs" />
-    <Compile Include="Managers\ManagerComponents.cs" />
-    <Compile Include="Managers\ManagerEntitys.cs" />
-    <Compile Include="Managers\ManagerFilters.cs" />
-    <Compile Include="Managers\ManagerSystems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Systems\System.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

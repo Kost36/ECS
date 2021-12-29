@@ -200,5 +200,55 @@ namespace ECSCore.Tests
             Assert.IsTrue(IECSDebug.ManagerFilters.CountEntitys==0);
             Debug.WriteLine(IECSDebug.GetInfo(true));
         }
+
+
+        [TestMethod()]
+        public void Test_B()
+        {
+            //ECSCore.ECS.Initialization(this.GetType().Assembly); 
+
+            //IECS iECS = ECSCore.ECS.InstanceIECS;
+
+            //Ship ship = (Ship)iECS.AddEntity(new Ship());
+
+            ////ship.Add(new Pozition() { X =10, Y =10, Z =10 });
+
+            ////if (ship.Get(out Pozition pozition))
+            ////{
+            ////    pozition.X = 100;
+            ////}
+
+            ////ship.Remove<Pozition>();
+
+            ////ship.Death();
+
+            //iECS.AddComponent(new Pozition() { Id = 1, X = 10, Y = 10, Z = 10 });
+
+            //if (iECS.GetComponent(1, out Pozition pozition))
+            //{
+            //    pozition.X = 100;
+            //}
+
+            //iECS.RemoveComponent<Pozition>(1);
+
+            //iECS.RemoveEntity(1);
+
+            //if (iECS.GetEntity(1, out Entity entity))
+            //{
+            //    Console.WriteLine("Сущьность есть");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("Сущьности нет");
+            //}
+
+            //Console.WriteLine();
+
+            //IECSDebug eCSDebug = ECSCore.ECS.InstanceDebug;
+
+
+        }
+
+        
     }
 }

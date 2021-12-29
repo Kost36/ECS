@@ -9,7 +9,7 @@ namespace ECSCore.Interfaces
     /// <summary>
     /// Интерфейс компонента
     /// </summary>
-    internal interface IComponent
+    public interface IComponent
     {
         /// <summary>
         /// Идентификатор сущьности, на которой находится компонент

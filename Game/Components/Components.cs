@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Game.Components
 {
+
+
     /// <summary>
     /// Компонент интеллекта корабля
     /// </summary>

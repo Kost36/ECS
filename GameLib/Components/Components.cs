@@ -30,7 +30,6 @@ namespace Game.Components
         /// </summary>
         public StateShip StateShip;
     }
-
     /// <summary>
     /// Компонент позиции
     /// </summary>

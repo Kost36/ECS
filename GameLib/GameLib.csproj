@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>D:\Unity\Архив\UnityProjects\Game\Assets\Lib\</OutputPath>
+    <OutputPath>D:\Unity\UnityProjects\Game\Assets\Lib\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GetAssembly.cs" />
     <Compile Include="Components\Components.cs" />
     <Compile Include="Components\Productions\Production.cs" />
     <Compile Include="Components\Products\Products.cs" />

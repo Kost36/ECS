@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECSCoreTests", "ECSCoreTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibMath", "LibMath\LibMath.csproj", "{CD68144D-B368-4206-A29D-33A2639ABF96}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTests", "GameTests\GameTests.csproj", "{591BE7A0-0FE0-4C4B-A3F6-BDBD3F6C2478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameTests", "GameTests\GameTests.csproj", "{591BE7A0-0FE0-4C4B-A3F6-BDBD3F6C2478}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECSCoreUnityIntegration", "ECSCoreUnityIntegration\ECSCoreUnityIntegration.csproj", "{1E6A94E5-0654-4DA2-B264-784C99DAE908}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{591BE7A0-0FE0-4C4B-A3F6-BDBD3F6C2478}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{591BE7A0-0FE0-4C4B-A3F6-BDBD3F6C2478}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{591BE7A0-0FE0-4C4B-A3F6-BDBD3F6C2478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6A94E5-0654-4DA2-B264-784C99DAE908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6A94E5-0654-4DA2-B264-784C99DAE908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6A94E5-0654-4DA2-B264-784C99DAE908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6A94E5-0654-4DA2-B264-784C99DAE908}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

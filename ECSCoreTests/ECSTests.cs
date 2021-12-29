@@ -200,5 +200,12 @@ namespace ECSCore.Tests
             Assert.IsTrue(IECSDebug.ManagerFilters.CountEntitys==0);
             Debug.WriteLine(IECSDebug.GetInfo(true));
         }
+
+
+        [TestMethod()]
+        public void Test_B()
+        {
+            
+        }
     }
 }

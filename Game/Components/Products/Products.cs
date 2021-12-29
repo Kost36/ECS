@@ -1,11 +1,12 @@
 ﻿using ECSCore.BaseObjects;
+using ECSCore.Interfaces;
 
 namespace Game.Components.Products
 {
     /// <summary>
     /// Продукт
     /// </summary>
-    public abstract class Product : Component
+    public abstract class Product : ComponentBase
     {
         /// <summary>
         /// Количество товара
@@ -126,18 +127,18 @@ namespace Game.Components.Products
         //                   Кремний => 1т кремния из 20т песка
     }
 
-    /// <summary>
-    /// Метан
-    /// </summary>
-    public class Methane : Product { }
-    /// <summary>
-    /// Водород
-    /// </summary>
-    public class Hydrogen : Product { }
-    /// <summary>
-    /// Гелий
-    /// </summary>
-    public class Helium : Product { }
+    ///// <summary>
+    ///// Метан
+    ///// </summary>
+    //public class Methane : Product { }
+    ///// <summary>
+    ///// Водород
+    ///// </summary>
+    //public class Hydrogen : Product { }
+    ///// <summary>
+    ///// Гелий
+    ///// </summary>
+    //public class Helium : Product { }
 
         //За основу взят:
         //               DELTA DTM 12250 i

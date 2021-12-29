@@ -129,15 +129,15 @@ namespace Game.Components.Products
     /// <summary>
     /// Метан
     /// </summary>
-    public class Methane : Product { }
+    //public class Methane : Product { }
     /// <summary>
     /// Водород
     /// </summary>
-    public class Hydrogen : Product { }
+    //public class Hydrogen : Product { }
     /// <summary>
     /// Гелий
     /// </summary>
-    public class Helium : Product { }
+    //public class Helium : Product { }
 
     ////Продукты 1 уровня (Производимое)
     ///// <summary>

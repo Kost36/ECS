@@ -66,7 +66,7 @@ namespace ECSCore.BaseObjects
         /// </summary>
         /// <param name="component"></param>
         /// <param name="entity"></param>
-        public void Add(Component component, Entity entity)
+        public void Add(IComponent component, Entity entity)
         {
             if (ComponetTypeIsInteresting(component.GetType()))
             {
@@ -119,7 +119,7 @@ namespace ECSCore.BaseObjects
         public abstract List<Type> GetTypesComponents();
 
         public abstract void Init(int capacity);
-        public abstract void TryAdd(Component component, Entity entity);
+        public abstract void TryAdd(IComponent component, Entity entity);
         public abstract void TryRemove(Type typeComponent, Entity entity);
         public abstract void TryRemove(int id);
     }

@@ -10,7 +10,7 @@ namespace ECSCore.Filters
     internal class JobTryAdd : IJobToFilter
     {
         #region Конструкторы
-        internal JobTryAdd(Component component, Entity entity)
+        internal JobTryAdd(IComponent component, Entity entity)
         {
             _component = component;
             _entity = entity;
@@ -18,7 +18,7 @@ namespace ECSCore.Filters
         #endregion
 
         #region Поля
-        private Component _component;
+        private IComponent _component;
         private Entity _entity;
         #endregion
 

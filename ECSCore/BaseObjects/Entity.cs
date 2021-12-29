@@ -19,7 +19,7 @@ namespace ECSCore.BaseObjects
         /// </summary>
         /// <param name="component"></param>
         public void Add<T>(T component)
-            where T : Component
+            where T : IComponent
         {
             component.Id = this.Id;
             ECS.Instance.AddComponent(component, this);
@@ -31,7 +31,7 @@ namespace ECSCore.BaseObjects
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool Get<T>(out T component)
-            where T : Component
+            where T : IComponent
         {
             return GetComponent(out component);
         }
@@ -41,7 +41,7 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         public void Remove<T>()
-            where T : Component
+            where T : IComponent
         {
             ECS.Instance.RemoveComponent<T>(this.Id, this);
         }
@@ -55,7 +55,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
-        public List<Component> Components { get; } = new List<Component>();
+        public List<IComponent> Components { get; } = new List<IComponent>();
 
         /// <summary>
         /// Добавить компонент в коллекцию сущьности
@@ -63,7 +63,7 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
         internal void AddComponent<T>(T component)
-            where T:Component
+            where T:IComponent
         {
             if (GetComponent(out T Component))
             {
@@ -81,7 +81,7 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
         internal void RemoveComponent<T>()
-            where T : Component
+            where T : IComponent
         {
             if (GetComponent(out T Component))
             {
@@ -98,11 +98,11 @@ namespace ECSCore.BaseObjects
         /// <param name="component"></param>
         /// <returns></returns>
         private bool GetComponent<T>(out T component)
-            where T : Component
+            where T : IComponent
         {
             lock (Components)
             {
-                foreach (Component Component in Components)
+                foreach (IComponent Component in Components)
                 {
                     if (Component is T)
                     {

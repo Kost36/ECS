@@ -74,7 +74,7 @@ namespace ECSCore.Managers
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         internal int GetCountComponents<T>()
-            where T : Component
+            where T : IComponent
         {
             lock (_collections)
             {
@@ -94,7 +94,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        internal void Add(Component component)
+        internal void Add(IComponent component)
         {
             Registration(component); //Добавим в коллекцию
         }
@@ -106,7 +106,7 @@ namespace ECSCore.Managers
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         internal bool Get<T>(int id, out T component)
-            where T : Component
+            where T : IComponent
         {
             return Search<T>(id, out component);
         }
@@ -115,14 +115,14 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        internal List<Component> Get(int idEntity)
+        internal List<IComponent> Get(int idEntity)
         {
-            List<Component> Components = new();
+            List<IComponent> Components = new();
             lock (_collections)
             {
                 foreach (Components components in _collections)
                 {
-                    if (components.Get<Component>(idEntity, out Component component))
+                    if (components.Get<IComponent>(idEntity, out IComponent component))
                     {
                         Components.Add(component);
                     } //Если компонент есть
@@ -155,7 +155,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        private void Registration(Component component)
+        private void Registration(IComponent component)
         {
             lock (_collections)
             {
@@ -163,7 +163,7 @@ namespace ECSCore.Managers
                 {
                     if (components.IsType(component.GetType()))
                     {
-                        if (components.Get(component.Id, out Component Component))
+                        if (components.Get(component.Id, out IComponent Component))
                         {
                             //TODO Присвоить значение, вместо присвоения ссылки
                             Component = component; //Передали компонент
@@ -188,7 +188,7 @@ namespace ECSCore.Managers
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         private bool Search<T>(int id, out T component)
-            where T : Component
+            where T : IComponent
         {
             Type typeComponent = typeof(T);
             lock (_collections)
@@ -273,7 +273,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Коллекция компонентов
         /// </summary>
-        private Dictionary<int, Component> _components = new Dictionary<int, Component>();
+        private Dictionary<int, IComponent> _components = new Dictionary<int, IComponent>();
         #endregion
 
         #region Свойства
@@ -301,11 +301,11 @@ namespace ECSCore.Managers
         /// Добавить компонент в коллекцию
         /// </summary>
         /// <returns></returns>
-        public void Add(Component component)
+        public void Add(IComponent component)
         {
             lock (_components)
             {
-                if (_components.TryGetValue(component.Id, out Component Component))
+                if (_components.TryGetValue(component.Id, out IComponent Component))
                 {
                     Component = component;
                 }
@@ -323,11 +323,11 @@ namespace ECSCore.Managers
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool Get<T>(int id, out T component)
-            where T : Component
+            where T : IComponent
         {
             lock (_components)
             {
-                if (_components.TryGetValue(id, out Component componentOut))
+                if (_components.TryGetValue(id, out IComponent componentOut))
                 {
                     component = (T)componentOut;
                     return true;

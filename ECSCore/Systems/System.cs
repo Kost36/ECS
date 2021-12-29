@@ -1,5 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Filters;
+using ECSCore.Interfaces;
 using ECSCore.System;
 
 namespace ECSCore.Systems
@@ -12,7 +13,7 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0> : SystemBase
-        where T0 : Component
+        where T0 : IComponent
     {
         /// <summary>
         /// Фильтр
@@ -63,8 +64,8 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0, T1> : SystemBase
-        where T0 : Component
-        where T1 : Component
+        where T0 : IComponent
+        where T1 : IComponent
     {
         /// <summary>
         /// Фильтр
@@ -115,9 +116,9 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0, T1, T2> : SystemBase
-        where T0 : Component
-        where T1 : Component
-        where T2 : Component
+        where T0 : IComponent
+        where T1 : IComponent
+        where T2 : IComponent
     {
         /// <summary>
         /// Фильтр
@@ -168,10 +169,10 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0, T1, T2, T3> : SystemBase
-        where T0 : Component
-        where T1 : Component
-        where T2 : Component
-        where T3 : Component
+        where T0 : IComponent
+        where T1 : IComponent
+        where T2 : IComponent
+        where T3 : IComponent
     {
         /// <summary>
         /// Фильтр
@@ -222,11 +223,11 @@ namespace ECSCore.Systems
     /// 3) [AttributeSystemEnable] ;
     /// </summary>
     public abstract class System<T0, T1, T2, T3, T4> : SystemBase
-        where T0 : Component
-        where T1 : Component
-        where T2 : Component
-        where T3 : Component
-        where T4 : Component
+        where T0 : IComponent
+        where T1 : IComponent
+        where T2 : IComponent
+        where T3 : IComponent
+        where T4 : IComponent
     {
         /// <summary>
         /// Фильтр

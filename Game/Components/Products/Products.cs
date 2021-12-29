@@ -60,75 +60,75 @@ namespace Game.Components.Products
         //          Объем                ~ 0.04 м³ 
         //          Вес                    41  кг
         //          Стандартная цена     ~ 682,75 USD
-    }
-    /// <summary>
-    /// Аккумулятор / батарея с энергией.
-    /// 3 кВт
-    /// </summary>
-    public class Battery : Product
-    {
-        private static readonly float _weight = 74;
-        private static readonly float _volume = 0.04f;
-        public override float Weight => _weight;
-        public override float Volume => _volume;
+    
+    ///// <summary>
+    ///// Аккумулятор / батарея с энергией.
+    ///// 3 кВт
+    ///// </summary>
+    //public class Battery : Product
+    //{
+    //    private static readonly float _weight = 74;
+    //    private static readonly float _volume = 0.04f;
+    //    public override float Weight => _weight;
+    //    public override float Volume => _volume;
 
-        //За основу взят:
-        //               DELTA DTM 12250 i
-        //Параметры:
-        //          Выходное напряжение    12  В
-        //          Емкость                250 А/ч
-        //          Энергия                3 кВт
-        //          Длина	               520 мм
-        //          Ширина	               269 мм
-        //          Высота	               288 мм
-        //          Объем                ~ 0.04 м³ 
-        //          Вес                    41  кг
-        //          Стандартная цена     ~ 682,75 USD
-    }
+    //    //За основу взят:
+    //    //               DELTA DTM 12250 i
+    //    //Параметры:
+    //    //          Выходное напряжение    12  В
+    //    //          Емкость                250 А/ч
+    //    //          Энергия                3 кВт
+    //    //          Длина	               520 мм
+    //    //          Ширина	               269 мм
+    //    //          Высота	               288 мм
+    //    //          Объем                ~ 0.04 м³ 
+    //    //          Вес                    41  кг
+    //    //          Стандартная цена     ~ 682,75 USD
+    //}
 
-    //Сырьё 0 уровень (Добываемое)
+    ////Сырьё 0 уровень (Добываемое)
 
-    /// <summary>
-    /// Руда
-    /// </summary>
-    public class Ore : Product
-    {
-        private static readonly float _weight = 1700;
-        private static readonly float _volume = 1;
-        public override float Weight => _weight;
-        public override float Volume => _volume;
+    ///// <summary>
+    ///// Руда
+    ///// </summary>
+    //public class Ore : Product
+    //{
+    //    private static readonly float _weight = 1700;
+    //    private static readonly float _volume = 1;
+    //    public override float Weight => _weight;
+    //    public override float Volume => _volume;
 
-        //Параметры:
-        //          Тип:                   
-        //          Объем                ~ 1 м³ 
-        //          Вес                  ~ 1700  кг
-        //          Стандартная цена     ~ 112,99 USD
+    //    //Параметры:
+    //    //          Тип:                   
+    //    //          Объем                ~ 1 м³ 
+    //    //          Вес                  ~ 1700  кг
+    //    //          Стандартная цена     ~ 112,99 USD
 
-        //Производимый товар: 
-        //                    => Железо
-        //                    => Медь
-        //                    => 
-        //                    =>
-    }
-    /// <summary>
-    /// Песок
-    /// </summary>
-    public class Sand : Product
-    {
-        private static readonly float _weight = 1600;
-        private static readonly float _volume = 1;
-        public override float Weight => _weight;
-        public override float Volume => _volume;
+    //    //Производимый товар: 
+    //    //                    => Железо
+    //    //                    => Медь
+    //    //                    => 
+    //    //                    =>
+    //}
+    ///// <summary>
+    ///// Песок
+    ///// </summary>
+    //public class Sand : Product
+    //{
+    //    private static readonly float _weight = 1600;
+    //    private static readonly float _volume = 1;
+    //    public override float Weight => _weight;
+    //    public override float Volume => _volume;
 
-        //Параметры:
-        //          Тип:                   
-        //          Объем                ~ 1 м³ 
-        //          Вес                  ~ 1600 кг
-        //          Стандартная цена     ~ 6,83 USD
+    //    //Параметры:
+    //    //          Тип:                   
+    //    //          Объем                ~ 1 м³ 
+    //    //          Вес                  ~ 1600 кг
+    //    //          Стандартная цена     ~ 6,83 USD
         
-        //Производимый товар: 
-        //                   Кремний => 1т кремния из 20т песка
-    }
+    //    //Производимый товар: 
+    //    //                   Кремний => 1т кремния из 20т песка
+    //}
 
     ///// <summary>
     ///// Метан

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECSCore\ECSCore.csproj" />
+    <ProjectReference Include="..\ECSCoreUnityIntegration\ECSCoreUnityIntegration.csproj" />
     <ProjectReference Include="..\LibMath\LibMath.csproj" />
   </ItemGroup>
 

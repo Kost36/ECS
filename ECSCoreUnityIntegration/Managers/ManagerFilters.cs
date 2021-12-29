@@ -172,30 +172,30 @@ namespace ECSCore.Managers
             List<Type> typesSystems = types.Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
             foreach (Type typesSystem in typesSystems)
             {
-                //Type[] GenericTypes = typesSystem.BaseType.GenericTypeArguments;
-                //Type filterRunTimeImplementation = null;
-                //switch (GenericTypes.Length)
-                //{
-                //    case 1:
-                //        filterRunTimeImplementation = typeof(Filter<>);
-                //        break;
-                //    case 2:
-                //        filterRunTimeImplementation = typeof(Filter<,>);
-                //        break;
-                //    case 3:
-                //        filterRunTimeImplementation = typeof(Filter<,,>);
-                //        break;
-                //    case 4:
-                //        filterRunTimeImplementation = typeof(Filter<,,,>);
-                //        break;
-                //    case 5:
-                //        filterRunTimeImplementation = typeof(Filter<,,,,>);
-                //        break;
-                //}
-                //Type makeme = filterRunTimeImplementation.MakeGenericType(GenericTypes);
-                //IFilter filter = (IFilter)Activator.CreateInstance(makeme);
-                //filter.Init(_startCapacityCollections); //Инициализация
-                //AddFilter(filter); //Добавим в список
+                Type[] GenericTypes = typesSystem.BaseType.GetGenericArguments();//  .GenericTypeArguments;
+                Type filterRunTimeImplementation = null;
+                switch (GenericTypes.Length)
+                {
+                    case 1:
+                        filterRunTimeImplementation = typeof(Filter<>);
+                        break;
+                    case 2:
+                        filterRunTimeImplementation = typeof(Filter<,>);
+                        break;
+                    case 3:
+                        filterRunTimeImplementation = typeof(Filter<,,>);
+                        break;
+                    case 4:
+                        filterRunTimeImplementation = typeof(Filter<,,,>);
+                        break;
+                    case 5:
+                        filterRunTimeImplementation = typeof(Filter<,,,,>);
+                        break;
+                }
+                Type makeme = filterRunTimeImplementation.MakeGenericType(GenericTypes);
+                IFilter filter = (IFilter)Activator.CreateInstance(makeme);
+                filter.Init(_startCapacityCollections); //Инициализация
+                AddFilter(filter); //Добавим в список
             } //Пройдемся по всем группам 
         }
         /// <summary>

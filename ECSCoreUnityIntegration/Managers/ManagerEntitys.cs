@@ -109,6 +109,7 @@ namespace ECSCore.Managers
             } //Иначе
             _entities.Add(entity.Id, entity);
             return entity;
+            //TODO проверить!!!
             //if (_entities.TryAdd(entity.Id, entity)) //Добавим в коллекцию
             //{
             //    return entity; //Вернем сущьность

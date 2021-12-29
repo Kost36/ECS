@@ -83,41 +83,49 @@ namespace ECSCore.System
         internal void GetAttributes()
         {
             Type type = this.GetType();
-            object[] attrebutes = type.GetCustomAttributes(typeof(AttributeSystemPriority),false);
-            Console.WriteLine();
-            //AttributeSystemPriority attributeSystemPriority = type.GetCustomAttribute();
-            //if (attributeSystemPriority == null)
-            //{
-            //    throw new ExceptionSystemNotHaveAttribute(typeof(AttributeSystemPriority), type);
-            //} //Если у системы нету атрибута приоритетности
-            //else
-            //{
-            //    Priority = attributeSystemPriority.Priority;
-            //} //Если у системы есть атрибут приоритетности
+            object attrebute = type.GetCustomAttributes(typeof(AttributeSystemPriority),false);
+            AttributeSystemPriority attributeSystemPriority = (AttributeSystemPriority)attrebute; //type.GetCustomAttribute();
+            if (attributeSystemPriority == null)
+            {
+                throw new ExceptionSystemNotHaveAttribute(typeof(AttributeSystemPriority), type);
+            } //Если у системы нету атрибута приоритетности
+            else
+            {
+                Priority = attributeSystemPriority.Priority;//Activator.CreateInstance(attrebutes); attributeSystemPriority.Priority;
+            } //Если у системы есть атрибут приоритетности
+
+            object attrebute1 = type.GetCustomAttributes(typeof(AttributeSystemCalculate), false);
+            AttributeSystemCalculate attributeSystemCalculate = (AttributeSystemCalculate)attrebute1;
             //AttributeSystemCalculate attributeSystemCalculate = type.GetCustomAttribute<AttributeSystemCalculate>();
-            //if (attributeSystemCalculate == null)
-            //{
-            //    throw new ExceptionSystemNotHaveAttribute(typeof(AttributeSystemCalculate), type);
-            //} //Если у системы нету атрибута интервала обработки 
-            //IntervalTicks = attributeSystemCalculate.CalculateInterval * TimeSpan.TicksPerMillisecond;
+            if (attributeSystemCalculate == null)
+            {
+                throw new ExceptionSystemNotHaveAttribute(typeof(AttributeSystemCalculate), type);
+            } //Если у системы нету атрибута интервала обработки 
+            IntervalTicks = attributeSystemCalculate.CalculateInterval * TimeSpan.TicksPerMillisecond;
+
+            object attrebute2 = type.GetCustomAttributes(typeof(AttributeSystemEnable), false);
+            AttributeSystemEnable attributeSystemEnable = (AttributeSystemEnable)attrebute2;
             //AttributeSystemEnable attributeSystemEnable = type.GetCustomAttribute<AttributeSystemEnable>();
-            //if (attributeSystemEnable == null)
-            //{
-            //    IsEnable = true;
-            //} //Если у системы нету атрибута активации 
-            //else
-            //{
-            //    IsEnable = attributeSystemEnable.IsEnable;
-            //}//Если у системы есть атрибута активации 
+            if (attributeSystemEnable == null)
+            {
+                IsEnable = true;
+            } //Если у системы нету атрибута активации 
+            else
+            {
+                IsEnable = attributeSystemEnable.IsEnable;
+            }//Если у системы есть атрибута активации 
+
+            object attrebute3 = type.GetCustomAttributes(typeof(AttributeSystemEarlyExecution), false);
+            AttributeSystemEarlyExecution attributeSystemEarlyExecution = (AttributeSystemEarlyExecution)attrebute3;
             //AttributeSystemEarlyExecution attributeSystemEarlyExecution = type.GetCustomAttribute<AttributeSystemEarlyExecution>();
-            //if (attributeSystemEarlyExecution == null)
-            //{
-            //    EarlyExecutionTicks = 0;
-            //} //Если у системы нету атрибута предварительного выполнения 
-            //else
-            //{
-            //    EarlyExecutionTicks = (long)(((float)IntervalTicks / 100f) * attributeSystemEarlyExecution.PercentThresholdTime);
-            //}//Если у системы есть атрибута предварительного выполнения  
+            if (attributeSystemEarlyExecution == null)
+            {
+                EarlyExecutionTicks = 0;
+            } //Если у системы нету атрибута предварительного выполнения 
+            else
+            {
+                EarlyExecutionTicks = (long)(((float)IntervalTicks / 100f) * attributeSystemEarlyExecution.PercentThresholdTime);
+            }//Если у системы есть атрибута предварительного выполнения  
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением

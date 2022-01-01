@@ -149,13 +149,13 @@ namespace ECSCore.Tests
             //Заполняем
             while (true)
             {
-                for (int i=0; i<1000; i++)
+                for (int i=0; i<100; i++)
                 {
                     ShipFactory.AddShip();
                 }
                 Debug.WriteLine(IECSDebug.GetInfo(true));
-                Thread.Sleep(100);
-                if (IECSDebug.ManagerEntitys.CountEntitys > 1000000)
+                Thread.Sleep(200);
+                if (IECSDebug.ManagerEntitys.CountEntitys > 100000)
                 {
                     break;
                 }
@@ -166,7 +166,7 @@ namespace ECSCore.Tests
             //Наблюдаем
             IECSDebug.ManagerSystems.ClearStatisticSystems();
             int j = 0;
-            while (j<20)
+            while (j<200)
             {
                 Debug.WriteLine(IECSDebug.GetInfo(true));
                 Thread.Sleep(1000);

@@ -18,13 +18,9 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        internal ManagerFilters(ECS ecs, Assembly assembly, int startCapacityCollections)
+        internal ManagerFilters(ECS ecs, Assembly assembly)
         {
             _ecs = ecs;
-            if (startCapacityCollections > 10)
-            {
-                _startCapacityCollections = startCapacityCollections;
-            }
             Init(assembly);
         }
         #endregion
@@ -34,10 +30,6 @@ namespace ECSCore.Managers
         /// Ссылка на ECSCore
         /// </summary>
         private ECS _ecs;
-        /// <summary>
-        /// Стартовая вместимость коллекций
-        /// </summary>
-        private int _startCapacityCollections = 10;
         /// <summary>
         /// Список фильтров групп компонент
         /// </summary>
@@ -139,7 +131,7 @@ namespace ECSCore.Managers
         {
             foreach (IFilter filter in _filters)
             {
-                filter.RemoveOfId(id); //Удаляем (Попытка, удалить или нет проверяет группа) 
+                filter.RemoveEntity(id); //Удаляем (Попытка, удалить или нет проверяет группа) 
             } //Проходимся по всем группам 
         }
         #endregion
@@ -150,53 +142,123 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        private void AddFilter(IFilter filter)
+        internal void AddFilter(FilterBase filter)
         {
-            List<Type> typesComponent = filter.GetTypesComponents();
-            foreach (IFilter selectedFilter in _filters)
+            foreach (FilterBase selectedFilter in _filters)
             {
-                if (selectedFilter.CheckFilter(typesComponent))
+                if (CheckFilters(selectedFilter, filter))
                 {
-                    throw new Exception($"Дублирование фильтров! Класс: {filter.GetType().FullName} пересекается с классом: {selectedFilter.GetType().FullName}");
+                    return;
                 }; //Проверить наличие подобного фильтра
             } //Проходимся по всем фильтрам
             _filters.Add(filter);
         }
+
+        /// <summary>
+        /// Проверить фильтры 
+        /// </summary>
+        /// <param name="filter1"> Фильтр 1 </param>
+        /// <param name="filter2"> Фильтр 2 </param>
+        /// <returns> true(Есть фильтр с точным совпадением) / false(Необходимо зарегистрировать фильтр)</returns>
+        private bool CheckFilters(FilterBase filter1, FilterBase filter2)
+        {
+            if (filter1.TypesExistComponents.Count == filter2.TypesExistComponents.Count)
+            {
+                if (filter1.TypesWithoutComponents.Count == filter2.TypesWithoutComponents.Count)
+                {
+                    foreach (Type filter1TypeExistComponent in filter1.TypesExistComponents)
+                    {
+                        bool next = false;
+                        foreach (Type filter2TypeExistComponent in filter2.TypesExistComponents)
+                        {
+                            if (filter1TypeExistComponent.FullName == filter2TypeExistComponent.FullName)
+                            {
+                                next = true;
+                                break;
+                            } //Если есть совпадение
+                        } //Проверим TypesExistComponents
+                        if (next)
+                        {
+                            continue;
+                        }
+                        return false;
+                    } //Проверим TypesExistComponents
+                    foreach (Type filter1TypesWithoutComponent in filter1.TypesWithoutComponents)
+                    {
+                        bool next = false;
+                        foreach (Type filter2TypesWithoutComponent in filter2.TypesWithoutComponents)
+                        {
+                            if (filter1TypesWithoutComponent.FullName == filter2TypesWithoutComponent.FullName)
+                            {
+                                next = true;
+                                break;
+                            } //Если есть совпадение
+                        } //Проверим TypesWithoutComponents
+                        if (next)
+                        {
+                            continue;
+                        }
+                        return false;
+                    } //Проверим TypesWithoutComponents
+
+                    //Есть совпадающие фильтры.
+                    for (int i=0; i<filter1.TypesExistComponents.Count; i++)
+                    {
+                        if (filter1.TypesExistComponents[i].FullName != filter2.TypesExistComponents[i].FullName)
+                        {
+                            throw new Exception($"Дублирование фильтров! " +
+                                $"");
+                        } //Если есть совпадение
+                    } //Проверим совпадение позиций
+                    for (int i = 0; i < filter1.TypesWithoutComponents.Count; i++)
+                    {
+                        if (filter1.TypesWithoutComponents[i].FullName != filter2.TypesWithoutComponents[i].FullName)
+                        {
+                            throw new Exception($"Дублирование фильтров! " +
+                                $"");
+                        } //Если есть совпадение
+                    } //Проверим совпадение позиций
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Инициализация 
         /// </summary>
         private void Init(Assembly assembly)
         {
-            Type typeISystem = typeof(ISystem); //Получим тип интерфейса
-            Type[] types = assembly.GetTypes(); //Получаем все типы сборки 
-            List<Type> typesSystems = types.Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
-            foreach (Type typesSystem in typesSystems)
-            {
-                Type[] GenericTypes = typesSystem.BaseType.GenericTypeArguments;
-                Type filterRunTimeImplementation = null;
-                switch (GenericTypes.Length)
-                {
-                    case 1:
-                        filterRunTimeImplementation = typeof(Filter<>);
-                        break;
-                    case 2:
-                        filterRunTimeImplementation = typeof(Filter<,>);
-                        break;
-                    case 3:
-                        filterRunTimeImplementation = typeof(Filter<,,>);
-                        break;
-                    case 4:
-                        filterRunTimeImplementation = typeof(Filter<,,,>);
-                        break;
-                    case 5:
-                        filterRunTimeImplementation = typeof(Filter<,,,,>);
-                        break;
-                }
-                Type makeme = filterRunTimeImplementation.MakeGenericType(GenericTypes);
-                IFilter filter = (IFilter)Activator.CreateInstance(makeme);
-                filter.Init(_startCapacityCollections); //Инициализация
-                AddFilter(filter); //Добавим в список
-            } //Пройдемся по всем группам 
+            //Type typeISystem = typeof(ISystem); //Получим тип интерфейса
+            //Type[] types = assembly.GetTypes(); //Получаем все типы сборки 
+            //List<Type> typesSystems = types.Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
+            //foreach (Type typesSystem in typesSystems)
+            //{
+            //    Type[] genericTypes = typesSystem.BaseType.GenericTypeArguments;
+            //    Type filterRunTimeImplementation = null;
+            //    switch (genericTypes.Length)
+            //    {
+            //        case 1:
+            //            filterRunTimeImplementation = typeof(Filter<>);
+            //            break;
+            //        case 2:
+            //            filterRunTimeImplementation = typeof(Filter<,>);
+            //            break;
+            //        case 3:
+            //            filterRunTimeImplementation = typeof(Filter<,,>);
+            //            break;
+            //        case 4:
+            //            filterRunTimeImplementation = typeof(Filter<,,,>);
+            //            break;
+            //        case 5:
+            //            filterRunTimeImplementation = typeof(Filter<,,,,>);
+            //            break;
+            //    }
+            //    Type makeme = filterRunTimeImplementation.MakeGenericType(genericTypes);
+            //    IFilter filter = (IFilter)Activator.CreateInstance(makeme);
+            //    filter.Init(); //Инициализация
+            //    AddFilter(filter); //Добавим в список
+            //} //Пройдемся по всем группам 
         }
         /// <summary>
         /// Получить общее количество сущьностей в фильтрах

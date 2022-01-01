@@ -15,14 +15,10 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        internal ManagerComponents(ECS ecs, int startCountEntityCapacity)
+        internal ManagerComponents(ECS ecs)
         {
             _ecs = ecs;
-            if (startCountEntityCapacity > 10)
-            {
-                _startCountCapacity = startCountEntityCapacity;
-            }
-            _collections = new List<Components>(_startCountCapacity);
+            _collections = new List<Components>();
         }
         #endregion
 

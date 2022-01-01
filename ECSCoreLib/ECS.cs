@@ -56,9 +56,8 @@ namespace ECSCore
         /// Инициализация ECS
         /// </summary>
         /// <param name="assembly"> ссылка на сборку (Где находятся: Компоненты / Cистемы) </param>
-        /// <param name="startCapacityCollections"></param>
         /// <exception cref="ExceptionECSIsInitializated"> </exception>
-        public static void Initialization(Assembly assembly, int startCapacityCollections = 10) //ECSSetting ecsSetting, 
+        public static void Initialization(Assembly assembly) //ECSSetting ecsSetting, 
         {
             if (_ecs == null)
             {
@@ -68,13 +67,9 @@ namespace ECSCore
             {
                 throw new ExceptionECSIsInitializated("ECS was initialized before");
             }
-            if (startCapacityCollections > 10)
-            {
-                _ecs._startCapacityCollections = startCapacityCollections;
-            }
-            _ecs._managerEntitys = new ManagerEntitys(_ecs, _ecs._startCapacityCollections); //Инициализация менеджера сущьностей
-            _ecs._managerComponents = new ManagerComponents(_ecs, _ecs._startCapacityCollections); //Инициализация менеджера компонент
-            _ecs._managerFilters = new ManagerFilters(_ecs, assembly, _ecs._startCapacityCollections); //Создадим менеджера фильтров
+            _ecs._managerEntitys = new ManagerEntitys(_ecs); //Инициализация менеджера сущьностей
+            _ecs._managerComponents = new ManagerComponents(_ecs); //Инициализация менеджера компонент
+            _ecs._managerFilters = new ManagerFilters(_ecs, assembly); //Создадим менеджера фильтров
             _ecs._managerSystems = new ManagerSystems(_ecs, assembly, _ecs._managerFilters); //Создадим менеджера систем
 
             //_ecs.ECSetting = ecsSetting; //Зададим параметры работы ECS

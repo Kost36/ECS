@@ -14,13 +14,9 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        internal ManagerEntitys(ECS ecs, int startCountEntityCapacity)
+        internal ManagerEntitys(ECS ecs)
         {
             _ecs = ecs;
-            if (startCountEntityCapacity > 10)
-            {
-                _startCountCapacity = startCountEntityCapacity;
-            }
             _entities = new Dictionary<int, Entity>(_startCountCapacity);
         }
         #endregion

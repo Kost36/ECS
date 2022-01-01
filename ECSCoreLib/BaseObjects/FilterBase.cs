@@ -1,5 +1,7 @@
 ﻿using ECSCore.Filters;
+using ECSCore.Filters.Jobs;
 using ECSCore.Interfaces;
+using ECSCore.System;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,24 +16,111 @@ namespace ECSCore.BaseObjects
     /// </summary>
     internal abstract class FilterBase : IFilter
     {
-        private Stopwatch _stopwatch = new Stopwatch();
+        #region IFilter Реализация
         /// <summary>
-        /// Количество элементов в фильтре
+        /// Ссылка на ECSCore
+        /// </summary>
+        public IECSSystem ECSSystem { get; set; }
+        /// <summary>
+        /// Заинтересованные в фильтре системы
+        /// </summary>
+        public List<SystemBase> InterestedSystems { get; set; } = new List<SystemBase>();
+        ///// <summary>
+        ///// Флаг наличия соответствующего интерфейса у системы 
+        ///// </summary>
+        //public bool IsActionAdd { get; set; }
+        ///// <summary>
+        ///// Флаг наличия соответствующего интерфейса у системы 
+        ///// </summary>
+        //public bool IsAction { get; set; }
+        ///// <summary>
+        ///// Флаг наличия соответствующего интерфейса у системы 
+        ///// </summary>
+        //public bool IsActionRemove { get; set; }
+        /// <summary>
+        /// Добавить в фильтр заинтересеванную в нем систему
+        /// </summary>
+        /// <param name="system"> Ссылка на систему </param>
+        public void AddInterestedSystem(SystemBase system)
+        {
+            InterestedSystems.Add(system);
+        }
+        #endregion
+
+        #region IFilterDebug Реализуется наследником
+        /// <summary>
+        /// Количество отслеживаемых сущьностей в фильтре
         /// </summary>
         public abstract int Count { get; }
+        #endregion
+
+        #region IFilterInit Реализуется наследником
         /// <summary>
-        /// Стартовая вместимость элементов в фильтре
+        /// Типы имеющихся компонент
         /// </summary>
-        public int Capacity { get; set; } = 10;
+        public abstract List<Type> TypesExistComponents { get; set; }
+        /// <summary>
+        /// Типы исключающихся компонент
+        /// </summary>
+        public abstract List<Type> TypesWithoutComponents { get; set; }
+        /// <summary>
+        /// Инициализация фильтра
+        /// </summary>
+        public abstract void Init();
+        #endregion
+
+        #region IFilterCheck Реализация
+        /// <summary>
+        /// Проверяет группу на необходимость обрабатывать компонент
+        /// </summary>
+        /// <param name="typeComponet"> Тип компонента </param>
+        public bool ComponetTypeIsInteresting(Type typeComponet)
+        {
+            foreach (Type typeExistComponent in TypesExistComponents)
+            {
+                if (typeComponet.FullName == typeExistComponent.FullName)
+                {
+                    return true;
+                }
+            }
+            foreach (Type typeWithoutComponent in TypesWithoutComponents)
+            {
+                if (typeComponet.FullName == typeWithoutComponent.FullName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// Проверяет группу на выбранные типы компонент
+        /// </summary>
+        /// <param name="typesExistComponents"> Типы компонент, которые должны быть на сущьности </param>
+        /// <param name="typesWithoutComponents"> Типы компонент, которых недолжно быть на сущьности </param>
+        /// <returns></returns>
+        public bool CheckFilter(List<Type> typesExistComponents, List<Type> typesWithoutComponents)
+        {
+            if (typesExistComponents.Count == TypesExistComponents.Count)
+            {
+                if(typesWithoutComponents.Count == TypesWithoutComponents.Count)
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            return false;
+        }
+        #endregion
+
+        #region IFilterAction Реализация
+        private Stopwatch _stopwatch = new Stopwatch();
         /// <summary>
         /// Список заданий для фильтра
         /// </summary>
         public Queue<IJobToFilter> JobToFilters { get; set; } = new Queue<IJobToFilter>();
-
         /// <summary>
-        /// Рассчитать входные данные
+        /// Вычислить все входные задания
         /// </summary>
-        public void Сalculate()
+        public void СalculateJob()
         {
             lock (JobToFilters)
             {
@@ -43,84 +132,74 @@ namespace ECSCore.BaseObjects
             }
         } //TODO Lock только на получение объекта из очереди. Add Performance
         /// <summary>
-        /// Рассчитать входные данные
+        /// Вычислять входные задания, некоторое время
         /// </summary>
-        public void Сalculate(long limitTimeTicks)
+        public void СalculateJob(long limitTimeTicks)
         {
+            _stopwatch.Reset();
+            _stopwatch.Start();
             lock (JobToFilters)
             {
-                _stopwatch.Start();
                 while (JobToFilters.Count > 0)
                 {
                     IJobToFilter jobToFilter = JobToFilters.Dequeue();
                     jobToFilter.Action(this);
                     if (_stopwatch.ElapsedTicks > limitTimeTicks)
                     {
-                        return;
+                        break;
                     }
                 } //Пока в коллекции что то есть
             }
+            _stopwatch.Stop();
         } //TODO Lock только на получение объекта из очереди. Add Performance
         /// <summary>
-        /// Добавить компонент к фильтру
+        /// Добавить, если сущьность подходит под фильтр
         /// </summary>
-        /// <param name="component"></param>
-        /// <param name="entity"></param>
+        /// <param name="component"> Добавленный к сущьности компонент </param>
+        /// <param name="entity"> ссылка на сущьность </param>
         public void Add(IComponent component, Entity entity)
         {
             if (ComponetTypeIsInteresting(component.GetType()))
             {
                 lock (JobToFilters)
                 {
-                    JobToFilters.Enqueue(new JobTryAdd(component, entity));
+                    JobToFilters.Enqueue(new JobTryAdd(entity.Id));
                 }
             } //Если фильтр интересуется данным компонентом
         }
         /// <summary>
-        /// Удалить компонент из фильтра
+        /// Удалить, если есть в фильтре
         /// </summary>
-        /// <param name="component"></param>
-        /// <param name="entity"></param>
+        /// <param name="entity"> ссылка на сущьность </param>
         public void Remove<T>(Entity entity)
         {
             if (ComponetTypeIsInteresting(typeof(T)))
             {
                 lock (JobToFilters)
                 {
-                    JobToFilters.Enqueue(new JobTryRemove(typeof(T), entity));
+                    JobToFilters.Enqueue(new JobTryRemove(entity.Id));
                 }
             } //Если фильтр интересуется данным компонентом
         }
         /// <summary>
-        /// Удалить из фильтра компоненты с Id
+        /// Удалить из фильтра сущьность
         /// </summary>
-        /// <param name="id"></param>
-        public void RemoveOfId(int id)
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        public void RemoveEntity(int entityId)
         {
             lock (JobToFilters)
             {
-                JobToFilters.Enqueue(new JobTryRemoveId(id));
+                JobToFilters.Enqueue(new JobTryRemoveEntity(entityId));
             }
         }
+        #endregion
 
-        /// <summary>
-        /// Проверяет группу на выбранные типы компонент
-        /// </summary>
-        /// <param name="typesComponet"></param>
-        public abstract bool CheckFilter(List<Type> typesComponet);
-        /// <summary>
-        /// Проверяет группу на необходимость обрабатывать компонент
-        /// </summary>
-        /// <param name="typesComponet"></param>
-        public abstract bool ComponetTypeIsInteresting(Type typeComponet);
-        /// <summary>
-        /// Получить список типов компонент в фильтре
-        /// </summary>
-        public abstract List<Type> GetTypesComponents();
-
-        public abstract void Init(int capacity);
-        public abstract void TryAdd(IComponent component, Entity entity);
-        public abstract void TryRemove(Type typeComponent, Entity entity);
-        public abstract void TryRemove(int id);
+        #region IFilterActionGroup Реализуется наследником
+        public abstract void TryAdd(int entityId);
+        //public abstract void TryAddOk(int entityId);
+        public abstract void TryRemove(int entityId);
+        //public abstract void TryRemoveOk(int entityId);
+        public abstract void TryRemoveEntity(int entityId);
+        #endregion
     }
 }

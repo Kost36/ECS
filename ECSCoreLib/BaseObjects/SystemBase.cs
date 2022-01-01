@@ -22,7 +22,19 @@ namespace ECSCore.System
         internal SystemBase() { }
         #endregion
 
-        #region Реализация ISystem
+        #region ISystemRunTime Реализация
+        /// <summary>
+        /// Интервал времени между предидущим выполнением и фактическим.
+        /// Размерность: sec
+        /// </summary>
+        public float DeltaTime { get; set; }
+        /// <summary>
+        /// Интерфейс взаимодействия с ECS из систем
+        /// </summary>
+        public IECSSystem IECS { get => ECS; }
+        #endregion
+
+        #region ISystemSetting Реализация
         /// <summary>
         /// Система включена (Работает)
         /// </summary>
@@ -40,25 +52,28 @@ namespace ECSCore.System
         /// </summary>
         public long EarlyExecutionTicks { get; set; }
         /// <summary>
-        /// Интервал времени между предидущим выполнением и фактическим.
-        /// Размерность: sec
+        /// Флаг наличия соответствующего интерфейса у системы 
         /// </summary>
-        public float DeltaTime { get; private set; }
+        public bool IsActionAdd { get; set; }
         /// <summary>
-        /// Интерфейс взаимодействия с ECS из систем
+        /// Флаг наличия соответствующего интерфейса у системы 
         /// </summary>
-        public IECSSystem IECS { get => ECS; }
+        public bool IsAction { get; set; }
+        /// <summary>
+        /// Флаг наличия соответствующего интерфейса у системы 
+        /// </summary>
+        public bool IsActionRemove { get; set; }
         #endregion
 
-        #region Зависимости
+        #region Свойства
         /// <summary>
         /// ECS
         /// </summary>
         internal ECS ECS { get; set; }
         /// <summary>
-        /// Менеджер фильтров
+        /// Фильтр системы
         /// </summary>
-        internal ManagerFilters ManagerFilters { get; set; }
+        internal abstract FilterBase FilterBase { get; }
         /// <summary>
         /// Время последнего выполнения
         /// </summary>
@@ -67,15 +82,17 @@ namespace ECSCore.System
 
         #region Реализация в данном класcе на уровне ECSCore
         /// <summary>
-        /// Метод введения зависимостей
+        /// Метод инициализации системы
         /// </summary>
         /// <param name="managerFilters"></param>
         /// <param name="eCS"></param>
-        internal void Injection(ManagerFilters managerFilters, ECS eCS)
+        internal void Init(ManagerFilters managerFilters, ECS eCS)
         {
-            ManagerFilters = managerFilters;
             ECS = eCS;
-            GetFilter();
+            managerFilters.AddFilter(FilterBase); //Проверить наличие и зарегистрировать фильтр
+            GetFilter(managerFilters); //Подтянуть нужный фильтр
+            FilterBase.ECSSystem = eCS; //Ввод зависимости
+            FilterBase.AddInterestedSystem(this); //Добавить в фильтр заинтересованную систему
         }
         /// <summary>
         /// Предварительная инициализация системы (Подтяжка аттребутов)
@@ -83,6 +100,7 @@ namespace ECSCore.System
         internal void GetAttributes()
         {
             Type type = this.GetType();
+            //Аттребуты
             AttributeSystemPriority attributeSystemPriority = type.GetCustomAttribute<AttributeSystemPriority>();
             if (attributeSystemPriority == null)
             {
@@ -116,6 +134,23 @@ namespace ECSCore.System
             {
                 EarlyExecutionTicks = (long)(((float)IntervalTicks / 100f) * attributeSystemEarlyExecution.PercentThresholdTime);
             }//Если у системы есть атрибута предварительного выполнения  
+
+            //Интерфейсы
+            IsActionAdd = false;
+            IsAction = false;
+            IsActionRemove = false;
+            if (this is ISystemActionAdd)
+            {
+                IsActionAdd = true;
+            }
+            if (this is ISystemAction)
+            {
+                IsAction = true;
+            }
+            if (this is ISystemActionRemove)
+            {
+                IsActionRemove = true;
+            }
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
@@ -130,16 +165,15 @@ namespace ECSCore.System
         /// <summary>
         /// Инициализация системы, необходима для получения ссылки на фильтр
         /// </summary>
-        internal abstract void GetFilter();
+        internal abstract void GetFilter(ManagerFilters managerFilters);
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
         internal abstract void CalculateFilter(long limitTimeTicks = 0);
         /// <summary>
-        /// Выполнение системы.
-        /// (Вызывается с интервалом, заданным через атрибут)
+        /// Проход по коллекции и вызов Action для всех item
         /// </summary>
-        internal abstract void AсtionForeach();
+        internal abstract void Aсtion();
         #endregion
     }
 }

@@ -26,6 +26,7 @@ namespace ECSCore.Tests.Entitys.Factorys
             Entity.Add(new ShipAi { }); //Интелект
 
             Entity.Add(new Pozition { X = 0, Y = 0, Z = 0 }); //Позиция
+            Entity.Add(new PozitionSV { X = 10000000, Y = 10000000, Z = 10000000 }); //Позиция
             Entity.Add(new Direction { XNorm = 1, YNorm = 0, ZNorm = 0 }); //Направление
 
             Entity.Add(new Health { HealthFact = 1000, HealthMax = 10000 }); //Прочность

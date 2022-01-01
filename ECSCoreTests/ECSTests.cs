@@ -24,7 +24,7 @@ namespace ECSCore.Tests
         public void Test_0InitializationIECS()
         {
             Ship ship = new Ship();
-            ECS.Initialization(ship.GetType().Assembly, 1100000);
+            ECS.Initialization(ship.GetType().Assembly);
             IECS = ECS.InstanceIECS;
             IECSDebug = ECS.InstanceDebug;
             Thread.Sleep(1000);
@@ -112,10 +112,10 @@ namespace ECSCore.Tests
         public void Test_7AddComponentToFilter()
         {
             IECS.GetEntity(5, out Entity entity);
-            entity.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
+            entity.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
             Assert.IsTrue(entity.Components.Count == 1);
             Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
-            entity.Add(new Speed());
+            entity.Add(new Speed() { dX=1,dY=5, dZ=8 });
             Assert.IsTrue(entity.Components.Count == 2);
             Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 2);
             Assert.IsTrue(IECS.GetEntity(6, out Entity entity1));
@@ -155,7 +155,7 @@ namespace ECSCore.Tests
                 }
                 Debug.WriteLine(IECSDebug.GetInfo(true));
                 Thread.Sleep(100);
-                if (IECSDebug.ManagerEntitys.CountEntitys > 1000000)
+                if (IECSDebug.ManagerEntitys.CountEntitys > 100000)
                 {
                     break;
                 }
@@ -166,7 +166,7 @@ namespace ECSCore.Tests
             //Наблюдаем
             IECSDebug.ManagerSystems.ClearStatisticSystems();
             int j = 0;
-            while (j<20)
+            while (j<200)
             {
                 Debug.WriteLine(IECSDebug.GetInfo(true));
                 Thread.Sleep(1000);

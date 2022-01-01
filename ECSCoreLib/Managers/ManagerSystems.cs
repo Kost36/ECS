@@ -178,8 +178,7 @@ namespace ECSCore.Managers
             {
                 SystemBase system = (SystemBase)Activator.CreateInstance(typeSystem); //Создадим объект
                 system.GetAttributes(); //Подтяжка аттребут
-                system.Injection(managerFilters, _ecs); //Инекция данных
-                system.GetFilter(); //Подтяжка фильтра
+                system.Init(managerFilters, _ecs); //Инекция данных
                 AddSystem(system); //Добавим в список
             } //Пройдемся по всем системам 
         }
@@ -463,7 +462,7 @@ namespace ECSCore.Managers
                     _stopwatch.Reset();
                     _stopwatch.Start();
                     System.CalculateDeltaTime(dateTimePoint); //Расчет DeltaTime
-                    System.AсtionForeach();
+                    System.Aсtion();
                     _stopwatch.Stop();
                     SystemStatistic.AddRunStatistic(_stopwatch.ElapsedTicks, timeWorkManagerSystemTicks); //Добавить в статистику
                 //}

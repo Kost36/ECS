@@ -1,5 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
+using ECSCore.System;
 using System;
 using System.Collections.Generic;
 
@@ -8,46 +9,122 @@ namespace ECSCore.Interfaces
     /// <summary>
     /// Интерфейс фильтра группы компонент
     /// </summary>
-    internal interface IFilter
+    internal interface IFilter : IFilterActionGroup, IFilterAction, IFilterInit, IFilterDebug 
+    { 
+        /// <summary>
+        /// Ссылка на ECSCore
+        /// </summary>
+        IECSSystem ECSSystem { get; set; }
+        /// <summary>
+        /// Заинтересованные в фильтре системы
+        /// </summary>
+        List<SystemBase> InterestedSystems { get; set; }
+        ///// <summary>
+        ///// Флаг наличия соответствующего интерфейса у системы 
+        ///// </summary>
+        //bool IsActionAdd { get; set; }
+        ///// <summary>
+        ///// Флаг наличия соответствующего интерфейса у системы 
+        ///// </summary>
+        //bool IsAction { get; set; }
+        ///// <summary>
+        ///// Флаг наличия соответствующего интерфейса у системы 
+        ///// </summary>
+        //bool IsActionRemove { get; set; }
+        /// <summary>
+        /// Добавить в фильтр заинтересеванную в нем систему
+        /// </summary>
+        /// <param name="system"> Ссылка на систему </param>
+        void AddInterestedSystem(SystemBase system);
+    }
+
+    /// <summary>
+    /// Интерфейс инициализации фильтра
+    /// </summary>
+    internal interface IFilterInit
     {
         /// <summary>
-        /// Колличество элементов в фильтре
+        /// Типы имеющихся компонент
         /// </summary>
-        int Count { get; }
+        List<Type> TypesExistComponents { get; set; }
         /// <summary>
-        /// Стартовая вместимость элементов в фильтре
+        /// Типы исключающихся компонент
         /// </summary>
-        int Capacity { get; set; }
+        List<Type> TypesWithoutComponents { get; set; }
         /// <summary>
         /// Инициализация фильтра
         /// </summary>
-        /// <param name="capacity"></param>
-        void Init(int capacity);
+        void Init();
+    }
+
+    /// <summary>
+    /// Интерфейс проверки фильтра
+    /// </summary>
+    internal interface IFilterCheck
+    {
         /// <summary>
         /// Проверяет группу на выбранные типы компонент
         /// </summary>
-        /// <param name="typesComponet"></param>
-        bool CheckFilter(List<Type> typesComponet);
+        /// <param name="typesExistComponents"> Типы компонент, которые должны быть на сущьности </param>
+        /// <param name="typesWithoutComponents"> Типы компонент, которых недолжно быть на сущьности </param>
+        /// <returns></returns>
+        bool CheckFilter(List<Type> typesExistComponents, List<Type> typesWithoutComponents);
         /// <summary>
-        /// Получить список типов компонент в фильтре
+        /// Проверяет группу на необходимость обрабатывать компонент
         /// </summary>
-        List<Type> GetTypesComponents();
+        /// <param name="typeComponet"> Тип компонента </param>
+        bool ComponetTypeIsInteresting(Type typeComponet);
+    }
+
+    /// <summary>
+    /// Интерфейс отладочной информации
+    /// </summary>
+    internal interface IFilterDebug
+    {
         /// <summary>
-        /// Добавь, если подходит
+        /// Колличество сущьностей в фильтре
         /// </summary>
-        /// <param name="component"></param>
-        /// <param name="entity"></param>
+        int Count { get; }
+    }
+
+    /// <summary>
+    /// Интерфейс действия для фильтра
+    /// </summary>
+    internal interface IFilterAction
+    {
+        void СalculateJob();
+        void СalculateJob(long limitTimeTicks);
+        /// <summary>
+        /// Список заданий для фильтра
+        /// </summary>
+        Queue<IJobToFilter> JobToFilters { get; set; }
+        /// <summary>
+        /// Добавить, если сущьность подходит под фильтр
+        /// </summary>
+        /// <param name="component"> Добавленный к сущьности компонент </param>
+        /// <param name="entity"> ссылка на сущьность </param>
         void Add(IComponent component, Entity entity);
         /// <summary>
-        /// Удали, если есть
+        /// Удалить, если есть в фильтре
         /// </summary>
-        /// <param name="component"></param>
-        /// <param name="entity"></param>
+        /// <param name="entity"> ссылка на сущьность </param>
         void Remove<T>(Entity entity);
         /// <summary>
-        /// Удали, если есть
+        /// Удалить сущьность
         /// </summary>
-        /// <param name="id"></param>
-        void RemoveOfId(int id);
+        /// <param name="entityId"> Идентификатор уничтоженной сущьности</param>
+        void RemoveEntity(int entityId);
+    }
+
+    /// <summary>
+    /// Интерфейс действия для группы компонент в фильтре
+    /// </summary>
+    internal interface IFilterActionGroup
+    {
+        void TryAdd(int entityId);
+        //void TryAddOk(int entityId);
+        void TryRemove(int entityId);
+        //void TryRemoveOk(int entityId);
+        void TryRemoveEntity(int entityId);
     }
 }

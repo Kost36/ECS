@@ -174,6 +174,14 @@ namespace ECSCore.System
         /// Проход по коллекции и вызов Action для всех item
         /// </summary>
         internal abstract void Aсtion();
+        /// <summary>
+        /// Вызвать ActionAdd у реализации
+        /// </summary>
+        internal abstract void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents);
+        /// <summary>
+        /// Вызвать ActionRemove у реализации
+        /// </summary>
+        internal abstract void AсtionRemove(int entityId);
         #endregion
     }
 }

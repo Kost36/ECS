@@ -75,13 +75,13 @@ namespace ECSCore.Filters
                 {
                     if (system.IsEnable && system.IsActionAdd)
                     {
-                        throw new NotImplementedException();
-                        //Вызвать для системы действие
+                        system.AсtionAdd(entityId, _groupComponents);
                     }
                 }
                 Collection.Add(entityId, _groupComponents);
                 _groupComponents = Activator.CreateInstance<TGroupComponents>();
             }
+
         }
         //public override void TryAddOk(int entityId)
         //{
@@ -93,39 +93,38 @@ namespace ECSCore.Filters
         //}
         public override void TryRemove(int entityId)
         {
-            if (_groupComponents.TryRemoveComponentForEntity(entityId, ECSSystem))
-            {
-                //TGroupComponents groupComponents;
-                //if (IsActionAdd)
-                //{
-                //    if (CollectionAdd.TryGetValue(entityId, out groupComponents))
-                //    {
-                //        CollectionAdd.Remove(entityId);
-                //        if (IsActionRemove)
-                //        {
-                //            CollectionRemove.Add(entityId, groupComponents);
-                //        }
-                //        return;
-                //    }
-                //}
-                if (Collection.TryGetValue(entityId, out TGroupComponents groupComponents))
+                if (_groupComponents.TryRemoveComponentForEntity(entityId, ECSSystem))
                 {
-                    foreach (SystemBase system in InterestedSystems)
-                    {
-                        if (system.IsEnable && system.IsActionRemove)
-                        {
-                            throw new NotImplementedException();
-                            //Вызвать для системы действие
-                        }
-                    }
-                    Collection.Remove(entityId);
-                    //if (IsActionRemove)
+                    //TGroupComponents groupComponents;
+                    //if (IsActionAdd)
                     //{
-                    //    CollectionRemove.Add(entityId, groupComponents);
+                    //    if (CollectionAdd.TryGetValue(entityId, out groupComponents))
+                    //    {
+                    //        CollectionAdd.Remove(entityId);
+                    //        if (IsActionRemove)
+                    //        {
+                    //            CollectionRemove.Add(entityId, groupComponents);
+                    //        }
+                    //        return;
+                    //    }
                     //}
-                    return;
+                    if (Collection.TryGetValue(entityId, out TGroupComponents groupComponents))
+                    {
+                        foreach (SystemBase system in InterestedSystems)
+                        {
+                            if (system.IsEnable && system.IsActionRemove)
+                            {
+                                system.AсtionRemove(entityId);
+                            }
+                        }
+                        Collection.Remove(entityId);
+                        //if (IsActionRemove)
+                        //{
+                        //    CollectionRemove.Add(entityId, groupComponents);
+                        //}
+                        return;
+                    }
                 }
-            }
         }
         //public override void TryRemoveOk(int entityId)
         //{

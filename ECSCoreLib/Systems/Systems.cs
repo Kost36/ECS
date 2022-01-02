@@ -89,10 +89,15 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, DeltaTime);
             }
         }
+        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        {
+            //ActionAdd(entityId, groupComponents.ExistComponent1);
+        }
+        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
         public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1) { }
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, float deltaTime) { }
-        public virtual void ActionRemove(int entityId, ExistComponentT1 existComponentT1) { }
+        public virtual void ActionRemove(int entityId) { }
     }
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2> : SystemBase
         where ExistComponentT1 : IComponent

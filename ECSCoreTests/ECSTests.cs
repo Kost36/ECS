@@ -146,6 +146,7 @@ namespace ECSCore.Tests
         [TestMethod()]
         public void Test_APerformance()
         {
+            Thread.Sleep(10000);
             //Заполняем
             while (true)
             {
@@ -155,18 +156,18 @@ namespace ECSCore.Tests
                 }
                 Debug.WriteLine(IECSDebug.GetInfo(true));
                 Thread.Sleep(100);
-                if (IECSDebug.ManagerEntitys.CountEntitys > 100000)
+                if (IECSDebug.ManagerEntitys.CountEntitys > 50000)
                 {
                     break;
                 }
             }
             IECSDebug.ManagerSystems.ClearStatisticSystems();
             //Ждем
-            Thread.Sleep(5000);
+            Thread.Sleep(50000);
             //Наблюдаем
             IECSDebug.ManagerSystems.ClearStatisticSystems();
             int j = 0;
-            while (j<200)
+            while (j<2000)
             {
                 Debug.WriteLine(IECSDebug.GetInfo(true));
                 Thread.Sleep(1000);
@@ -251,4 +252,39 @@ namespace ECSCore.Tests
 
         
     }
+
+    [TestClass()]
+    public class ECSTests1
+    {
+        public static IECS IECS;
+        public static IECSDebug IECSDebug;
+        public static Entity _entity;
+        [TestMethod()]
+        public void Test_01()
+        {
+            Ship ship = new Ship();
+            ECS.Initialization(ship.GetType().Assembly);
+            IECS = ECS.InstanceIECS;
+            IECSDebug = ECS.InstanceDebug;
+            Console.WriteLine("ОК");
+            Assert.IsNotNull(IECS);
+            Debug.WriteLine(IECSDebug.GetInfo());
+        }
+
+        [TestMethod()]
+        public void Test_02()
+        {
+            Entity ship = IECS.AddEntity(new Ship());
+            ship.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
+            ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
+            Thread.Sleep(500);
+            while (true)
+            {
+                Thread.Sleep(1000);
+            }
+        }
+
+
+
+}
 }

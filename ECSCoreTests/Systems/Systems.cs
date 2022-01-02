@@ -13,6 +13,26 @@ using System.Threading.Tasks;
 
 namespace ECSCoreTests.Systems
 {
+
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
+    [AttributeSystemPriority(5)]
+    [AttributeSystemEnable]
+    public class StartMoveSystem : SystemExistComponents<Pozition, PozitionSV>, ISystemAction, ISystemActionAdd, ISystemActionRemove
+    {
+        public override void ActionAdd(int entityId, Pozition pozition, PozitionSV pozitionSV)
+        {
+            IECS.AddComponent(new Way());
+        }
+        public override void Action(int entityId, Pozition pozition, PozitionSV pozitionSV, float deltatime)
+        {
+            entityId = entityId;
+        }
+        public override void ActionRemove(int entityId, Pozition pozition, PozitionSV pozitionSV)
+        {
+            entityId = entityId;
+        }
+    }
+
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
     [AttributeSystemPriority(5)]
     [AttributeSystemEnable]
@@ -25,7 +45,7 @@ namespace ECSCoreTests.Systems
             pozition.Z += speed.dZ * DeltaTime;
         }
     }
-
+    
     [AttributeSystemCalculate(0.2f)]
     [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
@@ -67,13 +87,13 @@ namespace ECSCoreTests.Systems
                     }
                 }
             } //Если щиты не полные и нету регенерации => добавить компонент
-            if (entity.Get(out PozitionSV pozitionSV))
-            {
-                if (entity.Get(out Way way) == false)
-                {
-                    entity.Add(new Way { Id = entityId });
-                }
-            } //Если есть задание на полет и нету way => добавить компонент
+            //if (entity.Get(out PozitionSV pozitionSV))
+            //{
+            //    if (entity.Get(out Way way) == false)
+            //    {
+            //        entity.Add(new Way { Id = entityId });
+            //    }
+            //} //Если есть задание на полет и нету way => добавить компонент
             if (entity.Get(out ShipState shipState))
             {
                 if (shipState.StateShip == Enums.StateShip.TRADE)
@@ -231,6 +251,24 @@ namespace ECSCoreTests.Systems
             speedSV.dYSV = way.NormY * speedSV.SVSpeed;
             speedSV.dZSV = way.NormZ * speedSV.SVSpeed;
 
+            if (way.Len < 10)
+            {
+                IECS.RemoveComponent<PozitionSV>(entityId); //Удалим точку перемещения
+                IECS.RemoveComponent<Way>(entityId); //Удалим путь
+
+                IECS.RemoveComponent<Speed>(entityId); //Удалим скорость
+                IECS.RemoveComponent<SpeedSV>(entityId); //Удалим заданную скорость
+                IECS.RemoveComponent<Acceleration>(entityId); //Удалим ускоре
+            }
+        }
+    }
+    [AttributeSystemCalculate(0.033f)]
+    [AttributeSystemPriority(20)]
+    [AttributeSystemEnable]
+    public class ControlSpeedSystemRemove : SystemExistComponents<Speed, SpeedSV, Way>, ISystemAction
+    {
+        public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, float deltatime)
+        {
             if (way.Len < 10)
             {
                 IECS.RemoveComponent<PozitionSV>(entityId); //Удалим точку перемещения

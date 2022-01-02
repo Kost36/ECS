@@ -10,5 +10,6 @@ namespace ECSCore.Tests.Entitys
     /// <summary>
     /// Сущьность корабля
     /// </summary>
+    [Serializable]
     public class Ship : Entity { }
 }

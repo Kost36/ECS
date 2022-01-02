@@ -11,6 +11,7 @@ namespace ECSCore.BaseObjects
     /// Базовый класс компонента.
     /// Все компоненты наследовать от данного класса
     /// </summary>
+    [Serializable]
     public abstract class ComponentBase : IComponent
     {
         /// <summary>

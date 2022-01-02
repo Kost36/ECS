@@ -10,6 +10,7 @@ namespace Game.Entitys
     /// <summary>
     /// Сущьность корабля
     /// </summary>
+    [Serializable]
     public class Ship : Entity { }
     /// <summary>
     /// Сущьность станции

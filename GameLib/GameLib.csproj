@@ -50,6 +50,7 @@
     <Compile Include="Entitys\Factorys\ShipFactory.cs" />
     <Compile Include="Entitys\Factorys\StantionFactory.cs" />
     <Compile Include="Enums\Enums.cs" />
+    <Compile Include="GetAssembly.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Systems\Systems.cs" />
     <Compile Include="Systems\SystemsV0.cs" />

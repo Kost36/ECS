@@ -11,18 +11,22 @@ namespace Game.Components
     /// <summary>
     /// Компонент интеллекта корабля
     /// </summary>
+    [Serializable]
     public class ShipAi : ComponentBase { }
     /// <summary>
     /// Компонент интеллекта корабля (Торговли)
     /// </summary>
+    [Serializable]
     public class ShipAiTrade : ComponentBase { }
     /// <summary>
     /// Компонент интеллекта корабля (Боевой)
     /// </summary>
+    [Serializable]
     public class ShipAiWar : ComponentBase { }
     /// <summary>
     /// Компонент состояния корабля
     /// </summary>
+    [Serializable]
     public class ShipState : ComponentBase
     {
         /// <summary>
@@ -34,6 +38,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент позиции
     /// </summary>
+    [Serializable]
     public class Pozition : ComponentBase
     {
         /// <summary>
@@ -53,6 +58,7 @@ namespace Game.Components
     /// Компонент заданной позиции.
     /// Позиция, в которую нужно переместиться
     /// </summary>
+    [Serializable]
     public class PozitionSV : ComponentBase
     {
         /// <summary>
@@ -71,6 +77,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент направления (Нормализованный)
     /// </summary>
+    [Serializable]
     public class Direction : ComponentBase
     {
         /// <summary>
@@ -90,6 +97,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент энерги
     /// </summary>
+    [Serializable]
     public class Enargy : ComponentBase
     {
         /// <summary>
@@ -104,6 +112,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент прочности / здоровья
     /// </summary>
+    [Serializable]
     public class Health : ComponentBase
     {
         /// <summary>
@@ -118,6 +127,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент щита
     /// </summary>
+    [Serializable]
     public class Shild : ComponentBase
     {
         /// <summary>
@@ -133,6 +143,7 @@ namespace Game.Components
     /// Компонент трюма (вместимости в м³) 
     /// м³
     /// </summary>
+    [Serializable]
     public class Hold : ComponentBase
     {
         /// <summary>
@@ -148,6 +159,7 @@ namespace Game.Components
     /// Компонент веса
     /// Кг
     /// </summary>
+    [Serializable]
     public class Weight : ComponentBase
     {
         /// <summary>
@@ -160,6 +172,7 @@ namespace Game.Components
     /// Компонент скорости
     /// (m/sec)
     /// </summary>
+    [Serializable]
     public class Speed : ComponentBase
     {
         /// <summary>
@@ -192,6 +205,7 @@ namespace Game.Components
     /// Компонент заданной скорости.
     /// (m/sec)
     /// </summary>
+    [Serializable]
     public class SpeedSV : ComponentBase
     {
         /// <summary>
@@ -219,6 +233,7 @@ namespace Game.Components
     /// Компонент скорости вращения
     /// (value/sec)
     /// </summary>
+    [Serializable]
     public class SpeedRotation : ComponentBase
     {
         /// <summary>
@@ -241,6 +256,7 @@ namespace Game.Components
     /// Компонент ускорения
     /// (dm/sec)
     /// </summary>
+    [Serializable]
     public class Acceleration : ComponentBase
     {
         /// <summary>
@@ -258,6 +274,7 @@ namespace Game.Components
     /// Компонент торможения
     /// (dm/sec)
     /// </summary>
+    [Serializable]
     public class Deceleration : ComponentBase
     {
         /// <summary>
@@ -275,6 +292,7 @@ namespace Game.Components
     /// Компонент регенерации энергии
     /// Value/сек
     /// </summary>
+    [Serializable]
     public class EnargyReGeneration : ComponentBase
     {
         /// <summary>
@@ -286,6 +304,7 @@ namespace Game.Components
     /// Компонент регенерации щита
     /// Value/сек
     /// </summary>
+    [Serializable]
     public class ShildReGeneration : ComponentBase
     {
         /// <summary>
@@ -300,6 +319,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент ремонта / исцеления
     /// </summary>
+    [Serializable]
     public class HealthReGeneration : ComponentBase
     {
         /// <summary>
@@ -315,6 +335,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент вектора заданного перемещения
     /// </summary>
+    [Serializable]
     public class Way : ComponentBase
     {
         /// <summary>

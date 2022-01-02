@@ -277,10 +277,41 @@ namespace ECSCore.Tests
             Entity ship = IECS.AddEntity(new Ship());
             ship.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
             ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
+            ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
+            ship.Add(new EnargyReGeneration() { EnargyReGen = 4f});
+            
+
+
             Thread.Sleep(500);
             while (true)
             {
                 Thread.Sleep(1000);
+                Debug.WriteLine("     ");
+                if (ship.Get(out Pozition pozition))
+                {
+                    Debug.WriteLine($"Позиция: {pozition.X} {pozition.Y} {pozition.Z}");
+                }
+                if (ship.Get(out PozitionSV pozitionSV))
+                {
+                    Debug.WriteLine($"Заданныя позиция: {pozitionSV.X} {pozitionSV.Y} {pozitionSV.Z}");
+                }
+                if (ship.Get(out Way way))
+                {
+                    Debug.WriteLine($"Путь: {way.LenX} {way.LenY} {way.LenZ} Расстояние: {way.Len} Направление: {way.NormX} {way.NormY} {way.NormZ}");
+                }
+                if (ship.Get(out Speed speed))
+                {
+                    Debug.WriteLine($"Скорость: {speed.dX} {speed.dY} {speed.dZ} Скорость: {speed.SpeedFact} / {speed.SpeedMax}");
+                }
+                if (ship.Get(out SpeedSV speedSV))
+                {
+                    Debug.WriteLine($"Заданная скорость: {speedSV.dXSV} {speedSV.dYSV} {speedSV.dZSV} Факт.: {speedSV.SVSpeed}");
+                }
+                if (ship.Get(out Enargy enargy))
+                {
+                    Debug.WriteLine($"Энергия: {enargy.EnargyFact} / {enargy.EnargyMax}");
+                }
+
             }
         }
 

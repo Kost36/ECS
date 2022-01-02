@@ -248,7 +248,7 @@ namespace ECSCoreTests.Components
         /// Ускорение 
         /// (dm/sec)
         /// </summary>
-        public float Acc = 0.05f;
+        public float Acc = 0.1f;
         /// <summary>
         /// Использование энергии, для ускорения
         /// (value/sec)

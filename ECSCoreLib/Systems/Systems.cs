@@ -91,7 +91,8 @@ namespace ECSCore.Systems
         }
         internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
         {
-            //ActionAdd(entityId, groupComponents.ExistComponent1);
+            GroupComponentsExist<ExistComponentT1> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1>;
+            ActionAdd(entityId, groupComponentsExist.ExistComponent1);
         }
         internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
@@ -142,10 +143,16 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, DeltaTime);
             }
         }
+        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        {
+            GroupComponentsExist<ExistComponentT1, ExistComponentT2> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2>;
+            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2);
+        }
+        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
         public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2) { }
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, float deltaTime) { }
-        public virtual void ActionRemove(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2) { }
+        public virtual void ActionRemove(int entityId) { }
     }
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3> : SystemBase
         where ExistComponentT1 : IComponent
@@ -187,10 +194,16 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, DeltaTime);
             }
         }
+        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        {
+            GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>;
+            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3);
+        }
+        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
         public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3) { }
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, float deltaTime) { }
-        public virtual void ActionRemove(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3) { }
+        public virtual void ActionRemove(int entityId) { }
     }
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> : SystemBase
         where ExistComponentT1 : IComponent
@@ -233,10 +246,16 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, DeltaTime);
             }
         }
+        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        {
+            GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>;
+            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4);
+        }
+        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
         public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4) { }
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, float deltaTime) { }
-        public virtual void ActionRemove(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4) { }
+        public virtual void ActionRemove(int entityId) { }
     }
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> : SystemBase
         where ExistComponentT1 : IComponent
@@ -280,10 +299,16 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, DeltaTime);
             }
         }
+        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        {
+            GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>;
+            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4, groupComponentsExist.ExistComponent5);
+        }
+        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
         public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5) { }
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, float deltaTime) { }
-        public virtual void ActionRemove(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5) { }
+        public virtual void ActionRemove(int entityId) { }
     }
 
 

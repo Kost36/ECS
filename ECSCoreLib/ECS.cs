@@ -97,10 +97,6 @@ namespace ECSCore
         /// Менеджер систем
         /// </summary>
         private ManagerSystems _managerSystems;
-        /// <summary>
-        /// Стартовая вместимость коллекций
-        /// </summary>
-        private int _startCapacityCollections;
         #endregion
 
         #region Свойства

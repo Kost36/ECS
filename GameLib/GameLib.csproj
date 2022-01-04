@@ -42,27 +42,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Components.cs" />
-    <Compile Include="Components\Productions\Production.cs" />
-    <Compile Include="Components\Products\Products.cs" />
-    <Compile Include="Components\Tasks\Tasks.cs" />
-    <Compile Include="Entitys\Entitys.cs" />
-    <Compile Include="Entitys\Factorys\ShipFactory.cs" />
-    <Compile Include="Entitys\Factorys\StantionFactory.cs" />
-    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Components.cs" />
     <Compile Include="GetAssembly.cs" />
+    <Compile Include="Old\Components\Components.cs" />
+    <Compile Include="Old\Components\Productions\Production.cs" />
+    <Compile Include="Old\Components\Products\Products.cs" />
+    <Compile Include="Old\Components\Tasks\Tasks.cs" />
+    <Compile Include="Old\Entitys\Entitys.cs" />
+    <Compile Include="Old\Entitys\Factorys\ShipFactory.cs" />
+    <Compile Include="Old\Entitys\Factorys\StantionFactory.cs" />
+    <Compile Include="Old\Enums\Enums.cs" />
+    <Compile Include="Old\GetAssembly.cs" />
+    <Compile Include="Other.cs" />
+    <Compile Include="Systems.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Systems\Systems.cs" />
-    <Compile Include="Systems\SystemsV0.cs" />
+    <Compile Include="Old\Systems\Systems.cs" />
+    <Compile Include="Old\Systems\SystemsV0.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj">
       <Project>{2F63CFF3-255A-4F91-BB44-CA7018FA1CAD}</Project>
       <Name>ECSCoreLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MathLib\MathLib.csproj">
-      <Project>{b6bd5759-5872-44f3-b5a0-24ea0f4fe10b}</Project>
-      <Name>MathLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,32 +3,25 @@ using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces;
 using ECSCore.Systems;
-using ECSCoreTests.Components;
-using LibMath;
+using GameLib.Components;
+using GameLib.Lib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCoreTests.Systems
+namespace GameLib.Systems
 {
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(5)]
     [AttributeSystemEnable]
-    public class StartMoveSystem : SystemExistComponents<Pozition, PozitionSV>, ISystemAction, ISystemActionAdd, ISystemActionRemove
+    public class StartMoveSystem : SystemExistComponents<Pozition, PozitionSV>, ISystemActionAdd
     {
         public override void ActionAdd(int entityId, Pozition pozition, PozitionSV pozitionSV)
         {
             IECS.AddComponent(new Way() { Id = entityId });
-        }
-        public override void Action(int entityId, Pozition pozition, PozitionSV pozitionSV, float deltatime)
-        {
-            entityId = entityId;
-        }
-        public override void ActionRemove(int entityId)
-        {
-            entityId = entityId;
+            IECS.AddComponent(new WayToStop() { Id = entityId });
         }
     }
 
@@ -64,36 +57,48 @@ namespace ECSCoreTests.Systems
         }
     }
 
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [AttributeSystemPriority(9)]
+    [AttributeSystemEnable]
+    public class ControlWayToStopSystem : SystemExistComponents<WayToStop, Speed, Acceleration, Enargy>, ISystemAction
+    {
+        public override void Action(int entityId, WayToStop wayToStop, Speed speed, Acceleration acceleration, Enargy enargy, float deltatime)
+        {
+            //Сколько времени нужно замедляться
+            float timeDeAcc = speed.SpeedFact / acceleration.Acc;
+            wayToStop.Len = (speed.SpeedFact * timeDeAcc) / 2f;
+            float enargyNeed = timeDeAcc * acceleration.EnargyUse;
+            if (enargyNeed > enargy.EnargyFact)
+            {
+                wayToStop.EnargyHave = false;
+                return;
+            }
+            wayToStop.EnargyHave = true;
+        }
+    }
+
     [AttributeSystemCalculate(1)]
     [AttributeSystemPriority(15)]
     [AttributeSystemEnable]
-    public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way>, ISystemAction
+    public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way, WayToStop>, ISystemAction
     {
-        public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, float deltatime)
+        public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
         {
-            if (way.Len < speed.SpeedFact * 300)
+            if (wayToStop.EnargyHave && way.Len < wayToStop.Len*1.1)
             {
-                if (speed.SpeedFact < speedSV.SVSpeed)
-                {
-                    speedSV.SVSpeed = speed.SpeedFact;
-                }
-                speedSV.SVSpeed -= (float)(speed.SpeedMax * 0.1); //Снижаем на 10% от максимальной скорости
-                if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
-                {
-                    IECS.AddComponent(new Acceleration() { Id = entityId });
-                } //Если нету ускорения
-                if (speedSV.SVSpeed < 0)
-                {
-                    speedSV.SVSpeed = 0;
-                }
-            } //Если время оставшегося пути меньше 5 минут
-            if (way.Len > speed.SpeedFact * 300)
+                Stop(entityId, speed, speedSV);
+            }
+            else if (wayToStop.EnargyHave == false && way.Len < wayToStop.Len * 2)
+            {
+                Stop(entityId, speed, speedSV);
+            } //Если время оставшегося пути меньше пути останова *1.1
+            else if (way.Len > wayToStop.Len)
             {
                 if (speed.SpeedFact > speedSV.SVSpeed)
                 {
                     speedSV.SVSpeed = speed.SpeedFact;
                 }
-                if (speed.SpeedFact == speedSV.SVSpeed)
+                if (speed.SpeedFact >= speedSV.SVSpeed*0.95)
                 {
                     speedSV.SVSpeed += (float)(speed.SpeedMax * 0.05); //Увеличиваем на 5% от максимальной скорости
                     if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
@@ -112,6 +117,27 @@ namespace ECSCoreTests.Systems
             speedSV.dYSV = way.NormY * speedSV.SVSpeed;
             speedSV.dZSV = way.NormZ * speedSV.SVSpeed;
         }
+
+
+        private void Stop(int entityId, Speed speed, SpeedSV speedSV)
+        {
+            if (speedSV.SVSpeed > 0)
+            {
+                if (speed.SpeedFact < speedSV.SVSpeed)
+                {
+                    speedSV.SVSpeed = speed.SpeedFact;
+                }
+                speedSV.SVSpeed -= (float)(speed.SpeedMax * 0.1); //Снижаем на 10% от максимальной скорости
+                if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
+                {
+                    IECS.AddComponent(new Acceleration() { Id = entityId });
+                } //Если нету ускорения
+                if (speedSV.SVSpeed < 0)
+                {
+                    speedSV.SVSpeed = 0;
+                }
+            }
+        }
     }
 
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
@@ -124,6 +150,7 @@ namespace ECSCoreTests.Systems
             pozition.X += speed.dX * DeltaTime;
             pozition.Y += speed.dY * DeltaTime;
             pozition.Z += speed.dZ * DeltaTime;
+            //pozition.Transform.position = new UnityEngine.Vector3(pozition.X, pozition.Y, pozition.Z);
         }
     }
 
@@ -153,7 +180,7 @@ namespace ECSCoreTests.Systems
     {
         public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, float deltatime)
         {
-            if (way.Len < 10)
+            if (way.Len < 1)
             {
                 IECS.RemoveComponent<PozitionSV>(entityId); //Удалим точку перемещения
                 IECS.RemoveComponent<Way>(entityId); //Удалим путь
@@ -291,23 +318,6 @@ namespace ECSCoreTests.Systems
                     }
                 }
             } //Если щиты не полные и нету регенерации => добавить компонент
-            //if (entity.Get(out PozitionSV pozitionSV))
-            //{
-            //    if (entity.Get(out Way way) == false)
-            //    {
-            //        entity.Add(new Way { Id = entityId });
-            //    }
-            //} //Если есть задание на полет и нету way => добавить компонент
-            if (entity.Get(out ShipState shipState))
-            {
-                if (shipState.StateShip == Enums.StateShip.TRADE)
-                {
-                    if (entity.Get(out ShipAiTrade trade) == false)
-                    {
-                        entity.Add(new ShipAiTrade { Id = entityId });
-                    }
-                }
-            } //Если состояние торговли и нету компонента торговли => добавить компонент
         }
     }
 

@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameLib
+namespace Game
 {
     /// <summary>
     /// Получить ссылку на сборку

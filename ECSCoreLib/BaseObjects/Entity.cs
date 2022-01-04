@@ -8,7 +8,6 @@ namespace ECSCore.BaseObjects
     /// Базовый класс сущьности.
     /// Все сущьности наследовать от данного класса
     /// </summary>
-    //[Serializable]
     public abstract class Entity : IEntity
     {
         /// <summary>
@@ -57,27 +56,6 @@ namespace ECSCore.BaseObjects
         /// Для отслеживания в тестах
         /// </summary>
         public List<IComponent> Components { get; } = new List<IComponent>();
-
-        #region Тест вывод в юнити
-        //private ListComponents _listComponents;
-        //public ListComponents ListComponents
-        //{
-        //    get
-        //    {
-        //        if (_listComponents is null)
-        //        {
-        //            _listComponents = new ListComponents();
-        //        }
-        //        _listComponents.Components.Clear();
-        //        foreach (IComponent component in Components)
-        //        {
-        //            _listComponents.Components.Add((ComponentBase)component);
-        //        }
-        //        return _listComponents;
-        //    }
-            
-        //}
-        #endregion
 
         /// <summary>
         /// Добавить компонент в коллекцию сущьности
@@ -137,9 +115,4 @@ namespace ECSCore.BaseObjects
             return false;
         }
     }
-
-    //public class ListComponents
-    //{
-    //    public List<ComponentBase> Components = new List<ComponentBase>();
-    //}
 }

@@ -12,6 +12,7 @@ namespace ECSCore
     /// <summary>
     /// Модуль Entity Component System
     /// </summary>
+    [Serializable]
     public class ECS : IECSSystem, IECS, IECSDebug
     {
         #region Конструткоры
@@ -23,7 +24,7 @@ namespace ECSCore
         /// Получить экземпляр ECS
         /// </summary>
         /// <returns></returns>
-        internal static ECS Instance
+        public static ECS Instance
         {
             get
             {

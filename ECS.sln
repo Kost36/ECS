@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECSCoreLib", "ECSCoreLib\EC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLib", "GameLib\GameLib.csproj", "{74FA24F3-C0CF-48FF-BCE2-F3A489B84119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLib", "MathLib\MathLib.csproj", "{B6BD5759-5872-44F3-B5A0-24EA0F4FE10B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{74FA24F3-C0CF-48FF-BCE2-F3A489B84119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74FA24F3-C0CF-48FF-BCE2-F3A489B84119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74FA24F3-C0CF-48FF-BCE2-F3A489B84119}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B6BD5759-5872-44F3-B5A0-24EA0F4FE10B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B6BD5759-5872-44F3-B5A0-24EA0F4FE10B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B6BD5759-5872-44F3-B5A0-24EA0F4FE10B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B6BD5759-5872-44F3-B5A0-24EA0F4FE10B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

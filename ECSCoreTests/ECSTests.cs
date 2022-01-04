@@ -8,9 +8,9 @@ using System.Threading;
 using System.Diagnostics;
 using ECSCore.Interfaces;
 using ECSCore.BaseObjects;
-using ECSCore.Tests.Entitys;
-using ECSCore.Tests.Entitys.Factorys;
-using ECSCoreTests.Components;
+using Assets.ECS.Entitys;
+using GameLib.Components;
+using Game.Entitys.Factorys;
 
 namespace ECSCore.Tests
 {
@@ -271,51 +271,83 @@ namespace ECSCore.Tests
             Debug.WriteLine(IECSDebug.GetInfo());
         }
 
+        //[TestMethod()]
+        //public void Test_02()
+        //{
+        //    Entity ship = IECS.AddEntity(new Ship());
+        //    ship.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
+        //    ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
+        //    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
+        //    ship.Add(new EnargyReGeneration() { EnargyReGen = 4f});
+
+
+
+        //    Thread.Sleep(500);
+        //    while (true)
+        //    {
+        //        Thread.Sleep(1000);
+        //        Debug.WriteLine("     ");
+        //        if (ship.Get(out Pozition pozition))
+        //        {
+        //            Debug.WriteLine($"Позиция: {pozition.X} {pozition.Y} {pozition.Z}");
+        //        }
+        //        if (ship.Get(out PozitionSV pozitionSV))
+        //        {
+        //            Debug.WriteLine($"Заданныя позиция: {pozitionSV.X} {pozitionSV.Y} {pozitionSV.Z}");
+        //        }
+        //        if (ship.Get(out Way way))
+        //        {
+        //            Debug.WriteLine($"Путь: {way.LenX} {way.LenY} {way.LenZ} Расстояние: {way.Len} Направление: {way.NormX} {way.NormY} {way.NormZ}");
+        //        }
+        //        if (ship.Get(out Speed speed))
+        //        {
+        //            Debug.WriteLine($"Скорость: {speed.dX} {speed.dY} {speed.dZ} Скорость: {speed.SpeedFact} / {speed.SpeedMax}");
+        //        }
+        //        if (ship.Get(out SpeedSV speedSV))
+        //        {
+        //            Debug.WriteLine($"Заданная скорость: {speedSV.dXSV} {speedSV.dYSV} {speedSV.dZSV} Факт.: {speedSV.SVSpeed}");
+        //        }
+        //        if (ship.Get(out Enargy enargy))
+        //        {
+        //            Debug.WriteLine($"Энергия: {enargy.EnargyFact} / {enargy.EnargyMax}");
+        //        }
+
+        //    }
+        //}
+
+
         [TestMethod()]
         public void Test_02()
         {
-            Entity ship = IECS.AddEntity(new Ship());
-            ship.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
-            ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
-            ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
-            ship.Add(new EnargyReGeneration() { EnargyReGen = 4f});
-            
+            int j = 0;
+            while (j < 50000)
+            {
+                for (int i = 0; i < 1000; i++)
+                {
+                    Entity ship = IECS.AddEntity(new Ship());
+                    ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
+                    ship.Add(new PozitionSV() { X = 1000, Y = 1000, Z = 1000 });
+                    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
+                    ship.Add(new EnargyReGeneration() { EnargyReGen = 5f });
+                    j++;
+                }
+                Thread.Sleep(1000);
+                Debug.WriteLine(IECSDebug.GetInfo(true));
+            }
 
-
-            Thread.Sleep(500);
+            Thread.Sleep(10000);
+            IECSDebug.ManagerSystems.ClearStatisticSystems();
             while (true)
             {
                 Thread.Sleep(1000);
-                Debug.WriteLine("     ");
-                if (ship.Get(out Pozition pozition))
+                Debug.WriteLine(IECSDebug.GetInfo(true));
+                if (IECSDebug.ManagerEntitys.CountEntitys == 0)
                 {
-                    Debug.WriteLine($"Позиция: {pozition.X} {pozition.Y} {pozition.Z}");
+                    break;
                 }
-                if (ship.Get(out PozitionSV pozitionSV))
-                {
-                    Debug.WriteLine($"Заданныя позиция: {pozitionSV.X} {pozitionSV.Y} {pozitionSV.Z}");
-                }
-                if (ship.Get(out Way way))
-                {
-                    Debug.WriteLine($"Путь: {way.LenX} {way.LenY} {way.LenZ} Расстояние: {way.Len} Направление: {way.NormX} {way.NormY} {way.NormZ}");
-                }
-                if (ship.Get(out Speed speed))
-                {
-                    Debug.WriteLine($"Скорость: {speed.dX} {speed.dY} {speed.dZ} Скорость: {speed.SpeedFact} / {speed.SpeedMax}");
-                }
-                if (ship.Get(out SpeedSV speedSV))
-                {
-                    Debug.WriteLine($"Заданная скорость: {speedSV.dXSV} {speedSV.dYSV} {speedSV.dZSV} Факт.: {speedSV.SVSpeed}");
-                }
-                if (ship.Get(out Enargy enargy))
-                {
-                    Debug.WriteLine($"Энергия: {enargy.EnargyFact} / {enargy.EnargyMax}");
-                }
-
             }
+            Assert.IsTrue(true);
         }
 
-
-
-}
+    }
 }

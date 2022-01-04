@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj" />
+    <ProjectReference Include="..\GameLib\GameLib.csproj" />
     <ProjectReference Include="..\LibMath\LibMath.csproj" />
   </ItemGroup>
 

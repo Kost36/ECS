@@ -27,18 +27,6 @@ namespace ECSCore.BaseObjects
         /// Заинтересованные в фильтре системы
         /// </summary>
         public List<SystemBase> InterestedSystems { get; set; } = new List<SystemBase>();
-        ///// <summary>
-        ///// Флаг наличия соответствующего интерфейса у системы 
-        ///// </summary>
-        //public bool IsActionAdd { get; set; }
-        ///// <summary>
-        ///// Флаг наличия соответствующего интерфейса у системы 
-        ///// </summary>
-        //public bool IsAction { get; set; }
-        ///// <summary>
-        ///// Флаг наличия соответствующего интерфейса у системы 
-        ///// </summary>
-        //public bool IsActionRemove { get; set; }
         /// <summary>
         /// Добавить в фильтр заинтересеванную в нем систему
         /// </summary>
@@ -54,6 +42,15 @@ namespace ECSCore.BaseObjects
         /// Количество отслеживаемых сущьностей в фильтре
         /// </summary>
         public abstract int Count { get; }
+
+        //Отладка (Заполнение фильтра)
+        internal int CountJobAdd;
+        internal int CountJobRemove;
+        internal int CountAdd;
+        internal int CountRemove;
+        internal int CountJobRemoveEntity;
+        internal int CountNotAdd_Have;
+        internal int CountNotAdd_TryAddComponentForEntity_IsFalse;
         #endregion
 
         #region IFilterInit Реализуется наследником
@@ -104,7 +101,7 @@ namespace ECSCore.BaseObjects
         {
             if (typesExistComponents.Count == TypesExistComponents.Count)
             {
-                if(typesWithoutComponents.Count == TypesWithoutComponents.Count)
+                if (typesWithoutComponents.Count == TypesWithoutComponents.Count)
                 {
                     throw new NotImplementedException();
                 }
@@ -166,6 +163,7 @@ namespace ECSCore.BaseObjects
                 lock (JobToFilters)
                 {
                     JobToFilters.Enqueue(new JobTryAdd(entity.Id));
+                    CountJobAdd++;
                 }
             } //Если фильтр интересуется данным компонентом
         }
@@ -180,6 +178,7 @@ namespace ECSCore.BaseObjects
                 lock (JobToFilters)
                 {
                     JobToFilters.Enqueue(new JobTryRemove(entity.Id));
+                    CountJobRemove++;
                 }
             } //Если фильтр интересуется данным компонентом
         }
@@ -192,15 +191,14 @@ namespace ECSCore.BaseObjects
             lock (JobToFilters)
             {
                 JobToFilters.Enqueue(new JobTryRemoveEntity(entityId));
+                CountJobRemoveEntity++;
             }
         }
         #endregion
 
         #region IFilterActionGroup Реализуется наследником
         public abstract void TryAdd(int entityId);
-        //public abstract void TryAddOk(int entityId);
         public abstract void TryRemove(int entityId);
-        //public abstract void TryRemoveOk(int entityId);
         public abstract void TryRemoveEntity(int entityId);
         #endregion
     }

@@ -6,6 +6,7 @@ using ECSCore.Interfaces.ECS;
 using ECSCore.Managers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -285,6 +286,24 @@ namespace ECSCore
                 info = info.Append($"{this.ManagerSystems.GetInfo(smallInfo)} \r\n");
             }
             return info;
+        }
+        #endregion
+
+        #region Управление ECS
+        /// <summary>
+        /// Освободить ресурсы
+        /// </summary>
+        public void Despose()
+        {
+            if (_ecs != null)
+            {
+                //TODO Завершить потоки менеджера систем
+                _ecs._managerEntitys = null;
+                _ecs._managerFilters = null;
+                _ecs._managerSystems = null;
+                _ecs._managerComponents = null;
+                _ecs = null;
+            }
         }
         #endregion
 

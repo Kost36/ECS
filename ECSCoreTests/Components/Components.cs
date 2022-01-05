@@ -1,6 +1,4 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interfaces;
-using ECSCoreTests.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,33 +8,12 @@ using System.Threading.Tasks;
 namespace ECSCoreTests.Components
 {
     /// <summary>
-    /// Компонент интеллекта корабля
-    /// </summary>
-    public class ShipAi : ComponentBase { }
-    /// <summary>
-    /// Компонент интеллекта корабля (Торговли)
-    /// </summary>
-    public class ShipAiTrade : ComponentBase { }
-    /// <summary>
-    /// Компонент интеллекта корабля (Боевой)
-    /// </summary>
-    public class ShipAiWar : ComponentBase { }
-    /// <summary>
-    /// Компонент состояния корабля
-    /// </summary>
-    public class ShipState : ComponentBase
-    {
-        /// <summary>
-        /// Состояние корабля
-        /// </summary>
-        public StateShip StateShip;
-    }
-
-    /// <summary>
     /// Компонент позиции
     /// </summary>
+    [Serializable]
     public class Pozition : ComponentBase
     {
+        //public Transform Transform;
         /// <summary>
         /// Позиция X
         /// </summary>
@@ -54,6 +31,7 @@ namespace ECSCoreTests.Components
     /// Компонент заданной позиции.
     /// Позиция, в которую нужно переместиться
     /// </summary>
+    [Serializable]
     public class PozitionSV : ComponentBase
     {
         /// <summary>
@@ -70,27 +48,9 @@ namespace ECSCoreTests.Components
         public float Z;
     }
     /// <summary>
-    /// Компонент направления (Нормализованный)
-    /// </summary>
-    public class Direction : ComponentBase
-    {
-        /// <summary>
-        /// Направление X (Номрализованное значение)
-        /// </summary>
-        public float XNorm;
-        /// <summary>
-        /// Направление Y (Номрализованное значение)
-        /// </summary>
-        public float YNorm;
-        /// <summary>
-        /// Направление Z (Номрализованное значение)
-        /// </summary>
-        public float ZNorm;
-    }
-
-    /// <summary>
     /// Компонент энерги
     /// </summary>
+    [Serializable]
     public class Enargy : ComponentBase
     {
         /// <summary>
@@ -103,64 +63,10 @@ namespace ECSCoreTests.Components
         public float EnargyFact;
     }
     /// <summary>
-    /// Компонент прочности / здоровья
-    /// </summary>
-    public class Health : ComponentBase
-    {
-        /// <summary>
-        /// Максимальный запас прочности / здоровья
-        /// </summary>
-        public float HealthMax;
-        /// <summary>
-        /// Фактическая прочности / здоровья
-        /// </summary>
-        public float HealthFact;
-    }
-    /// <summary>
-    /// Компонент щита
-    /// </summary>
-    public class Shild : ComponentBase
-    {
-        /// <summary>
-        /// Максимальный запас щита
-        /// </summary>
-        public float ShildMax;
-        /// <summary>
-        /// Фактическая запас щита
-        /// </summary>
-        public float ShildFact;
-    }
-    /// <summary>
-    /// Компонент трюма (вместимости в м³) 
-    /// м³
-    /// </summary>
-    public class Hold : ComponentBase
-    {
-        /// <summary>
-        /// Максимальная вместимость в м³
-        /// </summary>
-        public float HoldMax;
-        /// <summary>
-        /// Занято емкости в м³
-        /// </summary>
-        public float HoldUse;
-    }
-    /// <summary>
-    /// Компонент веса
-    /// Кг
-    /// </summary>
-    public class Weight : ComponentBase
-    {
-        /// <summary>
-        /// Вес корабля (Кг)
-        /// </summary>
-        public float WeightFact;
-    }
-
-    /// <summary>
     /// Компонент скорости
     /// (m/sec)
     /// </summary>
+    [Serializable]
     public class Speed : ComponentBase
     {
         /// <summary>
@@ -193,6 +99,7 @@ namespace ECSCoreTests.Components
     /// Компонент заданной скорости.
     /// (m/sec)
     /// </summary>
+    [Serializable]
     public class SpeedSV : ComponentBase
     {
         /// <summary>
@@ -217,57 +124,19 @@ namespace ECSCoreTests.Components
         public float SVSpeed;
     }
     /// <summary>
-    /// Компонент скорости вращения
-    /// (value/sec)
-    /// </summary>
-    public class SpeedRotation : ComponentBase
-    {
-        /// <summary>
-        /// Cкорость вращения по оси X
-        /// (m/sec)
-        /// </summary>
-        public float dX = 0.02f;
-        /// <summary>
-        /// Cкорость вращения по оси Y
-        /// (m/sec)
-        /// </summary>
-        public float dY = 0.02f;
-        /// <summary>
-        /// Cкорость вращения по оси Z
-        /// (m/sec)
-        /// </summary>
-        public float dZ = 0.02f;
-    }
-    /// <summary>
     /// Компонент ускорения
     /// (dm/sec)
     /// </summary>
+    [Serializable]
     public class Acceleration : ComponentBase
     {
         /// <summary>
         /// Ускорение 
         /// (dm/sec)
         /// </summary>
-        public float Acc = 0.1f;
+        public float Acc = 0.05f;
         /// <summary>
         /// Использование энергии, для ускорения
-        /// (value/sec)
-        /// </summary>
-        public float EnargyUse = 5;
-    }
-    /// <summary>
-    /// Компонент торможения
-    /// (dm/sec)
-    /// </summary>
-    public class Deceleration : ComponentBase
-    {
-        /// <summary>
-        /// Торможение 
-        /// (dm/sec)
-        /// </summary>
-        public float Dec = 0.05f;
-        /// <summary>
-        /// Использование энергии, для торможения
         /// (value/sec)
         /// </summary>
         public float EnargyUse = 5;
@@ -276,6 +145,7 @@ namespace ECSCoreTests.Components
     /// Компонент регенерации энергии
     /// Value/сек
     /// </summary>
+    [Serializable]
     public class EnargyReGeneration : ComponentBase
     {
         /// <summary>
@@ -284,40 +154,15 @@ namespace ECSCoreTests.Components
         public float EnargyReGen = 15;
     }
     /// <summary>
-    /// Компонент регенерации щита
-    /// Value/сек
-    /// </summary>
-    public class ShildReGeneration : ComponentBase
-    {
-        /// <summary>
-        /// Регенерации щита в секунду
-        /// </summary>
-        public float ShildReGen = 1;
-        /// <summary>
-        /// Использование энергии в секунду
-        /// </summary>
-        public float EnargyUse = 10;
-    }
-    /// <summary>
-    /// Компонент ремонта / исцеления
-    /// </summary>
-    public class HealthReGeneration : ComponentBase
-    {
-        /// <summary>
-        /// Ремонт / исцеление в секунду
-        /// </summary>
-        public float HealthReGen = 1;
-        /// <summary>
-        /// Использование энергии в секунду
-        /// </summary>
-        public float EnargyUse = 10;
-    }
-
-    /// <summary>
     /// Компонент вектора заданного перемещения
     /// </summary>
+    [Serializable]
     public class Way : ComponentBase
     {
+        /// <summary>
+        /// Инициализация пройдена
+        /// </summary>
+        public bool InitOk;
         /// <summary>
         /// Длинна пути в метрах
         /// </summary>
@@ -346,5 +191,20 @@ namespace ECSCoreTests.Components
         /// Нормализованный вектор направления по оси Z
         /// </summary>
         public float NormZ;
+    }
+    /// <summary>
+    /// Компонент путь торможения
+    /// </summary>
+    [Serializable]
+    public class WayToStop : ComponentBase
+    {
+        /// <summary>
+        /// Длинна пути торможения в метрах
+        /// </summary>
+        public float Len;
+        /// <summary>
+        /// Необходимо энергии для торможения
+        /// </summary>
+        public bool EnargyHave;
     }
 }

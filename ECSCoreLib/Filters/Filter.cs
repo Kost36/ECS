@@ -29,16 +29,14 @@ namespace ECSCore.Filters
         #endregion
 
         #region Свойства
-        //public Dictionary<int, TGroupComponents> CollectionAdd { get; set; } = new Dictionary<int, TGroupComponents>();
         public Dictionary<int, TGroupComponents> Collection { get; set; } = new Dictionary<int, TGroupComponents>();
-        //public Dictionary<int, TGroupComponents> CollectionRemove { get; set; } = new Dictionary<int, TGroupComponents>();
         #endregion
 
         #region IFilterDebug Реализация
         /// <summary>
         /// Количество отслеживаемых сущьностей в фильтре
         /// </summary>
-        public override int Count => Collection.Count;//CollectionRemove.Count + Collection.Count + CollectionAdd.Count; 
+        public override int Count => Collection.Count;
         #endregion
 
         #region IFilterInit Реализация
@@ -64,76 +62,64 @@ namespace ECSCore.Filters
         #region IFilterActionGroup Реализация
         public override void TryAdd(int entityId)
         {
-            if (Collection.ContainsKey(entityId))
+            lock (Collection)
             {
-                return;
-            }
-            if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem))
-            {
-                foreach (SystemBase system in InterestedSystems)
+                if (Collection.ContainsKey(entityId))
                 {
-                    if (system.IsEnable && system.IsActionAdd)
-                    {
-                        system.AсtionAdd(entityId, _groupComponents);
-                    }
-                }
-                Collection.Add(entityId, _groupComponents);
-                _groupComponents = Activator.CreateInstance<TGroupComponents>();
-            }
-
-        }
-        //public override void TryAddOk(int entityId)
-        //{
-        //    if(CollectionAdd.TryGetValue(entityId, out TGroupComponents groupComponents))
-        //    {
-        //        CollectionAdd.Remove(entityId);
-        //        Collection.Add(entityId, groupComponents);
-        //    }
-        //}
-        public override void TryRemove(int entityId)
-        {
-                if (_groupComponents.TryRemoveComponentForEntity(entityId, ECSSystem))
+                    CountNotAdd_Have++;
+                    return;
+                } //Проверка наличия списка компонентов в фильтре
+                lock (_groupComponents)
                 {
-                    //TGroupComponents groupComponents;
-                    //if (IsActionAdd)
-                    //{
-                    //    if (CollectionAdd.TryGetValue(entityId, out groupComponents))
-                    //    {
-                    //        CollectionAdd.Remove(entityId);
-                    //        if (IsActionRemove)
-                    //        {
-                    //            CollectionRemove.Add(entityId, groupComponents);
-                    //        }
-                    //        return;
-                    //    }
-                    //}
-                    if (Collection.TryGetValue(entityId, out TGroupComponents groupComponents))
+                    if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem))
                     {
                         foreach (SystemBase system in InterestedSystems)
                         {
-                            if (system.IsEnable && system.IsActionRemove)
+                            if (system.IsEnable && system.IsActionAdd)
                             {
-                                system.AсtionRemove(entityId);
+                                system.AсtionAdd(entityId, _groupComponents);
                             }
                         }
-                        Collection.Remove(entityId);
-                        //if (IsActionRemove)
-                        //{
-                        //    CollectionRemove.Add(entityId, groupComponents);
-                        //}
+                        Collection.Add(entityId, _groupComponents);
+                        CountAdd++;
+                        _groupComponents = Activator.CreateInstance<TGroupComponents>();
                         return;
+                    } //Проверка необходимости добавления списка компонентов в фильтр и добавление списка компонентов в фильтр
+                    CountNotAdd_TryAddComponentForEntity_IsFalse++;
+                }
+            }
+        }
+        public override void TryRemove(int entityId)
+        {
+            lock (_groupComponents)
+            {
+                if (_groupComponents.TryRemoveComponentForEntity(entityId, ECSSystem))
+                {
+                    lock (Collection)
+                    {
+                        if (Collection.TryGetValue(entityId, out TGroupComponents groupComponents))
+                        {
+                            foreach (SystemBase system in InterestedSystems)
+                            {
+                                if (system.IsEnable && system.IsActionRemove)
+                                {
+                                    system.AсtionRemove(entityId);
+                                }
+                            }
+                            Collection.Remove(entityId);
+                            CountRemove++;
+                            return;
+                        }
                     }
                 }
+            }
         }
-        //public override void TryRemoveOk(int entityId)
-        //{
-        //    CollectionRemove.Remove(entityId);
-        //}
         public override void TryRemoveEntity(int entityId)
         {
-            //CollectionAdd.Remove(entityId);
-            Collection.Remove(entityId);
-            //CollectionRemove.Remove(entityId);
+            lock (Collection)
+            {
+                Collection.Remove(entityId);
+            }
         }
         #endregion
     }

@@ -50,5 +50,9 @@ namespace ECSCore.Interfaces.ECS
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         void RemoveComponent<T>(int idEntity) where T : IComponent;
+        /// <summary>
+        /// Освободить ресурсы
+        /// </summary>
+        void Despose();
     }
 }

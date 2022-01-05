@@ -169,6 +169,33 @@ namespace ECSCore.Managers
                 }
             }
         }
+        /// <summary>
+        /// Получить систему по типу, для отладки
+        /// </summary>
+        /// <typeparam name="T"> Generic тип системы </typeparam>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        public bool GetSystem<T>(out T t)
+            where T : SystemBase
+        {
+            foreach(ISystem system in _systems)
+            {
+                if (system is T)
+                {
+                    t = (T)system;
+                    return true;
+                }
+            }
+            t = default(T);
+            return false;
+        } //TODO сокрытие
+        /// <summary>
+        /// Освободить ресурсы
+        /// </summary>
+        internal void Despose()
+        {
+            _thread.Abort();
+        }
         #endregion
 
         #region Приватные методы инициализации
@@ -207,7 +234,7 @@ namespace ECSCore.Managers
         private void Start()
         {
             FillingQueue(); //Заполнение очереди выполнения систем
-            if (_systemQueue.Count > 0)
+            if (_systemQueue.Count == 0)
             {
                 throw new ExceptionECSHaveNotSystem("Нет реализованных систем");
             } //Если систем нету 
@@ -280,7 +307,7 @@ namespace ECSCore.Managers
                 {
                     return;
                 } //Если нет свободного времени, выход
-                Thread.Sleep(0);
+                Thread.Sleep(1); //Значение 0 - недает процессору простаивать => в холостую грузит процессор до 25-40%
             }
         }
         /// <summary>

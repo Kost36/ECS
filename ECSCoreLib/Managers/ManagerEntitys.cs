@@ -1,6 +1,7 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ECSCore.Managers
 {
@@ -17,7 +18,7 @@ namespace ECSCore.Managers
         internal ManagerEntitys(ECS ecs)
         {
             _ecs = ecs;
-            _entities = new Dictionary<int, Entity>(_startCountCapacity);
+            _entitys = new Dictionary<int, Entity>(_startCountCapacity);
         }
         #endregion
 
@@ -41,7 +42,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Коллекция сущьностей
         /// </summary>
-        private Dictionary<int, Entity> _entities;
+        private Dictionary<int, Entity> _entitys;
         #endregion
 
         #region Свойства
@@ -50,11 +51,22 @@ namespace ECSCore.Managers
         /// </summary>
         public int CountEntitys
         {
-            get { return _entities.Count; }
+            get { return _entitys.Count; }
         }
         #endregion
 
         #region Публичные методы
+        /// <summary>
+        /// Получить первый id сущьности из коллекции
+        /// </summary>
+        /// <returns></returns>
+        public int GetIdFirstEntity()
+        {
+            return _entitys.Keys.FirstOrDefault();
+        }
+        #endregion
+
+        #region Внутренние методы
         /// <summary>
         /// Добавить сущьность
         /// 1) Присваивает Id
@@ -74,7 +86,7 @@ namespace ECSCore.Managers
         /// <returns> Флаг наличия сущьности </returns>
         internal bool Get(int id, out Entity Entity)
         {
-            return _entities.TryGetValue(id, out Entity);
+            return _entitys.TryGetValue(id, out Entity);
         }
         /// <summary>
         /// Удаление сущьности по id
@@ -103,7 +115,7 @@ namespace ECSCore.Managers
                 _endUseId++; //Инкрементируем счетчик
                 entity.Id = _endUseId; //Присвоим новый id
             } //Иначе
-            _entities.Add(entity.Id, entity);
+            _entitys.Add(entity.Id, entity);
             return entity;
             //if (_entities.TryAdd(entity.Id, entity)) //Добавим в коллекцию
             //{
@@ -119,7 +131,7 @@ namespace ECSCore.Managers
         private bool RemoveEntity(int id)
         {
             _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
-            return _entities.Remove(id); //Удалим сущьность из коллекции
+            return _entitys.Remove(id); //Удалим сущьность из коллекции
         }
         #endregion
     }

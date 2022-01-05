@@ -5,11 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCore.Tests.Entitys
+namespace ECSCoreTests.Entitys
 {
-    /// <summary>
-    /// Сущьность корабля
-    /// </summary>
     [Serializable]
     public class Ship : Entity { }
 }

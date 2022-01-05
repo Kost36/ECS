@@ -61,7 +61,7 @@ namespace ECSCore.Systems
         /// <returns> Интервал времени в секундах </returns>
         private float CalculateDeltaTime(long ticksPoint)
         {
-            float deltaTimeInSec = (ticksPoint - TicksOldRun) / TimeSpan.TicksPerSecond; //Интервал в секундах
+            float deltaTimeInSec = (float)(ticksPoint - TicksOldRun) / (float)TimeSpan.TicksPerSecond; //Интервал в секундах
             TicksOldRun = ticksPoint; //Метка времени последнего выполнения
             return deltaTimeInSec;
         }
@@ -114,7 +114,10 @@ namespace ECSCore.Systems
             System.DeltaTime = CalculateDeltaTime(ticksPoint); //Расчет DeltaTime
 
             //Обработка системы
-            System.Aсtion();
+            if (System.IsAction)
+            {
+                System.Aсtion();
+            } //Если система имеет интерфейс Action
             SystemStatistic.AddRunStatistic(_stopwatch.ElapsedTicks, ticksWorkManagerSystem); //Добавить в статистику
             _stopwatch.Stop();
         }

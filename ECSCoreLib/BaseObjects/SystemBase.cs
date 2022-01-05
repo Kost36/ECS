@@ -149,6 +149,14 @@ namespace ECSCore.BaseObjects
                 IsActionRemove = true;
             }
         }
+        /// <summary>
+        /// Получить количество элементов в фильтре
+        /// </summary>
+        /// <returns></returns>
+        public int GetFilterCount()
+        {
+            return FilterBase.Count;
+        }
         #endregion
 
         #region Реализация в наследниках на уровне ECSCore

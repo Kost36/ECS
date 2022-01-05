@@ -8,21 +8,22 @@ using System.Threading;
 using System.Diagnostics;
 using ECSCore.Interfaces;
 using ECSCore.BaseObjects;
-using Assets.ECS.Entitys;
-using GameLib.Components;
-using Game.Entitys.Factorys;
 using ECSCore.Interfaces.ECS;
+using ECSCoreTests.Entitys;
+using ECSCore;
+using ECSCoreTests.Components;
+using ECSCoreTests.Systems;
 
-namespace ECSCore.Tests
+namespace ECSCoreTests
 {
     [TestClass()]
-    public class ECSTests
+    public class ECS_01Tests_Work
     {
         public static IECS IECS;
         public static IECSDebug IECSDebug;
         public static Entity _entity;
         [TestMethod()]
-        public void Test_0InitializationIECS()
+        public void Test_00_InitializationIECS()
         {
             Ship ship = new Ship();
             ECS.Initialization(ship.GetType().Assembly);
@@ -35,7 +36,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_1AddEntity()
+        public void Test_01_AddEntity()
         {
             _entity = IECS.AddEntity(new Ship());
             IECS.AddEntity(new Ship());
@@ -47,7 +48,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_2GetEntity()
+        public void Test_02_GetEntity()
         {
             Assert.IsTrue(IECS.GetEntity(_entity.Id, out Entity ship));
             Assert.IsNotNull(ship);
@@ -55,7 +56,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_3RemoveEntity()
+        public void Test_03_RemoveEntity()
         {
             IECS.RemoveEntity(_entity.Id);
             IECS.RemoveEntity(3);
@@ -65,7 +66,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_4AddComponent()
+        public void Test_04_AddComponent()
         {
             Assert.IsTrue(IECS.GetEntity(2, out Entity entity));
             entity.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
@@ -82,7 +83,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_5GetComponent()
+        public void Test_05_GetComponent()
         {
             Assert.IsTrue(_entity.Get(out Pozition pozition));
             Assert.IsNotNull(pozition);
@@ -94,7 +95,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_6RemoveComponent()
+        public void Test_06_RemoveComponent()
         {
             _entity.Remove<Pozition>();
             Assert.IsTrue(_entity.Components.Count == 0);
@@ -110,7 +111,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_7AddComponentToFilter()
+        public void Test_07_AddComponentToFilter()
         {
             IECS.GetEntity(5, out Entity entity);
             entity.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
@@ -132,7 +133,7 @@ namespace ECSCore.Tests
         }
 
         [TestMethod()]
-        public void Test_9RemoveComponentFromFilter()
+        public void Test_09_RemoveComponentFromFilter()
         {
             _entity.Remove<Speed>();
             Assert.IsTrue(_entity.Components.Count == 1);
@@ -144,134 +145,16 @@ namespace ECSCore.Tests
             Debug.WriteLine(IECSDebug.GetInfo(true));
         }
 
-        //[TestMethod()]
-        public void Test_APerformance()
-        {
-            Thread.Sleep(10000);
-            //Заполняем
-            while (true)
-            {
-                for (int i=0; i<1000; i++)
-                {
-                    ShipFactory.AddShip();
-                }
-                Debug.WriteLine(IECSDebug.GetInfo(true));
-                Thread.Sleep(100);
-                if (IECSDebug.ManagerEntitys.CountEntitys > 50000)
-                {
-                    break;
-                }
-            }
-            IECSDebug.ManagerSystems.ClearStatisticSystems();
-            //Ждем
-            Thread.Sleep(50000);
-            //Наблюдаем
-            IECSDebug.ManagerSystems.ClearStatisticSystems();
-            int j = 0;
-            while (j<2000)
-            {
-                Debug.WriteLine(IECSDebug.GetInfo(true));
-                Thread.Sleep(1000);
-                j++;
-            }
-            //Удаляем
-            IECSDebug.ManagerSystems.ClearStatisticSystems();
-            int entityNumb = 0;
-            while (true)
-            {
-                for (int i = 0; i < 1000; i++)
-                {
-                    if(IECS.GetEntity(entityNumb, out Entity Entity))
-                    {
-                        Entity.Death();
-                    }
-                    entityNumb++;
-                }
-                Debug.WriteLine(IECSDebug.GetInfo(true));
-                Thread.Sleep(100);
-                if (IECSDebug.ManagerEntitys.CountEntitys == 0)
-                {
-                    break;
-                }
-            }
-            IECSDebug.ManagerSystems.ClearStatisticSystems();
-            //Ждем
-            Thread.Sleep(5000);
-            Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == 0);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 0);
-            Assert.IsTrue(IECSDebug.ManagerFilters.CountEntitys==0);
-            Debug.WriteLine(IECSDebug.GetInfo(true));
-        }
-    }
-
-    [TestClass()]
-    public class ECSTests1
-    {
-        public static IECS IECS;
-        public static IECSDebug IECSDebug;
-        public static Entity _entity;
         [TestMethod()]
-        public void Test_01()
+        public void Test_10_FillingFilter()
         {
-            Ship ship = new Ship();
-            ECS.Initialization(ship.GetType().Assembly);
-            IECS = ECS.InstanceIECS;
-            IECSDebug = ECS.InstanceDebug;
-            Console.WriteLine("ОК");
-            Assert.IsNotNull(IECS);
-            Debug.WriteLine(IECSDebug.GetInfo());
-        }
+            IECS.Despose();
+            Thread.Sleep(500);
+            Test_00_InitializationIECS();
 
-        //[TestMethod()]
-        //public void Test_02()
-        //{
-        //    Entity ship = IECS.AddEntity(new Ship());
-        //    ship.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
-        //    ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
-        //    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
-        //    ship.Add(new EnargyReGeneration() { EnargyReGen = 4f});
-
-
-
-        //    Thread.Sleep(500);
-        //    while (true)
-        //    {
-        //        Thread.Sleep(1000);
-        //        Debug.WriteLine("     ");
-        //        if (ship.Get(out Pozition pozition))
-        //        {
-        //            Debug.WriteLine($"Позиция: {pozition.X} {pozition.Y} {pozition.Z}");
-        //        }
-        //        if (ship.Get(out PozitionSV pozitionSV))
-        //        {
-        //            Debug.WriteLine($"Заданныя позиция: {pozitionSV.X} {pozitionSV.Y} {pozitionSV.Z}");
-        //        }
-        //        if (ship.Get(out Way way))
-        //        {
-        //            Debug.WriteLine($"Путь: {way.LenX} {way.LenY} {way.LenZ} Расстояние: {way.Len} Направление: {way.NormX} {way.NormY} {way.NormZ}");
-        //        }
-        //        if (ship.Get(out Speed speed))
-        //        {
-        //            Debug.WriteLine($"Скорость: {speed.dX} {speed.dY} {speed.dZ} Скорость: {speed.SpeedFact} / {speed.SpeedMax}");
-        //        }
-        //        if (ship.Get(out SpeedSV speedSV))
-        //        {
-        //            Debug.WriteLine($"Заданная скорость: {speedSV.dXSV} {speedSV.dYSV} {speedSV.dZSV} Факт.: {speedSV.SVSpeed}");
-        //        }
-        //        if (ship.Get(out Enargy enargy))
-        //        {
-        //            Debug.WriteLine($"Энергия: {enargy.EnargyFact} / {enargy.EnargyMax}");
-        //        }
-
-        //    }
-        //}
-
-
-        [TestMethod()]
-        public void Test_02()
-        {
+            int entityCount = 50000;
             int j = 0;
-            while (j < 50000)
+            while (j < entityCount)
             {
                 for (int i = 0; i < 1000; i++)
                 {
@@ -282,23 +165,45 @@ namespace ECSCore.Tests
                     ship.Add(new EnargyReGeneration() { EnargyReGen = 5f });
                     j++;
                 }
-                Thread.Sleep(1000);
-                Debug.WriteLine(IECSDebug.GetInfo(true));
-            }
 
-            Thread.Sleep(10000);
-            IECSDebug.ManagerSystems.ClearStatisticSystems();
-            while (true)
-            {
-                Thread.Sleep(1000);
-                Debug.WriteLine(IECSDebug.GetInfo(true));
-                if (IECSDebug.ManagerEntitys.CountEntitys == 0)
+                int count = 0;
+                int countWait = 5;
+                while (true)
                 {
-                    break;
+                    Thread.Sleep(1000);
+                    Debug.WriteLine(IECSDebug.GetInfo(true));
+                    if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
+                    {
+                        if (controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
+                        {
+                            break;
+                        }
+                    }
+                    count++;
+                    if (count>= countWait)
+                    {
+                        Assert.Fail();
+                    }
                 }
             }
-            Assert.IsTrue(true);
+
+            if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove1))
+            {
+                if (controlSpeedSystemRemove1.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
+                {
+                    return;
+                }
+            }
+            Assert.Fail();
+
         }
 
+        [TestMethod()]
+        public void Test_99_ECSDespose()
+        {
+            IECS.Despose();
+            Thread.Sleep(500);
+            Assert.IsNull(ECSCore.ECS.Instance);
+        }
     }
 }

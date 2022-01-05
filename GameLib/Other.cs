@@ -8,8 +8,5 @@ using System.Threading.Tasks;
 namespace Assets.ECS.Entitys
 {
     [Serializable]
-    public class Ship : Entity
-    {
-
-    }
+    public class Ship : Entity { }
 }

@@ -61,7 +61,7 @@ namespace ECSCore.Managers
         }
         #endregion
 
-        #region Публичные методы
+        #region Внутренние методы
         /// <summary>
         /// Получить фильтр компонентов
         /// </summary>

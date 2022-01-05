@@ -157,6 +157,13 @@ namespace ECSCore.BaseObjects
         {
             return FilterBase.Count;
         }
+        /// <summary>
+        /// Установить в филтре флаг теста
+        /// </summary>
+        public void SetTestFlag()
+        {
+            FilterBase.FlagTest = true;
+        }
         #endregion
 
         #region Реализация в наследниках на уровне ECSCore

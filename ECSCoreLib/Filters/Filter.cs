@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using ECSCore.GroupComponents;
 using ECSCore.Interfaces.GroupComponents;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,12 @@ namespace ECSCore.Filters
                         return;
                     } //Проверка необходимости добавления списка компонентов в фильтр и добавление списка компонентов в фильтр
                     CountNotAdd_TryAddComponentForEntity_IsFalse++;
+
+                    //Тест. Поиск бага
+                    if (FlagTest) 
+                    {
+                        FlagTest = !FlagTest;
+                    }
                 }
             }
         }

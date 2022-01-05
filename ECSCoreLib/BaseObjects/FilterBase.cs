@@ -201,5 +201,7 @@ namespace ECSCore.BaseObjects
         public abstract void TryRemove(int entityId);
         public abstract void TryRemoveEntity(int entityId);
         #endregion
+
+        public bool FlagTest;
     }
 }

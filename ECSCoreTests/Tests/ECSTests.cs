@@ -185,6 +185,7 @@ namespace ECSCoreTests
                     }
                     if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
                     {
+                        controlSpeedSystemRemove.SetTestFlag();
                         if (controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
                         {
                             break;

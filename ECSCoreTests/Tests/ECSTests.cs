@@ -152,11 +152,11 @@ namespace ECSCoreTests
             Thread.Sleep(500);
             Test_00_InitializationIECS();
 
-            int entityCount = 50000;
+            int entityCount = 100000;
             int j = 0;
             while (j < entityCount)
             {
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
@@ -167,11 +167,22 @@ namespace ECSCoreTests
                 }
 
                 int count = 0;
-                int countWait = 5;
+                int countWait = 100;
                 while (true)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10);
                     Debug.WriteLine(IECSDebug.GetInfo(true));
+                    if (IECSDebug.ManagerSystems.GetSystem(out StartMoveSystem startMoveSystem))
+                    {
+                        if (startMoveSystem.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
+                        {
+
+                        }
+                        else
+                        {
+                            //continue;
+                        }
+                    }
                     if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
                     {
                         if (controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
@@ -185,6 +196,11 @@ namespace ECSCoreTests
                         Assert.Fail();
                     }
                 }
+
+                if (j%10000 == 0)
+                {
+                    IECSDebug.ManagerSystems.ClearStatisticSystems();
+                }
             }
 
             if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove1))
@@ -195,7 +211,21 @@ namespace ECSCoreTests
                 }
             }
             Assert.Fail();
+        }
 
+        [TestMethod()]
+        public void Test_11_SearchBug()
+        {
+            int i = 0;
+            while (true)
+            {
+                Test_10_FillingFilter();
+                i++;
+                if (i>50)
+                {
+                    return;
+                }
+            }
         }
 
         [TestMethod()]

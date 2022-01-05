@@ -42,6 +42,10 @@ namespace ECSCore.Managers
         /// </summary>
         private Thread _thread;
         /// <summary>
+        /// Команда на останов менеджера (останов всех потоков)
+        /// </summary>
+        private bool _stopCMD;
+        /// <summary>
         /// Список систем
         /// </summary>
         private List<ISystem> _systems = new List<ISystem>();
@@ -194,7 +198,18 @@ namespace ECSCore.Managers
         /// </summary>
         internal void Despose()
         {
-            _thread.Abort();
+            _stopCMD = true; //Команда на останов
+            while (true)
+            {
+                if (_thread.ThreadState == System.Threading.ThreadState.Stopped)
+                {
+                    _stopCMD = false;
+                }
+                if (_stopCMD == false)
+                {
+                    return;
+                } //Если бит сбросился в false. значит менеджер остановил все системы и завершил все потоки
+            }  //Пока бит останова не сбросится в false
         }
         #endregion
 
@@ -241,6 +256,10 @@ namespace ECSCore.Managers
             while (true)
             {
                 Run(); //Анализ и выполнение систем
+                if (_stopCMD)
+                {
+                    return; //Выход из метода
+                } //Если есть команда на останов
             } //Постоянно выполняем
         }
         /// <summary>
@@ -271,7 +290,14 @@ namespace ECSCore.Managers
                 if (_systemQueue[0].TicksNextRun <= _ticksPoint)
                 {
                     StartCalculateJobSystem(_systemQueue[0]); //Запускаем выполнение системы
-                    return; //TODO Проверка необходимости запуска след системы. и включения бита задержки
+                    if (_systemQueue.Count>1)
+                    {
+                        if (_systemQueue[1].TicksNextRun <= _ticksPoint)
+                        {
+                            _flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
+                        } //Если следующая система тоже должна выполниться
+                    } //Если систем больше 1
+                    return;
                 } //Если настало время выполнения первой в очереди системы
 
                 foreach (JobSystem jobSystem in _systemQueue)

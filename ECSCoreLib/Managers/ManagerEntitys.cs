@@ -106,23 +106,20 @@ namespace ECSCore.Managers
         /// <returns> IEntity / null </returns>
         private Entity Registration(Entity entity)
         {
-            if (_queueFreeID.Count > 0)
+            lock (_entitys)
             {
-                entity.Id = _queueFreeID.Dequeue(); //Получим id из очереди
-            } //Если в очереди есть свободные id
-            else
-            {
-                _endUseId++; //Инкрементируем счетчик
-                entity.Id = _endUseId; //Присвоим новый id
-            } //Иначе
-            _entitys.Add(entity.Id, entity);
+                if (_queueFreeID.Count > 0)
+                {
+                    entity.Id = _queueFreeID.Dequeue(); //Получим id из очереди
+                } //Если в очереди есть свободные id
+                else
+                {
+                    _endUseId++; //Инкрементируем счетчик
+                    entity.Id = _endUseId; //Присвоим новый id
+                } //Иначе
+                _entitys.Add(entity.Id, entity);
+            }
             return entity;
-            //if (_entities.TryAdd(entity.Id, entity)) //Добавим в коллекцию
-            //{
-            //    return entity; //Вернем сущьность
-            //} //Если добавлено
-            //_queueFreeID.Enqueue(entity.Id); //Вернем id в очередь свободных id
-            //return null;
         }
         /// <summary>
         /// Удаление сущьности
@@ -130,8 +127,11 @@ namespace ECSCore.Managers
         /// <param name="entity"> экземпляр сущьности </param>
         private bool RemoveEntity(int id)
         {
-            _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
-            return _entitys.Remove(id); //Удалим сущьность из коллекции
+            lock (_entitys)
+            {
+                _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
+                return _entitys.Remove(id); //Удалим сущьность из коллекции
+            }
         }
         #endregion
     }

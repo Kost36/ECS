@@ -298,6 +298,7 @@ namespace ECSCore
             if (_ecs != null)
             {
                 //TODO Завершить потоки менеджера систем
+                _ecs._managerSystems.Despose();
                 _ecs._managerEntitys = null;
                 _ecs._managerFilters = null;
                 _ecs._managerSystems = null;

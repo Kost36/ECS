@@ -32,10 +32,10 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        public bool Get<T>(out T component)
+        public bool Get<T>(out T component, bool flagTest=false)
             where T : IComponent
         {
-            return GetComponent(out component);
+            return GetComponent(out component, flagTest);
         }
         /// <summary>
         /// Удалить компонент (Если есть)
@@ -99,7 +99,7 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
         /// <returns></returns>
-        private bool GetComponent<T>(out T component)
+        private bool GetComponent<T>(out T component, bool flagTest=false)
             where T : IComponent
         {
             lock (Components)
@@ -112,9 +112,13 @@ namespace ECSCore.BaseObjects
                         return true;
                     }
                 }
+            if (flagTest)
+            {
+                flagTest = flagTest;
             }
             component = default(T);
             return false;
+            }
         }
     }
 }

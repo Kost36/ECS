@@ -86,7 +86,10 @@ namespace ECSCore.Managers
         /// <returns> Флаг наличия сущьности </returns>
         internal bool Get(int id, out Entity Entity)
         {
-            return _entitys.TryGetValue(id, out Entity);
+            lock (_entitys)
+            {
+                return _entitys.TryGetValue(id, out Entity);
+            }
         }
         /// <summary>
         /// Удаление сущьности по id

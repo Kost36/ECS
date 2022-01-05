@@ -31,7 +31,7 @@ namespace ECSCore.Interfaces.Entitys
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        bool Get<T>(out T component)
+        bool Get<T>(out T component, bool flagTest)
             where T : IComponent;
         /// <summary>
         /// Удалить компонент (Если есть)

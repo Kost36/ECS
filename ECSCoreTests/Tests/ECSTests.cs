@@ -160,7 +160,9 @@ namespace ECSCoreTests
                 {
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
+                    //Thread.Sleep(1);
                     ship.Add(new PozitionSV() { X = 1000, Y = 1000, Z = 1000 });
+                    //Thread.Sleep(1);
                     ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
                     ship.Add(new EnargyReGeneration() { EnargyReGen = 5f });
                     j++;
@@ -174,6 +176,7 @@ namespace ECSCoreTests
                     Debug.WriteLine(IECSDebug.GetInfo(true));
                     if (IECSDebug.ManagerSystems.GetSystem(out StartMoveSystem startMoveSystem))
                     {
+                        startMoveSystem.SetTestFlag();
                         if (startMoveSystem.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
                         {
 

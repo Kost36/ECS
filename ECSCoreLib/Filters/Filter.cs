@@ -72,7 +72,7 @@ namespace ECSCore.Filters
                 } //Проверка наличия списка компонентов в фильтре
                 lock (_groupComponents)
                 {
-                    if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem))
+                    if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem, FlagTest))
                     {
                         foreach (SystemBase system in InterestedSystems)
                         {
@@ -91,7 +91,7 @@ namespace ECSCore.Filters
                     //Тест. Поиск бага
                     if (FlagTest) 
                     {
-                        FlagTest = !FlagTest;
+                        FlagTest = FlagTest;
                     }
                 }
             }

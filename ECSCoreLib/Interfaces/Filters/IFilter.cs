@@ -1,10 +1,10 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interfaces;
-using ECSCore.System;
+using ECSCore.Interfaces.Components;
+using ECSCore.Interfaces.ECS;
 using System;
 using System.Collections.Generic;
 
-namespace ECSCore.Interfaces
+namespace ECSCore.Interfaces.Filters
 {
     /// <summary>
     /// Интерфейс фильтра группы компонент

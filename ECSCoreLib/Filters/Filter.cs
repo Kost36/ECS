@@ -1,6 +1,5 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interfaces;
-using ECSCore.System;
+using ECSCore.Interfaces.GroupComponents;
 using System;
 using System.Collections.Generic;
 using System.Linq;

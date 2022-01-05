@@ -4,10 +4,11 @@ using ECSCore.Managers;
 using ECSCore.Exceptions;
 using System;
 using System.Reflection;
-using ECSCore.Filters;
-using ECSCore.BaseObjects;
+using ECSCore.Interfaces.ECS;
+using ECSCore.Interfaces.Systems;
+using ECSCore.Interfaces.GroupComponents;
 
-namespace ECSCore.System
+namespace ECSCore.BaseObjects
 {
     /// <summary>
     /// Базовый класс систем
@@ -74,10 +75,6 @@ namespace ECSCore.System
         /// Фильтр системы
         /// </summary>
         internal abstract FilterBase FilterBase { get; }
-        /// <summary>
-        /// Время последнего выполнения
-        /// </summary>
-        internal DateTime DateTimeOldRun { get; set; }
         #endregion
 
         #region Реализация в данном класcе на уровне ECSCore
@@ -151,14 +148,6 @@ namespace ECSCore.System
             {
                 IsActionRemove = true;
             }
-        }
-        /// <summary>
-        /// Подготовка к выполнению, вызывается перед каждым выполнением
-        /// </summary>
-        internal void CalculateDeltaTime(DateTime dateTimeFact)
-        {
-            DeltaTime = (float)dateTimeFact.Subtract(DateTimeOldRun).TotalSeconds;
-            DateTimeOldRun = dateTimeFact;
         }
         #endregion
 

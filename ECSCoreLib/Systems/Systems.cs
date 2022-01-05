@@ -1,9 +1,9 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Filters;
-using ECSCore.Filters.GroupComponents;
+using ECSCore.GroupComponents;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Components;
 using ECSCore.Managers;
-using ECSCore.System;
 using System;
 
 namespace ECSCore.Systems

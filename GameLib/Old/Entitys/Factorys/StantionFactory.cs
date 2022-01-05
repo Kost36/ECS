@@ -1,6 +1,7 @@
 ﻿using ECSCore;
 using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.ECS;
 using Game.Components;
 using System;
 using System.Collections.Generic;

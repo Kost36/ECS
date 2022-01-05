@@ -3,7 +3,7 @@ using ECSCore.Managers;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECSCore.Interfaces
+namespace ECSCore.Interfaces.ECS
 {
     /// <summary>
     /// ECS Debug

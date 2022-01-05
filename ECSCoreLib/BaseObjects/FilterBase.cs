@@ -1,7 +1,9 @@
 ﻿using ECSCore.Filters;
 using ECSCore.Filters.Jobs;
 using ECSCore.Interfaces;
-using ECSCore.System;
+using ECSCore.Interfaces.Components;
+using ECSCore.Interfaces.ECS;
+using ECSCore.Interfaces.Filters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

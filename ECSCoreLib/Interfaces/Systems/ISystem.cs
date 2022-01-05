@@ -1,11 +1,12 @@
-﻿using ECSCore.Managers;
+﻿using ECSCore.Interfaces.ECS;
+using ECSCore.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCore.Interfaces
+namespace ECSCore.Interfaces.Systems
 {
     /// <summary>
     /// Интерфейс системы;

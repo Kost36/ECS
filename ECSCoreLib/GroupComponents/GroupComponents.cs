@@ -1,14 +1,16 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Components;
+using ECSCore.Interfaces.ECS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCore.Filters.GroupComponents
+namespace ECSCore.GroupComponents
 {
-    public class GroupComponentsExist<ExistComponent_1> : Interfaces.GroupComponents
+    public class GroupComponentsExist<ExistComponent_1> : BaseObjects.GroupComponents
            where ExistComponent_1 : IComponent
     {
         public ExistComponent_1 ExistComponent1;
@@ -48,13 +50,13 @@ namespace ECSCore.Filters.GroupComponents
             return typesComponents;
         }
     }
-    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2> : IGroupComponents
+    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
     {
         internal ExistComponent_1 ExistComponent1;
         internal ExistComponent_2 ExistComponent2;
-        public bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -70,7 +72,7 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return false;
         }
-        public bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -86,20 +88,20 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return true;
         }
-        public List<Type> GetTypesExistComponents()
+        public override List<Type> GetTypesExistComponents()
         {
             List<Type> typesComponents = new List<Type>();
             typesComponents.Add(typeof(ExistComponent_1));
             typesComponents.Add(typeof(ExistComponent_2));
             return typesComponents;
         }
-        public List<Type> GetTypesWithoutComponents()
+        public override List<Type> GetTypesWithoutComponents()
         {
             List<Type> typesComponents = new List<Type>();
             return typesComponents;
         }
     }
-    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3> : IGroupComponents
+    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
         where ExistComponent_3 : IComponent
@@ -107,7 +109,7 @@ namespace ECSCore.Filters.GroupComponents
         internal ExistComponent_1 ExistComponent1;
         internal ExistComponent_2 ExistComponent2;
         internal ExistComponent_3 ExistComponent3;
-        public bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -127,7 +129,7 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return false;
         }
-        public bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -147,7 +149,7 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return true;
         }
-        public List<Type> GetTypesExistComponents()
+        public override List<Type> GetTypesExistComponents()
         {
             List<Type> typesComponents = new List<Type>();
             typesComponents.Add(typeof(ExistComponent_1));
@@ -155,13 +157,13 @@ namespace ECSCore.Filters.GroupComponents
             typesComponents.Add(typeof(ExistComponent_3));
             return typesComponents;
         }
-        public List<Type> GetTypesWithoutComponents()
+        public override List<Type> GetTypesWithoutComponents()
         {
             List<Type> typesComponents = new List<Type>();
             return typesComponents;
         }
     }
-    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3, ExistComponent_4> : IGroupComponents
+    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3, ExistComponent_4> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
         where ExistComponent_3 : IComponent
@@ -171,7 +173,7 @@ namespace ECSCore.Filters.GroupComponents
         internal ExistComponent_2 ExistComponent2;
         internal ExistComponent_3 ExistComponent3;
         internal ExistComponent_4 ExistComponent4;
-        public bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -195,7 +197,7 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return false;
         }
-        public bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -219,7 +221,7 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return true;
         }
-        public List<Type> GetTypesExistComponents()
+        public override List<Type> GetTypesExistComponents()
         {
             List<Type> typesComponents = new List<Type>();
             typesComponents.Add(typeof(ExistComponent_1));
@@ -228,13 +230,13 @@ namespace ECSCore.Filters.GroupComponents
             typesComponents.Add(typeof(ExistComponent_4));
             return typesComponents;
         }
-        public List<Type> GetTypesWithoutComponents()
+        public override List<Type> GetTypesWithoutComponents()
         {
             List<Type> typesComponents = new List<Type>();
             return typesComponents;
         }
     }
-    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3, ExistComponent_4, ExistComponent_5> : IGroupComponents
+    public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3, ExistComponent_4, ExistComponent_5> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
         where ExistComponent_3 : IComponent
@@ -246,7 +248,7 @@ namespace ECSCore.Filters.GroupComponents
         internal ExistComponent_3 ExistComponent3;
         internal ExistComponent_4 ExistComponent4;
         internal ExistComponent_5 ExistComponent5;
-        public bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -274,7 +276,7 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return false;
         }
-        public bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
         {
             if (eCS.GetEntity(entityId, out Entity entity))
             {
@@ -302,7 +304,7 @@ namespace ECSCore.Filters.GroupComponents
             } //Если сущьность есть
             return true;
         }
-        public List<Type> GetTypesExistComponents()
+        public override List<Type> GetTypesExistComponents()
         {
             List<Type> typesComponents = new List<Type>();
             typesComponents.Add(typeof(ExistComponent_1));
@@ -312,7 +314,7 @@ namespace ECSCore.Filters.GroupComponents
             typesComponents.Add(typeof(ExistComponent_5));
             return typesComponents;
         }
-        public List<Type> GetTypesWithoutComponents()
+        public override List<Type> GetTypesWithoutComponents()
         {
             List<Type> typesComponents = new List<Type>();
             return typesComponents;

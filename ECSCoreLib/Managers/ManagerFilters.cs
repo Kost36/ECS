@@ -1,6 +1,8 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Filters;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Components;
+using ECSCore.Interfaces.Filters;
 using System;
 using System.Collections.Generic;
 using System.Linq;

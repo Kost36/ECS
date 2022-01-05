@@ -1,6 +1,8 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Exceptions;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Components;
+using ECSCore.Interfaces.ECS;
 using ECSCore.Managers;
 using System;
 using System.Collections.Generic;

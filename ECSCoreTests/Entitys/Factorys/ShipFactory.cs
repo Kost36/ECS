@@ -1,6 +1,7 @@
 ﻿using ECSCore;
 using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.ECS;
 using ECSCoreTests.Components;
 using ECSCoreTests.Enums;
 using System;

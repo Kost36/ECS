@@ -2,6 +2,7 @@
 using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Components;
 using GameLib.Lib;

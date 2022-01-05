@@ -1,5 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Filters;
 
 namespace ECSCore.Filters.Jobs
 {

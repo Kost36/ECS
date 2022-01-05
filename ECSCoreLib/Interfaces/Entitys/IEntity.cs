@@ -1,12 +1,13 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ECSCore.Interfaces
+namespace ECSCore.Interfaces.Entitys
 {
     /// <summary>
     /// Интерфейс сущьности

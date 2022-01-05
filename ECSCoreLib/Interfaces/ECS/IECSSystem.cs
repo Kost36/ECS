@@ -1,14 +1,12 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Managers;
-using System.Collections.Generic;
-using System.Text;
+using ECSCore.Interfaces.Components;
 
-namespace ECSCore.Interfaces
+namespace ECSCore.Interfaces.ECS
 {
     /// <summary>
-    /// Интерфейс ECS
+    /// Интерфейс взаимодействия с ECS из систем
     /// </summary>
-    public interface IECS
+    public interface IECSSystem
     {
         /// <summary>
         /// Добавить сущьность в ECS
@@ -24,19 +22,13 @@ namespace ECSCore.Interfaces
         /// <returns> Результат получения сущьности </returns>
         bool GetEntity(int id, out Entity Entity);
         /// <summary>
-        /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
-        /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
-        void RemoveEntity(int id);
-        /// <summary>
         /// Добавить компонент.
         /// </summary>
-        /// <typeparam name="T"> Generic тип компонента </typeparam>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
         void AddComponent<T>(T component) where T : IComponent;
         /// <summary>
         /// Получить компонент, если есть.
-        /// Возвращает компонент из менеджера компонент
+        /// Возвращает компонент из менеджера компонентов
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>

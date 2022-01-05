@@ -1,4 +1,6 @@
 ﻿using ECSCore.Interfaces;
+using ECSCore.Interfaces.Components;
+using ECSCore.Interfaces.Entitys;
 using System;
 using System.Collections.Generic;
 

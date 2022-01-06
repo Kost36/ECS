@@ -87,7 +87,7 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Min30Once)]
     [AttributeSystemPriority(15)]
     [AttributeSystemEnable]
     [AttributeSystemParallelCountThreads(16)]

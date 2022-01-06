@@ -80,7 +80,7 @@ namespace ECSCoreTests
         [TestMethod()]
         public void Test_02_MechanicMove()
         {
-            int entityCount = 50000;
+            int entityCount = 100000;
             int j = 0;
             while (j < entityCount)
             {
@@ -88,16 +88,15 @@ namespace ECSCoreTests
                 {
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
-                    ship.Add(new PozitionSV() { X = 1000, Y = 1000, Z = 1000 });
+                    ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
                     ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
-                    ship.Add(new EnargyReGeneration() { EnargyReGen = 5f });
                     j++;
                 }
 
 
                 while (true)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(100);
                     Debug.WriteLine(IECSDebug.GetInfo(true));
                     if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
                     {

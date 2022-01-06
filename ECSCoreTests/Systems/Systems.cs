@@ -190,6 +190,23 @@ namespace ECSCoreTests.Systems
         }
     }
 
+    [AttributeSystemCalculate(SystemCalculateInterval.Min5Once)]
+    [AttributeSystemPriority(10)]
+    [AttributeSystemEnable]
+    public class EnargyRegenerationStartSystem : SystemExistComponents<Enargy>, ISystemAction
+    {
+        public override void Action(int entityId, Enargy enargy, float deltatime)
+        {
+            if (enargy.EnargyFact < enargy.EnargyMax)
+            {
+                if (IECS.GetComponent(entityId, out EnargyReGeneration enargyReGeneration) == false)
+                {
+                    IECS.AddComponent(new EnargyReGeneration() { EnargyReGen = 5f, Id = entityId });
+                }
+            }
+        }
+    }
+
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(20)]
     [AttributeSystemEnable]

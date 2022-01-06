@@ -29,7 +29,8 @@ namespace ECSCoreTests.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(9)]
     [AttributeSystemEnable]
-    public class ControlWaySystem : SystemExistComponents<Pozition, PozitionSV, Way>, ISystemAction, ISystemActionAdd
+    [AttributeSystemParallelCountThreads(16)]
+    public class ControlWaySystem : SystemExistComponents<Pozition, PozitionSV, Way>, ISystemAction, ISystemActionAdd, ISystemParallel
     {
         public override void ActionAdd(int entityId, Pozition existComponentT1, PozitionSV existComponentT2, Way existComponentT3)
         {

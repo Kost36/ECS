@@ -104,4 +104,44 @@ namespace ECSCore.Enums
         /// </summary>
         Day1Once = 86400000
     }
+    /// <summary>
+    /// Тип выполнения системы
+    /// </summary>
+    internal enum SystemActionType
+    {
+        /// <summary>
+        /// Выполнить в текущем потоке
+        /// </summary>
+        RunInThisThread,
+        /// <summary>
+        /// Выполнить в одном отдельном потоке
+        /// </summary>
+        RunInOneThread,
+        /// <summary>
+        /// Выполнить в нескольких отдельных потоках
+        /// </summary>
+        RunInThreads,
+        /// <summary>
+        /// Выполнить в введенном потоке
+        /// </summary>
+        RunInInjectThread,
+    }
+    /// <summary>
+    /// Контроль задержки выполнения / вычисления
+    /// </summary>
+    internal enum ControlTypeDelay
+    {
+        /// <summary>
+        /// Не контролировать задержку выполнения
+        /// </summary>
+        Not,
+        /// <summary>
+        /// Контролировать выполнение системы
+        /// </summary>
+        DelayRunSystem,
+        /// <summary>
+        /// Контролировать вычиследние фильтра системы
+        /// </summary>
+        DelayCalculateFiltersSystem
+    }
 }

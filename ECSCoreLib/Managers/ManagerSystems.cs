@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using ECSCore.Enums;
 using ECSCore.Exceptions;
 using ECSCore.Interfaces;
 using ECSCore.Interfaces.Systems;
@@ -352,7 +353,7 @@ namespace ECSCore.Managers
             jobSystem.CalculateNextRun(); //Вычислить время след. выполнения
             SortSystemQueue(); //Сортировка очереди
             //TODO Фиксировать связанные компоненты!!!!
-            jobSystem.RunAsync(_ticksPoint, _timeWorkManagerSystemTicks); //Обработка системы
+            jobSystem.Run(_ticksPoint, _timeWorkManagerSystemTicks); //Обработка системы
         }
         /// <summary>
         /// Задать метку фактического времени
@@ -442,27 +443,6 @@ namespace ECSCore.Managers
                     } //Если система включена
                 } //Проверяем включение систем, и сдвигаем на соответствующее место
             }
-        }
-        #endregion
-
-        #region Перечисления
-        /// <summary>
-        /// Контроль задержки выполнения / вычисления
-        /// </summary>
-        private enum ControlTypeDelay
-        {
-            /// <summary>
-            /// Не контролировать задержку выполнения
-            /// </summary>
-            Not,
-            /// <summary>
-            /// Контролировать выполнение системы
-            /// </summary>
-            DelayRunSystem,
-            /// <summary>
-            /// Контролировать вычиследние фильтра системы
-            /// </summary>
-            DelayCalculateFiltersSystem
         }
         #endregion
     }

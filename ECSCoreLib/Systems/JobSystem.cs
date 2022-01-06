@@ -102,7 +102,7 @@ namespace ECSCore.Systems
         /// </summary>
         /// <param name="ticksPoint"> Метка времени, на которой выполняестся система </param>
         /// <param name="ticksWorkManagerSystem"> Общее время работы приложения в тиках </param>
-        public void RunAsync(long ticksPoint, long ticksWorkManagerSystem)
+        public void Run(long ticksPoint, long ticksWorkManagerSystem)
         {
             //Предобработка фильтра
             _stopwatch.Restart();
@@ -116,7 +116,7 @@ namespace ECSCore.Systems
             //Обработка системы
             if (System.IsAction)
             {
-                System.Aсtion();
+                System.RunAction(); //TODO Фиксация объектов => потокобезопасность
             } //Если система имеет интерфейс Action
             SystemStatistic.AddRunStatistic(_stopwatch.ElapsedTicks, ticksWorkManagerSystem); //Добавить в статистику
             _stopwatch.Stop();

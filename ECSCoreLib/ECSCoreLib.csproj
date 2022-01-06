@@ -46,6 +46,7 @@
     <Compile Include="Attributes\AttributeSystemEarlyExecution.cs" />
     <Compile Include="Attributes\AttributeSystemEnable.cs" />
     <Compile Include="Attributes\AttributeSystemPriority.cs" />
+    <Compile Include="Attributes\AttributeSystemParallelCountThreads.cs" />
     <Compile Include="BaseObjects\GroupComponents.cs" />
     <Compile Include="BaseObjects\Component.cs" />
     <Compile Include="BaseObjects\Entity.cs" />

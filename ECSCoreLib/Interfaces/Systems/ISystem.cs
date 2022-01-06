@@ -11,9 +11,7 @@ namespace ECSCore.Interfaces.Systems
     /// <summary>
     /// Интерфейс системы;
     /// </summary>
-    internal interface ISystem : ISystemSetting, ISystemRunTime
-    {
-    }
+    internal interface ISystem : ISystemSetting, ISystemRunTime { }
 
     /// <summary>
     /// Интерфейс параметров системы
@@ -83,4 +81,20 @@ namespace ECSCore.Interfaces.Systems
     /// Метод ActionRemove() необходимо пометить ключевым словом override; 
     /// </summary>
     public interface ISystemActionRemove { }
+
+    /// <summary>
+    /// Интерфейс - флаг. 
+    /// Система имеющая данный интерфейс будет распараллеливать на заданное количество потоков вызовы Action
+    /// </summary>
+    public interface ISystemParallel { }
+    /// <summary>
+    /// Интерфейс - флаг. 
+    /// Система имеющая данный интерфейс будет передавать управление Action наследнику
+    /// </summary>
+    public interface ISystemManualControlAction { }
+    /// <summary>
+    /// Интерфейс - флаг. 
+    /// Система имеющая данный интерфейс будет выполнять все ActionAdd/Action/ActionRemove синхронно в введенном потоке.
+    /// </summary>
+    public interface ISystemUseInjectThread { }
 }

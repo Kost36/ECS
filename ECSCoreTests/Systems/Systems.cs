@@ -89,8 +89,8 @@ namespace ECSCoreTests.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(15)]
     [AttributeSystemEnable]
-    //[AttributeSystemParallelCountThreads(8)]
-    public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way, WayToStop>, ISystemAction//, ISystemParallel
+    [AttributeSystemParallelCountThreads(16)]
+    public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way, WayToStop>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
         {
@@ -162,8 +162,8 @@ namespace ECSCoreTests.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
     [AttributeSystemPriority(5)]
     [AttributeSystemEnable]
-    //[AttributeSystemParallelCountThreads(8)]
-    public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction//, ISystemParallel
+    [AttributeSystemParallelCountThreads(16)]
+    public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Pozition pozition, Speed speed, float deltatime)
         {
@@ -240,8 +240,8 @@ namespace ECSCoreTests.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(1)]
     [AttributeSystemEnable]
-    //[AttributeSystemParallelCountThreads(8)]
-    public class AccselerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Enargy>, ISystemAction//, ISystemParallel
+    [AttributeSystemParallelCountThreads(16)]
+    public class AccselerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Enargy>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Enargy enargy, float deltatime)
         {

@@ -33,50 +33,6 @@ namespace ECSCoreTests
             Debug.WriteLine(IECSDebug.GetInfo());
         }
 
-        //[TestMethod()]
-        //public void Test_02()
-        //{
-        //    Entity ship = IECS.AddEntity(new Ship());
-        //    ship.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
-        //    ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
-        //    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
-        //    ship.Add(new EnargyReGeneration() { EnargyReGen = 4f});
-
-
-
-        //    Thread.Sleep(500);
-        //    while (true)
-        //    {
-        //        Thread.Sleep(1000);
-        //        Debug.WriteLine("     ");
-        //        if (ship.Get(out Pozition pozition))
-        //        {
-        //            Debug.WriteLine($"Позиция: {pozition.X} {pozition.Y} {pozition.Z}");
-        //        }
-        //        if (ship.Get(out PozitionSV pozitionSV))
-        //        {
-        //            Debug.WriteLine($"Заданныя позиция: {pozitionSV.X} {pozitionSV.Y} {pozitionSV.Z}");
-        //        }
-        //        if (ship.Get(out Way way))
-        //        {
-        //            Debug.WriteLine($"Путь: {way.LenX} {way.LenY} {way.LenZ} Расстояние: {way.Len} Направление: {way.NormX} {way.NormY} {way.NormZ}");
-        //        }
-        //        if (ship.Get(out Speed speed))
-        //        {
-        //            Debug.WriteLine($"Скорость: {speed.dX} {speed.dY} {speed.dZ} Скорость: {speed.SpeedFact} / {speed.SpeedMax}");
-        //        }
-        //        if (ship.Get(out SpeedSV speedSV))
-        //        {
-        //            Debug.WriteLine($"Заданная скорость: {speedSV.dXSV} {speedSV.dYSV} {speedSV.dZSV} Факт.: {speedSV.SVSpeed}");
-        //        }
-        //        if (ship.Get(out Enargy enargy))
-        //        {
-        //            Debug.WriteLine($"Энергия: {enargy.EnargyFact} / {enargy.EnargyMax}");
-        //        }
-
-        //    }
-        //}
-
         [TestMethod()]
         public void Test_02_MechanicMove()
         {
@@ -106,6 +62,12 @@ namespace ECSCoreTests
                         }
                     }
                 }
+
+
+                if (j % 10000 == 0)
+                {
+                    IECSDebug.ManagerSystems.ClearStatisticSystems();
+                }
             }
             IECSDebug.ManagerSystems.ClearStatisticSystems();
 
@@ -118,12 +80,20 @@ namespace ECSCoreTests
             }
             IECSDebug.ManagerSystems.ClearStatisticSystems();
 
+            int l = 0;
             while (true)
             {
+                l++;
                 Thread.Sleep(1000);
                 Debug.WriteLine(IECSDebug.GetInfo(true));
 
                 int entityId = IECSDebug.ManagerEntitys.GetIdFirstEntity();
+
+
+                if (l % 100 == 0)
+                {
+                    IECSDebug.ManagerSystems.ClearStatisticSystems();
+                }
 
                 if (IECS.GetEntity(entityId, out Entity entity))
                 {
@@ -159,5 +129,17 @@ namespace ECSCoreTests
             Assert.IsTrue(true);
         }
 
+        [TestMethod()]
+        public void Test_03_MechanicMove()
+        {
+            IECS.Despose();
+            Thread.Sleep(500);
+            Test_00_InitializationIECS();
+            int i = 0;
+            while (i<20)
+            {
+                Test_02_MechanicMove();
+            }
+        }
     }
 }

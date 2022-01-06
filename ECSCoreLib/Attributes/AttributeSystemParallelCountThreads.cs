@@ -8,6 +8,9 @@ namespace ECSCore.Attributes
 {
     /// <summary>
     /// Атрибут количества потоков, для распараллеливания системы.
+    /// Оптимальное количество потоков: 
+    /// От колличества ядер процессора 
+    /// До колличества визических потоков процессора
     /// </summary>
     public class AttributeSystemParallelCountThreads : Attribute
     {

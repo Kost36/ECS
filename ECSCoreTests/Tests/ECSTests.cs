@@ -216,7 +216,7 @@ namespace ECSCoreTests
             Assert.Fail();
         }
 
-        [TestMethod()]
+        //[TestMethod()]
         public void Test_11_SearchBug()
         {
             int i = 0;

@@ -251,7 +251,7 @@ namespace ECSCore
             if (smallInfo)
             {
                 info = info.Append($"ECSCore: Version: {this.GetType().Assembly.GetName().Version} \r\n");
-                info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} \r\n");
+                info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} TimeDelay: {this.ManagerSystems.TimeDelayExecuted} ms \r\n");
                 info = info.Append($"ECSHaveN'tTimeToBeCalculateFilterSystems: {this.ManagerSystems.IsNotHaveTimeToBeCalculateFilters} \r\n");
                 info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
                 info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");

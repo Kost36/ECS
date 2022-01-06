@@ -77,6 +77,10 @@ namespace ECSCore.Managers
         /// </summary>
         private bool _flagHaveDelayRunSystem;
         /// <summary>
+        /// Время задержки выполнения систем в мс
+        /// </summary>
+        private float _timeDelayExecuted;
+        /// <summary>
         /// Флаг наличия задержки вычисления фильтров.
         /// (Вильтры не успевают вычисляться - необходима оптимизация)
         /// </summary>
@@ -109,6 +113,10 @@ namespace ECSCore.Managers
         /// Необходимо оптимизировать нагрузку
         /// </summary>
         public bool IsNotHaveTimeToBeExecuted { get { return _flagHaveDelayRunSystem; } }
+        /// <summary>
+        /// Время задержки выполнения систем в мс
+        /// </summary>
+        public float TimeDelayExecuted { get { return _timeDelayExecuted; } }
         /// <summary>
         /// Фильтры не успевают вычисляться вовремя
         /// Необходимо оптимизировать нагрузку
@@ -298,6 +306,7 @@ namespace ECSCore.Managers
                         if (_systemQueue[1].TicksNextRun <= _ticksPoint)
                         {
                             _flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
+                            _timeDelayExecuted = (float)(_ticksPoint - _systemQueue[1].TicksNextRun) / (float)TimeSpan.TicksPerMillisecond; //Считаем время задержки выполнения систем
                         } //Если следующая система тоже должна выполниться
                     } //Если систем больше 1
                     return;
@@ -379,7 +388,7 @@ namespace ECSCore.Managers
                 switch (controlTypeDelay)
                 {
                     case ControlTypeDelay.DelayRunSystem:
-                        _flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
+                        //_flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
                         break;
                     case ControlTypeDelay.DelayCalculateFiltersSystem:
                         _flagHaveDelayCalculateFilters = true; //Не успеваем вычислять фильтра
@@ -393,6 +402,7 @@ namespace ECSCore.Managers
                 {
                     case ControlTypeDelay.DelayRunSystem:
                         _flagHaveDelayRunSystem = false; //Успеваем выполнять системы
+                        _timeDelayExecuted = 0;
                         break;
                     case ControlTypeDelay.DelayCalculateFiltersSystem:
                         _flagHaveDelayCalculateFilters = false; //Успеваем вычислять фильтра

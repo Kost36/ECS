@@ -36,11 +36,11 @@ namespace ECSCoreTests
         [TestMethod()]
         public void Test_02_MechanicMove()
         {
-            int entityCount = 100000;
+            int entityCount = 280000;
             int j = 0;
             while (j < entityCount)
             {
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 10000; i++)
                 {
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
@@ -147,7 +147,7 @@ namespace ECSCoreTests
             Thread.Sleep(500);
             Test_00_InitializationIECS();
             int i = 0;
-            while (i<20)
+            while (i<10)
             {
                 Test_02_MechanicMove();
             }

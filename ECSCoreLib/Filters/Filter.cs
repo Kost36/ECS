@@ -61,6 +61,45 @@ namespace ECSCore.Filters
         #endregion
 
         #region IFilterActionGroup Реализация
+        /// <summary>
+        /// Проверить наличие у сущьности исключающих в фильтре компонент
+        /// </summary>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> true - у сущьности присутствуют исключающие компоненты </returns>
+        private bool CheckHaveWithoutComponents(Entity entity)
+        {
+            foreach (Type typeWithoutComponent in TypesWithoutComponents)
+            {
+                if (entity.CheckExist(typeWithoutComponent))
+                {
+                    return true;
+                } //Если исключающий компонент есть на сущьности
+            } //Проходимся по всем исключающим компонентам
+            return false; 
+        }
+        /// <summary>
+        /// Удалить группу компонент из коллекции фильтра
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        private void RemoveFromCollection(int entityId)
+        {
+            lock (Collection)
+            {
+                if (Collection.TryGetValue(entityId, out TGroupComponents groupComponents))
+                {
+                    foreach (SystemBase system in InterestedSystems)
+                    {
+                        if (system.IsEnable && system.IsActionRemove)
+                        {
+                            system.AсtionRemove(entityId);
+                        }
+                    }
+                    Collection.Remove(entityId);
+                    CountRemove++;
+                    return;
+                }
+            }
+        }
         public override void TryAdd(int entityId)
         {
             lock (Collection)
@@ -69,18 +108,23 @@ namespace ECSCore.Filters
                 {
                     CountNotAdd_Have++;
                     return;
-                } //Проверка наличия списка компонентов в фильтре
+                } //Проверка наличия группы компонентов в фильтре
                 lock (_groupComponents)
                 {
-                    if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem, FlagTest))
+                    if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem, out Entity entity, FlagTest))
                     {
+                        if (CheckHaveWithoutComponents(entity))
+                        {
+                            CountNotAdd_TryAddComponentForEntity_IsFalse++;
+                            return;
+                        } //Если у сущьности присутствуют исключающие компоненты
                         foreach (SystemBase system in InterestedSystems)
                         {
                             if (system.IsEnable && system.IsActionAdd)
                             {
                                 system.AсtionAdd(entityId, _groupComponents);
-                            }
-                        }
+                            } //Если система включена и реализует соответствующий интерфейс
+                        } //Вызов AсtionAdd у заинтересованных систем
                         Collection.Add(entityId, _groupComponents);
                         CountAdd++;
                         _groupComponents = Activator.CreateInstance<TGroupComponents>();
@@ -100,25 +144,17 @@ namespace ECSCore.Filters
         {
             lock (_groupComponents)
             {
-                if (_groupComponents.TryRemoveComponentForEntity(entityId, ECSSystem))
+                if (_groupComponents.TryRemoveComponentForEntity(entityId, ECSSystem, out Entity entity))
                 {
-                    lock (Collection)
-                    {
-                        if (Collection.TryGetValue(entityId, out TGroupComponents groupComponents))
-                        {
-                            foreach (SystemBase system in InterestedSystems)
-                            {
-                                if (system.IsEnable && system.IsActionRemove)
-                                {
-                                    system.AсtionRemove(entityId);
-                                }
-                            }
-                            Collection.Remove(entityId);
-                            CountRemove++;
-                            return;
-                        }
-                    }
-                }
+                    RemoveFromCollection(entityId); // Удалить группу из коллекции фильтра
+                    return;
+                } //Если у сущьности нету хотя бы одного включающего компонента
+                //Иначе, если у сущьности есть все включающие компоненты, то проверяем исключающие компоненты!
+                else if (CheckHaveWithoutComponents(entity))
+                {
+                    RemoveFromCollection(entityId); // Удалить группу из коллекции фильтра
+                    return;
+                } //Если у сущьности есть хотя бы один исключающих компонент
             }
         }
         public override void TryRemoveEntity(int entityId)
@@ -131,8 +167,3 @@ namespace ECSCore.Filters
         #endregion
     }
 }
-
-//TODO Если в одном фильтре заинтересовано более 1 системы.
-//То логика реализации ActionAdd, Action, ActionRemove у систем будет работать неверно. 
-//Будет происходить вызов только у какой то 1 системы
-//FIX : Производить вызов ActionAdd и ActionRemove. У всех заинтересованных систем, при обработке фильтра

@@ -122,6 +122,10 @@ namespace ECSCoreTests.Components
         /// (m/sec)
         /// </summary>
         public float SVSpeed;
+        /// <summary>
+        /// Флаг - заданная скорость изменена
+        /// </summary>
+        public bool Update;
     }
     /// <summary>
     /// Компонент ускорения
@@ -140,6 +144,10 @@ namespace ECSCoreTests.Components
         /// (value/sec)
         /// </summary>
         public float EnargyUse = 5;
+        /// <summary>
+        /// Скорость достигнута
+        /// </summary>
+        public bool SpeedOk;
     }
     /// <summary>
     /// Компонент регенерации энергии

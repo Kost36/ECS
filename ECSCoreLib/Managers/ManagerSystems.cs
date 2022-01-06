@@ -199,6 +199,7 @@ namespace ECSCore.Managers
         /// </summary>
         internal void Despose()
         {
+            //TODO Завершить потоки менеджера систем
             _stopCMD = true; //Команда на останов
             while (true)
             {
@@ -208,6 +209,7 @@ namespace ECSCore.Managers
                 }
                 if (_stopCMD == false)
                 {
+                    Thread.Sleep(1000); //TODO Завершить потоки менеджера систем
                     return;
                 } //Если бит сбросился в false. значит менеджер остановил все системы и завершил все потоки
             }  //Пока бит останова не сбросится в false

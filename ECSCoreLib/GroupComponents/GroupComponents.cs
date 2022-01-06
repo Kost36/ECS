@@ -15,25 +15,27 @@ namespace ECSCore.GroupComponents
            where ExistComponent_1 : IComponent
     {
         public ExistComponent_1 ExistComponent1;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, bool flagTest)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1))
                 {
                     ExistComponent1 = existComponent_1;
                     return true;
                 }
-            } //Если сущьность есть//Тест. Поиск бага
+            } //Если сущьность есть
+            
+            //Тест. Поиск бага
             if (flagTest)
             {
                 flagTest = flagTest;
             }
             return false;
         }
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1) == false)
                 {
@@ -62,9 +64,9 @@ namespace ECSCore.GroupComponents
 
         internal ExistComponent_1 ExistComponent1 = Activator.CreateInstance<ExistComponent_1>();
         internal ExistComponent_2 ExistComponent2 = Activator.CreateInstance<ExistComponent_2>();
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, bool flagTest)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1))
                 {
@@ -99,9 +101,9 @@ namespace ECSCore.GroupComponents
             }
             return false;
         }
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1) == false)
                 {
@@ -136,9 +138,9 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_1 ExistComponent1;
         internal ExistComponent_2 ExistComponent2;
         internal ExistComponent_3 ExistComponent3;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, bool flagTest)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1))
                 {
@@ -160,9 +162,9 @@ namespace ECSCore.GroupComponents
             }
             return false;
         }
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1) == false)
                 {
@@ -204,9 +206,9 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_2 ExistComponent2;
         internal ExistComponent_3 ExistComponent3;
         internal ExistComponent_4 ExistComponent4;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, bool flagTest)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1))
                 {
@@ -232,9 +234,9 @@ namespace ECSCore.GroupComponents
             }
             return false;
         }
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1) == false)
                 {
@@ -283,9 +285,9 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_3 ExistComponent3;
         internal ExistComponent_4 ExistComponent4;
         internal ExistComponent_5 ExistComponent5;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, bool flagTest)
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1))
                 {
@@ -315,9 +317,9 @@ namespace ECSCore.GroupComponents
             }
             return false;
         }
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS)
+        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
-            if (eCS.GetEntity(entityId, out Entity entity))
+            if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1) == false)
                 {

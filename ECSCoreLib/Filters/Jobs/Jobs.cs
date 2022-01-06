@@ -24,26 +24,6 @@ namespace ECSCore.Filters.Jobs
         }
         #endregion
     }
-    //internal class JobTryAddOk
-    //{
-    //    #region Конструкторы
-    //    internal JobTryAddOk(int entityId)
-    //    {
-    //        _entityId = entityId;
-    //    }
-    //    #endregion
-
-    //    #region Поля
-    //    private int _entityId;
-    //    #endregion
-
-    //    #region Действия
-    //    public void Action(FilterBase filter)
-    //    {
-    //        filter.TryAddOk(_entityId);
-    //    }
-    //    #endregion
-    //}
     internal class JobTryRemove : IJobToFilter
     {
         #region Конструкторы
@@ -64,26 +44,6 @@ namespace ECSCore.Filters.Jobs
         }
         #endregion
     }
-    //internal class JobTryRemoveOk : IJobToFilter
-    //{
-    //    #region Конструкторы
-    //    internal JobTryRemoveOk(int entityId)
-    //    {
-    //        _entityId = entityId;
-    //    }
-    //    #endregion
-
-    //    #region Поля
-    //    private int _entityId;
-    //    #endregion
-
-    //    #region Действия
-    //    public void Action(FilterBase filter)
-    //    {
-    //        filter.TryRemoveOk(_entityId);
-    //    }
-    //    #endregion
-    //}
     internal class JobTryRemoveEntity : IJobToFilter
     {
         #region Конструкторы

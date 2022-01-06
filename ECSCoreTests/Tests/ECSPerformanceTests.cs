@@ -45,7 +45,7 @@ namespace ECSCoreTests
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
                     ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
-                    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
+                    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 5000 });
                     j++;
                 }
 
@@ -98,17 +98,13 @@ namespace ECSCoreTests
                 if (IECS.GetEntity(entityId, out Entity entity))
                 {
                     Debug.WriteLine($"Сущьность: {entityId}");
-                    if (entity.Get(out Pozition pozition))
-                    {
-                        Debug.WriteLine($"Позиция: {pozition.X},{pozition.Y},{pozition.Z}");
-                    }
-                    if (entity.Get(out Speed speed))
-                    {
-                        Debug.WriteLine($"Скорость: {speed.dX},{speed.dY},{speed.dZ}");
-                    }
                     if (entity.Get(out Enargy enargy))
                     {
                         Debug.WriteLine($"Энергия: {enargy.EnargyFact}/{enargy.EnargyMax}");
+                    }
+                    if (entity.Get(out Pozition pozition))
+                    {
+                        Debug.WriteLine($"Позиция: {pozition.X}|{pozition.Y}|{pozition.Z}");
                     }
                     if (entity.Get(out Way way))
                     {
@@ -116,7 +112,22 @@ namespace ECSCoreTests
                     }
                     if (entity.Get(out WayToStop wayToStop))
                     {
-                        Debug.WriteLine($"Путь останова: {wayToStop.Len}");
+                        Debug.WriteLine($"Путь останова: {wayToStop.Len}; Энергии достаточно для полного останова: {wayToStop.EnargyHave}");
+                    }
+                    if (entity.Get(out Speed speed))
+                    {
+                        if (entity.Get(out Acceleration acceleration))
+                        {
+                            Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}; Ускорение/Замедление: True");
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}");
+                        }
+                    }
+                    if (entity.Get(out SpeedSV speedSV))
+                    {
+                        Debug.WriteLine($"Скорость заданная: {speedSV.SVSpeed}; Изменение заданной скорости: {speedSV.Update}");
                     }
                     Debug.WriteLine("");
                 }

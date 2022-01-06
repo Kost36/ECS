@@ -163,6 +163,10 @@ namespace ECSCore.BaseObjects
                 lock (JobToFilters)
                 {
                     JobToFilters.Enqueue(new JobTryAdd(entity.Id));
+                    if (TypesWithoutComponents.Count > 0)
+                    {
+                        JobToFilters.Enqueue(new JobTryRemove(entity.Id));
+                    } //Если у фильтра есть исключающие компоненты
                     CountJobAdd++;
                 }
             } //Если фильтр интересуется данным компонентом
@@ -178,6 +182,10 @@ namespace ECSCore.BaseObjects
                 lock (JobToFilters)
                 {
                     JobToFilters.Enqueue(new JobTryRemove(entity.Id));
+                    if (TypesWithoutComponents.Count > 0)
+                    {
+                        JobToFilters.Enqueue(new JobTryAdd(entity.Id));
+                    } //Если у фильтра есть исключающие компоненты
                     CountJobRemove++;
                 }
             } //Если фильтр интересуется данным компонентом

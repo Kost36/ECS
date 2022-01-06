@@ -91,7 +91,8 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        internal void Add(IComponent component)
+        internal void Add<T>(T component)
+            where T : IComponent
         {
             Registration(component); //Добавим в коллекцию
         }
@@ -131,7 +132,6 @@ namespace ECSCore.Managers
         /// Удалить заданный тип компонента, имеющий заданный id сущьности
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        /// <param name="typeComponent"> Тип компонента </param>
         internal bool Remove<T>(int id)
         {
             return RemoveComponent(id, typeof(T)); //Удалим компонент

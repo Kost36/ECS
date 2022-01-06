@@ -169,8 +169,8 @@ namespace ECSCore
                 return;
             } //Получим сущьность от менеджера сущьностей
             Entity.AddComponent(component); //Добавить к сущьности
-            _managerComponents.Add(component); //Передать менеджеру компонент
-            _managerFilters.Add(component); //Передать менеджеру фильтров
+            _managerComponents.Add<T>(component); //Передать менеджеру компонент
+            _managerFilters.Add<T>(component); //Передать менеджеру фильтров
         }
         /// <summary>
         /// Добавить компонент.
@@ -187,8 +187,8 @@ namespace ECSCore
                 } //Получим сущьность от менеджера сущьностей
             } //Если сущьность не задана
             Entity.AddComponent(component); //Добавить к сущьности
-            _managerComponents.Add(component); //Передать менеджеру компонент
-            _managerFilters.Add(component); //Передать менеджеру фильтров
+            _managerComponents.Add<T>(component); //Передать менеджеру компонент
+            _managerFilters.Add<T>(component); //Передать менеджеру фильтров
         }
         /// <summary>
         /// Получить компонент, если есть.
@@ -297,7 +297,6 @@ namespace ECSCore
         {
             if (_ecs != null)
             {
-                //TODO Завершить потоки менеджера систем
                 _ecs._managerSystems.Despose();
                 _ecs._managerEntitys = null;
                 _ecs._managerFilters = null;

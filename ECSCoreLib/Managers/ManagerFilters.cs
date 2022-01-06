@@ -67,31 +67,34 @@ namespace ECSCore.Managers
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        internal IFilter GetFilter<T>()
-            where T : IFilter
-        {
-            Type type = typeof(T); //Получим тип
-            foreach (IFilter filter in _filters)
-            {
-                if (filter.GetType().Equals(type))
-                {
-                    return filter;
-                } //Если тип совпал
-            } //Пройдемся по всем фильтрам
-            throw new Exception($"Тип фильтра {typeof(T).FullName} не зарегистрирован в ECSCore");
-        }
-        /// <summary>
-        /// Получить фильтр компонентов
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        internal IFilter GetFilter(Type type)
+        internal IFilter GetFilter(Type type, List<Type> typesWithoutComponents)
         {
             foreach (IFilter filter in _filters)
             {
                 if (filter.GetType().Equals(type))
                 {
-                    return filter;
+                    if (filter.TypesWithoutComponents.Count == typesWithoutComponents.Count)
+                    {
+                        foreach (Type filter1TypesWithoutComponent in filter.TypesWithoutComponents)
+                        {
+                            bool next = false;
+                            foreach (Type filter2TypesWithoutComponent in typesWithoutComponents)
+                            {
+                                if (filter1TypesWithoutComponent.FullName == filter2TypesWithoutComponent.FullName)
+                                {
+                                    next = true;
+                                    break;
+                                } //Если есть совпадение
+                            } //Проверим TypesWithoutComponents
+                            if (next)
+                            {
+                                continue;
+                            }
+                            throw new Exception($"Тип фильтра {type.FullName} с исключающими компонентами не зарегистрирован в ECSCore");
+                        } //Проверим TypesWithoutComponents
+
+                        return filter;
+                    } //Если количество исключающих компонент совпадает
                 } //Если тип совпал
             } //Пройдемся по всем фильтрам
             throw new Exception($"Тип фильтра {type.FullName} не зарегистрирован в ECSCore");
@@ -101,13 +104,14 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        internal void Add(IComponent component)
+        internal void Add<T>(T component)
+            where T: IComponent
         {
             if (_ecs.GetEntity(component.Id, out Entity entity))
             {
                 foreach (IFilter filter in _filters)
                 {
-                    filter.Add(component, entity); //Добавляем (Попытка, добавить или нет проверяет группа) 
+                    filter.Add(component, entity); //Добавляем (Попытка, добавить или нет проверяет группа)
                 } //Проходимся по всем группам 
             }
         }
@@ -122,7 +126,7 @@ namespace ECSCore.Managers
                 foreach (IFilter filter in _filters)
                 {
                     filter.Remove<T>(entity); //Удаляем (Попытка, удалить или нет проверяет группа) 
-                } //Проходимся по всем группам 
+                } //Проходимся по всем группам
             }
         }
         /// <summary>
@@ -209,7 +213,7 @@ namespace ECSCore.Managers
                         if (filter1.TypesExistComponents[i].FullName != filter2.TypesExistComponents[i].FullName)
                         {
                             throw new Exception($"Дублирование фильтров! " +
-                                $"");
+                                $""); //TODO Вернуть тип фильтров / систем
                         } //Если есть совпадение
                     } //Проверим совпадение позиций
                     for (int i = 0; i < filter1.TypesWithoutComponents.Count; i++)
@@ -217,7 +221,7 @@ namespace ECSCore.Managers
                         if (filter1.TypesWithoutComponents[i].FullName != filter2.TypesWithoutComponents[i].FullName)
                         {
                             throw new Exception($"Дублирование фильтров! " +
-                                $"");
+                                $""); //TODO Вернуть тип фильтров / систем
                         } //Если есть совпадение
                     } //Проверим совпадение позиций
                     return true;
@@ -229,39 +233,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Инициализация 
         /// </summary>
-        private void Init(Assembly assembly)
-        {
-            //Type typeISystem = typeof(ISystem); //Получим тип интерфейса
-            //Type[] types = assembly.GetTypes(); //Получаем все типы сборки 
-            //List<Type> typesSystems = types.Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
-            //foreach (Type typesSystem in typesSystems)
-            //{
-            //    Type[] genericTypes = typesSystem.BaseType.GenericTypeArguments;
-            //    Type filterRunTimeImplementation = null;
-            //    switch (genericTypes.Length)
-            //    {
-            //        case 1:
-            //            filterRunTimeImplementation = typeof(Filter<>);
-            //            break;
-            //        case 2:
-            //            filterRunTimeImplementation = typeof(Filter<,>);
-            //            break;
-            //        case 3:
-            //            filterRunTimeImplementation = typeof(Filter<,,>);
-            //            break;
-            //        case 4:
-            //            filterRunTimeImplementation = typeof(Filter<,,,>);
-            //            break;
-            //        case 5:
-            //            filterRunTimeImplementation = typeof(Filter<,,,,>);
-            //            break;
-            //    }
-            //    Type makeme = filterRunTimeImplementation.MakeGenericType(genericTypes);
-            //    IFilter filter = (IFilter)Activator.CreateInstance(makeme);
-            //    filter.Init(); //Инициализация
-            //    AddFilter(filter); //Добавим в список
-            //} //Пройдемся по всем группам 
-        }
+        private void Init(Assembly assembly) { }
         /// <summary>
         /// Получить общее количество сущьностей в фильтрах
         /// </summary>

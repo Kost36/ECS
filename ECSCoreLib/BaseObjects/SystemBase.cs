@@ -90,6 +90,10 @@ namespace ECSCore.BaseObjects
         /// Фильтр системы
         /// </summary>
         internal abstract FilterBase FilterBase { get; }
+        /// <summary>
+        /// Тип исключающего компонента
+        /// </summary>
+        internal Type ExcludeComponentType { get; set; }
         #endregion
 
         #region Реализация в данном класcе на уровне ECSCore
@@ -101,6 +105,10 @@ namespace ECSCore.BaseObjects
         internal void Init(ManagerFilters managerFilters, ECS eCS)
         {
             ECS = eCS;
+            if (ExcludeComponentType != null)
+            {
+                FilterBase.TypesWithoutComponents.Add(ExcludeComponentType);//Добавим исключающий компонет в фильтр
+            } //Если у систем есть исключающий компонент
             managerFilters.AddFilter(FilterBase); //Проверить наличие и зарегистрировать фильтр
             GetFilter(managerFilters); //Подтянуть нужный фильтр
             FilterBase.ECSSystem = eCS; //Ввод зависимости
@@ -156,6 +164,14 @@ namespace ECSCore.BaseObjects
             {
                 CountThreads = attributeSystemParallelCountThreads.CountThreads;
             } //Если у системы есть атрибут - колличества потоков для параллельного выполнения 
+
+            //Исключающиеся из системы компонент
+            AttributeExcludeComponentSystem attributeExcludeComponentSystem = type.GetCustomAttribute<AttributeExcludeComponentSystem>();
+            if (attributeExcludeComponentSystem != null)
+            {
+                ExcludeComponentType = attributeExcludeComponentSystem.ExcludeComponentType;
+            } //Если у системы есть атрибут - исключающиеся из системы компонента 
+
 
             //Интерфейсы
             IsActionAdd = false;

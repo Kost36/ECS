@@ -12,51 +12,6 @@ using System.Collections.Generic;
 
 namespace ECSCore.Systems
 {
-    //public abstract class System<TGroupComponents> : SystemBase
-    //    where TGroupComponents : GroupComponents
-    //{
-    //    /// <summary>
-    //    /// Фильтр
-    //    /// </summary>
-    //    internal Filter<GroupComponents> Filter { get; set; }
-    //    /// <summary>
-    //    /// Получение ссылки на фильтр
-    //    /// </summary>
-    //    internal override void GetFilter(ManagerFilters managerFilters)
-    //    {
-    //        Filter = (Filter<GroupComponents>)(managerFilters.GetFilter(typeof(Filter<GroupComponents>)));
-    //    }
-    //    /// <summary>
-    //    /// Подготовка к выполнению, вызывается перед каждым выполнением
-    //    /// </summary>
-    //    internal override void CalculateFilter(long limitTimeTicks = 0)
-    //    {
-    //        if (limitTimeTicks == 0)
-    //        {
-    //            Filter.СalculateJob();
-    //        }
-    //        else
-    //        {
-    //            Filter.СalculateJob(limitTimeTicks);
-    //        }
-    //    }
-    //    /// <summary>
-    //    /// Выполнение системы.
-    //    /// (Вызывается с интервалом, заданным через атрибут)
-    //    /// </summary>
-    //    internal override void Aсtion()
-    //    {
-    //        foreach (T0 t0 in Filter.ComponentsT0.Values)
-    //        {
-    //            Action(t0);
-    //        }
-    //    }
-    //    /// <summary>
-    //    /// Работа системы
-    //    /// </summary>
-    //    public abstract void Action(T0 t0);
-    //}
-
     public abstract class SystemExistComponents<ExistComponentT1> : SystemBase
         where ExistComponentT1 : IComponent
     {
@@ -70,7 +25,7 @@ namespace ECSCore.Systems
         /// </summary>
         internal override void GetFilter(ManagerFilters managerFilters)
         {
-            Filter = (Filter<GroupComponentsExist<ExistComponentT1>>)(managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1>>)));
+            Filter = (Filter<GroupComponentsExist<ExistComponentT1>>)(managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1>>), Filter.TypesWithoutComponents));
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
@@ -180,7 +135,7 @@ namespace ECSCore.Systems
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>)
                 (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>)));
+                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>), Filter.TypesWithoutComponents));
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
@@ -291,7 +246,7 @@ namespace ECSCore.Systems
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>)
                 (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>)));
+                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>), Filter.TypesWithoutComponents));
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
@@ -399,7 +354,7 @@ namespace ECSCore.Systems
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>)
                 (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>)));
+                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>), Filter.TypesWithoutComponents));
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
@@ -508,7 +463,7 @@ namespace ECSCore.Systems
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>)
                 (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>)));
+                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>), Filter.TypesWithoutComponents));
         }
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением

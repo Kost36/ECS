@@ -106,6 +106,10 @@ namespace ECSCoreTests.Systems
             //Ускорение
             else if (way.Len > wayToStop.Len*3)
             {
+                if (speedSV.SVSpeed == speed.SpeedMax)
+                {
+                    return;
+                } //Есди заданная скорость равна максимальной
                 UpSpeed(entityId, speed, speedSV);
             } //Если оставшийся путь в 1.5 раз больше пути останова
             else
@@ -128,10 +132,7 @@ namespace ECSCoreTests.Systems
             if (speed.SpeedFact >= speedSV.SVSpeed * 0.95)
             {
                 speedSV.SVSpeed += (float)(speed.SpeedMax * 0.05); //Увеличиваем на 5% от максимальной скорости
-                if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
-                {
-                    IECS.AddComponent(new Acceleration() { Id = entityId });
-                } //Если нету ускорения
+                speedSV.Update = true;
                 if (speedSV.SVSpeed > speed.SpeedMax)
                 {
                     speedSV.SVSpeed = speed.SpeedMax;
@@ -147,10 +148,7 @@ namespace ECSCoreTests.Systems
                     speedSV.SVSpeed = speed.SpeedFact;
                 }
                 speedSV.SVSpeed -= (float)(speed.SpeedMax * 0.1); //Снижаем на 10% от максимальной скорости
-                if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
-                {
-                    IECS.AddComponent(new Acceleration() { Id = entityId });
-                } //Если нету ускорения
+                speedSV.Update = true;
                 if (speedSV.SVSpeed < 0)
                 {
                     speedSV.SVSpeed = 0;
@@ -158,6 +156,41 @@ namespace ECSCoreTests.Systems
             }
         }
     }
+
+
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [AttributeSystemPriority(15)]
+    [AttributeSystemEnable]
+    [AttributeExcludeComponentSystem(typeof(Acceleration))]
+    public class ControlAccelerateSystem : SystemExistComponents<SpeedSV>, ISystemAction
+    {
+        public override void Action(int entityId, SpeedSV speedSV, float deltatime)
+        {
+            if (speedSV.Update)
+            {
+                if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
+                {
+                    IECS.AddComponent(new Acceleration() { Id = entityId });
+                } //Если нету ускорения
+                speedSV.Update = false;
+            }
+            //if (speedSV.SVSpeed > speed.SpeedFact * 0.95)
+            //{
+            //    if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
+            //    {
+            //        IECS.AddComponent(new Acceleration() { Id = entityId });
+            //    } //Если нету ускорения
+            //}
+            //else if (speedSV.SVSpeed < speed.SpeedFact * 1.05)
+            //{
+            //    if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
+            //    {
+            //        IECS.AddComponent(new Acceleration() { Id = entityId });
+            //    } //Если нету ускорения
+            //}
+        }
+    }
+
 
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
     [AttributeSystemPriority(5)]
@@ -176,7 +209,8 @@ namespace ECSCoreTests.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
-    public class EnargyRegenerationSystem : SystemExistComponents<Enargy, EnargyReGeneration>, ISystemAction
+    [AttributeSystemParallelCountThreads(16)]
+    public class EnargyRegenerationSystem : SystemExistComponents<Enargy, EnargyReGeneration>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Enargy enargy, EnargyReGeneration enargyReGeneration, float deltatime)
         {
@@ -195,11 +229,12 @@ namespace ECSCoreTests.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Min5Once)]
     [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
+    [AttributeExcludeComponentSystem(typeof(EnargyReGeneration))]
     public class EnargyRegenerationStartSystem : SystemExistComponents<Enargy>, ISystemAction
     {
         public override void Action(int entityId, Enargy enargy, float deltatime)
         {
-            if (enargy.EnargyFact < enargy.EnargyMax)
+            if (enargy.EnargyFact < enargy.EnargyMax*0.9)
             {
                 if (IECS.GetComponent(entityId, out EnargyReGeneration enargyReGeneration) == false)
                 {
@@ -249,6 +284,29 @@ namespace ECSCoreTests.Systems
             float acc = acceleration.Acc * DeltaTime;
             if (enargy.EnargyFact > enargyUse)
             {
+                //Проверка достижения максимальной скорости
+                if (speed.dX == speedSV.dXSV)
+                {
+                    if (speed.dY == speedSV.dYSV)
+                    {
+                        if (speed.dZ == speedSV.dZSV)
+                        {
+                            if (acceleration.SpeedOk)
+                            {
+                                IECS.RemoveComponent<Acceleration>(entityId); //Удалить компонент ускорения
+                            }
+                            else
+                            {
+                                acceleration.SpeedOk = true;
+                            }
+                            speedSV.Update = false;
+                            return;
+                        }
+                    }
+                }
+                acceleration.SpeedOk = false;
+
+                speedSV.Update = false;
                 //Ускорение
                 if (speedSV.dXSV < speed.dX)
                 {
@@ -303,19 +361,9 @@ namespace ECSCoreTests.Systems
 
                 enargy.EnargyFact -= enargyUse;
                 speed.SpeedFact = Vector.Len(speed.dX, speed.dY, speed.dZ);
+
             }
 
-            //Проверка достижения максимальной скорости
-            if (speed.dX == speedSV.dXSV)
-            {
-                if (speed.dY == speedSV.dYSV)
-                {
-                    if (speed.dZ == speedSV.dZSV)
-                    {
-                        IECS.RemoveComponent<Acceleration>(entityId); //Удалить компонент ускорения
-                    }
-                }
-            }
         }
     }
 }

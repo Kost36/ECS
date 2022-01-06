@@ -38,6 +38,15 @@ namespace ECSCore.BaseObjects
             return GetComponent(out component, flagTest);
         }
         /// <summary>
+        /// Проверить наличие компонента у сущьности
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool CheckExist(Type typeComponent)
+        {
+            return CheckExistComponent(typeComponent);
+        }
+        /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
@@ -112,12 +121,33 @@ namespace ECSCore.BaseObjects
                         return true;
                     }
                 }
-            if (flagTest)
-            {
-                flagTest = flagTest;
+
+                if (flagTest)
+                {
+                    flagTest = flagTest;
+                }
+
+                component = default(T);
+                return false;
             }
-            component = default(T);
-            return false;
+        }
+        /// <summary>
+        /// Проверить наличие компонента у сущьности
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <returns> Флаг наличия компонента </returns>
+        private bool CheckExistComponent(Type typeComponent)
+        {
+            lock (Components)
+            {
+                foreach (IComponent Component in Components)
+                {
+                    if (Component.GetType().FullName == typeComponent.FullName)
+                    {
+                        return true;
+                    }
+                }
+                return false;
             }
         }
     }

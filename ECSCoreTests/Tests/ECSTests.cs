@@ -164,7 +164,6 @@ namespace ECSCoreTests
                     ship.Add(new PozitionSV() { X = 1000, Y = 1000, Z = 1000 });
                     //Thread.Sleep(1);
                     ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
-                    ship.Add(new EnargyReGeneration() { EnargyReGen = 5f });
                     j++;
                 }
 
@@ -225,7 +224,7 @@ namespace ECSCoreTests
             {
                 Test_10_FillingFilter();
                 i++;
-                if (i>50)
+                if (i>100)
                 {
                     return;
                 }

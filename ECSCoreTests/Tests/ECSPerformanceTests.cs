@@ -36,7 +36,7 @@ namespace ECSCoreTests
         [TestMethod()]
         public void Test_02_MechanicMove()
         {
-            int entityCount = 280000;
+            int entityCount = 200000;// - ПК //280000 - Рабочий ноут
             int j = 0;
             while (j < entityCount)
             {
@@ -53,7 +53,7 @@ namespace ECSCoreTests
                 while (true)
                 {
                     Thread.Sleep(1000);
-                    Debug.WriteLine(IECSDebug.GetInfo(true));
+                    Console.WriteLine(IECSDebug.GetInfo(true));
                     if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
                     {
                         if(controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
@@ -75,7 +75,7 @@ namespace ECSCoreTests
             while (k<10)
             {
                 Thread.Sleep(1000);
-                Debug.WriteLine(IECSDebug.GetInfo(true));
+                Console.WriteLine(IECSDebug.GetInfo(true));
                 k++;
             }
             IECSDebug.ManagerSystems.ClearStatisticSystems();
@@ -85,7 +85,7 @@ namespace ECSCoreTests
             {
                 l++;
                 Thread.Sleep(1000);
-                Debug.WriteLine(IECSDebug.GetInfo(true));
+                Console.WriteLine(IECSDebug.GetInfo(true));
 
                 int entityId = IECSDebug.ManagerEntitys.GetIdFirstEntity();
 
@@ -97,39 +97,39 @@ namespace ECSCoreTests
 
                 if (IECS.GetEntity(entityId, out Entity entity))
                 {
-                    Debug.WriteLine($"Сущьность: {entityId}");
+                    Console.WriteLine($"Сущьность: {entityId}");
                     if (entity.Get(out Enargy enargy))
                     {
-                        Debug.WriteLine($"Энергия: {enargy.EnargyFact}/{enargy.EnargyMax}");
+                        Console.WriteLine($"Энергия: {enargy.EnargyFact}/{enargy.EnargyMax}");
                     }
                     if (entity.Get(out Pozition pozition))
                     {
-                        Debug.WriteLine($"Позиция: {pozition.X}|{pozition.Y}|{pozition.Z}");
+                        Console.WriteLine($"Позиция: {pozition.X}|{pozition.Y}|{pozition.Z}");
                     }
                     if (entity.Get(out Way way))
                     {
-                        Debug.WriteLine($"Путь: {way.Len}");
+                        Console.WriteLine($"Путь: {way.Len}");
                     }
                     if (entity.Get(out WayToStop wayToStop))
                     {
-                        Debug.WriteLine($"Путь останова: {wayToStop.Len}; Энергии достаточно для полного останова: {wayToStop.EnargyHave}");
+                        Console.WriteLine($"Путь останова: {wayToStop.Len}; Энергии достаточно для полного останова: {wayToStop.EnargyHave}");
                     }
                     if (entity.Get(out Speed speed))
                     {
                         if (entity.Get(out Acceleration acceleration))
                         {
-                            Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}; Ускорение/Замедление: True");
+                            Console.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}; Ускорение/Замедление: True");
                         }
                         else
                         {
-                            Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}");
+                            Console.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}");
                         }
                     }
                     if (entity.Get(out SpeedSV speedSV))
                     {
-                        Debug.WriteLine($"Скорость заданная: {speedSV.SVSpeed}; Изменение заданной скорости: {speedSV.Update}");
+                        Console.WriteLine($"Скорость заданная: {speedSV.SVSpeed}; Изменение заданной скорости: {speedSV.Update}");
                     }
-                    Debug.WriteLine("");
+                    Console.WriteLine("");
                 }
 
                 if (IECSDebug.ManagerEntitys.CountEntitys == 0)

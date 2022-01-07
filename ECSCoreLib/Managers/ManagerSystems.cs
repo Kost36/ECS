@@ -62,6 +62,10 @@ namespace ECSCore.Managers
         /// Метка фактического времени
         /// </summary>
         private long _ticksPoint;
+        /// <summary>
+        /// Скорость выполнения систем
+        /// </summary>
+        private float _speedRun = 1f;
 
         /// <summary>
         /// Количесвто активных систем
@@ -80,6 +84,10 @@ namespace ECSCore.Managers
         /// Время задержки выполнения систем в мс
         /// </summary>
         private float _timeDelayExecuted;
+        /// <summary>
+        /// Свободное время в мс
+        /// </summary>
+        private float _freeTime;
         /// <summary>
         /// Флаг наличия задержки вычисления фильтров.
         /// (Вильтры не успевают вычисляться - необходима оптимизация)
@@ -113,6 +121,10 @@ namespace ECSCore.Managers
         /// Необходимо оптимизировать нагрузку
         /// </summary>
         public bool IsNotHaveTimeToBeExecuted { get { return _flagHaveDelayRunSystem; } }
+        /// <summary>
+        /// Свободное время в мс
+        /// </summary>
+        public float FreeTime { get { return _freeTime; } }
         /// <summary>
         /// Время задержки выполнения систем в мс
         /// </summary>
@@ -202,6 +214,55 @@ namespace ECSCore.Managers
             t = default(T);
             return false;
         } //TODO сокрытие
+
+        /// <summary>
+        /// Задать скорость
+        /// </summary>
+        internal void SetSpeed(ECSSpeed eCSSpeed)
+        {
+            switch (eCSSpeed)
+            {
+                case ECSSpeed.Pause:
+                    _speedRun = 0;
+                    break;
+                case ECSSpeed.Run:
+                    _speedRun = 1;
+                    break;
+                case ECSSpeed.X_0_5:
+                    _speedRun = 0.5f;
+                    break;
+                case ECSSpeed.X_2_0:
+                    _speedRun = 2;
+                    break;
+                case ECSSpeed.X_4_0:
+                    _speedRun = 4;
+                    break;
+                case ECSSpeed.X_8_0:
+                    _speedRun = 8;
+                    break;
+                case ECSSpeed.X_16_0:
+                    _speedRun = 16;
+                    break;
+            } //В зависимости от выбранного перечисления
+        }
+        /// <summary>
+        /// Задать скорость
+        /// </summary>
+        /// <param name="speedRun"> Скорость в пределах: от 0.1 до 32 </param>
+        /// <returns> Устанговленная скорость </returns>
+        internal float SetSpeed(float speedRun)
+        {
+            if (speedRun < 0.1)
+            {
+                speedRun = 0.1f;
+            }
+            else if (speedRun > 32)
+            {
+                speedRun = 32f;
+            }
+            _speedRun = speedRun;
+            return _speedRun;
+        }
         /// <summary>
         /// Освободить ресурсы
         /// </summary>
@@ -266,6 +327,11 @@ namespace ECSCore.Managers
             } //Если систем нету 
             while (true)
             {
+                if (_speedRun == 0)
+                {
+                    Thread.Sleep(1);
+                    continue;
+                } //Если режим паузы: скорость = 0;
                 Run(); //Анализ и выполнение систем
                 if (_stopCMD)
                 {
@@ -306,8 +372,12 @@ namespace ECSCore.Managers
                         if (_systemQueue[1].TicksNextRun <= _ticksPoint)
                         {
                             _flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
+                            _freeTime = 0; //Сброс свободного времени
                             _timeDelayExecuted = (float)(_ticksPoint - _systemQueue[1].TicksNextRun) / (float)TimeSpan.TicksPerMillisecond; //Считаем время задержки выполнения систем
+                            return;
                         } //Если следующая система тоже должна выполниться
+                        _freeTime = (float)(_systemQueue[1].TicksNextRun - _ticksPoint) / (float)TimeSpan.TicksPerMillisecond;
+                        _timeDelayExecuted = 0; // Время задержки выполнения систем
                     } //Если систем больше 1
                     return;
                 } //Если настало время выполнения первой в очереди системы
@@ -364,7 +434,7 @@ namespace ECSCore.Managers
             jobSystem.CalculateNextRun(); //Вычислить время след. выполнения
             SortSystemQueue(); //Сортировка очереди
             //TODO Фиксировать связанные компоненты!!!!
-            jobSystem.Run(_ticksPoint, _timeWorkManagerSystemTicks); //Обработка системы
+            jobSystem.Run(_ticksPoint, _timeWorkManagerSystemTicks, _speedRun); //Обработка системы
         }
         /// <summary>
         /// Задать метку фактического времени
@@ -459,8 +529,6 @@ namespace ECSCore.Managers
         #endregion
     }
 }
-
-//TODO 1) Выполнение системы в отдельном потоке из пула потоков.
 
 //TODO 2) Контроль пересечения компонент между системами, выполняемыми в разных потоках
 

@@ -58,10 +58,11 @@ namespace ECSCore.Systems
         /// Расчет deltaTime 
         /// </summary>
         /// <param name="ticksPoint"> Метка фактического времени </param>
+        /// <param name="speedRun"> Множитель скорости выполнения </param>
         /// <returns> Интервал времени в секундах </returns>
-        private float CalculateDeltaTime(long ticksPoint)
+        private float CalculateDeltaTime(long ticksPoint, float speedRun)
         {
-            float deltaTimeInSec = (float)(ticksPoint - TicksOldRun) / (float)TimeSpan.TicksPerSecond; //Интервал в секундах
+            float deltaTimeInSec = ((float)(ticksPoint - TicksOldRun) / (float)TimeSpan.TicksPerSecond) * speedRun; //Интервал в секундах
             TicksOldRun = ticksPoint; //Метка времени последнего выполнения
             return deltaTimeInSec;
         }
@@ -102,7 +103,8 @@ namespace ECSCore.Systems
         /// </summary>
         /// <param name="ticksPoint"> Метка времени, на которой выполняестся система </param>
         /// <param name="ticksWorkManagerSystem"> Общее время работы приложения в тиках </param>
-        public void Run(long ticksPoint, long ticksWorkManagerSystem)
+        /// <param name="speedRun"> Множитель скорости выполнения </param>
+        public void Run(long ticksPoint, long ticksWorkManagerSystem, float speedRun)
         {
             //Предобработка фильтра
             _stopwatch.Restart();
@@ -111,7 +113,7 @@ namespace ECSCore.Systems
 
             //Расчет deltaTime
             _stopwatch.Restart();
-            System.DeltaTime = CalculateDeltaTime(ticksPoint); //Расчет DeltaTime
+            System.DeltaTime = CalculateDeltaTime(ticksPoint, speedRun); //Расчет DeltaTime
 
             //Обработка системы
             if (System.IsAction)

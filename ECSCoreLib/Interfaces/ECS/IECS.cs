@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using ECSCore.Enums;
 using ECSCore.Interfaces.Components;
 using ECSCore.Managers;
 using System.Collections.Generic;
@@ -50,6 +51,24 @@ namespace ECSCore.Interfaces.ECS
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         void RemoveComponent<T>(int idEntity) where T : IComponent;
+        /// <summary>
+        /// Пауза
+        /// </summary>
+        void Pause();
+        /// <summary>
+        /// Работа
+        /// </summary>
+        void Run();
+        /// <summary>
+        /// Задать скорость
+        /// </summary>
+        void SetSpeed(ECSSpeed eCSSpeed);
+        /// <summary>
+        /// Задать скорость
+        /// </summary>
+        /// <param name="speedRun"> Скорость в пределах: от 0.1 до 32 </param>
+        /// <returns> Устанговленная скорость </returns>
+        float SetSpeed(float speedRun);
         /// <summary>
         /// Освободить ресурсы
         /// </summary>

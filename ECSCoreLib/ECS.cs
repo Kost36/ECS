@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using ECSCore.Enums;
 using ECSCore.Exceptions;
 using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
@@ -251,7 +252,14 @@ namespace ECSCore
             if (smallInfo)
             {
                 info = info.Append($"ECSCore: Version: {this.GetType().Assembly.GetName().Version} \r\n");
-                info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} TimeDelay: {this.ManagerSystems.TimeDelayExecuted} ms \r\n");
+                if (this.ManagerSystems.TimeDelayExecuted > 0)
+                {
+                    info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} DelayTime: {this.ManagerSystems.TimeDelayExecuted} ms \r\n");
+                }
+                else
+                {
+                    info = info.Append($"ECSHaveN'tTimeToBeExecutedSystems: {this.ManagerSystems.IsNotHaveTimeToBeExecuted} FreeTime: {this.ManagerSystems.FreeTime} ms \r\n");
+                }
                 info = info.Append($"ECSHaveN'tTimeToBeCalculateFilterSystems: {this.ManagerSystems.IsNotHaveTimeToBeCalculateFilters} \r\n");
                 info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
                 info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
@@ -291,7 +299,45 @@ namespace ECSCore
 
         #region Управление ECS
         /// <summary>
-        /// Освободить ресурсы
+        /// Пауза
+        /// </summary>
+        public void Pause()
+        {
+            SetSpeed(ECSSpeed.Pause);
+        }
+        /// <summary>
+        /// Работа
+        /// </summary>
+        public void Run()
+        {
+            SetSpeed(ECSSpeed.Run);
+        }
+        /// <summary>
+        /// Задать скорость
+        /// </summary>
+        public void SetSpeed(ECSSpeed eCSSpeed)
+        {
+            if (_managerSystems != null)
+            {
+                _managerSystems.SetSpeed(eCSSpeed);
+            } //Если модуль проинициализорован
+        }
+        /// <summary>
+        /// Задать скорость
+        /// </summary>
+        /// <param name="speedRun"> Скорость в пределах: от 0.1 до 32 </param>
+        /// <returns> Устанговленная скорость </returns>
+        public float SetSpeed(float speedRun)
+        {
+            if (_managerSystems != null)
+            {
+                return _managerSystems.SetSpeed(speedRun);
+            } //Если модуль проинициализорован
+            return 0;
+        }
+
+        /// <summary>
+        /// Очистить все и освободить ресурсы
         /// </summary>
         public void Despose()
         {

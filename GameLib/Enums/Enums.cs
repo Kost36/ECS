@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace GameLib.Enums
 {
     /// <summary>
-    /// Размер корабля
+    /// Размер корпуса корабля
     /// </summary>
-    public enum ShipSize
+    public enum ShipBodySize
     {
         /// <summary>
         /// Сверх малый;
@@ -53,6 +53,28 @@ namespace GameLib.Enums
         /// Авианосецы
         /// </summary>
         M6,
+    }
+    /// <summary>
+    /// Размер модуля корабля
+    /// </summary>
+    public enum ShipModuleSize
+    {
+        /// <summary>
+        /// Малый;
+        /// </summary>
+        S,
+        /// <summary>
+        /// Средний;
+        /// </summary>
+        L,
+        /// <summary>
+        /// Болшой;
+        /// </summary>
+        M,
+        /// <summary>
+        /// Огромный;
+        /// </summary>
+        XL
     }
 
     /// <summary>

@@ -14,9 +14,17 @@ namespace GameLib.Components.ShipModules
     public abstract class ShipBody : ComponentBase 
     {
         /// <summary>
+        /// Максимальная прочность
+        /// </summary>
+        public int MaxHealth;
+        /// <summary>
         /// Размер корабля
         /// </summary>
-        public ShipSize ShipSize;
+        public ShipBodySize ShipBodySize;
+        /// <summary>
+        /// Размер (длинна в метрах)
+        /// </summary>
+        public int Size;
         /// <summary>
         /// Вес 
         /// Кг.
@@ -31,9 +39,18 @@ namespace GameLib.Components.ShipModules
         /// Установленные модули
         /// </summary>
         public List<ShipModule> ShipModules = new List<ShipModule>();
+    }
 
-
-
+    #region MO - дроны
+    /// <summary>
+    /// Корпуса кораблей класса M0
+    /// </summary>
+    public class ShipBodyM0 : ShipBody
+    {
+        /// <summary>
+        /// Размер модулей корабля
+        /// </summary>
+        public ShipModuleSize ShipModuleSize = ShipModuleSize.S;
         /// <summary>
         /// Двигатель
         /// </summary>
@@ -48,37 +65,78 @@ namespace GameLib.Components.ShipModules
         public ShipShild ShipShild;
     }
 
-    #region MO - дроны
     /// <summary>
     /// Дрон - погрузчик
     /// </summary>
-    public class DroneLoaderBody : ShipBody
+    public class DroneLoaderBody : ShipBodyM0
     {
-
-        /// <summary>
-        /// Дви
-        /// </summary>
+        public DroneLoaderBody()
+        {
+            MaxHealth = 500;
+            ShipBodySize = ShipBodySize.M0;
+            Weight = 650; //Кг
+            Size = 6; //М
+            HoldVolume = 5; //м.куб
+            //ShipEngine = ;
+            //ShipPowerUnit=;
+            //ShipShild =;
+        }
     }
     /// <summary>
     /// Дрон - ремонтник
     /// </summary>
-    public class DroneRepairerBody : ShipBody
+    public class DroneRepairerBody : ShipBodyM0
     {
-
+        public DroneRepairerBody()
+        {
+            MaxHealth = 500;
+            ShipBodySize = ShipBodySize.M0;
+            Weight = 650; //Кг
+            Size = 6; //М
+            HoldVolume = 5; //м.куб
+            //ShipEngine = ;
+            //ShipPowerUnit=;
+            //ShipShild =;
+        }
     }
     /// <summary>
     /// Дрон - строитель
     /// </summary>
-    public class DroneBuilderBody : ShipBody
+    public class DroneBuilderBody : ShipBodyM0
     {
-
+        public DroneBuilderBody()
+        {
+            MaxHealth = 500;
+            ShipBodySize = ShipBodySize.M0;
+            Weight = 650; //Кг
+            Size = 6; //М
+            HoldVolume = 5; //м.куб
+            //ShipEngine = ;
+            //ShipPowerUnit=;
+            //ShipShild =;
+        }
     }
     /// <summary>
     /// Дрон - защитник
     /// </summary>
-    public class DroneDefenderBody : ShipBody
+    public class DroneBattleBody : ShipBodyM0
     {
-
+        public DroneBattleBody()
+        {
+            MaxHealth = 500;
+            ShipBodySize = ShipBodySize.M0;
+            Weight = 650; //Кг
+            Size = 6; //М
+            HoldVolume = 5; //м.куб
+            //ShipEngine = ;
+            //ShipPowerUnit=;
+            //ShipShild =;
+            //ShipGun =;
+        }
+        /// <summary>
+        /// Оружие
+        /// </summary>
+        public ShipGun ShipGun;
     }
     #endregion
 }

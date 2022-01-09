@@ -15,27 +15,17 @@ namespace ECSCore.Managers
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="ecs"> Ссылка на ecs </param>
-        internal ManagerComponents(ECS ecs)
+        internal ManagerComponents()
         {
-            _ecs = ecs;
             _collections = new List<Components>();
         }
         #endregion
 
         #region Поля
         /// <summary>
-        /// Ссылка на ECSCore
-        /// </summary>
-        private ECS _ecs;
-        /// <summary>
-        /// Стартовая вместимость коллекции
-        /// </summary>
-        private int _startCountCapacity = 10;
-        /// <summary>
         /// Коллекция одинаковых компонентов
         /// </summary>
-        private List<Components> _collections;
+        private readonly List<Components> _collections;
         #endregion
 
         #region Свойства
@@ -111,7 +101,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Получить все компоненты сущьности
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="idEntity"> Идентификатор сущьности  </param>
         /// <returns></returns>
         internal List<IComponent> Get(int idEntity)
         {
@@ -244,7 +234,7 @@ namespace ECSCore.Managers
             {
                 foreach (Components components in _collections)
                 {
-                    countAllComponents = countAllComponents + components.Count;
+                    countAllComponents += components.Count;
                 } //Пройдемся по существующим коллекциям
             }
             return countAllComponents;
@@ -253,9 +243,8 @@ namespace ECSCore.Managers
     }
 
     /// <summary>
-    /// Коллекция компонентов
+    /// Коллекция компонент
     /// </summary>
-    /// <typeparam name="T"> Тип компонентов в коллекции </typeparam>
     internal class Components
     {
         #region Конструктор
@@ -266,11 +255,11 @@ namespace ECSCore.Managers
         #endregion
 
         #region Поля
-        private Type _componentType; 
+        private readonly Type _componentType; 
         /// <summary>
         /// Коллекция компонентов
         /// </summary>
-        private Dictionary<int, IComponent> _components = new Dictionary<int, IComponent>();
+        private readonly Dictionary<int, IComponent> _components = new Dictionary<int, IComponent>();
         #endregion
 
         #region Свойства
@@ -284,7 +273,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Проверить тип коллекции на соответствие типа зпданному объекту
         /// </summary>
-        /// <param name="component"> Компонент, который нужно проверить </param>
+        /// <param name="typeComponent"> Тип компонента, который нужно проверить </param>
         /// <returns></returns>
         public bool IsType(Type typeComponent)
         {
@@ -329,7 +318,7 @@ namespace ECSCore.Managers
                     component = (T)componentOut;
                     return true;
                 };
-                component = default(T);
+                component = default;
                 return false;
             }
         }

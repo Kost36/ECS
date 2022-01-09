@@ -20,10 +20,10 @@ namespace ECSCore.Managers
         /// Конструктор
         /// </summary>
         /// <param name="ecs"> Ссылка на ecs </param>
-        internal ManagerFilters(ECS ecs, Assembly assembly)
+        internal ManagerFilters(ECS ecs)
         {
             _ecs = ecs;
-            Init(assembly);
+            Init();
         }
         #endregion
 
@@ -31,11 +31,11 @@ namespace ECSCore.Managers
         /// <summary>
         /// Ссылка на ECSCore
         /// </summary>
-        private ECS _ecs;
+        private readonly ECS _ecs;
         /// <summary>
         /// Список фильтров групп компонент
         /// </summary>
-        private List<IFilter> _filters = new List<IFilter>();
+        private readonly List<IFilter> _filters = new List<IFilter>();
         #endregion
 
         #region Свойства
@@ -65,7 +65,6 @@ namespace ECSCore.Managers
         /// <summary>
         /// Получить фильтр компонентов
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         internal IFilter GetFilter(Type type, List<Type> typesWithoutComponents)
         {
@@ -233,7 +232,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Инициализация 
         /// </summary>
-        private void Init(Assembly assembly) { }
+        private void Init() { }
         /// <summary>
         /// Получить общее количество сущьностей в фильтрах
         /// </summary>
@@ -242,7 +241,7 @@ namespace ECSCore.Managers
             int countAllEntitys = 0;
             foreach (IFilter filter in _filters)
             {
-                countAllEntitys = countAllEntitys + filter.Count;
+                countAllEntitys += filter.Count;
             } //Пройдемся по существующим коллекциям
             return countAllEntitys;
         }

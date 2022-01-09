@@ -11,11 +11,25 @@ using System.Threading.Tasks;
 
 namespace ECSCore.GroupComponents
 {
+    /// <summary>
+    /// Группа компонентов, имеющая 1 включающий компонент (Исключающие компоненты задаются через атрибут к системе)
+    /// </summary>
+    /// <typeparam name="ExistComponent_1"> Generic тип включающего компонента №1 </typeparam>
     public class GroupComponentsExist<ExistComponent_1> : BaseObjects.GroupComponents
            where ExistComponent_1 : IComponent
     {
-        public ExistComponent_1 ExistComponent1;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
+        /// <summary>
+        /// Включающий компонент №1
+        /// </summary>
+        internal ExistComponent_1 ExistComponent1;
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -25,19 +39,20 @@ namespace ECSCore.GroupComponents
                     return true;
                 }
             } //Если сущьность есть
-            
-            //Тест. Поиск бага
-            if (flagTest)
-            {
-                flagTest = flagTest;
-            }
             return false;
         }
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
-                if (entity.Get(out ExistComponent_1 existComponent_1) == false)
+                if (entity.Get(out ExistComponent_1 _) == false)
                 {
                     return true;
                 }
@@ -45,71 +60,76 @@ namespace ECSCore.GroupComponents
             } //Если сущьность есть
             return true;
         }
+        /// <summary>
+        /// Получить список типов компонент, которые должны быть на сущьности
+        /// </summary>
+        /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
         {
-            List<Type> typesComponents = new List<Type>();
-            typesComponents.Add(typeof(ExistComponent_1));
-            return typesComponents;
-        }
-        public override List<Type> GetTypesWithoutComponents()
-        {
-            List<Type> typesComponents = new List<Type>();
+            List<Type> typesComponents = new List<Type>
+            {
+                typeof(ExistComponent_1)
+            };
             return typesComponents;
         }
     }
+    /// <summary>
+    /// Группа компонентов, имеющая 2 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
+    /// </summary>
+    /// <typeparam name="ExistComponent_1"> Generic тип включающего компонента №1 </typeparam>
+    /// <typeparam name="ExistComponent_2"> Generic тип включающего компонента №2 </typeparam>
     public class GroupComponentsExist<ExistComponent_1, ExistComponent_2> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
     {
 
-        internal ExistComponent_1 ExistComponent1 = Activator.CreateInstance<ExistComponent_1>();
-        internal ExistComponent_2 ExistComponent2 = Activator.CreateInstance<ExistComponent_2>();
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
+        /// <summary>
+        /// Включающий компонент №1
+        /// </summary>
+        internal ExistComponent_1 ExistComponent1;
+        /// <summary>
+        /// Включающий компонент №2
+        /// </summary>
+        internal ExistComponent_2 ExistComponent2;
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
                 if (entity.Get(out ExistComponent_1 existComponent_1))
                 {
-                    if (entity.Get(out ExistComponent_2 existComponent_2, flagTest))
+                    if (entity.Get(out ExistComponent_2 existComponent_2))
                     {
                         ExistComponent1 = existComponent_1;
                         ExistComponent2 = existComponent_2;
                         return true;
                     }
-                    else
-                    {
-                        if (flagTest)
-                        {
-                            flagTest = flagTest;
-                        }
-                    }
-                }
-                else
-                {
-                    if (flagTest)
-                    {
-                        flagTest = flagTest;
-                    }
                 }
             } //Если сущьность есть
-            else
-            {
-                if (flagTest)
-                {
-                    flagTest = flagTest;
-                }
-            }
             return false;
         }
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
-                if (entity.Get(out ExistComponent_1 existComponent_1) == false)
+                if (entity.Get(out ExistComponent_1 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_2 existComponent_2) == false)
+                if (entity.Get(out ExistComponent_2 _) == false)
                 {
                     return true;
                 }
@@ -117,28 +137,51 @@ namespace ECSCore.GroupComponents
             } //Если сущьность есть
             return true;
         }
+        /// <summary>
+        /// Получить список типов компонент, которые должны быть на сущьности
+        /// </summary>
+        /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
         {
-            List<Type> typesComponents = new List<Type>();
-            typesComponents.Add(typeof(ExistComponent_1));
-            typesComponents.Add(typeof(ExistComponent_2));
-            return typesComponents;
-        }
-        public override List<Type> GetTypesWithoutComponents()
-        {
-            List<Type> typesComponents = new List<Type>();
+            List<Type> typesComponents = new List<Type>
+            {
+                typeof(ExistComponent_1),
+                typeof(ExistComponent_2)
+            };
             return typesComponents;
         }
     }
+    /// <summary>
+    /// Группа компонентов, имеющая 3 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
+    /// </summary>
+    /// <typeparam name="ExistComponent_1"> Generic тип включающего компонента №1 </typeparam>
+    /// <typeparam name="ExistComponent_2"> Generic тип включающего компонента №2 </typeparam>
+    /// <typeparam name="ExistComponent_3"> Generic тип включающего компонента №3 </typeparam>
     public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
         where ExistComponent_3 : IComponent
     {
+        /// <summary>
+        /// Включающий компонент №1
+        /// </summary>
         internal ExistComponent_1 ExistComponent1;
+        /// <summary>
+        /// Включающий компонент №2
+        /// </summary>
         internal ExistComponent_2 ExistComponent2;
+        /// <summary>
+        /// Включающий компонент №3
+        /// </summary>
         internal ExistComponent_3 ExistComponent3;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -156,25 +199,28 @@ namespace ECSCore.GroupComponents
                     }
                 }
             } //Если сущьность есть
-            if (flagTest)
-            {
-                flagTest = flagTest;
-            }
             return false;
         }
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
-                if (entity.Get(out ExistComponent_1 existComponent_1) == false)
+                if (entity.Get(out ExistComponent_1 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_2 existComponent_2) == false)
+                if (entity.Get(out ExistComponent_2 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_3 existComponent_3) == false)
+                if (entity.Get(out ExistComponent_3 _) == false)
                 {
                     return true;
                 }
@@ -182,31 +228,58 @@ namespace ECSCore.GroupComponents
             } //Если сущьность есть
             return true;
         }
+        /// <summary>
+        /// Получить список типов компонент, которые должны быть на сущьности
+        /// </summary>
+        /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
         {
-            List<Type> typesComponents = new List<Type>();
-            typesComponents.Add(typeof(ExistComponent_1));
-            typesComponents.Add(typeof(ExistComponent_2));
-            typesComponents.Add(typeof(ExistComponent_3));
-            return typesComponents;
-        }
-        public override List<Type> GetTypesWithoutComponents()
-        {
-            List<Type> typesComponents = new List<Type>();
+            List<Type> typesComponents = new List<Type>
+            {
+                typeof(ExistComponent_1),
+                typeof(ExistComponent_2),
+                typeof(ExistComponent_3)
+            };
             return typesComponents;
         }
     }
+    /// <summary>
+    /// Группа компонентов, имеющая 4 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
+    /// </summary>
+    /// <typeparam name="ExistComponent_1"> Generic тип включающего компонента №1 </typeparam>
+    /// <typeparam name="ExistComponent_2"> Generic тип включающего компонента №2 </typeparam>
+    /// <typeparam name="ExistComponent_3"> Generic тип включающего компонента №3 </typeparam>
+    /// <typeparam name="ExistComponent_4"> Generic тип включающего компонента №4 </typeparam>
     public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3, ExistComponent_4> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
         where ExistComponent_3 : IComponent
         where ExistComponent_4 : IComponent
     {
+        /// <summary>
+        /// Включающий компонент №1
+        /// </summary>
         internal ExistComponent_1 ExistComponent1;
+        /// <summary>
+        /// Включающий компонент №2
+        /// </summary>
         internal ExistComponent_2 ExistComponent2;
+        /// <summary>
+        /// Включающий компонент №3
+        /// </summary>
         internal ExistComponent_3 ExistComponent3;
+        /// <summary>
+        /// Включающий компонент №4
+        /// </summary>
         internal ExistComponent_4 ExistComponent4;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -228,29 +301,32 @@ namespace ECSCore.GroupComponents
                     }
                 }
             } //Если сущьность есть
-            if (flagTest)
-            {
-                flagTest = flagTest;
-            }
             return false;
         }
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
-                if (entity.Get(out ExistComponent_1 existComponent_1) == false)
+                if (entity.Get(out ExistComponent_1 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_2 existComponent_2) == false)
+                if (entity.Get(out ExistComponent_2 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_3 existComponent_3) == false)
+                if (entity.Get(out ExistComponent_3 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_4 existComponent_4) == false)
+                if (entity.Get(out ExistComponent_4 _) == false)
                 {
                     return true;
                 }
@@ -258,21 +334,30 @@ namespace ECSCore.GroupComponents
             } //Если сущьность есть
             return true;
         }
+        /// <summary>
+        /// Получить список типов компонент, которые должны быть на сущьности
+        /// </summary>
+        /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
         {
-            List<Type> typesComponents = new List<Type>();
-            typesComponents.Add(typeof(ExistComponent_1));
-            typesComponents.Add(typeof(ExistComponent_2));
-            typesComponents.Add(typeof(ExistComponent_3));
-            typesComponents.Add(typeof(ExistComponent_4));
-            return typesComponents;
-        }
-        public override List<Type> GetTypesWithoutComponents()
-        {
-            List<Type> typesComponents = new List<Type>();
+            List<Type> typesComponents = new List<Type>
+            {
+                typeof(ExistComponent_1),
+                typeof(ExistComponent_2),
+                typeof(ExistComponent_3),
+                typeof(ExistComponent_4)
+            };
             return typesComponents;
         }
     }
+    /// <summary>
+    /// Группа компонентов, имеющая 5 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
+    /// </summary>
+    /// <typeparam name="ExistComponent_1"> Generic тип включающего компонента №1 </typeparam>
+    /// <typeparam name="ExistComponent_2"> Generic тип включающего компонента №2 </typeparam>
+    /// <typeparam name="ExistComponent_3"> Generic тип включающего компонента №3 </typeparam>
+    /// <typeparam name="ExistComponent_4"> Generic тип включающего компонента №4 </typeparam>
+    /// <typeparam name="ExistComponent_5"> Generic тип включающего компонента №5 </typeparam>
     public class GroupComponentsExist<ExistComponent_1, ExistComponent_2, ExistComponent_3, ExistComponent_4, ExistComponent_5> : BaseObjects.GroupComponents
         where ExistComponent_1 : IComponent
         where ExistComponent_2 : IComponent
@@ -280,12 +365,34 @@ namespace ECSCore.GroupComponents
         where ExistComponent_4 : IComponent
         where ExistComponent_5 : IComponent
     {
+        /// <summary>
+        /// Включающий компонент №1
+        /// </summary>
         internal ExistComponent_1 ExistComponent1;
+        /// <summary>
+        /// Включающий компонент №2
+        /// </summary>
         internal ExistComponent_2 ExistComponent2;
+        /// <summary>
+        /// Включающий компонент №3
+        /// </summary>
         internal ExistComponent_3 ExistComponent3;
+        /// <summary>
+        /// Включающий компонент №4
+        /// </summary>
         internal ExistComponent_4 ExistComponent4;
+        /// <summary>
+        /// Включающий компонент №5
+        /// </summary>
         internal ExistComponent_5 ExistComponent5;
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity, bool flagTest)
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
+        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -311,33 +418,36 @@ namespace ECSCore.GroupComponents
                     }
                 }
             } //Если сущьность есть
-            if (flagTest)
-            {
-                flagTest = flagTest;
-            }
             return false;
         }
+        /// <summary>
+        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="eCS"> ссылка на ECS </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
-                if (entity.Get(out ExistComponent_1 existComponent_1) == false)
+                if (entity.Get(out ExistComponent_1 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_2 existComponent_2) == false)
+                if (entity.Get(out ExistComponent_2 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_3 existComponent_3) == false)
+                if (entity.Get(out ExistComponent_3 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_4 existComponent_4) == false)
+                if (entity.Get(out ExistComponent_4 _) == false)
                 {
                     return true;
                 }
-                if (entity.Get(out ExistComponent_5 existComponent_5) == false)
+                if (entity.Get(out ExistComponent_5 _) == false)
                 {
                     return true;
                 }
@@ -345,19 +455,20 @@ namespace ECSCore.GroupComponents
             } //Если сущьность есть
             return true;
         }
+        /// <summary>
+        /// Получить список типов компонент, которые должны быть на сущьности
+        /// </summary>
+        /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
         {
-            List<Type> typesComponents = new List<Type>();
-            typesComponents.Add(typeof(ExistComponent_1));
-            typesComponents.Add(typeof(ExistComponent_2));
-            typesComponents.Add(typeof(ExistComponent_3));
-            typesComponents.Add(typeof(ExistComponent_4));
-            typesComponents.Add(typeof(ExistComponent_5));
-            return typesComponents;
-        }
-        public override List<Type> GetTypesWithoutComponents()
-        {
-            List<Type> typesComponents = new List<Type>();
+            List<Type> typesComponents = new List<Type>
+            {
+                typeof(ExistComponent_1),
+                typeof(ExistComponent_2),
+                typeof(ExistComponent_3),
+                typeof(ExistComponent_4),
+                typeof(ExistComponent_5)
+            };
             return typesComponents;
         }
     }

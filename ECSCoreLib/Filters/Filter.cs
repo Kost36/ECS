@@ -56,7 +56,7 @@ namespace ECSCore.Filters
         {
             _groupComponents = Activator.CreateInstance<TGroupComponents>();
             TypesExistComponents = _groupComponents.GetTypesExistComponents();
-            TypesWithoutComponents = _groupComponents.GetTypesWithoutComponents();
+            TypesWithoutComponents = new List<Type>();// _groupComponents.GetTypesWithoutComponents();
         }
         #endregion
 
@@ -91,13 +91,12 @@ namespace ECSCore.Filters
                     {
                         if (system.IsEnable && system.IsActionRemove)
                         {
-                            system.AсtionRemove(entityId);
-                        }
-                    }
+                            system.AсtionRemove(entityId); //Вызов события удаления группы компонент из фильтра
+                        } //Если система включена и имеет интерфейс ActionRemove
+                    } //Проход по заинтересованным в фильтре системам
                     Collection.Remove(entityId);
-                    CountRemove++;
                     return;
-                }
+                } //Если группа компонент есть в коллекции фильтра
             }
         }
         public override void TryAdd(int entityId)
@@ -106,37 +105,27 @@ namespace ECSCore.Filters
             {
                 if (Collection.ContainsKey(entityId))
                 {
-                    CountNotAdd_Have++;
                     return;
                 } //Проверка наличия группы компонентов в фильтре
                 lock (_groupComponents)
                 {
-                    if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem, out Entity entity, FlagTest))
+                    if (_groupComponents.TryAddComponentForEntity(entityId, ECSSystem, out Entity entity))
                     {
                         if (CheckHaveWithoutComponents(entity))
                         {
-                            CountNotAdd_TryAddComponentForEntity_IsFalse++;
                             return;
                         } //Если у сущьности присутствуют исключающие компоненты
                         foreach (SystemBase system in InterestedSystems)
                         {
                             if (system.IsEnable && system.IsActionAdd)
                             {
-                                system.AсtionAdd(entityId, _groupComponents);
+                                system.AсtionAdd(_groupComponents, entity);
                             } //Если система включена и реализует соответствующий интерфейс
                         } //Вызов AсtionAdd у заинтересованных систем
                         Collection.Add(entityId, _groupComponents);
-                        CountAdd++;
                         _groupComponents = Activator.CreateInstance<TGroupComponents>();
                         return;
                     } //Проверка необходимости добавления списка компонентов в фильтр и добавление списка компонентов в фильтр
-                    CountNotAdd_TryAddComponentForEntity_IsFalse++;
-
-                    //Тест. Поиск бага
-                    if (FlagTest) 
-                    {
-                        FlagTest = FlagTest;
-                    }
                 }
             }
         }

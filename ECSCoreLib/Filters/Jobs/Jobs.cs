@@ -14,7 +14,7 @@ namespace ECSCore.Filters.Jobs
         #endregion
 
         #region Поля
-        private int _entityId;
+        private readonly int _entityId;
         #endregion
 
         #region Действия
@@ -34,7 +34,7 @@ namespace ECSCore.Filters.Jobs
         #endregion
 
         #region Поля
-        private int _entityId;
+        private readonly int _entityId;
         #endregion
 
         #region Действия
@@ -54,7 +54,7 @@ namespace ECSCore.Filters.Jobs
         #endregion
 
         #region Поля
-        private int _entityId;
+        private readonly int _entityId;
         #endregion
 
         #region Действия

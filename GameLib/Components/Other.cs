@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using GameLib.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

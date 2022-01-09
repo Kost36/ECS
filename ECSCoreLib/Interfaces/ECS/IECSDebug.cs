@@ -14,10 +14,10 @@ namespace ECSCore.Interfaces.ECS
         /// Менеджер сущьностей
         /// </summary>
         ManagerEntitys ManagerEntitys { get; }
-        /// <summary>
-        /// Менеджер компонент
-        /// </summary>
-        ManagerComponents ManagerComponents { get; }
+        ///// <summary>
+        ///// Менеджер компонент
+        ///// </summary>
+        //ManagerComponents ManagerComponents { get; }
         /// <summary>
         /// Менеджер фильтров
         /// </summary>

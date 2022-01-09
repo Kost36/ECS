@@ -165,6 +165,8 @@ namespace GameLib.Components.ShipModules
             }
 
             #endregion
+
+            #endregion
         }
 
         /// <summary>

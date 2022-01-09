@@ -42,15 +42,6 @@ namespace ECSCore.BaseObjects
         /// Количество отслеживаемых сущьностей в фильтре
         /// </summary>
         public abstract int Count { get; }
-
-        //Отладка (Заполнение фильтра)
-        internal int CountJobAdd;
-        internal int CountJobRemove;
-        internal int CountAdd;
-        internal int CountRemove;
-        internal int CountJobRemoveEntity;
-        internal int CountNotAdd_Have;
-        internal int CountNotAdd_TryAddComponentForEntity_IsFalse;
         #endregion
 
         #region IFilterInit Реализуется наследником
@@ -91,27 +82,10 @@ namespace ECSCore.BaseObjects
             }
             return false;
         }
-        /// <summary>
-        /// Проверяет группу на выбранные типы компонент
-        /// </summary>
-        /// <param name="typesExistComponents"> Типы компонент, которые должны быть на сущьности </param>
-        /// <param name="typesWithoutComponents"> Типы компонент, которых недолжно быть на сущьности </param>
-        /// <returns></returns>
-        public bool CheckFilter(List<Type> typesExistComponents, List<Type> typesWithoutComponents)
-        {
-            if (typesExistComponents.Count == TypesExistComponents.Count)
-            {
-                if (typesWithoutComponents.Count == TypesWithoutComponents.Count)
-                {
-                    throw new NotImplementedException();
-                }
-            }
-            return false;
-        }
         #endregion
 
         #region IFilterAction Реализация
-        private Stopwatch _stopwatch = new Stopwatch();
+        private readonly Stopwatch _stopwatch = new Stopwatch();
         /// <summary>
         /// Список заданий для фильтра
         /// </summary>
@@ -135,8 +109,7 @@ namespace ECSCore.BaseObjects
         /// </summary>
         public void СalculateJob(long limitTimeTicks)
         {
-            _stopwatch.Reset();
-            _stopwatch.Start();
+            _stopwatch.Restart();
             lock (JobToFilters)
             {
                 while (JobToFilters.Count > 0)
@@ -167,7 +140,6 @@ namespace ECSCore.BaseObjects
                     {
                         JobToFilters.Enqueue(new JobTryRemove(entity.Id));
                     } //Если у фильтра есть исключающие компоненты
-                    CountJobAdd++;
                 }
             } //Если фильтр интересуется данным компонентом
         }
@@ -186,7 +158,6 @@ namespace ECSCore.BaseObjects
                     {
                         JobToFilters.Enqueue(new JobTryAdd(entity.Id));
                     } //Если у фильтра есть исключающие компоненты
-                    CountJobRemove++;
                 }
             } //Если фильтр интересуется данным компонентом
         }
@@ -199,7 +170,6 @@ namespace ECSCore.BaseObjects
             lock (JobToFilters)
             {
                 JobToFilters.Enqueue(new JobTryRemoveEntity(entityId));
-                CountJobRemoveEntity++;
             }
         }
         #endregion
@@ -209,7 +179,5 @@ namespace ECSCore.BaseObjects
         public abstract void TryRemove(int entityId);
         public abstract void TryRemoveEntity(int entityId);
         #endregion
-
-        public bool FlagTest;
     }
 }

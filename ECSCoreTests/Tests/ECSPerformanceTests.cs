@@ -18,17 +18,16 @@ namespace ECSCoreTests
     [TestClass()]
     public class ECS_02Tests_Performance
     {
-        public static IECS IECS;
-        public static IECSDebug IECSDebug;
-        public static Entity _entity;
+        private static IECS IECS;
+        private static IECSDebug IECSDebug;
         [TestMethod()]
         public void Test_00_InitializationIECS()
         {
-            Ship ship = new Ship();
+            Ship ship = new();
             ECS.Initialization(ship.GetType().Assembly);
             IECS = ECS.InstanceIECS;
             IECSDebug = ECS.InstanceDebug;
-            Console.WriteLine("ОК");
+            Debug.WriteLine("ОК");
             Assert.IsNotNull(IECS);
             Debug.WriteLine(IECSDebug.GetInfo());
         }
@@ -44,7 +43,7 @@ namespace ECSCoreTests
                 {
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
-                    ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
+                    ship.Add(new PozitionSV() { X = 100, Y = 100, Z = 100 });
                     ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 5000 });
                     j++;
                 }
@@ -53,7 +52,7 @@ namespace ECSCoreTests
                 while (true)
                 {
                     Thread.Sleep(1000);
-                    Console.WriteLine(IECSDebug.GetInfo(true));
+                    Debug.WriteLine(IECSDebug.GetInfo(true));
                     if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
                     {
                         if(controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
@@ -75,7 +74,7 @@ namespace ECSCoreTests
             while (k<10)
             {
                 Thread.Sleep(1000);
-                Console.WriteLine(IECSDebug.GetInfo(true));
+                Debug.WriteLine(IECSDebug.GetInfo(true));
                 k++;
             }
             IECSDebug.ManagerSystems.ClearStatisticSystems();
@@ -85,7 +84,7 @@ namespace ECSCoreTests
             {
                 l++;
                 Thread.Sleep(1000);
-                Console.WriteLine(IECSDebug.GetInfo(true));
+                Debug.WriteLine(IECSDebug.GetInfo(true));
 
                 int entityId = IECSDebug.ManagerEntitys.GetIdFirstEntity();
 
@@ -97,39 +96,39 @@ namespace ECSCoreTests
 
                 if (IECS.GetEntity(entityId, out Entity entity))
                 {
-                    Console.WriteLine($"Сущьность: {entityId}");
+                    Debug.WriteLine($"Сущьность: {entityId}");
                     if (entity.Get(out Enargy enargy))
                     {
-                        Console.WriteLine($"Энергия: {enargy.EnargyFact}/{enargy.EnargyMax}");
+                        Debug.WriteLine($"Энергия: {enargy.EnargyFact}/{enargy.EnargyMax}");
                     }
                     if (entity.Get(out Pozition pozition))
                     {
-                        Console.WriteLine($"Позиция: {pozition.X}|{pozition.Y}|{pozition.Z}");
+                        Debug.WriteLine($"Позиция: {pozition.X}|{pozition.Y}|{pozition.Z}");
                     }
                     if (entity.Get(out Way way))
                     {
-                        Console.WriteLine($"Путь: {way.Len}");
+                        Debug.WriteLine($"Путь: {way.Len}");
                     }
                     if (entity.Get(out WayToStop wayToStop))
                     {
-                        Console.WriteLine($"Путь останова: {wayToStop.Len}; Энергии достаточно для полного останова: {wayToStop.EnargyHave}");
+                        Debug.WriteLine($"Путь останова: {wayToStop.Len}; Энергии достаточно для полного останова: {wayToStop.EnargyHave}");
                     }
                     if (entity.Get(out Speed speed))
                     {
-                        if (entity.Get(out Acceleration acceleration))
+                        if (entity.Get(out Acceleration _))
                         {
-                            Console.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}; Ускорение/Замедление: True");
+                            Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}; Ускорение/Замедление: True");
                         }
                         else
                         {
-                            Console.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}");
+                            Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}");
                         }
                     }
                     if (entity.Get(out SpeedSV speedSV))
                     {
-                        Console.WriteLine($"Скорость заданная: {speedSV.SVSpeed}; Изменение заданной скорости: {speedSV.Update}");
+                        Debug.WriteLine($"Скорость заданная: {speedSV.SVSpeed}; Изменение заданной скорости: {speedSV.Update}");
                     }
-                    Console.WriteLine("");
+                    Debug.WriteLine("");
                 }
 
                 if (IECSDebug.ManagerEntitys.CountEntitys == 0)

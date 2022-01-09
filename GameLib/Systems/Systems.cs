@@ -24,9 +24,9 @@ namespace GameLib.Systems
         {
             if (enargy.Fact < enargy.Max * 0.95)
             {
-                if (IECS.GetComponent(entityId, out EnargyReGeneration enargyReGeneration) == false)
+                if (IECS.GetComponent(entityId, out EnargyReGeneration _) == false)
                 {
-                    IECS.AddComponent(new EnargyReGeneration() { EnargyRegen = 5f, Id = entityId });
+                    IECS.AddComponent(new EnargyReGeneration() { Regen = 5f, Id = entityId });
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace GameLib.Systems
         {
             if (health.Fact < health.Max * 0.95)
             {
-                if (IECS.GetComponent(entityId, out HealthReGeneration healthReGeneration) == false)
+                if (IECS.GetComponent(entityId, out HealthReGeneration _) == false)
                 {
                     IECS.AddComponent(new HealthReGeneration() { Regen = 1f, EnargyUse = 3, Id = entityId });
                 }
@@ -105,7 +105,7 @@ namespace GameLib.Systems
         {
             if (shild.Fact < shild.Max * 0.95)
             {
-                if (IECS.GetComponent(entityId, out ShildReGeneration shildReGeneration) == false)
+                if (IECS.GetComponent(entityId, out ShildReGeneration _) == false)
                 {
                     IECS.AddComponent(new ShildReGeneration() { Regen = 1f, EnargyUse = 3, Id = entityId });
                 }

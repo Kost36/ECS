@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GameLib.Components.ShipModules.ShipModule;
 
 namespace GameLib.Components.ShipModules
 {
@@ -54,7 +55,7 @@ namespace GameLib.Components.ShipModules
         /// <summary>
         /// Двигатель
         /// </summary>
-        public ShipEngine ShipEngine;
+        public ShipModuleEngine ShipModuleEngine;
         /// <summary>
         /// Энергетическая установка
         /// </summary>

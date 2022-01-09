@@ -79,7 +79,7 @@ namespace GameLib.Systems.Move
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Min30Once)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(15)]
     [AttributeSystemEnable]
     [AttributeSystemParallelCountThreads(8)]
@@ -88,13 +88,13 @@ namespace GameLib.Systems.Move
         public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
         {
             //Замедление
-            if (wayToStop.EnargyHave && way.Len < wayToStop.Len * 1.1)
+            if (wayToStop.EnargyHave == true && way.Len < wayToStop.Len * 1.1)
             {
-                SpeedDown(entityId, speed, speedSV);
+                SpeedDown(speed, speedSV);
             } //Если энергии хватает на останов и оставшийся путь меньше пути останова*1.1
             else if (wayToStop.EnargyHave == false && way.Len < wayToStop.Len * 2)
             {
-                SpeedDown(entityId, speed, speedSV);
+                SpeedDown(speed, speedSV);
             } //Если энергии нехватает на останов и оставшийся путь меньше пути останова*2
             //Ускорение
             else if (way.Len > wayToStop.Len * 3)
@@ -103,8 +103,8 @@ namespace GameLib.Systems.Move
                 {
                     return;
                 } //Есди заданная скорость равна максимальной
-                SpeedUp(entityId, speed, speedSV);
-            } //Если оставшийся путь в 1.5 раз больше пути останова
+                SpeedUp(speed, speedSV);
+            } //Если оставшийся путь в 3 раз больше пути останова
             else
             {
                 return;
@@ -116,13 +116,13 @@ namespace GameLib.Systems.Move
             speedSV.dZSV = way.NormZ * speedSV.SVSpeed;
         }
 
-        private void SpeedUp(int entityId, Speed speed, SpeedSV speedSV)
+        private void SpeedUp(Speed speed, SpeedSV speedSV)
         {
-            if (speed.Fact > speedSV.SVSpeed)
-            {
-                speedSV.SVSpeed = speed.Fact;
-            }
-            if (speed.Fact >= speedSV.SVSpeed * 0.95)
+            //if (speed.Fact > speedSV.SVSpeed)
+            //{
+            //    speedSV.SVSpeed = speed.Fact;
+            //}
+            if (speed.Fact >= speedSV.SVSpeed * 0.98)
             {
                 speedSV.SVSpeed += (float)(speed.Max * 0.05); //Увеличиваем на 5% от максимальной скорости
                 speedSV.Update = true;
@@ -132,7 +132,7 @@ namespace GameLib.Systems.Move
                 }
             }
         }
-        private void SpeedDown(int entityId, Speed speed, SpeedSV speedSV)
+        private void SpeedDown(Speed speed, SpeedSV speedSV)
         {
             if (speedSV.SVSpeed > 0)
             {
@@ -160,7 +160,7 @@ namespace GameLib.Systems.Move
         {
             if (speedSV.Update)
             {
-                if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
+                if (IECS.GetComponent(entityId, out Acceleration _) == false)
                 {
                     IECS.AddComponent(new Acceleration() { Id = entityId });
                 } //Если нету ускорения
@@ -280,11 +280,11 @@ namespace GameLib.Systems.Move
     [AttributeSystemPriority(20)]
     [AttributeSystemEnable]
     [AttributeExcludeComponentSystem(typeof(Acceleration))]
-    public class ControlEndPositionSystem : SystemExistComponents<Way>, ISystemAction
+    public class ControlEndPositionSystem : SystemExistComponents<Way, Speed>, ISystemAction
     {
-        public override void Action(int entityId, Way way, float deltatime)
+        public override void Action(int entityId, Way way, Speed speed, float deltatime)
         {
-            if (way.InitOk && way.Len < 1)
+            if (way.InitOk && way.Len < 1 && speed.Fact < 0.1)
             {
                 IECS.RemoveComponent<Way>(entityId); //Удалим путь
                 IECS.RemoveComponent<PozitionSV>(entityId); //Удалим точку перемещения

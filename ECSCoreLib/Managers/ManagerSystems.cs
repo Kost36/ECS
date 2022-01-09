@@ -37,11 +37,11 @@ namespace ECSCore.Managers
         /// <summary>
         /// Ссылка на ECS
         /// </summary>
-        private ECS _ecs;
+        private readonly ECS _ecs;
         /// <summary>
         /// Поток работы систем
         /// </summary>
-        private Thread _thread;
+        private readonly Thread _thread;
         /// <summary>
         /// Команда на останов менеджера (останов всех потоков)
         /// </summary>
@@ -49,11 +49,11 @@ namespace ECSCore.Managers
         /// <summary>
         /// Список систем
         /// </summary>
-        private List<ISystem> _systems = new List<ISystem>();
+        private readonly List<ISystem> _systems = new List<ISystem>();
         /// <summary>
         /// Очередь выполнения систем
         /// </summary>
-        private List<JobSystem> _systemQueue = new List<JobSystem>();
+        private readonly List<JobSystem> _systemQueue = new List<JobSystem>();
         /// <summary>
         /// Метка времени запуска приложения
         /// </summary>
@@ -97,10 +97,10 @@ namespace ECSCore.Managers
         /// Время работы менеджера
         /// </summary>
         private long _timeWorkManagerSystemTicks;
-        /// <summary>
-        /// Диагностический таймер выполнения системы
-        /// </summary>
-        private Stopwatch _stopwatchRunSystem = new Stopwatch();
+        ///// <summary>
+        ///// Диагностический таймер выполнения системы
+        ///// </summary>
+        //private readonly Stopwatch _stopwatchRunSystem = new Stopwatch();
         #endregion
 
         #region Свойства
@@ -151,11 +151,11 @@ namespace ECSCore.Managers
                     if (small)
                     {
                         info = info.Append(
-                            $" PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance.ToString("P")};" +
-                            $" MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs.ToString("F4")}; " +
-                            $" AverTimeUseInMs: {jobSystem.SystemStatistic.AverTimeUseMs.ToString("F4")}; " +
-                            $" MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs.ToString("F4")}; " +
-                            $" AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs.ToString("F4")}; " +
+                            $" PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance:P};" +
+                            $" MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs:F4}; " +
+                            $" AverTimeUseInMs: {jobSystem.SystemStatistic.AverTimeUseMs:F4}; " +
+                            $" MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs:F4}; " +
+                            $" AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs:F4}; " +
                             $" Name: {jobSystem.System.GetType().FullName}; " +
                             $" IsEnable: {jobSystem.System.IsEnable}; " +
                             $" IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
@@ -205,13 +205,13 @@ namespace ECSCore.Managers
         {
             foreach(ISystem system in _systems)
             {
-                if (system is T)
+                if (system is T t1)
                 {
-                    t = (T)system;
+                    t = t1;
                     return true;
                 }
             }
-            t = default(T);
+            t = default;
             return false;
         } //TODO сокрытие
 
@@ -372,12 +372,10 @@ namespace ECSCore.Managers
                         if (_systemQueue[1].TicksNextRun <= _ticksPoint)
                         {
                             _flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
-                            _freeTime = 0; //Сброс свободного времени
+                            //_freeTime = 0; //Сброс свободного времени
                             _timeDelayExecuted = (float)(_ticksPoint - _systemQueue[1].TicksNextRun) / (float)TimeSpan.TicksPerMillisecond; //Считаем время задержки выполнения систем
                             return;
                         } //Если следующая система тоже должна выполниться
-                        _freeTime = (float)(_systemQueue[1].TicksNextRun - _ticksPoint) / (float)TimeSpan.TicksPerMillisecond;
-                        _timeDelayExecuted = 0; // Время задержки выполнения систем
                     } //Если систем больше 1
                     return;
                 } //Если настало время выполнения первой в очереди системы
@@ -433,8 +431,17 @@ namespace ECSCore.Managers
             } //Если система выключена, то смещаем ее в конец
             jobSystem.CalculateNextRun(); //Вычислить время след. выполнения
             SortSystemQueue(); //Сортировка очереди
+            CalculateFreeTime(); //Рассчет свободного времени
             //TODO Фиксировать связанные компоненты!!!!
             jobSystem.Run(_ticksPoint, _timeWorkManagerSystemTicks, _speedRun); //Обработка системы
+        }
+        /// <summary>
+        /// Вычислить свободное время до следующей системы
+        /// </summary>
+        private void CalculateFreeTime()
+        {
+            _freeTime = (float)(_systemQueue[0].TicksNextRun - _ticksPoint) / (float)TimeSpan.TicksPerMillisecond;
+            //_timeDelayExecuted = 0; // Время задержки выполнения систем
         }
         /// <summary>
         /// Задать метку фактического времени

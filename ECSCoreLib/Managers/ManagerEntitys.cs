@@ -14,19 +14,13 @@ namespace ECSCore.Managers
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="ecs"> Ссылка на ecs </param>
-        internal ManagerEntitys(ECS ecs)
+        internal ManagerEntitys()
         {
-            _ecs = ecs;
-            _entitys = new Dictionary<int, Entity>(_startCountCapacity);
+            _entitys = new Dictionary<int, Entity>();
         }
         #endregion
 
         #region Поля
-        /// <summary>
-        /// Ссылка на ECSCore
-        /// </summary>
-        private ECS _ecs;
         /// <summary>
         /// Последний использованный Id
         /// </summary>
@@ -34,15 +28,11 @@ namespace ECSCore.Managers
         /// <summary>
         /// Очередь свободных Id
         /// </summary>
-        private Queue<int> _queueFreeID = new Queue<int>();
-        /// <summary>
-        /// Стартовая вместимость коллекции
-        /// </summary>
-        private int _startCountCapacity = 10;
+        private readonly Queue<int> _queueFreeID = new Queue<int>();
         /// <summary>
         /// Коллекция сущьностей
         /// </summary>
-        private Dictionary<int, Entity> _entitys;
+        private readonly Dictionary<int, Entity> _entitys;
         #endregion
 
         #region Свойства
@@ -127,7 +117,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Удаление сущьности
         /// </summary>
-        /// <param name="entity"> экземпляр сущьности </param>
+        /// <param name="id"> Идентификатор сущьности </param>
         private bool RemoveEntity(int id)
         {
             lock (_entitys)

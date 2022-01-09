@@ -13,19 +13,20 @@ using ECSCoreTests.Entitys;
 using ECSCore;
 using ECSCoreTests.Components;
 using ECSCoreTests.Systems;
+using ECSCore.Exceptions;
 
 namespace ECSCoreTests
 {
     [TestClass()]
     public class ECS_01Tests_Work
     {
-        public static IECS IECS;
-        public static IECSDebug IECSDebug;
-        public static Entity _entity;
+        private static IECS IECS;
+        private static IECSDebug IECSDebug;
+        private static Entity _entity;
         [TestMethod()]
         public void Test_00_InitializationIECS()
         {
-            Ship ship = new Ship();
+            Ship ship = new();
             ECS.Initialization(ship.GetType().Assembly);
             IECS = ECS.InstanceIECS;
             IECSDebug = ECS.InstanceDebug;
@@ -71,14 +72,14 @@ namespace ECSCoreTests
             Assert.IsTrue(IECS.GetEntity(2, out Entity entity));
             entity.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
             Assert.IsTrue(entity.Components.Count == 1);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
-            entity.Add(new Pozition() { X = 1, Y = 1, Z = 1 });
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
+            Assert.ThrowsException<ExceptionEntityHaveComponent>(()=> entity.Add(new Pozition() { X = 1, Y = 1, Z = 1 }));
             Assert.IsTrue(entity.Components.Count == 1);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
             IECS.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10, Id = 4 });
             Assert.IsTrue(IECS.GetEntity(4, out Entity entity1));
             Assert.IsTrue(entity1.Components.Count == 1);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 2);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 2);
             _entity = entity;
         }
 
@@ -99,11 +100,11 @@ namespace ECSCoreTests
         {
             _entity.Remove<Pozition>();
             Assert.IsTrue(_entity.Components.Count == 0);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
             IECS.RemoveComponent<Pozition>(4); 
             Assert.IsTrue(IECS.GetEntity(4, out Entity Entity));
             Assert.IsTrue(Entity.Components.Count == 0);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 0);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 0);
             IECS.GetComponent(Entity.Id, out Pozition pozition);
             IECS.GetComponent(4, out Pozition pozition1);
             Assert.IsNull(pozition);
@@ -116,17 +117,17 @@ namespace ECSCoreTests
             IECS.GetEntity(5, out Entity entity);
             entity.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
             Assert.IsTrue(entity.Components.Count == 1);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
             entity.Add(new Speed() { dX=1,dY=5, dZ=8 });
             Assert.IsTrue(entity.Components.Count == 2);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 2);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 2);
             Assert.IsTrue(IECS.GetEntity(6, out Entity entity1));
             entity1.Add(new Pozition() { X = 10, Y = 10, Z = 10 });
             Assert.IsTrue(entity1.Components.Count == 1);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
             entity1.Add(new Speed());
             Assert.IsTrue(entity1.Components.Count == 2);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 4);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 4);
             Thread.Sleep(2500);
             Assert.IsTrue(IECSDebug.ManagerFilters.CountEntitys == 2);
             _entity = entity1;
@@ -137,10 +138,10 @@ namespace ECSCoreTests
         {
             _entity.Remove<Speed>();
             Assert.IsTrue(_entity.Components.Count == 1);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
             _entity.Remove<Way>();
             Assert.IsTrue(_entity.Components.Count == 1);
-            Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
+            //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
             Thread.Sleep(1000);
             Debug.WriteLine(IECSDebug.GetInfo(true));
         }
@@ -175,7 +176,6 @@ namespace ECSCoreTests
                     Debug.WriteLine(IECSDebug.GetInfo(true));
                     if (IECSDebug.ManagerSystems.GetSystem(out StartMoveSystem startMoveSystem))
                     {
-                        startMoveSystem.SetTestFlag();
                         if (startMoveSystem.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
                         {
 
@@ -187,7 +187,6 @@ namespace ECSCoreTests
                     }
                     if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
                     {
-                        controlSpeedSystemRemove.SetTestFlag();
                         if (controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
                         {
                             break;

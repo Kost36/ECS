@@ -19,18 +19,6 @@ namespace ECSCore.Interfaces.Filters
         /// Заинтересованные в фильтре системы
         /// </summary>
         List<SystemBase> InterestedSystems { get; set; }
-        ///// <summary>
-        ///// Флаг наличия соответствующего интерфейса у системы 
-        ///// </summary>
-        //bool IsActionAdd { get; set; }
-        ///// <summary>
-        ///// Флаг наличия соответствующего интерфейса у системы 
-        ///// </summary>
-        //bool IsAction { get; set; }
-        ///// <summary>
-        ///// Флаг наличия соответствующего интерфейса у системы 
-        ///// </summary>
-        //bool IsActionRemove { get; set; }
         /// <summary>
         /// Добавить в фильтр заинтересеванную в нем систему
         /// </summary>
@@ -122,9 +110,7 @@ namespace ECSCore.Interfaces.Filters
     internal interface IFilterActionGroup
     {
         void TryAdd(int entityId);
-        //void TryAddOk(int entityId);
         void TryRemove(int entityId);
-        //void TryRemoveOk(int entityId);
         void TryRemoveEntity(int entityId);
     }
 }

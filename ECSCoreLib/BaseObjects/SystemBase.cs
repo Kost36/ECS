@@ -217,13 +217,6 @@ namespace ECSCore.BaseObjects
         {
             return FilterBase.Count;
         }
-        /// <summary>
-        /// Установить в филтре флаг теста
-        /// </summary>
-        public void SetTestFlag()
-        {
-            FilterBase.FlagTest = true;
-        }
 
         /// <summary>
         /// Выполнить Action системы
@@ -245,13 +238,13 @@ namespace ECSCore.BaseObjects
 
                 //Считаем кол-во объектов на поток
                 int maxCountOnThread = 100;
-                if (FilterBase.Count > CountThreads * 100) //TODO Вынести в переменную, что бы не считать каждый раз
+                if (FilterBase.Count > CountThreads * maxCountOnThread) //TODO Вынести в переменную, что бы не считать каждый раз
                 {
                     maxCountOnThread = (int)Math.Ceiling((float)FilterBase.Count / (float)CountThreads); //Считаем количество объектов на один поток
                 } //Если на один поток приходиться минимум по 100 объектов
 
                 //Выполняем
-                Aсtion(systemActionType: SystemActionType.RunInThreads, countThread: CountThreads, maxCountOnThread: maxCountOnThread); //Выполить в нескольких потоках
+                Aсtion(systemActionType: SystemActionType.RunInThreads, maxCountOnThread: maxCountOnThread); //Выполить в нескольких потоках
                 return;
             } //Если система должна выполняться параллельно
             Aсtion(systemActionType: SystemActionType.RunInThisThread); //Выполить в текущем потоке
@@ -260,17 +253,17 @@ namespace ECSCore.BaseObjects
         /// Выполнить AсtionAdd системы
         /// </summary>
         /// <typeparam name="TGroupComponents"> generic группы компонентов </typeparam>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
         /// <param name="groupComponents"> группа компонентов </param>
-        internal void RunAсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        internal void RunAсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
             where TGroupComponents : IGroupComponents
         {
             if (IsUseInjectThread)
             {
-                AсtionAdd(entityId, groupComponents); //Синхронно в введенном потоке
+                AсtionAdd(groupComponents, entity); //Синхронно в введенном потоке
                 return;
             } //Если выполнение должно быть синхронно в введенном потоке
-            AсtionAdd(entityId, groupComponents);
+            AсtionAdd(groupComponents, entity);
         }
         /// <summary>
         /// Выполнить AсtionRemove системы
@@ -300,14 +293,14 @@ namespace ECSCore.BaseObjects
         /// Реализация AсtionAdd системы
         /// </summary>
         /// <typeparam name="TGroupComponents"> generic группы компонентов </typeparam>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
         /// <param name="groupComponents"> группа компонентов </param>
-        internal abstract void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        internal abstract void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
             where TGroupComponents : IGroupComponents;
         /// <summary>
         /// Проход по коллекции и вызов Action для всех item
         /// </summary>
-        internal abstract void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int countThread = 1, int maxCountOnThread = int.MaxValue);
+        internal abstract void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue);
         /// <summary>
         /// Реализация AсtionRemove системы
         /// </summary>

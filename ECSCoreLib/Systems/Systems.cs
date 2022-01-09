@@ -12,6 +12,26 @@ using System.Collections.Generic;
 
 namespace ECSCore.Systems
 {
+    /// <summary>
+    /// Абстрактный класс системы, которая обрабатывает группу компонент из 1 включающего компонента;
+    /// 
+    /// Возможные атрибуты: (* - Обязательный атрибут)
+    /// * AttributeSystemCalculate - Задается интервал обработки системы
+    /// * AttributeSystemPriority - Приоритет выполнения систем
+    /// AttributeSystemEnable - Возможность отключить систему
+    /// AttributeExcludeComponentSystem - Возможность задать исключающие компоненты
+    /// AttributeSystemEarlyExecution - Возможность разрешить предварительное выполнение системы, для выравнивания нагрузки на CPU (Система будет выполняться предварительно, если есть свободное время - простаивание CPU)
+    /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
+    /// 
+    /// Возможные интерфейсы: 
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
+    /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
+    /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
+    /// </summary>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1> : SystemBase
         where ExistComponentT1 : IComponent
     {
@@ -45,9 +65,8 @@ namespace ECSCore.Systems
         /// Выполнение системы
         /// </summary>
         /// <param name="systemActionType"></param>
-        /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
-        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int countThread = 1, int maxCountOnThread = int.MaxValue)
+        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
@@ -58,7 +77,7 @@ namespace ECSCore.Systems
                     ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(countThread, maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
@@ -79,10 +98,10 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
-        /// <param name="state"></param>
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1>>> list)
+        /// <param name="sliceCollection"> Часть коллекции </param>
+        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1>>> sliceCollection)
         {
-            foreach (var item in list)
+            foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
@@ -90,7 +109,7 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
-        private void RunInCountThread(int countThread, int maxCountOnThread)
+        private void RunInCountThread(int maxCountOnThread)
         {
             int i = 0; //Количество элементов для пропуска
             while (true)
@@ -104,10 +123,10 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
-        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1>;
-            ActionAdd(entityId, groupComponentsExist.ExistComponent1);
+            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1);
         }
         internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
@@ -115,6 +134,27 @@ namespace ECSCore.Systems
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, float deltaTime) { }
         public virtual void ActionRemove(int entityId) { }
     }
+    /// <summary>
+    /// Абстрактный класс системы, которая обрабатывает группу компонент из 2 включающих компонентов;
+    /// 
+    /// Возможные атрибуты: (* - Обязательный атрибут)
+    /// * AttributeSystemCalculate - Задается интервал обработки системы
+    /// * AttributeSystemPriority - Приоритет выполнения систем
+    /// AttributeSystemEnable - Возможность отключить систему
+    /// AttributeExcludeComponentSystem - Возможность задать исключающие компоненты
+    /// AttributeSystemEarlyExecution - Возможность разрешить предварительное выполнение системы, для выравнивания нагрузки на CPU (Система будет выполняться предварительно, если есть свободное время - простаивание CPU)
+    /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
+    /// 
+    /// Возможные интерфейсы: 
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
+    /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
+    /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
+    /// </summary>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -157,7 +197,7 @@ namespace ECSCore.Systems
         /// <param name="systemActionType"></param>
         /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
-        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int countThread = 1, int maxCountOnThread = int.MaxValue)
+        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
@@ -168,7 +208,7 @@ namespace ECSCore.Systems
                     ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(countThread, maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
@@ -200,7 +240,7 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
-        private void RunInCountThread(int countThread, int maxCountOnThread)
+        private void RunInCountThread(int maxCountOnThread)
         {
             int i = 0; //Количество элементов для пропуска
             while (true)
@@ -218,10 +258,10 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
-        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2>;
-            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2);
+            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2);
         }
         internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
@@ -229,6 +269,28 @@ namespace ECSCore.Systems
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, float deltaTime) { }
         public virtual void ActionRemove(int entityId) { }
     }
+    /// <summary>
+    /// Абстрактный класс системы, которая обрабатывает группу компонент из 3 включающих компонентов;
+    /// 
+    /// Возможные атрибуты: (* - Обязательный атрибут)
+    /// * AttributeSystemCalculate - Задается интервал обработки системы
+    /// * AttributeSystemPriority - Приоритет выполнения систем
+    /// AttributeSystemEnable - Возможность отключить систему
+    /// AttributeExcludeComponentSystem - Возможность задать исключающие компоненты
+    /// AttributeSystemEarlyExecution - Возможность разрешить предварительное выполнение системы, для выравнивания нагрузки на CPU (Система будет выполняться предварительно, если есть свободное время - простаивание CPU)
+    /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
+    /// 
+    /// Возможные интерфейсы: 
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
+    /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
+    /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
+    /// </summary>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущьности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -268,7 +330,7 @@ namespace ECSCore.Systems
         /// <param name="systemActionType"></param>
         /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
-        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int countThread = 1, int maxCountOnThread = int.MaxValue)
+        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
@@ -279,7 +341,7 @@ namespace ECSCore.Systems
                     ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(countThread, maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
@@ -311,7 +373,7 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
-        private void RunInCountThread(int countThread, int maxCountOnThread)
+        private void RunInCountThread(int maxCountOnThread)
         {
             int i = 0; //Количество элементов для пропуска
             while (true)
@@ -325,10 +387,10 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
-        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>;
-            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3);
+            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3);
         }
         internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
@@ -336,6 +398,29 @@ namespace ECSCore.Systems
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, float deltaTime) { }
         public virtual void ActionRemove(int entityId) { }
     }
+    /// <summary>
+    /// Абстрактный класс системы, которая обрабатывает группу компонент из 4 включающих компонентов;
+    /// 
+    /// Возможные атрибуты: (* - Обязательный атрибут)
+    /// * AttributeSystemCalculate - Задается интервал обработки системы
+    /// * AttributeSystemPriority - Приоритет выполнения систем
+    /// AttributeSystemEnable - Возможность отключить систему
+    /// AttributeExcludeComponentSystem - Возможность задать исключающие компоненты
+    /// AttributeSystemEarlyExecution - Возможность разрешить предварительное выполнение системы, для выравнивания нагрузки на CPU (Система будет выполняться предварительно, если есть свободное время - простаивание CPU)
+    /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
+    /// 
+    /// Возможные интерфейсы: 
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
+    /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
+    /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
+    /// </summary>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущьности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -376,7 +461,7 @@ namespace ECSCore.Systems
         /// <param name="systemActionType"></param>
         /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
-        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int countThread = 1, int maxCountOnThread = int.MaxValue)
+        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
@@ -387,7 +472,7 @@ namespace ECSCore.Systems
                     ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(countThread, maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
@@ -419,7 +504,7 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
-        private void RunInCountThread(int countThread, int maxCountOnThread)
+        private void RunInCountThread(int maxCountOnThread)
         {
             int i = 0; //Количество элементов для пропуска
             while (true)
@@ -433,10 +518,10 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
-        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>;
-            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4);
+            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4);
         }
         internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
@@ -444,6 +529,30 @@ namespace ECSCore.Systems
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, float deltaTime) { }
         public virtual void ActionRemove(int entityId) { }
     }
+    /// <summary>
+    /// Абстрактный класс системы, которая обрабатывает группу компонент из 5 включающих компонентов;
+    /// 
+    /// Возможные атрибуты: (* - Обязательный атрибут)
+    /// * AttributeSystemCalculate - Задается интервал обработки системы
+    /// * AttributeSystemPriority - Приоритет выполнения систем
+    /// AttributeSystemEnable - Возможность отключить систему
+    /// AttributeExcludeComponentSystem - Возможность задать исключающие компоненты
+    /// AttributeSystemEarlyExecution - Возможность разрешить предварительное выполнение системы, для выравнивания нагрузки на CPU (Система будет выполняться предварительно, если есть свободное время - простаивание CPU)
+    /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
+    /// 
+    /// Возможные интерфейсы: 
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
+    /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
+    /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
+    /// </summary>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT5"> Компонент №4 (Имеющийся у сущьности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -485,7 +594,7 @@ namespace ECSCore.Systems
         /// <param name="systemActionType"></param>
         /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
-        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int countThread = 1, int maxCountOnThread = int.MaxValue)
+        internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
@@ -496,7 +605,7 @@ namespace ECSCore.Systems
                     ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(countThread, maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
@@ -528,7 +637,7 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
-        private void RunInCountThread(int countThread, int maxCountOnThread)
+        private void RunInCountThread(int maxCountOnThread)
         {
             int i = 0; //Количество элементов для пропуска
             while (true)
@@ -542,10 +651,10 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
-        internal override void AсtionAdd<TGroupComponents>(int entityId, TGroupComponents groupComponents)
+        internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>;
-            ActionAdd(entityId, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4, groupComponentsExist.ExistComponent5);
+            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4, groupComponentsExist.ExistComponent5);
         }
         internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 

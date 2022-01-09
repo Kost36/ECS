@@ -38,11 +38,11 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Путь к папке с сохранениями
         /// </summary>
-        private string _pathFolder;
+        private readonly string _pathFolder;
         /// <summary>
         /// Тип фаилов сохранения
         /// </summary>
-        private TypeFileSave _typeFileSave;
+        private readonly TypeFileSave _typeFileSave;
         #endregion
 
         #region Свойства
@@ -55,12 +55,13 @@ namespace ECSCore.BaseObjects
         /// </summary>
         public List<string> GetSaves()
         {
+            TypeFileSave typeFileSave = _typeFileSave;
             return Directory.GetFiles(_pathFolder).ToList();
         }
         /// <summary>
         /// Сохранить состояние мира
         /// </summary>
-        /// <param name="pathFile"> Путь к фаилу сохранения </param>
+        /// <param name="fileName"> Имя фаила сохранения </param>
         public void Save(string fileName = "")
         {
 

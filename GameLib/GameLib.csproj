@@ -64,8 +64,8 @@
     <Compile Include="Components\Components.cs" />
     <Compile Include="Components\Move\Components.cs" />
     <Compile Include="Components\Other.cs" />
-    <Compile Include="Components\ShipModules\ShipModules.cs" />
-    <Compile Include="Components\ShipModules\ShipBodys.cs" />
+    <Compile Include="Ship\ShipModules.cs" />
+    <Compile Include="Ship\ShipBodys.cs" />
     <Compile Include="Entitys\Entitys.cs" />
     <Compile Include="GetAssembly.cs" />
     <Compile Include="LibHelp\Vector.cs" />

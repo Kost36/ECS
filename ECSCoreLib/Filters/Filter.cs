@@ -91,7 +91,7 @@ namespace ECSCore.Filters
                     {
                         if (system.IsEnable && system.IsActionRemove)
                         {
-                            system.AсtionRemove(entityId); //Вызов события удаления группы компонент из фильтра
+                            system.ActionRemove(entityId); //Вызов события удаления группы компонент из фильтра
                         } //Если система включена и имеет интерфейс ActionRemove
                     } //Проход по заинтересованным в фильтре системам
                     Collection.Remove(entityId);

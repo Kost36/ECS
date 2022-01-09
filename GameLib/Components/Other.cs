@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace GameLib.Components.Other
 {
-    [Serializable]
     /// <summary>
     /// Компонент интеллекта корабля
     /// </summary>
+    [Serializable]
     public class ShipAi : ComponentBase { }
     /// <summary>
     /// Компонент интеллекта корабля (Торговли)

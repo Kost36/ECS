@@ -35,7 +35,7 @@ namespace ECSCoreTests
         [TestMethod()]
         public void Test_02_MechanicMove()
         {
-            int entityCount = 200000;// - ПК //280000 - Рабочий ноут
+            int entityCount = 180000;// 180000 - ПК //280000 - Рабочий ноут
             int j = 0;
             while (j < entityCount)
             {
@@ -43,7 +43,7 @@ namespace ECSCoreTests
                 {
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
-                    ship.Add(new PozitionSV() { X = 100, Y = 100, Z = 100 });
+                    ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
                     ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 5000 });
                     j++;
                 }

@@ -19,10 +19,10 @@ namespace ECSCoreTests.Systems
     [AttributeSystemEnable]
     public class StartMoveSystem : SystemExistComponents<Pozition, PozitionSV>, ISystemActionAdd
     {
-        public override void ActionAdd(int entityId, Pozition pozition, PozitionSV pozitionSV)
+        public override void ActionAdd(Pozition pozition, PozitionSV pozitionSV, Entity entity)
         {
-            IECS.AddComponent(new Way() { Id = entityId });
-            IECS.AddComponent(new WayToStop() { Id = entityId });
+            IECS.AddComponent(new Way() { Id = entity.Id });
+            IECS.AddComponent(new WayToStop() { Id = entity.Id });
         }
     }
 
@@ -32,15 +32,15 @@ namespace ECSCoreTests.Systems
     [AttributeSystemParallelCountThreads(8)]
     public class ControlWaySystem : SystemExistComponents<Pozition, PozitionSV, Way>, ISystemAction, ISystemActionAdd, ISystemParallel
     {
-        public override void ActionAdd(int entityId, Pozition existComponentT1, PozitionSV existComponentT2, Way existComponentT3)
+        public override void ActionAdd(Pozition existComponentT1, PozitionSV existComponentT2, Way existComponentT3, Entity entity)
         {
-            if (IECS.GetComponent(entityId, out Speed speed) == false)
+            if (IECS.GetComponent(entity.Id, out Speed _) == false)
             {
-                IECS.AddComponent(new Speed() { SpeedMax = 10, Id = entityId });
+                IECS.AddComponent(new Speed() { SpeedMax = 10, Id = entity.Id });
             } //Если скорости нету
-            if (IECS.GetComponent(entityId, out SpeedSV speedSV) == false)
+            if (IECS.GetComponent(entity.Id, out SpeedSV _) == false)
             {
-                IECS.AddComponent(new SpeedSV() { Id = entityId });
+                IECS.AddComponent(new SpeedSV() { Id = entity.Id });
             } //Если задания скорости нету
         }
         public override void Action(int entityId, Pozition pozition, PozitionSV pozitionSV, Way way, float deltatime)
@@ -98,11 +98,11 @@ namespace ECSCoreTests.Systems
             //Замедление
             if (wayToStop.EnargyHave && way.Len < wayToStop.Len*1.1)
             {
-                DownSpeed(entityId, speed, speedSV);
+                DownSpeed(speed, speedSV);
             } //Если энергии хватает на останов и оставшийся путь меньше пути останова*1.1
             else if (wayToStop.EnargyHave == false && way.Len < wayToStop.Len * 2)
             {
-                DownSpeed(entityId, speed, speedSV);
+                DownSpeed(speed, speedSV);
             } //Если энергии нехватает на останов и оставшийся путь меньше пути останова*2
             //Ускорение
             else if (way.Len > wayToStop.Len*3)
@@ -111,7 +111,7 @@ namespace ECSCoreTests.Systems
                 {
                     return;
                 } //Есди заданная скорость равна максимальной
-                UpSpeed(entityId, speed, speedSV);
+                UpSpeed(speed, speedSV);
             } //Если оставшийся путь в 1.5 раз больше пути останова
             else
             {
@@ -122,40 +122,42 @@ namespace ECSCoreTests.Systems
             speedSV.dXSV = way.NormX * speedSV.SVSpeed;
             speedSV.dYSV = way.NormY * speedSV.SVSpeed;
             speedSV.dZSV = way.NormZ * speedSV.SVSpeed;
-        }
-        
-        private void UpSpeed(int entityId, Speed speed, SpeedSV speedSV)
-        {
-            if (speed.SpeedFact > speedSV.SVSpeed)
+
+
+            void UpSpeed(Speed speed, SpeedSV speedSV)
             {
-                speedSV.SVSpeed = speed.SpeedFact;
-            }
-            if (speed.SpeedFact >= speedSV.SVSpeed * 0.95)
-            {
-                speedSV.SVSpeed += (float)(speed.SpeedMax * 0.05); //Увеличиваем на 5% от максимальной скорости
-                speedSV.Update = true;
-                if (speedSV.SVSpeed > speed.SpeedMax)
-                {
-                    speedSV.SVSpeed = speed.SpeedMax;
-                }
-            }
-        }
-        private void DownSpeed(int entityId, Speed speed, SpeedSV speedSV)
-        {
-            if (speedSV.SVSpeed > 0)
-            {
-                if (speed.SpeedFact < speedSV.SVSpeed)
+                if (speed.SpeedFact > speedSV.SVSpeed)
                 {
                     speedSV.SVSpeed = speed.SpeedFact;
                 }
-                speedSV.SVSpeed -= (float)(speed.SpeedMax * 0.1); //Снижаем на 10% от максимальной скорости
-                speedSV.Update = true;
-                if (speedSV.SVSpeed < 0)
+                if (speed.SpeedFact >= speedSV.SVSpeed * 0.95)
                 {
-                    speedSV.SVSpeed = 0;
+                    speedSV.SVSpeed += (float)(speed.SpeedMax * 0.05); //Увеличиваем на 5% от максимальной скорости
+                    speedSV.Update = true;
+                    if (speedSV.SVSpeed > speed.SpeedMax)
+                    {
+                        speedSV.SVSpeed = speed.SpeedMax;
+                    }
+                }
+            }
+            void DownSpeed(Speed speed, SpeedSV speedSV)
+            {
+                if (speedSV.SVSpeed > 0)
+                {
+                    if (speed.SpeedFact < speedSV.SVSpeed)
+                    {
+                        speedSV.SVSpeed = speed.SpeedFact;
+                    }
+                    speedSV.SVSpeed -= (float)(speed.SpeedMax * 0.1); //Снижаем на 10% от максимальной скорости
+                    speedSV.Update = true;
+                    if (speedSV.SVSpeed < 0)
+                    {
+                        speedSV.SVSpeed = 0;
+                    }
                 }
             }
         }
+        
     }
 
 
@@ -169,7 +171,7 @@ namespace ECSCoreTests.Systems
         {
             if (speedSV.Update)
             {
-                if (IECS.GetComponent(entityId, out Acceleration acceleration) == false)
+                if (IECS.GetComponent(entityId, out Acceleration _) == false)
                 {
                     IECS.AddComponent(new Acceleration() { Id = entityId });
                 } //Если нету ускорения
@@ -237,7 +239,7 @@ namespace ECSCoreTests.Systems
         {
             if (enargy.EnargyFact < enargy.EnargyMax*0.9)
             {
-                if (IECS.GetComponent(entityId, out EnargyReGeneration enargyReGeneration) == false)
+                if (IECS.GetComponent(entityId, out EnargyReGeneration _) == false)
                 {
                     IECS.AddComponent(new EnargyReGeneration() { EnargyReGen = 5f, Id = entityId });
                 }
@@ -250,7 +252,6 @@ namespace ECSCoreTests.Systems
     [AttributeSystemEnable]
     public class ControlSpeedSystemRemove : SystemExistComponents<Way>, ISystemAction, ISystemActionRemove
     {
-        private ControlSpeedSystemRemove Test { get => this; }
         public override void Action(int entityId, Way way, float deltatime)
         {
             if (way.InitOk && way.Len < 1)
@@ -265,7 +266,7 @@ namespace ECSCoreTests.Systems
 
         public override void ActionRemove(int entityId)
         {
-            if (IECS.GetComponent(entityId, out PozitionSV pozitionSV) == false)
+            if (IECS.GetComponent(entityId, out PozitionSV _) == false)
             {
                 IECS.GetEntity(entityId, out Entity entity);
                 entity.Death();

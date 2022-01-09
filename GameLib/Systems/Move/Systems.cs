@@ -20,12 +20,12 @@ namespace GameLib.Systems.Move
     [AttributeSystemEnable]
     public class StartMoveSystem : SystemExistComponents<Pozition, PozitionSV>, ISystemActionAdd
     {
-        public override void ActionAdd(int entityId, Pozition pozition, PozitionSV pozitionSV)
+        public override void ActionAdd(Pozition pozition, PozitionSV pozitionSV, Entity entity)
         {
-            IECS.AddComponent(new Way() { Id = entityId });
-            IECS.AddComponent(new WayToStop() { Id = entityId });
-            IECS.AddComponent(new Speed() { Max = 10, Id = entityId });
-            IECS.AddComponent(new SpeedSV() { Id = entityId });
+            IECS.AddComponent(new Way() { Id = entity.Id });
+            IECS.AddComponent(new WayToStop() { Id = entity.Id });
+            IECS.AddComponent(new Speed() { Max = 10, Id = entity.Id });
+            IECS.AddComponent(new SpeedSV() { Id = entity.Id });
         }
     }
 

@@ -273,10 +273,10 @@ namespace ECSCore.BaseObjects
         {
             if (IsUseInjectThread)
             {
-                AсtionRemove(entityId); //Синхронно в введенном потоке
+                ActionRemove(entityId); //Синхронно в введенном потоке
                 return;
             } //Если выполнение должно быть синхронно в введенном потоке
-            AсtionRemove(entityId); 
+            ActionRemove(entityId); 
         }
         #endregion
 
@@ -302,10 +302,10 @@ namespace ECSCore.BaseObjects
         /// </summary>
         internal abstract void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue);
         /// <summary>
-        /// Реализация AсtionRemove системы
+        /// Метод обработки удаленной группы компонент из фильтра системы
         /// </summary>
         /// <param name="entityId"> Идентификатор сущьности </param>
-        internal abstract void AсtionRemove(int entityId);
+        public virtual void ActionRemove(int entityId) { }
         #endregion
     }
 }

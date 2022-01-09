@@ -126,13 +126,22 @@ namespace ECSCore.Systems
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1>;
-            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1);
+            ActionAdd(groupComponentsExist.ExistComponent1, entity);
         }
-        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
-        public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1) { }
+        /// <summary>
+        /// Метод обработки добавленной группы компонент в фильтр
+        /// </summary>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        public virtual void ActionAdd(ExistComponentT1 existComponentT1, Entity entity) { }
+        /// <summary>
+        /// Метод периодической оброаботки имеющихся в фильтре групп компонент
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, float deltaTime) { }
-        public virtual void ActionRemove(int entityId) { }
     }
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 2 включающих компонентов;
@@ -195,7 +204,6 @@ namespace ECSCore.Systems
         /// Выполнение системы
         /// </summary>
         /// <param name="systemActionType"></param>
-        /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
@@ -229,10 +237,10 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
-        /// <param name="state"></param>
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> list)
+        /// <param name="sliceCollection"> Часть коллекции </param>
+        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> sliceCollection)
         {
-            foreach (var item in list)
+            foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
@@ -261,13 +269,24 @@ namespace ECSCore.Systems
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2>;
-            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2);
+            ActionAdd(groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, entity);
         }
-        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
-        public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2) { }
+        /// <summary>
+        /// Метод обработки добавленной группы компонент в фильтр
+        /// </summary>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, Entity entity) { }
+        /// <summary>
+        /// Метод периодической оброаботки имеющихся в фильтре групп компонент
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, float deltaTime) { }
-        public virtual void ActionRemove(int entityId) { }
     }
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 3 включающих компонентов;
@@ -328,7 +347,6 @@ namespace ECSCore.Systems
         /// Выполнение системы
         /// </summary>
         /// <param name="systemActionType"></param>
-        /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
@@ -362,10 +380,10 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
-        /// <param name="state"></param>
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> list)
+        /// <param name="sliceCollection"> Часть коллекции </param>
+        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> sliceCollection)
         {
-            foreach (var item in list)
+            foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
@@ -390,13 +408,26 @@ namespace ECSCore.Systems
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>;
-            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3);
+            ActionAdd(groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, entity);
         }
-        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
-        public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3) { }
+        /// <summary>
+        /// Метод обработки добавленной группы компонент в фильтр
+        /// </summary>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="existComponentT3"> Компонент №3 </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, Entity entity) { }
+        /// <summary>
+        /// Метод периодической оброаботки имеющихся в фильтре групп компонент
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="existComponentT3"> Компонент №3 </param>
+        /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, float deltaTime) { }
-        public virtual void ActionRemove(int entityId) { }
     }
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 4 включающих компонентов;
@@ -459,7 +490,6 @@ namespace ECSCore.Systems
         /// Выполнение системы
         /// </summary>
         /// <param name="systemActionType"></param>
-        /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
@@ -493,10 +523,10 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
-        /// <param name="state"></param>
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> list)
+        /// <param name="sliceCollection"> Часть коллекции </param>
+        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> sliceCollection)
         {
-            foreach (var item in list)
+            foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
@@ -521,13 +551,28 @@ namespace ECSCore.Systems
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>;
-            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4);
+            ActionAdd(groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4, entity);
         }
-        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
-        public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4) { }
+        /// <summary>
+        /// Метод обработки добавленной группы компонент в фильтр
+        /// </summary>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="existComponentT3"> Компонент №3 </param>
+        /// <param name="existComponentT4"> Компонент №4 </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, Entity entity) { }
+        /// <summary>
+        /// Метод периодической оброаботки имеющихся в фильтре групп компонент
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="existComponentT3"> Компонент №3 </param>
+        /// <param name="existComponentT4"> Компонент №4 </param>
+        /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, float deltaTime) { }
-        public virtual void ActionRemove(int entityId) { }
     }
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 5 включающих компонентов;
@@ -592,7 +637,6 @@ namespace ECSCore.Systems
         /// Выполнение системы
         /// </summary>
         /// <param name="systemActionType"></param>
-        /// <param name="countThread"></param>
         /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
@@ -626,10 +670,10 @@ namespace ECSCore.Systems
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
-        /// <param name="state"></param>
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> list)
+        /// <param name="sliceCollection"> Часть коллекции </param>
+        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> sliceCollection)
         {
-            foreach (var item in list)
+            foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
@@ -654,12 +698,29 @@ namespace ECSCore.Systems
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>;
-            ActionAdd(entity.Id, groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4, groupComponentsExist.ExistComponent5);
+            ActionAdd(groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4, groupComponentsExist.ExistComponent5, entity);
         }
-        internal override void AсtionRemove(int entityId) { ActionRemove(entityId); }
 
-        public virtual void ActionAdd(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5) { }
+        /// <summary>
+        /// Метод обработки добавленной группы компонент в фильтр
+        /// </summary>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="existComponentT3"> Компонент №3 </param>
+        /// <param name="existComponentT4"> Компонент №4 </param>
+        /// <param name="existComponentT5"> Компонент №5 </param>
+        /// <param name="entity"> Ссылка на сущьность </param>
+        public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, Entity entity) { }
+        /// <summary>
+        /// Метод периодической оброаботки имеющихся в фильтре групп компонент
+        /// </summary>
+        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="existComponentT1"> Компонент №1 </param>
+        /// <param name="existComponentT2"> Компонент №2 </param>
+        /// <param name="existComponentT3"> Компонент №3 </param>
+        /// <param name="existComponentT4"> Компонент №4 </param>
+        /// <param name="existComponentT5"> Компонент №5 </param>
+        /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, float deltaTime) { }
-        public virtual void ActionRemove(int entityId) { }
     }
 }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj" />
+    <ProjectReference Include="..\LibForPerformanceTests\LibForPerformanceTests.csproj" />
   </ItemGroup>
 
 </Project>

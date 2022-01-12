@@ -198,8 +198,8 @@ namespace ECSCoreTests.Systems
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
     [AttributeSystemPriority(5)]
     [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
-    public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction, ISystemParallel
+    //[AttributeSystemParallelCountThreads(8)]
+    public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction//, ISystemParallel
     {
         public override void Action(int entityId, Pozition pozition, Speed speed, float deltatime)
         {

@@ -43,7 +43,7 @@ namespace ECSCoreTests
                 {
                     Entity ship = IECS.AddEntity(new Ship());
                     ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
-                    ship.Add(new PozitionSV() { X = 10000, Y = 10000, Z = 10000 });
+                    ship.Add(new PozitionSV() { X = 500, Y = 500, Z = 500 });
                     ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 5000 });
                     j++;
                 }

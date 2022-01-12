@@ -6,11 +6,6 @@ using ECSCore.Systems;
 using GameLib.Components;
 using GameLib.Components.Move;
 using GameLib.LibHelp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // Системы механники перемещения 
 namespace GameLib.Systems.Move

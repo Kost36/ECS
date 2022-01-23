@@ -33,4 +33,22 @@ namespace ECSCore.Exceptions
         {
         }
     }
+    /// <summary>
+    /// Исключение. Нет проинициализированных систем
+    /// </summary>
+    public class ExceptionECSHaveNotSystem : Exception
+    {
+        internal ExceptionECSHaveNotSystem(string msg) : base(message: msg)
+        {
+        }
+    }
+    /// <summary>
+    /// Исключение. У сущьности уже есть данный компонент
+    /// </summary>
+    public class ExceptionEntityHaveComponent : Exception
+    {
+        internal ExceptionEntityHaveComponent(string msg) : base(message: msg)
+        {
+        }
+    }
 }

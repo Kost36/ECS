@@ -1,6 +1,7 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ECSCore.Managers
 {
@@ -13,23 +14,13 @@ namespace ECSCore.Managers
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="ecs"> Ссылка на ecs </param>
-        internal ManagerEntitys(ECS ecs, int startCountEntityCapacity)
+        internal ManagerEntitys()
         {
-            _ecs = ecs;
-            if (startCountEntityCapacity > 10)
-            {
-                _startCountCapacity = startCountEntityCapacity;
-            }
-            _entities = new Dictionary<int, Entity>(_startCountCapacity);
+            _entitys = new Dictionary<int, Entity>();
         }
         #endregion
 
         #region Поля
-        /// <summary>
-        /// Ссылка на ECSCore
-        /// </summary>
-        private ECS _ecs;
         /// <summary>
         /// Последний использованный Id
         /// </summary>
@@ -37,15 +28,11 @@ namespace ECSCore.Managers
         /// <summary>
         /// Очередь свободных Id
         /// </summary>
-        private Queue<int> _queueFreeID = new Queue<int>();
-        /// <summary>
-        /// Стартовая вместимость коллекции
-        /// </summary>
-        private int _startCountCapacity = 10;
+        private readonly Queue<int> _queueFreeID = new Queue<int>();
         /// <summary>
         /// Коллекция сущьностей
         /// </summary>
-        private Dictionary<int, Entity> _entities;
+        private readonly Dictionary<int, Entity> _entitys;
         #endregion
 
         #region Свойства
@@ -54,11 +41,22 @@ namespace ECSCore.Managers
         /// </summary>
         public int CountEntitys
         {
-            get { return _entities.Count; }
+            get { return _entitys.Count; }
         }
         #endregion
 
         #region Публичные методы
+        /// <summary>
+        /// Получить первый id сущьности из коллекции
+        /// </summary>
+        /// <returns></returns>
+        public int GetIdFirstEntity()
+        {
+            return _entitys.Keys.FirstOrDefault();
+        }
+        #endregion
+
+        #region Внутренние методы
         /// <summary>
         /// Добавить сущьность
         /// 1) Присваивает Id
@@ -78,7 +76,10 @@ namespace ECSCore.Managers
         /// <returns> Флаг наличия сущьности </returns>
         internal bool Get(int id, out Entity Entity)
         {
-            return _entities.TryGetValue(id, out Entity);
+            lock (_entitys)
+            {
+                return _entitys.TryGetValue(id, out Entity);
+            }
         }
         /// <summary>
         /// Удаление сущьности по id
@@ -98,32 +99,32 @@ namespace ECSCore.Managers
         /// <returns> IEntity / null </returns>
         private Entity Registration(Entity entity)
         {
-            if (_queueFreeID.Count > 0)
+            lock (_entitys)
             {
-                entity.Id = _queueFreeID.Dequeue(); //Получим id из очереди
-            } //Если в очереди есть свободные id
-            else
-            {
-                _endUseId++; //Инкрементируем счетчик
-                entity.Id = _endUseId; //Присвоим новый id
-            } //Иначе
-            _entities.Add(entity.Id, entity);
+                if (_queueFreeID.Count > 0)
+                {
+                    entity.Id = _queueFreeID.Dequeue(); //Получим id из очереди
+                } //Если в очереди есть свободные id
+                else
+                {
+                    _endUseId++; //Инкрементируем счетчик
+                    entity.Id = _endUseId; //Присвоим новый id
+                } //Иначе
+                _entitys.Add(entity.Id, entity);
+            }
             return entity;
-            //if (_entities.TryAdd(entity.Id, entity)) //Добавим в коллекцию
-            //{
-            //    return entity; //Вернем сущьность
-            //} //Если добавлено
-            //_queueFreeID.Enqueue(entity.Id); //Вернем id в очередь свободных id
-            //return null;
         }
         /// <summary>
         /// Удаление сущьности
         /// </summary>
-        /// <param name="entity"> экземпляр сущьности </param>
+        /// <param name="id"> Идентификатор сущьности </param>
         private bool RemoveEntity(int id)
         {
-            _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
-            return _entities.Remove(id); //Удалим сущьность из коллекции
+            lock (_entitys)
+            {
+                _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
+                return _entitys.Remove(id); //Удалим сущьность из коллекции
+            }
         }
         #endregion
     }

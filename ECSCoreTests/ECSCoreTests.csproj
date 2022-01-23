@@ -4,6 +4,8 @@
     <TargetFramework>.NETCoreApp,Version=v5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj" />
+    <ProjectReference Include="..\LibForPerformanceTests\LibForPerformanceTests.csproj" />
     <ProjectReference Include="..\LibMath\LibMath.csproj" />
   </ItemGroup>
 

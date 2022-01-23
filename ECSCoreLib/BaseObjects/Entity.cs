@@ -1,4 +1,7 @@
-﻿using ECSCore.Interfaces;
+﻿using ECSCore.Exceptions;
+using ECSCore.Interfaces;
+using ECSCore.Interfaces.Components;
+using ECSCore.Interfaces.Entitys;
 using System;
 using System.Collections.Generic;
 
@@ -36,6 +39,15 @@ namespace ECSCore.BaseObjects
             return GetComponent(out component);
         }
         /// <summary>
+        /// Проверить наличие компонента у сущьности
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool CheckExist(Type typeComponent)
+        {
+            return CheckExistComponent(typeComponent);
+        }
+        /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
@@ -60,15 +72,17 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Добавить компонент в коллекцию сущьности
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="component"></param>
+        /// <typeparam name="T"> Generic - тип компонента </typeparam>
+        /// <param name="component"> Компонент </param>
         internal void AddComponent<T>(T component)
             where T:IComponent
         {
-            if (GetComponent(out T Component))
+            //if (GetComponent(out T componentInEntity))
+            if (GetComponent(out T _))
             {
-                Component = component;
-                return;
+                throw new ExceptionEntityHaveComponent($"У сущьности: {Id} уже есть компонент: {typeof(T).Name}");
+                //componentInEntity = component;
+                //return;
             } //Если нету
             lock (Components)
             {
@@ -79,7 +93,6 @@ namespace ECSCore.BaseObjects
         /// Удалить компонент из коллекции сущьности
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="component"></param>
         internal void RemoveComponent<T>()
             where T : IComponent
         {
@@ -94,8 +107,8 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Получить компонент из своего списка
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="component"></param>
+        /// <typeparam name="T"> Generic тип компонента </typeparam>
+        /// <param name="component"> Компонент </param>
         /// <returns></returns>
         private bool GetComponent<T>(out T component)
             where T : IComponent
@@ -104,15 +117,34 @@ namespace ECSCore.BaseObjects
             {
                 foreach (IComponent Component in Components)
                 {
-                    if (Component is T)
+                    if (Component is T t)
                     {
-                        component = (T)Component;
+                        component = t;
                         return true;
                     }
                 }
+                component = default;
+                return false;
             }
-            component = default(T);
-            return false;
+        }
+        /// <summary>
+        /// Проверить наличие компонента у сущьности
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <returns> Флаг наличия компонента </returns>
+        private bool CheckExistComponent(Type typeComponent)
+        {
+            lock (Components)
+            {
+                foreach (IComponent Component in Components)
+                {
+                    if (Component.GetType().FullName == typeComponent.FullName)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
     }
 }

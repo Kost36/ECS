@@ -4,8 +4,79 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Enums
+namespace GameLib.Enums
 {
+    /// <summary>
+    /// Размер корпуса корабля
+    /// </summary>
+    public enum ShipBodySize
+    {
+        /// <summary>
+        /// Сверх малый;
+        /// Размер: 5-10м;
+        /// Дроны;
+        /// </summary>
+        M0,
+        /// <summary>
+        /// Очень маленький;
+        /// Размер: 10-30м;
+        /// Легкие истребители, Разветчики, Транспорт
+        /// </summary>
+        M1,
+        /// <summary>
+        /// Маленький;
+        /// Размер: 30-60м
+        /// Истребители, Транспорт
+        /// </summary>
+        M2,
+        /// <summary>
+        /// Средний;
+        /// Размер: 60-100м
+        /// Тяжелые истребители, Транспорт
+        /// </summary>
+        M3,
+        /// <summary>
+        /// Болшой;
+        /// Размер: 100-200м
+        /// Ракетоносцы, Корветы, Транспорт
+        /// </summary>
+        M4,
+        /// <summary>
+        /// Огромный;
+        /// Размер: 200-300м
+        /// Фрегаты, Эсминцы
+        /// </summary>
+        M5,
+        /// <summary>
+        /// Сверхогромный;
+        /// Размер: 300-500м
+        /// Авианосецы
+        /// </summary>
+        M6,
+    }
+    /// <summary>
+    /// Размер модуля корабля
+    /// </summary>
+    public enum ShipModuleSize
+    {
+        /// <summary>
+        /// Малый;
+        /// </summary>
+        S,
+        /// <summary>
+        /// Средний;
+        /// </summary>
+        L,
+        /// <summary>
+        /// Болшой;
+        /// </summary>
+        M,
+        /// <summary>
+        /// Огромный;
+        /// </summary>
+        XL
+    }
+
     /// <summary>
     /// Перечисление состояний корабля
     /// </summary>

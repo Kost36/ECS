@@ -2,338 +2,138 @@
 using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces;
+using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
-using Game.Components;
-using LibMath;
+using GameLib.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Systems
+namespace GameLib.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
-    [AttributeSystemPriority(5)]
-    [AttributeSystemEnable]
-    [AttributeSystemEarlyExecution(5)]
-    public class MoveSystem : System<Pozition, Speed>
-    {
-        public override void Action(Pozition pozition, Speed speed)
-        {
-            pozition.X += speed.dX * DeltaTime;
-            pozition.Y += speed.dY * DeltaTime;
-            pozition.Z += speed.dZ * DeltaTime;
-        }
-    }
-
-    [AttributeSystemCalculate(0.2f)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Min5Once)]
     [AttributeSystemPriority(10)]
     [AttributeSystemEnable]
-    [AttributeSystemEarlyExecution(20)]
-    public class ShipAiSystem : System<ShipAi>
+    [AttributeExcludeComponentSystem(typeof(EnargyReGeneration))]
+    [AttributeSystemParallelCountThreads(8)]
+    public class EnargyOnRegenerationSystem : SystemExistComponents<Enargy>, ISystemAction, ISystemParallel
     {
-        public override void Action(ShipAi shipAi)
+        public override void Action(int entityId, Enargy enargy, float deltatime)
         {
-            int entityId = shipAi.Id;
-            if (IECS.GetEntity(entityId, out Entity entity) == false)
+            if (enargy.Fact < enargy.Max * 0.95)
             {
-                return;
+                if (IECS.GetComponent(entityId, out EnargyReGeneration _) == false)
+                {
+                    IECS.AddComponent(new EnargyReGeneration() { Regen = 5f, Id = entityId });
+                }
             }
-            if (entity.Get(out Enargy enargy))
-            {
-                if (enargy.EnargyFact < enargy.EnargyMax)
-                {
-                    if (entity.Get(out EnargyReGeneration enargyReGeneration) == false)
-                    {
-                        entity.Add(new EnargyReGeneration { Id = entityId, EnargyReGen = 10 });
-                    }
-                }
-            } //Если энергии мало, и нету регенерации. => Добавить компонент
-            if (entity.Get(out Health health))
-            {
-                if (health.HealthFact < health.HealthMax)
-                {
-                    if (entity.Get(out HealthReGeneration healthReGeneration) == false)
-                    {
-                        entity.Add(new HealthReGeneration { Id = entityId, HealthReGen = 1, EnargyUse = 5 });
-                    }
-                }
-            } //Если жизни не полные и нету регенерации => добавить компонент
-            if (entity.Get(out Shild shild))
-            {
-                if (shild.ShildFact < shild.ShildMax)
-                {
-                    if (entity.Get(out ShildReGeneration shildReGeneration) == false)
-                    {
-                        entity.Add(new ShildReGeneration { Id = entityId, ShildReGen = 1, EnargyUse = 5 });
-                    }
-                }
-            } //Если щиты не полные и нету регенерации => добавить компонент
-            if (entity.Get(out PozitionSV pozitionSV))
-            {
-                if (entity.Get(out Way way) == false)
-                {
-                    entity.Add(new Way { Id = entityId });
-                }
-            } //Если есть задание на полет и нету way => добавить компонент
-            if (entity.Get(out ShipState shipState))
-            {
-                if (shipState.StateShip == Enums.StateShip.TRADE)
-                {
-                    if (entity.Get(out ShipAiTrade trade) == false)
-                    {
-                        entity.Add(new ShipAiTrade { Id = entityId });
-                    }
-                }
-            } //Если состояние торговли и нету компонента торговли => добавить компонент
         }
     }
-
-    [AttributeSystemEnable]
-    [AttributeSystemPriority(10)]
-    [AttributeSystemEarlyExecution(20)]
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    public class EnargyRegenerationSystem : System<Enargy, EnargyReGeneration>
+    [AttributeSystemPriority(10)]
+    [AttributeSystemEnable]
+    [AttributeSystemParallelCountThreads(8)]
+    public class EnargyRegenerationSystem : SystemExistComponents<Enargy, EnargyReGeneration>, ISystemAction, ISystemParallel
     {
-        public override void Action(Enargy enargy, EnargyReGeneration enargyReGeneration)
+        public override void Action(int entityId, Enargy enargy, EnargyReGeneration enargyReGeneration, float deltatime)
         {
-            if (enargy.EnargyFact < enargy.EnargyMax)
+            if (enargy.Fact < enargy.Max)
             {
-                enargy.EnargyFact += enargyReGeneration.EnargyReGen * DeltaTime;
-                if (enargy.EnargyFact > enargy.EnargyMax)
+                enargy.Fact += enargyReGeneration.Regen * DeltaTime;
+                if (enargy.Fact > enargy.Max)
                 {
-                    enargy.EnargyFact = enargy.EnargyMax;
-                    IECS.RemoveComponent<EnargyReGeneration>(enargy.Id);
+                    enargy.Fact = enargy.Max;
+                    IECS.RemoveComponent<EnargyReGeneration>(entityId);
                 }
             }
         }
     }
 
-    [AttributeSystemEnable]
+    [AttributeSystemCalculate(SystemCalculateInterval.Min5Once)]
     [AttributeSystemPriority(10)]
-    [AttributeSystemEarlyExecution(20)]
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    public class HealthRegenerationSystem : System<Health, HealthReGeneration, Enargy>
+    [AttributeSystemEnable]
+    [AttributeExcludeComponentSystem(typeof(HealthReGeneration))]
+    [AttributeSystemParallelCountThreads(8)]
+    public class HealthOnRegenerationSystem : SystemExistComponents<Health>, ISystemAction, ISystemParallel
     {
-        public override void Action(Health health, HealthReGeneration healthReGeneration, Enargy enargy)
+        public override void Action(int entityId, Health health, float deltatime)
         {
-            if (health.HealthFact < health.HealthMax)
+            if (health.Fact < health.Max * 0.95)
+            {
+                if (IECS.GetComponent(entityId, out HealthReGeneration _) == false)
+                {
+                    IECS.AddComponent(new HealthReGeneration() { Regen = 1f, EnargyUse = 3, Id = entityId });
+                }
+            }
+        }
+    }
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [AttributeSystemPriority(10)]
+    [AttributeSystemEnable]
+    [AttributeSystemParallelCountThreads(8)]
+    public class HealthRegenerationSystem : SystemExistComponents<Health, HealthReGeneration, Enargy>, ISystemAction, ISystemParallel
+    {
+        public override void Action(int entityId, Health health, HealthReGeneration healthReGeneration, Enargy enargy, float deltatime)
+        {
+            if (health.Fact < health.Max)
             {
                 float enargyUse = healthReGeneration.EnargyUse * DeltaTime;
-                if (enargy.EnargyFact > enargyUse)
+                if (enargy.Fact > enargyUse)
                 {
-                    health.HealthFact += healthReGeneration.HealthReGen * DeltaTime;
-                    enargy.EnargyFact -= enargyUse;
-                    if (health.HealthFact > health.HealthMax)
+                    health.Fact += healthReGeneration.Regen * DeltaTime;
+                    enargy.Fact -= enargyUse;
+                    if (health.Fact > health.Max)
                     {
-                        health.HealthFact = health.HealthMax;
-                        IECS.RemoveComponent<HealthReGeneration>(health.Id);
+                        health.Fact = health.Max;
+                        IECS.RemoveComponent<HealthReGeneration>(entityId);
                     }
                 }
             }
         }
     }
 
-    [AttributeSystemEnable]
+    [AttributeSystemCalculate(SystemCalculateInterval.Min5Once)]
     [AttributeSystemPriority(10)]
-    [AttributeSystemEarlyExecution(20)]
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    public class ShildRegenerationSystem : System<Shild, ShildReGeneration, Enargy>
+    [AttributeSystemEnable]
+    [AttributeExcludeComponentSystem(typeof(ShildReGeneration))]
+    [AttributeSystemParallelCountThreads(8)]
+    public class ShildOnRegenerationSystem : SystemExistComponents<Shild>, ISystemAction, ISystemParallel
     {
-        public override void Action(Shild shild, ShildReGeneration shildReGeneration, Enargy enargy)
+        public override void Action(int entityId, Shild shild, float deltatime)
         {
-            if (shild.ShildFact < shild.ShildMax)
+            if (shild.Fact < shild.Max * 0.95)
+            {
+                if (IECS.GetComponent(entityId, out ShildReGeneration _) == false)
+                {
+                    IECS.AddComponent(new ShildReGeneration() { Regen = 1f, EnargyUse = 3, Id = entityId });
+                }
+            }
+        }
+    }
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [AttributeSystemPriority(10)]
+    [AttributeSystemEnable]
+    [AttributeSystemParallelCountThreads(8)]
+    public class ShildRegenerationSystem : SystemExistComponents<Shild, ShildReGeneration, Enargy>, ISystemAction, ISystemParallel
+    {
+        public override void Action(int entityId, Shild shild, ShildReGeneration shildReGeneration, Enargy enargy, float deltatime)
+        {
+            if (shild.Fact < shild.Max)
             {
                 float enargyUse = shildReGeneration.EnargyUse * DeltaTime;
-                if (enargy.EnargyFact > shildReGeneration.EnargyUse)
+                if (enargy.Fact > enargyUse)
                 {
-                    shild.ShildFact += shildReGeneration.ShildReGen;
-                    enargy.EnargyFact -= enargyUse;
-                    if (shild.ShildFact > shild.ShildMax)
+                    shild.Fact += shildReGeneration.Regen * DeltaTime;
+                    enargy.Fact -= enargyUse;
+                    if (shild.Fact > shild.Max)
                     {
-                        shild.ShildFact = shild.ShildMax;
-                        IECS.RemoveComponent<ShildReGeneration>(shild.Id);
+                        shild.Fact = shild.Max;
+                        IECS.RemoveComponent<ShildReGeneration>(entityId);
                     }
                 }
             }
         }
     }
-
-    [AttributeSystemEnable]
-    [AttributeSystemPriority(9)]
-    [AttributeSystemEarlyExecution(20)]
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    public class ControlWaySystem : System<Pozition, PozitionSV, Way>
-    {
-        public override void Action(Pozition pozition, PozitionSV pozitionSV, Way way)
-        {
-            int idEntity = pozition.Id;
-
-            //Рассчет вектора направления
-            way.LenX = pozitionSV.X - pozition.X;
-            way.LenY = pozitionSV.Y - pozition.Y;
-            way.LenZ = pozitionSV.Z - pozition.Z;
-
-            //Рассчет расстояния до заданной точки 
-            way.Len = Vector.Len(way.LenX, way.LenY, way.LenZ);
-
-            //Нормализация вектора направления
-            Vector vector = Vector.Norm(way.LenX, way.LenY, way.LenZ, way.Len);
-            way.NormX = vector.X;
-            way.NormY = vector.Y;
-            way.NormZ = vector.Z;
-
-            if (IECS.GetComponent(idEntity, out Speed speed) == false)
-            {
-                IECS.AddComponent(new Speed() { SpeedMax = 10, Id = idEntity });
-            } //Если скорости нету
-            if (IECS.GetComponent(idEntity, out SpeedSV speedSV) == false)
-            {
-                IECS.AddComponent(new SpeedSV() { Id = idEntity });
-            } //Если задания скорости нету
-        }
-    }
-
-    [AttributeSystemCalculate(1)]
-    [AttributeSystemPriority(15)]
-    [AttributeSystemEnable]
-    public class ControlSpeedSystem : System<Speed, SpeedSV, Way>
-    {
-        public override void Action(Speed speed, SpeedSV speedSV, Way way)
-        {
-            int idEntity = speed.Id;
-            if (way.Len < speed.SpeedFact * 300)
-            {
-                if (speed.SpeedFact < speedSV.SVSpeed)
-                {
-                    speedSV.SVSpeed = speed.SpeedFact;
-                }
-                speedSV.SVSpeed -= (float)(speed.SpeedMax * 0.005); //Снижаем на 5% от максимальной скорости
-                if (IECS.GetComponent(idEntity, out Acceleration acceleration) == false)
-                {
-                    IECS.AddComponent(new Acceleration() { Id = idEntity });
-                } //Если нету ускорения
-                if (speedSV.SVSpeed < 0)
-                {
-                    speedSV.SVSpeed = 0;
-                }
-            } //Если время оставшегося пути меньше 5 минут
-            if (way.Len > speed.SpeedFact * 300)
-            {
-                if (speed.SpeedFact > speedSV.SVSpeed)
-                {
-                    speedSV.SVSpeed = speed.SpeedFact;
-                }
-                speedSV.SVSpeed += (float)(speed.SpeedMax * 0.005); //Снижаем на 5% от максимальной скорости
-                if (IECS.GetComponent(idEntity, out Acceleration acceleration) == false)
-                {
-                    IECS.AddComponent(new Acceleration() { Id = idEntity });
-                } //Если нету ускорения
-                if (speedSV.SVSpeed > speed.SpeedMax)
-                {
-                    speedSV.SVSpeed = speed.SpeedMax;
-                }
-            } //Если время оставшегося пути больше 5 минут
-
-            //Рассчет необходимой скорости в направлении
-            speedSV.dXSV = way.NormX * speedSV.SVSpeed;
-            speedSV.dYSV = way.NormY * speedSV.SVSpeed;
-            speedSV.dZSV = way.NormZ * speedSV.SVSpeed;
-
-            if (way.Len < 10)
-            {
-                IECS.RemoveComponent<PozitionSV>(way.Id); //Удалим точку перемещения
-                IECS.RemoveComponent<Way>(way.Id); //Удалим путь
-
-                IECS.RemoveComponent<Speed>(way.Id); //Удалим скорость
-                IECS.RemoveComponent<SpeedSV>(way.Id); //Удалим заданную скорость
-                IECS.RemoveComponent<Acceleration>(way.Id); //Удалим ускоре
-            }
-        }
-    }
-
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(1)]
-    [AttributeSystemEnable]
-    public class AccselerateSystem : System<SpeedSV, Acceleration, Speed, Enargy>
-    {
-        public override void Action(SpeedSV speedSV, Acceleration acceleration, Speed speed, Enargy enargy)
-        {
-            float enargyUse = acceleration.EnargyUse * DeltaTime;
-            float acc = acceleration.Acc * DeltaTime;
-            if (enargy.EnargyFact > enargyUse)
-            {
-                //Ускорение
-                if (speedSV.dXSV < speed.dX)
-                {
-                    speed.dX -= acc;
-                    enargy.EnargyFact -= enargyUse;
-                    if (speedSV.dXSV > speed.dX)
-                    {
-                        speed.dX = speedSV.dXSV;
-                    }
-                }
-                else if (speedSV.dXSV > speed.dX)
-                {
-                    speed.dX += acc;
-                    enargy.EnargyFact -= enargyUse;
-                    if (speedSV.dXSV < speed.dX)
-                    {
-                        speed.dX = speedSV.dXSV;
-                    }
-                }
-
-                if (speedSV.dYSV < speed.dY)
-                {
-                    speed.dY -= acc;
-                    enargy.EnargyFact -= enargyUse;
-                    if (speedSV.dYSV > speed.dY)
-                    {
-                        speed.dY = speedSV.dYSV;
-                    }
-                }
-                else if (speedSV.dYSV > speed.dY)
-                {
-                    speed.dY += acc;
-                    enargy.EnargyFact -= enargyUse;
-                    if (speedSV.dYSV < speed.dY)
-                    {
-                        speed.dY = speedSV.dYSV;
-                    }
-                }
-                
-                if (speedSV.dZSV < speed.dZ)
-                {
-                    speed.dZ -= acc;
-                    enargy.EnargyFact -= enargyUse;
-                    if (speedSV.dZSV > speed.dZ)
-                    {
-                        speed.dZ = speedSV.dZSV;
-                    }
-                }
-                else if (speedSV.dZSV > speed.dZ)
-                {
-                    speed.dZ += acc;
-                    enargy.EnargyFact -= enargyUse;
-                    if (speedSV.dZSV < speed.dZ)
-                    {
-                        speed.dZ = speedSV.dZSV;
-                    }
-                }
-            }
-
-            //Проверка достижения максимальной скорости
-            if (speed.dX == speedSV.dXSV)
-            {
-                if (speed.dY == speedSV.dXSV)
-                {
-                    if (speed.dZ == speedSV.dXSV)
-                    {
-                        IECS.RemoveComponent<Acceleration>(speedSV.Id); //Удалить компонент ускорения
-                    }
-                }
-            }
-        }
-    } 
 }

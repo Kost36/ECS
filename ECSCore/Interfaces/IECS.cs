@@ -33,7 +33,7 @@ namespace ECSCore.Interfaces
         /// </summary>
         /// <typeparam name="T"> Generic тип компонента </typeparam>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
-        public void AddComponent<T>(T component) where T : Component;
+        public void AddComponent<T>(T component) where T : IComponent;
         /// <summary>
         /// Получить компонент, если есть.
         /// Возвращает компонент из менеджера компонент
@@ -42,12 +42,12 @@ namespace ECSCore.Interfaces
         /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        public bool GetComponent<T>(int idEntity, out T component) where T : Component;
+        public bool GetComponent<T>(int idEntity, out T component) where T : IComponent;
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
-        public void RemoveComponent<T>(int idEntity) where T : Component;
+        public void RemoveComponent<T>(int idEntity) where T : IComponent;
     }
 }

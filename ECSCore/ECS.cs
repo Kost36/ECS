@@ -167,7 +167,7 @@ namespace ECSCore
         /// </summary>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
         public void AddComponent<T>(T component)
-            where T : Component
+            where T : IComponent
         {
             if (_managerEntitys.Get(component.Id, out Entity Entity) == false)
             {
@@ -182,7 +182,7 @@ namespace ECSCore
         /// </summary>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
         public void AddComponent<T>(T component, Entity Entity)
-            where T : Component
+            where T : IComponent
         {
             if (Entity == null)
             {
@@ -204,7 +204,7 @@ namespace ECSCore
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool GetComponent<T>(int idEntity, out T component)
-            where T : Component
+            where T : IComponent
         {
             return _managerComponents.Get(idEntity, out component);
         }
@@ -214,7 +214,7 @@ namespace ECSCore
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         public void RemoveComponent<T>(int idEntity)
-            where T : Component
+            where T : IComponent
         {
             if (_managerEntitys.Get(idEntity, out Entity Entity) == false)
             {
@@ -230,7 +230,7 @@ namespace ECSCore
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         public void RemoveComponent<T>(int idEntity, Entity Entity)
-            where T : Component
+            where T : IComponent
         {
             if (Entity == null)
             {

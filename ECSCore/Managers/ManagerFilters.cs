@@ -107,7 +107,7 @@ namespace ECSCore.Managers
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        internal void Add(Component component)
+        internal void Add(IComponent component)
         {
             if (_ecs.GetEntity(component.Id, out Entity entity))
             {

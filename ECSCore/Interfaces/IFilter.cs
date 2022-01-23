@@ -37,7 +37,7 @@ namespace ECSCore.Interfaces
         /// </summary>
         /// <param name="component"></param>
         /// <param name="entity"></param>
-        public void Add(Component component, Entity entity);
+        public void Add(IComponent component, Entity entity);
         /// <summary>
         /// Удали, если есть
         /// </summary>

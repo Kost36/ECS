@@ -12,7 +12,7 @@ namespace ECSCore.Filters
     /// Группа для 1 компонента
     /// </summary>
     internal class Filter<T0> : FilterBase
-        where T0 : Component
+        where T0 : IComponent
     {
         #region Свойства
         /// <summary>
@@ -65,7 +65,7 @@ namespace ECSCore.Filters
         {
             return new List<Type>() { typeof(T0) };
         }
-        public override void TryAdd(Component component, Entity entity)
+        public override void TryAdd(IComponent component, Entity entity)
         {
             if (typeof(T0) == component.GetType())
             {
@@ -86,7 +86,7 @@ namespace ECSCore.Filters
         #endregion
 
         #region Приватные методы
-        private void Add(Component component)
+        private void Add(IComponent component)
         {
             lock (LockBit)
             {
@@ -114,8 +114,8 @@ namespace ECSCore.Filters
     /// Группа для 2 компонент
     /// </summary>
     internal class Filter<T0, T1> : FilterBase
-        where T0 : Component
-        where T1 : Component
+        where T0 : IComponent
+        where T1 : IComponent
     {
         #region Свойства
         /// <summary>
@@ -173,7 +173,7 @@ namespace ECSCore.Filters
         {
             return new List<Type>() { typeof(T0), typeof(T1) };
         }
-        public override void TryAdd(Component component, Entity entity)
+        public override void TryAdd(IComponent component, Entity entity)
         {
             Type type = component.GetType();
             if (type == typeof(T0))
@@ -219,7 +219,7 @@ namespace ECSCore.Filters
         #endregion
 
         #region Приватные методы
-        private void Add(Component componentT0, Component componentT1)
+        private void Add(IComponent componentT0, IComponent componentT1)
         {
             lock (LockBit)
             {
@@ -251,9 +251,9 @@ namespace ECSCore.Filters
     /// Группа для 3 компонент
     /// </summary>
     internal class Filter<T0, T1, T2> : FilterBase
-        where T0 : Component
-        where T1 : Component
-        where T2 : Component
+        where T0 : IComponent
+        where T1 : IComponent
+        where T2 : IComponent
     {
         #region Свойства
         /// <summary>
@@ -316,7 +316,7 @@ namespace ECSCore.Filters
         {
             return new List<Type>() { typeof(T0), typeof(T1), typeof(T2) };
         }
-        public override void TryAdd(Component component, Entity entity)
+        public override void TryAdd(IComponent component, Entity entity)
         {
             Type type = component.GetType();
             if (type == typeof(T0))
@@ -396,7 +396,7 @@ namespace ECSCore.Filters
         #endregion
 
         #region Приватные методы
-        private void Add(Component componentT0, Component componentT1, Component componentT2)
+        private void Add(IComponent componentT0, IComponent componentT1, IComponent componentT2)
         {
             lock (LockBit)
             {
@@ -434,10 +434,10 @@ namespace ECSCore.Filters
     /// Группа для 4 компонент
     /// </summary>
     internal class Filter<T0, T1, T2, T3> : FilterBase
-        where T0 : Component
-        where T1 : Component
-        where T2 : Component
-        where T3 : Component
+        where T0 : IComponent
+        where T1 : IComponent
+        where T2 : IComponent
+        where T3 : IComponent
     {
         #region Свойства
         /// <summary>
@@ -505,7 +505,7 @@ namespace ECSCore.Filters
         {
             return new List<Type>() { typeof(T0), typeof(T1), typeof(T2), typeof(T3) };
         }
-        public override void TryAdd(Component component, Entity entity)
+        public override void TryAdd(IComponent component, Entity entity)
         {
             Type type = component.GetType();
             if (type == typeof(T0))
@@ -632,7 +632,7 @@ namespace ECSCore.Filters
         #endregion
 
         #region Приватные методы
-        private void Add(Component componentT0, Component componentT1, Component componentT2, Component componentT3)
+        private void Add(IComponent componentT0, IComponent componentT1, IComponent componentT2, IComponent componentT3)
         {
             lock (LockBit)
             {
@@ -676,11 +676,11 @@ namespace ECSCore.Filters
     /// Группа для 5 компонент
     /// </summary>
     internal class Filter<T0, T1, T2, T3, T4> : FilterBase
-        where T0 : Component
-        where T1 : Component
-        where T2 : Component
-        where T3 : Component
-        where T4 : Component
+        where T0 : IComponent
+        where T1 : IComponent
+        where T2 : IComponent
+        where T3 : IComponent
+        where T4 : IComponent
     {
         #region Свойства
         /// <summary>
@@ -753,7 +753,7 @@ namespace ECSCore.Filters
         {
             return new List<Type>() { typeof(T0), typeof(T1), typeof(T2), typeof(T3), typeof(T4) };
         }
-        public override void TryAdd(Component component, Entity entity)
+        public override void TryAdd(IComponent component, Entity entity)
         {
             Type type = component.GetType();
             if (type == typeof(T0))
@@ -938,7 +938,7 @@ namespace ECSCore.Filters
         #endregion
 
         #region Приватные методы
-        private void Add(Component componentT0, Component componentT1, Component componentT2, Component componentT3, Component componentT4)
+        private void Add(IComponent componentT0, IComponent componentT1, IComponent componentT2, IComponent componentT3, IComponent componentT4)
         {
             lock (LockBit)
             {

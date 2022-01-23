@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECSCoreUnityIntegration\ECSCoreUnityIntegration.csproj" />
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj" />
     <ProjectReference Include="..\LibForPerformanceTests\LibForPerformanceTests.csproj" />
     <ProjectReference Include="..\LibMath\LibMath.csproj" />

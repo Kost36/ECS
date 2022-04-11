@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\WorkFlow\Prodaction.cs" />
     <Compile Include="GetAssembly.cs" />
     <Compile Include="Components\Components.cs" />
     <Compile Include="Components\Move\Components.cs" />

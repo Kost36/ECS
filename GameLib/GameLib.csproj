@@ -70,7 +70,6 @@
     <Compile Include="Ship\ShipModules.cs" />
     <Compile Include="Ship\ShipBodys.cs" />
     <Compile Include="Entitys\Entitys.cs" />
-    <Compile Include="GetAssembly.cs" />
     <Compile Include="LibHelp\Vector.cs" />
     <Compile Include="Components\Production\Production.cs" />
     <Compile Include="Components\Products\Products.cs" />

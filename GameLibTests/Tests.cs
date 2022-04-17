@@ -29,6 +29,7 @@ namespace GameLib.Tests
         public void Test02()
         {
             Star star = (Star)IECS.AddEntity(new Star());
+            
             //star.Add()
         }
     }

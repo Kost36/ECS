@@ -40,7 +40,7 @@ namespace ECSCore.BaseObjects
             where T : IComponent
         {
             component.Id = this.Id;
-            ECS.Instance.AddComponent(component, this);
+            ECS.Instance.AddComponent(component);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace ECSCore.BaseObjects
         public void Remove<T>()
             where T : IComponent
         {
-            ECS.Instance.RemoveComponent<T>(this.Id, this);
+            ECS.Instance.RemoveComponent<T>(this.Id);
         }
 
         /// <summary>
@@ -133,12 +133,7 @@ namespace ECSCore.BaseObjects
         /// </summary>
         public void Death()
         {
-            foreach (IEntity entity in ChildEntitys.Values)
-            {
-                entity.ParentEntity = null;
-            } //Отвяжемся от всех дочерних сущьностей
-            ChildEntitys.Clear(); //Очистим дочерние сущьности
-            ParentEntity?.RemoveChild(this.Id, out IEntity _); //Отвяжемся от родительской сущьности
+            UnbindParentAndChild(); //Отвязать родительские и дочерние сущьности
             ECS.Instance.RemoveEntity(this.Id); //Удалимся
         }
 
@@ -221,6 +216,19 @@ namespace ECSCore.BaseObjects
                 }
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Отвязать родительские и дочерние сущьности
+        /// </summary>
+        private void UnbindParentAndChild()
+        {
+            foreach (IEntity entity in ChildEntitys.Values)
+            {
+                entity.ParentEntity = null;
+            } //Отвяжемся от всех дочерних сущьностей
+            ChildEntitys.Clear(); //Очистим дочерние сущьности
+            ParentEntity?.RemoveChild(this.Id, out IEntity _); //Отвяжемся от родительской сущьности
         }
     }
 }

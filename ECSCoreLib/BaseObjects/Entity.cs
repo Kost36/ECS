@@ -52,7 +52,7 @@ namespace ECSCore.BaseObjects
         {
             if (entity.Id == 0)
             {
-                ECS.Instance.AddEntity(entity);
+                ECS.Instance.AddEntity(entity as Entity);
             } //Если сущьность не проинициализирована
             lock (ChildEntitys)
             {

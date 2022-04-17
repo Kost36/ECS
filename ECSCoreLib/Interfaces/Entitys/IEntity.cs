@@ -41,6 +41,12 @@ namespace ECSCore.Interfaces
             where T : IComponent;
 
         /// <summary>
+        /// Удалить дочернюю сущьность
+        /// </summary>
+        bool GetChild<T>(int idChildEntity, out T entity)
+            where T : IEntity;
+
+        /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>

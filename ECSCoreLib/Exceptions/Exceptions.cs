@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Exceptions
 {
@@ -24,6 +20,7 @@ namespace ECSCore.Exceptions
         /// </summary>
         public Type SystemType { get; set; }
     }
+
     /// <summary>
     /// Исключение. ECS уже проинициализирован
     /// </summary>
@@ -33,6 +30,7 @@ namespace ECSCore.Exceptions
         {
         }
     }
+
     /// <summary>
     /// Исключение. Нет проинициализированных систем
     /// </summary>
@@ -42,6 +40,7 @@ namespace ECSCore.Exceptions
         {
         }
     }
+
     /// <summary>
     /// Исключение. У сущьности уже есть данный компонент
     /// </summary>

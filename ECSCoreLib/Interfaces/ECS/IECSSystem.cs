@@ -14,6 +14,7 @@ namespace ECSCore.Interfaces.ECS
         /// <param name="entity"> Сущьность, которая будет добавлена в ECS (Произойдет автоматическое присвоентие Id)</param>
         /// <returns></returns>
         Entity AddEntity(Entity entity);
+
         /// <summary>
         /// Получить сущьность из ECS, если есть
         /// </summary>
@@ -21,11 +22,13 @@ namespace ECSCore.Interfaces.ECS
         /// <param name="Entity"> Сущьность (Если найдена) / null </param>
         /// <returns> Результат получения сущьности </returns>
         bool GetEntity(int id, out Entity Entity);
+
         /// <summary>
         /// Добавить компонент.
         /// </summary>
         /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
         void AddComponent<T>(T component) where T : IComponent;
+
         /// <summary>
         /// Получить компонент, если есть.
         /// Возвращает компонент из менеджера компонентов
@@ -35,6 +38,7 @@ namespace ECSCore.Interfaces.ECS
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         bool GetComponent<T>(int idEntity, out T component) where T : IComponent;
+
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>

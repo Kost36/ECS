@@ -1,6 +1,4 @@
-﻿using ECSCore.BaseObjects;
-using ECSCore.Managers;
-using System.Collections.Generic;
+﻿using ECSCore.Managers;
 using System.Text;
 
 namespace ECSCore.Interfaces.ECS
@@ -14,18 +12,17 @@ namespace ECSCore.Interfaces.ECS
         /// Менеджер сущьностей
         /// </summary>
         ManagerEntitys ManagerEntitys { get; }
-        ///// <summary>
-        ///// Менеджер компонент
-        ///// </summary>
-        //ManagerComponents ManagerComponents { get; }
+
         /// <summary>
         /// Менеджер фильтров
         /// </summary>
         ManagerFilters ManagerFilters { get; }
+
         /// <summary>
         /// Менеджер систем
         /// </summary>
         ManagerSystems ManagerSystems { get; }
+
         /// <summary>
         /// Информация о состоянии ECS
         /// </summary>

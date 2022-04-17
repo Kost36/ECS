@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Attributes
 {
@@ -41,6 +37,7 @@ namespace ECSCore.Attributes
         }
 
         #endregion
+
         /// <summary>
         /// Процент времени порога раннего выполнения
         /// </summary>

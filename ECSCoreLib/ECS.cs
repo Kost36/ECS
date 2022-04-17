@@ -1,13 +1,10 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Exceptions;
-using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
 using ECSCore.Interfaces.ECS;
 using ECSCore.Managers;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -35,6 +32,7 @@ namespace ECSCore
                 return _ecs; //Вернуть экземпляр
             }
         }
+
         /// <summary>
         /// Получить экземпляр ECS
         /// </summary>
@@ -46,6 +44,7 @@ namespace ECSCore
                 return _ecs; //Вернуть экземпляр
             }
         }
+
         /// <summary>
         /// Получить отладочный экземпляр ECS
         /// </summary>
@@ -57,6 +56,7 @@ namespace ECSCore
                 return _ecs; //Вернуть экземпляр
             }
         }
+
         /// <summary>
         /// Инициализация ECS
         /// </summary>
@@ -86,18 +86,17 @@ namespace ECSCore
         /// Синглтон
         /// </summary>
         private static ECS _ecs;
+
         /// <summary>
         /// Менеджер сущьностей
         /// </summary>
         private ManagerEntitys _managerEntitys;
-        ///// <summary>
-        ///// Менеджер компонентов
-        ///// </summary>
-        //private ManagerComponents _managerComponents;
+
         /// <summary>
         /// Менеджер фильтров компонент
         /// </summary>
         private ManagerFilters _managerFilters;
+
         /// <summary>
         /// Менеджер систем
         /// </summary>
@@ -109,14 +108,12 @@ namespace ECSCore
         /// Менеджер сущьностей
         /// </summary>
         public ManagerEntitys ManagerEntitys { get { return _managerEntitys; } }
-        ///// <summary>
-        ///// Менеджер компонентов
-        ///// </summary>
-        //public ManagerComponents ManagerComponents { get { return _managerComponents; } }
+
         /// <summary>
         /// Менеджер фильтров компонент
         /// </summary>
         public ManagerFilters ManagerFilters { get { return _managerFilters; } }
+
         /// <summary>
         /// Менеджер систем
         /// </summary>
@@ -135,6 +132,7 @@ namespace ECSCore
         {
             return _managerEntitys.Add(entity);
         }
+
         /// <summary>
         /// Получить сущьность по Id, если есть
         /// </summary>
@@ -145,6 +143,7 @@ namespace ECSCore
         {
             return _managerEntitys.Get(id, out Entity);
         }
+
         /// <summary>
         /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
         /// </summary>
@@ -174,6 +173,7 @@ namespace ECSCore
             //_managerComponents.Add<T>(component); //Передать менеджеру компонент
             _managerFilters.Add<T>(component); //Передать менеджеру фильтров 
         } // TODO При добавлении компонента, который уже есть на сущьности кинет исключение: продумать действия в данной ситуации, и синхронизировать действие для Entity и Filters, что бы небыло разногласий
+
         /// <summary>
         /// Добавить компонент.
         /// </summary>
@@ -193,6 +193,7 @@ namespace ECSCore
             //_managerComponents.Add<T>(component); //Передать менеджеру компонент
             _managerFilters.Add<T>(component); //Передать менеджеру фильтров
         } // TODO При добавлении компонента, который уже есть на сущьности кинет исключение: продумать действия в данной ситуации, и синхронизировать действие для Entity и Filters, что бы небыло разногласий
+
         /// <summary>
         /// Получить компонент, если есть.
         /// Возвращает компонент из менеджера компонентов
@@ -212,6 +213,7 @@ namespace ECSCore
             return entity.Get(out component); //Получим компонент у сущьности
             //return _managerComponents.Get(idEntity, out component);
         }
+
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
@@ -229,6 +231,7 @@ namespace ECSCore
             //_managerComponents.Remove<T>(idEntity);
             _managerFilters.Remove<T>(idEntity);
         }
+
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
@@ -323,6 +326,7 @@ namespace ECSCore
         {
             SetSpeed(ECSSpeed.Pause);
         }
+
         /// <summary>
         /// Работа
         /// </summary>
@@ -330,6 +334,7 @@ namespace ECSCore
         {
             SetSpeed(ECSSpeed.Run);
         }
+
         /// <summary>
         /// Задать скорость
         /// </summary>
@@ -340,6 +345,7 @@ namespace ECSCore
                 _managerSystems.SetSpeed(eCSSpeed);
             } //Если модуль проинициализорован
         }
+
         /// <summary>
         /// Задать скорость
         /// </summary>

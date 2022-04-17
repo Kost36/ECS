@@ -1,9 +1,6 @@
 ﻿using ECSCore.Interfaces.Components;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Attributes
 {
@@ -27,6 +24,7 @@ namespace ECSCore.Attributes
             } //Если задан тип, который не наследуется от IComponent
             ExcludeComponentType = typeComponent;
         }
+
         /// <summary>
         /// Тип исключающего компонента
         /// </summary>

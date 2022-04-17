@@ -1,9 +1,5 @@
 ﻿using ECSCore.BaseObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 // Компоненты механники перемещения
 namespace GameLib.Components.Move
@@ -28,6 +24,7 @@ namespace GameLib.Components.Move
         /// </summary>
         public float Z;
     }
+
     /// <summary>
     /// Компонент скорости
     /// (m/sec)
@@ -61,6 +58,7 @@ namespace GameLib.Components.Move
         /// </summary>
         public float Max;
     }
+
     /// <summary>
     /// Компонент заданной скорости.
     /// (m/sec)
@@ -93,6 +91,7 @@ namespace GameLib.Components.Move
         /// </summary>
         public bool Update;
     }
+
     /// <summary>
     /// Компонент ускорения
     /// (dm/sec)
@@ -115,6 +114,7 @@ namespace GameLib.Components.Move
         /// </summary>
         public bool SpeedOk;
     }
+
     /// <summary>
     /// Компонент пути в заданную позицию
     /// </summary>
@@ -154,6 +154,7 @@ namespace GameLib.Components.Move
         /// </summary>
         public float NormZ;
     }
+
     /// <summary>
     /// Компонент пути торможения
     /// </summary>

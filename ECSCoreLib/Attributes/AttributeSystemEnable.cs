@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Attributes
 {
@@ -20,8 +16,8 @@ namespace ECSCore.Attributes
         {
             IsEnable = isEnable;
         }
-        
         #endregion
+
         /// <summary>
         /// Работа системы
         /// </summary>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameLib.Enums
+﻿namespace GameLib.Enums
 {
     /// <summary>
     /// Размер корпуса корабля
@@ -54,6 +48,7 @@ namespace GameLib.Enums
         /// </summary>
         M6,
     }
+
     /// <summary>
     /// Размер модуля корабля
     /// </summary>

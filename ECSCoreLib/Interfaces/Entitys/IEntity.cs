@@ -1,11 +1,4 @@
-﻿using ECSCore.BaseObjects;
-using ECSCore.Interfaces;
-using ECSCore.Interfaces.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ECSCore.Interfaces.Components;
 
 namespace ECSCore.Interfaces.Entitys
 {
@@ -25,6 +18,7 @@ namespace ECSCore.Interfaces.Entitys
         /// <param name="component"></param>
         void Add<T>(T component)
             where T : IComponent;
+
         /// <summary>
         /// Получить компонент (Если есть)
         /// </summary>
@@ -33,6 +27,7 @@ namespace ECSCore.Interfaces.Entitys
         /// <returns> Флаг наличия компонента </returns>
         bool Get<T>(out T component)
             where T : IComponent;
+
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
@@ -40,6 +35,7 @@ namespace ECSCore.Interfaces.Entitys
         /// <returns></returns>
         void Remove<T>()
             where T : IComponent;
+
         /// <summary>
         /// Уничтожить сущьность
         /// </summary>

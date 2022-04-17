@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Systems
 {
@@ -47,22 +43,27 @@ namespace ECSCore.Systems
         /// Сумарное количество выполнений
         /// </summary>
         public int SummUseCount { get; private set; }
+
         /// <summary>
         /// Процент времени использования от производительности
         /// </summary>
         public float PercentTimeUsePerformance { get; private set; }
+
         /// <summary>
         /// Среднее время выполнения системы в мс
         /// </summary>
         public float AverTimeUseMs { get { return _timeAverRunInTicks / TimeSpan.TicksPerMillisecond; } }
+
         /// <summary>
         /// Максимально время выполнения системы в мс
         /// </summary>
         public float MaxTimeUseMs { get { return _timeMaxRunInTicks / TimeSpan.TicksPerMillisecond; } }
+
         /// <summary>
         /// Среднее время вычисления фильтра системы в мс
         /// </summary>
         public float AverTimeFilterCalculateMs { get { return _timeAverFilterCalculateInTicks / TimeSpan.TicksPerMillisecond; } }
+
         /// <summary>
         /// Максимально время вычисления фильтра системы в мс
         /// </summary>
@@ -83,6 +84,7 @@ namespace ECSCore.Systems
             if (timeRunInTicks > _timeMaxRunInTicks) { _timeMaxRunInTicks = timeRunInTicks; }
             PercentTimeUsePerformance = (_sumRunTimeTikcs + _sumFilterCalculateTimeTikcs) / (float)timeWorkManagerSystemTicks;
         }
+
         /// <summary>
         /// Добавить статистику по вычислению фильтра
         /// </summary>
@@ -94,6 +96,7 @@ namespace ECSCore.Systems
             _timeAverFilterCalculateInTicks = _sumFilterCalculateTimeTikcs / _sumFilterCalculateCount;
             if (timeFilterCalculateInTicks > _timeMaxFilterCalculateInTicks) { _timeMaxFilterCalculateInTicks = timeFilterCalculateInTicks; }
         }
+
         /// <summary>
         /// Очистить статистику системы
         /// </summary>

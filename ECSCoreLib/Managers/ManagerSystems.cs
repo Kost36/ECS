@@ -1,17 +1,14 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Exceptions;
-using ECSCore.Interfaces;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ECSCore.Managers
 {
@@ -108,27 +105,33 @@ namespace ECSCore.Managers
         /// Количество существующих систем
         /// </summary>
         public int CountSystems { get { return _systems.Count; } }
+
         /// <summary>
         /// Количество активных систем
         /// </summary>
         public int CountEnableSystems { get { return _countEnableSystems; } }
+
         /// <summary>
         /// Количество отключенных систем
         /// </summary>
         public int CountDisableSystems { get { return _сountDisableSystems; } }
+
         /// <summary>
         /// Системы не успевают выполняться c заданными интервалами
         /// Необходимо оптимизировать нагрузку
         /// </summary>
         public bool IsNotHaveTimeToBeExecuted { get { return _flagHaveDelayRunSystem; } }
+
         /// <summary>
         /// Свободное время в мс
         /// </summary>
         public float FreeTime { get { return _freeTime; } }
+
         /// <summary>
         /// Время задержки выполнения систем в мс
         /// </summary>
         public float TimeDelayExecuted { get { return _timeDelayExecuted; } }
+
         /// <summary>
         /// Фильтры не успевают вычисляться вовремя
         /// Необходимо оптимизировать нагрузку
@@ -179,6 +182,7 @@ namespace ECSCore.Managers
             }
             return info;
         }
+
         /// <summary>
         /// Очистить статистику выполнения систем
         /// </summary>
@@ -194,6 +198,7 @@ namespace ECSCore.Managers
                 }
             }
         }
+
         /// <summary>
         /// Получить систему по типу, для отладки
         /// </summary>
@@ -245,6 +250,7 @@ namespace ECSCore.Managers
                     break;
             } //В зависимости от выбранного перечисления
         }
+
         /// <summary>
         /// Задать скорость
         /// </summary>
@@ -263,6 +269,7 @@ namespace ECSCore.Managers
             _speedRun = speedRun;
             return _speedRun;
         }
+
         /// <summary>
         /// Освободить ресурсы
         /// </summary>
@@ -283,6 +290,7 @@ namespace ECSCore.Managers
                 } //Если бит сбросился в false. значит менеджер остановил все системы и завершил все потоки
             }  //Пока бит останова не сбросится в false
         }
+
         #endregion
 
         #region Приватные методы инициализации
@@ -304,6 +312,7 @@ namespace ECSCore.Managers
                 AddSystem(system); //Добавим в список
             } //Пройдемся по всем системам 
         }
+
         /// <summary>
         /// Добавить систему в список
         /// </summary>
@@ -339,6 +348,7 @@ namespace ECSCore.Managers
                 } //Если есть команда на останов
             } //Постоянно выполняем
         }
+
         /// <summary>
         /// Заполнить очередь выполнения систем
         /// </summary>
@@ -356,6 +366,7 @@ namespace ECSCore.Managers
                 SortSystemQueue(); //Переместим систему на свою позицию выполнения
             } //Добавим все системы в очередь
         }
+
         /// <summary>
         /// Работа систем
         /// </summary>
@@ -416,6 +427,7 @@ namespace ECSCore.Managers
                 Thread.Sleep(1); //Значение 0 - недает процессору простаивать => в холостую грузит процессор до 25-40%
             }
         }
+
         /// <summary>
         /// Запуск обработки системы (Вынесенный метод) 
         /// </summary>
@@ -435,6 +447,7 @@ namespace ECSCore.Managers
             //TODO Фиксировать связанные компоненты!!!!
             jobSystem.Run(_ticksPoint, _timeWorkManagerSystemTicks, _speedRun); //Обработка системы
         }
+
         /// <summary>
         /// Вычислить свободное время до следующей системы
         /// </summary>
@@ -443,6 +456,7 @@ namespace ECSCore.Managers
             _freeTime = (float)(_systemQueue[0].TicksNextRun - _ticksPoint) / (float)TimeSpan.TicksPerMillisecond;
             //_timeDelayExecuted = 0; // Время задержки выполнения систем
         }
+
         /// <summary>
         /// Задать метку фактического времени
         /// </summary>
@@ -451,6 +465,7 @@ namespace ECSCore.Managers
             _ticksPoint = DateTime.Now.Ticks; //Новая метка времени
             _timeWorkManagerSystemTicks = _ticksPoint - _ticksStart; //Время работы приложения
         }
+
         /// <summary>
         /// Вычисляем свободное время в тиках
         /// </summary>
@@ -488,6 +503,7 @@ namespace ECSCore.Managers
                 return freeTicks;
             } //Если есть свободное время
         }
+
         /// <summary>
         /// Сортировака очереди систем
         /// </summary>

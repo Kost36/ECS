@@ -1,5 +1,4 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -68,6 +67,7 @@ namespace ECSCore.Managers
         {
             return Registration(entity); //Присвоим id и добавим в коллекцию
         }
+
         /// <summary>
         /// Получить сущьность по id, если есть
         /// </summary>
@@ -81,6 +81,7 @@ namespace ECSCore.Managers
                 return _entitys.TryGetValue(id, out Entity);
             }
         }
+
         /// <summary>
         /// Удаление сущьности по id
         /// </summary>
@@ -114,6 +115,7 @@ namespace ECSCore.Managers
             }
             return entity;
         }
+
         /// <summary>
         /// Удаление сущьности
         /// </summary>

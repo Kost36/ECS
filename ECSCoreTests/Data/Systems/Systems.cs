@@ -1,16 +1,10 @@
 ﻿using ECSCore.Attributes;
 using ECSCore.BaseObjects;
 using ECSCore.Enums;
-using ECSCore.Interfaces;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using ECSCoreTests.Components;
 using ECSCoreTests.Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCoreTests.Systems
 {
@@ -160,7 +154,6 @@ namespace ECSCoreTests.Systems
         
     }
 
-
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(15)]
     [AttributeSystemEnable]
@@ -193,7 +186,6 @@ namespace ECSCoreTests.Systems
             //}
         }
     }
-
 
     [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
     [AttributeSystemPriority(5)]

@@ -2,10 +2,8 @@
 using ECSCore.Enums;
 using ECSCore.Filters;
 using ECSCore.GroupComponents;
-using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
 using ECSCore.Managers;
-using System;
 using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
@@ -39,7 +37,12 @@ namespace ECSCore.Systems
         /// Фильтр
         /// </summary>
         internal Filter<GroupComponentsExist<ExistComponentT1>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1>>();
+
+        /// <summary>
+        /// 
+        /// </summary>
         internal override FilterBase FilterBase => Filter;
+
         /// <summary>
         /// Получение ссылки на фильтр
         /// </summary>
@@ -47,6 +50,7 @@ namespace ECSCore.Systems
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1>>)(managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1>>), Filter.TypesWithoutComponents));
         }
+
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
@@ -61,6 +65,7 @@ namespace ECSCore.Systems
                 Filter.СalculateJob(limitTimeTicks);
             }
         }
+
         /// <summary>
         /// Выполнение системы
         /// </summary>
@@ -84,6 +89,7 @@ namespace ECSCore.Systems
                     break;
             } //Взависимости от типа выполнения
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции
         /// </summary>
@@ -95,6 +101,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
@@ -106,6 +113,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
@@ -123,6 +131,13 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TGroupComponents"></typeparam>
+        /// <param name="groupComponents"></param>
+        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1>;
@@ -135,6 +150,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, Entity entity) { }
+
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
@@ -143,6 +159,7 @@ namespace ECSCore.Systems
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, float deltaTime) { }
     }
+
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 2 включающих компонентов;
     /// 
@@ -176,7 +193,12 @@ namespace ECSCore.Systems
             get; 
             set; 
         } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>();
+
+        /// <summary>
+        /// 
+        /// </summary>
         internal override FilterBase FilterBase => Filter;
+
         /// <summary>
         /// Получение ссылки на фильтр
         /// </summary>
@@ -186,6 +208,7 @@ namespace ECSCore.Systems
                 (managerFilters.GetFilter(typeof
                 (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>), Filter.TypesWithoutComponents));
         }
+
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
@@ -200,6 +223,7 @@ namespace ECSCore.Systems
                 Filter.СalculateJob(limitTimeTicks);
             }
         }
+
         /// <summary>
         /// Выполнение системы
         /// </summary>
@@ -223,6 +247,7 @@ namespace ECSCore.Systems
                     break;
             } //Взависимости от типа выполнения
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции
         /// </summary>
@@ -234,6 +259,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
@@ -245,6 +271,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
@@ -266,6 +293,13 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TGroupComponents"></typeparam>
+        /// <param name="groupComponents"></param>
+        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2>;
@@ -279,6 +313,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, Entity entity) { }
+
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
@@ -288,6 +323,7 @@ namespace ECSCore.Systems
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, float deltaTime) { }
     }
+
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 3 включающих компонентов;
     /// 
@@ -319,7 +355,12 @@ namespace ECSCore.Systems
         /// Фильтр
         /// </summary>
         internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>();
+
+        /// <summary>
+        /// 
+        /// </summary>
         internal override FilterBase FilterBase => Filter;
+
         /// <summary>
         /// Получение ссылки на фильтр
         /// </summary>
@@ -329,6 +370,7 @@ namespace ECSCore.Systems
                 (managerFilters.GetFilter(typeof
                 (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>), Filter.TypesWithoutComponents));
         }
+
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
@@ -343,6 +385,7 @@ namespace ECSCore.Systems
                 Filter.СalculateJob(limitTimeTicks);
             }
         }
+
         /// <summary>
         /// Выполнение системы
         /// </summary>
@@ -366,6 +409,7 @@ namespace ECSCore.Systems
                     break;
             } //Взависимости от типа выполнения
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции
         /// </summary>
@@ -377,6 +421,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
@@ -388,6 +433,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
@@ -405,6 +451,13 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TGroupComponents"></typeparam>
+        /// <param name="groupComponents"></param>
+        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>;
@@ -419,6 +472,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT3"> Компонент №3 </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, Entity entity) { }
+
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
@@ -429,6 +483,7 @@ namespace ECSCore.Systems
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, float deltaTime) { }
     }
+
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 4 включающих компонентов;
     /// 
@@ -462,7 +517,12 @@ namespace ECSCore.Systems
         /// Фильтр
         /// </summary>
         internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>();
+
+        /// <summary>
+        /// 
+        /// </summary>
         internal override FilterBase FilterBase => Filter;
+
         /// <summary>
         /// Получение ссылки на фильтр
         /// </summary>
@@ -472,6 +532,7 @@ namespace ECSCore.Systems
                 (managerFilters.GetFilter(typeof
                 (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>), Filter.TypesWithoutComponents));
         }
+
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
@@ -486,6 +547,7 @@ namespace ECSCore.Systems
                 Filter.СalculateJob(limitTimeTicks);
             }
         }
+
         /// <summary>
         /// Выполнение системы
         /// </summary>
@@ -509,6 +571,7 @@ namespace ECSCore.Systems
                     break;
             } //Взависимости от типа выполнения
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции
         /// </summary>
@@ -520,6 +583,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
@@ -531,6 +595,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
@@ -548,6 +613,13 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TGroupComponents"></typeparam>
+        /// <param name="groupComponents"></param>
+        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>;
@@ -563,6 +635,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT4"> Компонент №4 </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, Entity entity) { }
+
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
@@ -574,6 +647,7 @@ namespace ECSCore.Systems
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, float deltaTime) { }
     }
+
     /// <summary>
     /// Абстрактный класс системы, которая обрабатывает группу компонент из 5 включающих компонентов;
     /// 
@@ -609,7 +683,12 @@ namespace ECSCore.Systems
         /// Фильтр
         /// </summary>
         internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>();
+
+        /// <summary>
+        /// 
+        /// </summary>
         internal override FilterBase FilterBase => Filter;
+
         /// <summary>
         /// Получение ссылки на фильтр
         /// </summary>
@@ -619,6 +698,7 @@ namespace ECSCore.Systems
                 (managerFilters.GetFilter(typeof
                 (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>), Filter.TypesWithoutComponents));
         }
+
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
@@ -633,6 +713,7 @@ namespace ECSCore.Systems
                 Filter.СalculateJob(limitTimeTicks);
             }
         }
+
         /// <summary>
         /// Выполнение системы
         /// </summary>
@@ -656,6 +737,7 @@ namespace ECSCore.Systems
                     break;
             } //Взависимости от типа выполнения
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции
         /// </summary>
@@ -667,6 +749,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по части коллекции
         /// </summary>
@@ -678,6 +761,7 @@ namespace ECSCore.Systems
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, DeltaTime);
             } //Проходимся по коллекции и вызываем Action для каждого элемента
         }
+
         /// <summary>
         /// Выполнение итерирования по коллекции в нескольких потоках
         /// </summary>
@@ -695,6 +779,13 @@ namespace ECSCore.Systems
                 i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
             } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TGroupComponents"></typeparam>
+        /// <param name="groupComponents"></param>
+        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>;
@@ -711,6 +802,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT5"> Компонент №5 </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, Entity entity) { }
+
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>

@@ -1,6 +1,4 @@
-﻿using ECSCore.BaseObjects;
-using ECSCore.Interfaces;
-using ECSCore.Interfaces.Components;
+﻿using ECSCore.Interfaces.Components;
 using System;
 using System.Collections.Generic;
 
@@ -42,6 +40,7 @@ namespace ECSCore.Managers
                 }
             }
         }
+
         /// <summary>
         /// Количество компонент
         /// </summary>
@@ -76,6 +75,7 @@ namespace ECSCore.Managers
                 return 0;
             }
         }
+
         /// <summary>
         /// Добавить компонент в коллекцию
         /// </summary>
@@ -86,6 +86,7 @@ namespace ECSCore.Managers
         {
             Registration(component); //Добавим в коллекцию
         }
+
         /// <summary>
         /// Получить компонент, если есть
         /// </summary>
@@ -98,6 +99,7 @@ namespace ECSCore.Managers
         {
             return Search<T>(id, out component);
         }
+
         /// <summary>
         /// Получить все компоненты сущьности
         /// </summary>
@@ -118,6 +120,7 @@ namespace ECSCore.Managers
             }
             return Components;
         }
+
         /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности
         /// </summary>
@@ -126,6 +129,7 @@ namespace ECSCore.Managers
         {
             return RemoveComponent(id, typeof(T)); //Удалим компонент
         }
+
         /// <summary>
         /// Удалить все компоненты с id
         /// </summary>
@@ -167,6 +171,7 @@ namespace ECSCore.Managers
                 componentsNew.Add(component); //Добавим компонент в новую коллекцию
             }
         }
+
         /// <summary>
         /// Получить компонент, если есть
         /// </summary>
@@ -191,6 +196,7 @@ namespace ECSCore.Managers
             component = default;
             return false;
         }
+
         /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности
         /// </summary>
@@ -210,6 +216,7 @@ namespace ECSCore.Managers
             }
             return false;
         }
+
         /// <summary>
         /// Удалить все компоненты с id
         /// </summary>
@@ -224,6 +231,7 @@ namespace ECSCore.Managers
                 } //Пройдемся по существующим коллекциям
             }
         }
+
         /// <summary>
         /// Получить общее количество компонент
         /// </summary>
@@ -256,6 +264,7 @@ namespace ECSCore.Managers
 
         #region Поля
         private readonly Type _componentType; 
+
         /// <summary>
         /// Коллекция компонентов
         /// </summary>

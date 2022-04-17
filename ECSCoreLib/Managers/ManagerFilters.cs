@@ -1,12 +1,8 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Filters;
-using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
 using ECSCore.Interfaces.Filters;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace ECSCore.Managers
 {
@@ -32,6 +28,7 @@ namespace ECSCore.Managers
         /// Ссылка на ECSCore
         /// </summary>
         private readonly ECS _ecs;
+
         /// <summary>
         /// Список фильтров групп компонент
         /// </summary>
@@ -49,6 +46,7 @@ namespace ECSCore.Managers
                 return _filters.Count;
             }
         }
+
         /// <summary>
         /// Количество объектов в фильртрах
         /// </summary>
@@ -98,6 +96,7 @@ namespace ECSCore.Managers
             } //Пройдемся по всем фильтрам
             throw new Exception($"Тип фильтра {type.FullName} не зарегистрирован в ECSCore");
         }
+
         /// <summary>
         /// Добавить компонент к фильтрам
         /// </summary>
@@ -114,6 +113,7 @@ namespace ECSCore.Managers
                 } //Проходимся по всем группам 
             }
         }
+
         /// <summary>
         /// Удалить заданный тип компонента, имеющий заданный id сущьности из фильтров
         /// </summary>
@@ -128,6 +128,7 @@ namespace ECSCore.Managers
                 } //Проходимся по всем группам
             }
         }
+
         /// <summary>
         /// Удалить все компоненты с id, из фильтров
         /// </summary>
@@ -233,6 +234,7 @@ namespace ECSCore.Managers
         /// Инициализация 
         /// </summary>
         private void Init() { }
+
         /// <summary>
         /// Получить общее количество сущьностей в фильтрах
         /// </summary>

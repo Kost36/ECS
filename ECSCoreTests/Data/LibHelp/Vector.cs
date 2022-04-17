@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCoreTests.Lib
 {
@@ -33,6 +29,7 @@ namespace ECSCoreTests.Lib
         {
             return (float)Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2) + Math.Pow(dZ, 2));
         }
+
         /// <summary>
         /// Длинна вектора.
         /// </summary>
@@ -55,6 +52,7 @@ namespace ECSCoreTests.Lib
             float len = Len(dX, dY, dZ);
             return new Vector(dX / len, dY / len, dZ / len);
         }
+
         /// <summary>
         /// Нормализация вектора.
         /// </summary>

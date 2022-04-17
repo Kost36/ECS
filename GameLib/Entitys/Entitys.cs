@@ -1,9 +1,5 @@
 ﻿using ECSCore.BaseObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameLib.Entitys
 {
@@ -12,16 +8,19 @@ namespace GameLib.Entitys
     /// </summary>
     [Serializable]
     public class Bullet : Entity { }
+
     /// <summary>
     /// Луч
     /// </summary>
     [Serializable]
     public class Laser : Entity { }
+
     /// <summary>
     /// Ракета
     /// </summary>
     [Serializable]
     public class Rocket : Entity { }
+
 
     /// <summary>
     /// Контейнер с товаром;

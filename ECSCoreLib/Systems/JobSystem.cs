@@ -1,10 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Systems
 {
@@ -35,18 +31,22 @@ namespace ECSCore.Systems
         /// Система
         /// </summary>
         public SystemBase System { get; }
+
         /// <summary>
         /// Статистика системы
         /// </summary>
         public SystemStatistic SystemStatistic { get; } = new SystemStatistic();
+
         /// <summary>
         /// Метка времени возможного предварительного выполнения
         /// </summary>
         public long TicksEarlyExecution { get; set; }
+
         /// <summary>
         /// Метка времени предидущего выполнения
         /// </summary>
         public long TicksOldRun { get; set; }
+
         /// <summary>
         /// Метка времени следующего выполнения
         /// </summary>
@@ -78,6 +78,7 @@ namespace ECSCore.Systems
             TicksNextRun = ticksPoint;
             TicksEarlyExecution = ticksPoint;
         }
+
         /// <summary>
         /// Вычислить время следующего выполнения системы
         /// </summary>
@@ -86,6 +87,7 @@ namespace ECSCore.Systems
             TicksNextRun += System.IntervalTicks;
             TicksEarlyExecution = TicksNextRun + (-System.EarlyExecutionTicks);
         }
+
         /// <summary>
         /// Вычислять фильтр системы заданное время
         /// </summary>
@@ -98,6 +100,7 @@ namespace ECSCore.Systems
             SystemStatistic.AddFilterCalculateStatistic(_stopwatch.ElapsedTicks); //Добавить в статистику
             _stopwatch.Stop();
         }
+
         /// <summary>
         /// Действие системы
         /// </summary>

@@ -1,5 +1,4 @@
 ﻿using ECSCore.Attributes;
-using ECSCore.Interfaces;
 using ECSCore.Managers;
 using ECSCore.Exceptions;
 using System;
@@ -26,6 +25,7 @@ namespace ECSCore.BaseObjects
         /// Размерность: sec
         /// </summary>
         public float DeltaTime { get; set; }
+
         /// <summary>
         /// Интерфейс взаимодействия с ECS из систем
         /// </summary>
@@ -114,6 +114,7 @@ namespace ECSCore.BaseObjects
             FilterBase.ECSSystem = eCS; //Ввод зависимости
             FilterBase.AddInterestedSystem(this); //Добавить в фильтр заинтересованную систему
         }
+
         /// <summary>
         /// Предварительная инициализация системы (Подтяжка аттребутов)
         /// </summary>
@@ -209,6 +210,7 @@ namespace ECSCore.BaseObjects
                 IsUseInjectThread = true;
             }
         }
+
         /// <summary>
         /// Получить количество элементов в фильтре
         /// </summary>
@@ -249,6 +251,7 @@ namespace ECSCore.BaseObjects
             } //Если система должна выполняться параллельно
             Aсtion(systemActionType: SystemActionType.RunInThisThread); //Выполить в текущем потоке
         }
+
         /// <summary>
         /// Выполнить AсtionAdd системы
         /// </summary>
@@ -265,6 +268,7 @@ namespace ECSCore.BaseObjects
             } //Если выполнение должно быть синхронно в введенном потоке
             AсtionAdd(groupComponents, entity);
         }
+
         /// <summary>
         /// Выполнить AсtionRemove системы
         /// </summary>
@@ -285,10 +289,12 @@ namespace ECSCore.BaseObjects
         /// Инициализация системы, необходима для получения ссылки на фильтр
         /// </summary>
         internal abstract void GetFilter(ManagerFilters managerFilters);
+
         /// <summary>
         /// Подготовка к выполнению, вызывается перед каждым выполнением
         /// </summary>
         internal abstract void CalculateFilter(long limitTimeTicks = 0);
+
         /// <summary>
         /// Реализация AсtionAdd системы
         /// </summary>
@@ -297,10 +303,12 @@ namespace ECSCore.BaseObjects
         /// <param name="groupComponents"> группа компонентов </param>
         internal abstract void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
             where TGroupComponents : IGroupComponents;
+
         /// <summary>
         /// Проход по коллекции и вызов Action для всех item
         /// </summary>
         internal abstract void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue);
+
         /// <summary>
         /// Метод обработки удаленной группы компонент из фильтра системы
         /// </summary>

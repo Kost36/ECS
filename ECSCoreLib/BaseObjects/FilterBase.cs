@@ -1,15 +1,10 @@
-﻿using ECSCore.Filters;
-using ECSCore.Filters.Jobs;
-using ECSCore.Interfaces;
+﻿using ECSCore.Filters.Jobs;
 using ECSCore.Interfaces.Components;
 using ECSCore.Interfaces.ECS;
 using ECSCore.Interfaces.Filters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.BaseObjects
 {
@@ -23,10 +18,12 @@ namespace ECSCore.BaseObjects
         /// Ссылка на ECSCore
         /// </summary>
         public IECSSystem ECSSystem { get; set; }
+
         /// <summary>
         /// Заинтересованные в фильтре системы
         /// </summary>
         public List<SystemBase> InterestedSystems { get; set; } = new List<SystemBase>();
+
         /// <summary>
         /// Добавить в фильтр заинтересеванную в нем систему
         /// </summary>
@@ -49,10 +46,12 @@ namespace ECSCore.BaseObjects
         /// Типы имеющихся компонент
         /// </summary>
         public abstract List<Type> TypesExistComponents { get; set; }
+
         /// <summary>
         /// Типы исключающихся компонент
         /// </summary>
         public abstract List<Type> TypesWithoutComponents { get; set; }
+
         /// <summary>
         /// Инициализация фильтра
         /// </summary>
@@ -86,10 +85,12 @@ namespace ECSCore.BaseObjects
 
         #region IFilterAction Реализация
         private readonly Stopwatch _stopwatch = new Stopwatch();
+
         /// <summary>
         /// Список заданий для фильтра
         /// </summary>
         public Queue<IJobToFilter> JobToFilters { get; set; } = new Queue<IJobToFilter>();
+
         /// <summary>
         /// Вычислить все входные задания
         /// </summary>
@@ -104,6 +105,7 @@ namespace ECSCore.BaseObjects
                 } //Пока в коллекции что то есть
             }
         } //TODO Lock только на получение объекта из очереди. Add Performance
+
         /// <summary>
         /// Вычислять входные задания, некоторое время
         /// </summary>
@@ -124,6 +126,7 @@ namespace ECSCore.BaseObjects
             }
             _stopwatch.Stop();
         } //TODO Lock только на получение объекта из очереди. Add Performance
+
         /// <summary>
         /// Добавить, если сущьность подходит под фильтр
         /// </summary>
@@ -143,6 +146,7 @@ namespace ECSCore.BaseObjects
                 }
             } //Если фильтр интересуется данным компонентом
         }
+
         /// <summary>
         /// Удалить, если есть в фильтре
         /// </summary>
@@ -161,6 +165,7 @@ namespace ECSCore.BaseObjects
                 }
             } //Если фильтр интересуется данным компонентом
         }
+
         /// <summary>
         /// Удалить из фильтра сущьность
         /// </summary>

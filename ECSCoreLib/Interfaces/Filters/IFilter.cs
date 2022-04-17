@@ -15,10 +15,12 @@ namespace ECSCore.Interfaces.Filters
         /// Ссылка на ECSCore
         /// </summary>
         IECSSystem ECSSystem { get; set; }
+
         /// <summary>
         /// Заинтересованные в фильтре системы
         /// </summary>
         List<SystemBase> InterestedSystems { get; set; }
+
         /// <summary>
         /// Добавить в фильтр заинтересеванную в нем систему
         /// </summary>
@@ -39,6 +41,7 @@ namespace ECSCore.Interfaces.Filters
         /// Типы исключающихся компонент
         /// </summary>
         List<Type> TypesWithoutComponents { get; set; }
+
         /// <summary>
         /// Инициализация фильтра
         /// </summary>
@@ -57,6 +60,7 @@ namespace ECSCore.Interfaces.Filters
         /// <param name="typesWithoutComponents"> Типы компонент, которых недолжно быть на сущьности </param>
         /// <returns></returns>
         bool CheckFilter(List<Type> typesExistComponents, List<Type> typesWithoutComponents);
+
         /// <summary>
         /// Проверяет группу на необходимость обрабатывать компонент
         /// </summary>
@@ -81,11 +85,14 @@ namespace ECSCore.Interfaces.Filters
     internal interface IFilterAction
     {
         void СalculateJob();
+
         void СalculateJob(long limitTimeTicks);
+
         /// <summary>
         /// Список заданий для фильтра
         /// </summary>
         Queue<IJobToFilter> JobToFilters { get; set; }
+
         /// <summary>
         /// Добавить, если сущьность подходит под фильтр
         /// </summary>

@@ -5,7 +5,7 @@ using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Components;
 using GameLib.Components.Move;
-using GameLib.LibHelp;
+using MathLib;
 
 // Системы механники перемещения 
 namespace GameLib.Systems.Move

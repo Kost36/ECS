@@ -23,6 +23,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public float Z;
     }
+
     /// <summary>
     /// Компонент заданной позиции.
     /// Позиция, в которую нужно переместиться
@@ -43,6 +44,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public float Z;
     }
+
     /// <summary>
     /// Компонент энерги
     /// </summary>
@@ -58,6 +60,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public float EnargyFact;
     }
+
     /// <summary>
     /// Компонент скорости
     /// (m/sec)
@@ -91,6 +94,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public float SpeedMax;
     }
+
     /// <summary>
     /// Компонент заданной скорости.
     /// (m/sec)
@@ -123,6 +127,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public bool Update;
     }
+
     /// <summary>
     /// Компонент ускорения
     /// (dm/sec)
@@ -145,6 +150,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public bool SpeedOk;
     }
+
     /// <summary>
     /// Компонент регенерации энергии
     /// Value/сек
@@ -157,6 +163,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public float EnargyReGen = 15;
     }
+
     /// <summary>
     /// Компонент вектора заданного перемещения
     /// </summary>
@@ -196,6 +203,7 @@ namespace ECSCoreTests.Components
         /// </summary>
         public float NormZ;
     }
+
     /// <summary>
     /// Компонент путь торможения
     /// </summary>

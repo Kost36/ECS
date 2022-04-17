@@ -5,6 +5,7 @@ using ECSCoreTests.Components;
 using ECSCoreTests.Entitys;
 using ECSCoreTests.Systems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -137,6 +138,8 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         [TestMethod()]
         public void Test_03_MechanicMove()
         {
+            int timeOutMin = 60;
+            DateTime dataTimeEnd = DateTime.Now.AddMinutes(timeOutMin);  
             IECS.Despose();
             Thread.Sleep(500);
             Test_00_InitializationIECS();
@@ -144,6 +147,11 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             while (i < 10)
             {
                 Test_02_MechanicMove();
+                i++;
+                if (DateTime.Now > dataTimeEnd)
+                {
+                    Assert.Fail($"TimeOut on [{i}] iteration");
+                }
             }
         }
     }

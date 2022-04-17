@@ -1,9 +1,5 @@
 ﻿using ECSCore.BaseObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameLib.Components
 {
@@ -26,6 +22,7 @@ namespace GameLib.Components
         /// </summary>
         public float Z;
     }
+
     /// <summary>
     /// Компонент направления (Нормализованный)
     /// </summary>
@@ -61,6 +58,7 @@ namespace GameLib.Components
         /// </summary>
         public float Fact;
     }
+
     /// <summary>
     /// Компонент регенерации энергии
     /// Value/сек
@@ -89,6 +87,7 @@ namespace GameLib.Components
         /// </summary>
         public float Max;
     }
+
     /// <summary>
     /// Компонент ремонта / исцеления
     /// </summary>
@@ -120,6 +119,7 @@ namespace GameLib.Components
         /// </summary>
         public float Max;
     }
+
     /// <summary>
     /// Компонент регенерации щита
     /// Value/сек
@@ -153,6 +153,7 @@ namespace GameLib.Components
         /// </summary>
         public float Use;
     }
+
     /// <summary>
     /// Компонент веса
     /// Кг

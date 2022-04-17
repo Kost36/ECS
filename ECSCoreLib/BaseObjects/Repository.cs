@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.BaseObjects
 {
@@ -58,6 +56,7 @@ namespace ECSCore.BaseObjects
             TypeFileSave typeFileSave = _typeFileSave;
             return Directory.GetFiles(_pathFolder).ToList();
         }
+
         /// <summary>
         /// Сохранить состояние мира
         /// </summary>
@@ -66,6 +65,7 @@ namespace ECSCore.BaseObjects
         {
 
         }
+
         /// <summary>
         /// Загрузить состояние мира
         /// </summary>

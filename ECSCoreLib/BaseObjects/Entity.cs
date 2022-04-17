@@ -1,5 +1,4 @@
 ﻿using ECSCore.Exceptions;
-using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
 using ECSCore.Interfaces.Entitys;
 using System;
@@ -17,6 +16,12 @@ namespace ECSCore.BaseObjects
         /// Идентификатор сущьности
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Для отслеживания в тестах
+        /// </summary>
+        public List<IComponent> Components { get; } = new List<IComponent>();
+
         /// <summary>
         /// Добавить компонент
         /// </summary>
@@ -27,6 +32,7 @@ namespace ECSCore.BaseObjects
             component.Id = this.Id;
             ECS.Instance.AddComponent(component, this);
         }
+
         /// <summary>
         /// Получить компонент (Если есть)
         /// </summary>
@@ -38,6 +44,7 @@ namespace ECSCore.BaseObjects
         {
             return GetComponent(out component);
         }
+
         /// <summary>
         /// Проверить наличие компонента у сущьности
         /// </summary>
@@ -47,6 +54,7 @@ namespace ECSCore.BaseObjects
         {
             return CheckExistComponent(typeComponent);
         }
+
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
@@ -57,6 +65,7 @@ namespace ECSCore.BaseObjects
         {
             ECS.Instance.RemoveComponent<T>(this.Id, this);
         }
+
         /// <summary>
         /// Уничтожить сущьность
         /// </summary>
@@ -64,10 +73,6 @@ namespace ECSCore.BaseObjects
         {
             ECS.Instance.RemoveEntity(this.Id);
         }
-        /// <summary>
-        /// Для отслеживания в тестах
-        /// </summary>
-        public List<IComponent> Components { get; } = new List<IComponent>();
 
         /// <summary>
         /// Добавить компонент в коллекцию сущьности
@@ -75,7 +80,7 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"> Generic - тип компонента </typeparam>
         /// <param name="component"> Компонент </param>
         internal void AddComponent<T>(T component)
-            where T:IComponent
+            where T : IComponent
         {
             //if (GetComponent(out T componentInEntity))
             if (GetComponent(out T _))
@@ -89,21 +94,7 @@ namespace ECSCore.BaseObjects
                 Components.Add(component);
             }
         }
-        /// <summary>
-        /// Удалить компонент из коллекции сущьности
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        internal void RemoveComponent<T>()
-            where T : IComponent
-        {
-            if (GetComponent(out T Component))
-            {
-                lock (Components)
-                {
-                    Components.Remove(Component);
-                }
-            } //Если есть в коллекции
-        }
+
         /// <summary>
         /// Получить компонент из своего списка
         /// </summary>
@@ -127,6 +118,23 @@ namespace ECSCore.BaseObjects
                 return false;
             }
         }
+
+        /// <summary>
+        /// Удалить компонент из коллекции сущьности
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        internal void RemoveComponent<T>()
+            where T : IComponent
+        {
+            if (GetComponent(out T Component))
+            {
+                lock (Components)
+                {
+                    Components.Remove(Component);
+                }
+            } //Если есть в коллекции
+        }
+
         /// <summary>
         /// Проверить наличие компонента у сущьности
         /// </summary>

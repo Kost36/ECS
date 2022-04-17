@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Attributes
 {
@@ -36,6 +32,7 @@ namespace ECSCore.Attributes
                 Priority = 50;
             }
         }
+
         /// <summary>
         /// 50 - min priority => 1 - max priority;
         /// 1 - Максимальный приоритет;

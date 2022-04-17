@@ -1,11 +1,7 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.GroupComponents;
 using ECSCore.Interfaces.GroupComponents;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ECSCore.Filters
 {
@@ -45,10 +41,12 @@ namespace ECSCore.Filters
         /// Типы имеющихся компонент
         /// </summary>
         public override List<Type> TypesExistComponents { get; set; }
+
         /// <summary>
         /// Типы исключающихся компонент
         /// </summary>
         public override List<Type> TypesWithoutComponents { get; set; }
+
         /// <summary>
         /// Инициализация фильтра
         /// </summary>
@@ -77,6 +75,7 @@ namespace ECSCore.Filters
             } //Проходимся по всем исключающим компонентам
             return false; 
         }
+
         /// <summary>
         /// Удалить группу компонент из коллекции фильтра
         /// </summary>
@@ -99,6 +98,7 @@ namespace ECSCore.Filters
                 } //Если группа компонент есть в коллекции фильтра
             }
         }
+
         public override void TryAdd(int entityId)
         {
             lock (Collection)

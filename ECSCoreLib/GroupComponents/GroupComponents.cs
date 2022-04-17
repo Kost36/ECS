@@ -1,13 +1,8 @@
 ﻿using ECSCore.BaseObjects;
-using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
 using ECSCore.Interfaces.ECS;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ECSCore.GroupComponents
 {
@@ -22,6 +17,7 @@ namespace ECSCore.GroupComponents
         /// Включающий компонент №1
         /// </summary>
         internal ExistComponent_1 ExistComponent1;
+
         /// <summary>
         /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
         /// </summary>
@@ -73,6 +69,7 @@ namespace ECSCore.GroupComponents
             return typesComponents;
         }
     }
+
     /// <summary>
     /// Группа компонентов, имеющая 2 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
     /// </summary>
@@ -91,6 +88,7 @@ namespace ECSCore.GroupComponents
         /// Включающий компонент №2
         /// </summary>
         internal ExistComponent_2 ExistComponent2;
+
         /// <summary>
         /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
         /// </summary>
@@ -151,6 +149,7 @@ namespace ECSCore.GroupComponents
             return typesComponents;
         }
     }
+
     /// <summary>
     /// Группа компонентов, имеющая 3 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
     /// </summary>
@@ -174,6 +173,7 @@ namespace ECSCore.GroupComponents
         /// Включающий компонент №3
         /// </summary>
         internal ExistComponent_3 ExistComponent3;
+
         /// <summary>
         /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
         /// </summary>
@@ -243,6 +243,7 @@ namespace ECSCore.GroupComponents
             return typesComponents;
         }
     }
+
     /// <summary>
     /// Группа компонентов, имеющая 4 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
     /// </summary>
@@ -272,6 +273,7 @@ namespace ECSCore.GroupComponents
         /// Включающий компонент №4
         /// </summary>
         internal ExistComponent_4 ExistComponent4;
+
         /// <summary>
         /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
         /// </summary>
@@ -350,6 +352,7 @@ namespace ECSCore.GroupComponents
             return typesComponents;
         }
     }
+
     /// <summary>
     /// Группа компонентов, имеющая 5 включающих компонента (Исключающие компоненты задаются через атрибут к системе)
     /// </summary>
@@ -365,6 +368,7 @@ namespace ECSCore.GroupComponents
         where ExistComponent_4 : IComponent
         where ExistComponent_5 : IComponent
     {
+
         /// <summary>
         /// Включающий компонент №1
         /// </summary>
@@ -385,6 +389,7 @@ namespace ECSCore.GroupComponents
         /// Включающий компонент №5
         /// </summary>
         internal ExistComponent_5 ExistComponent5;
+
         /// <summary>
         /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
         /// </summary>

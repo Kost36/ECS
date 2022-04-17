@@ -1,10 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 using GameLib.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameLib.Components.Other
 {
@@ -13,16 +9,19 @@ namespace GameLib.Components.Other
     /// </summary>
     [Serializable]
     public class ShipAi : ComponentBase { }
+
     /// <summary>
     /// Компонент интеллекта корабля (Торговли)
     /// </summary>
     [Serializable]
     public class ShipAiTrade : ComponentBase { }
+
     /// <summary>
     /// Компонент интеллекта корабля (Боевой)
     /// </summary>
     [Serializable]
     public class ShipAiWar : ComponentBase { }
+
     /// <summary>
     /// Компонент состояния корабля
     /// </summary>

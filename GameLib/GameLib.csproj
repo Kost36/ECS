@@ -62,21 +62,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\WorkFlow\Prodaction.cs" />
+    <Compile Include="WorkFlow\Prodaction.cs" />
     <Compile Include="Components\Components.cs" />
-    <Compile Include="Components\Move\Components.cs" />
-    <Compile Include="Components\Other.cs" />
+    <Compile Include="Mechanics\Move\Components.cs" />
+    <Compile Include="WorkFlow\Other.cs" />
     <Compile Include="GetAssembly.cs" />
     <Compile Include="Ship\ShipModules.cs" />
     <Compile Include="Ship\ShipBodys.cs" />
     <Compile Include="Entitys\Entitys.cs" />
-    <Compile Include="Components\Production\Production.cs" />
-    <Compile Include="Components\Products\Products.cs" />
-    <Compile Include="Old\Components\Tasks\Tasks.cs" />
+    <Compile Include="Mechanics\Production\Production.cs" />
+    <Compile Include="WorkFlow\Products\Products.cs" />
+    <Compile Include="WorkFlow\Old\Components\Tasks\Tasks.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Systems\Move\Systems.cs" />
-    <Compile Include="Systems\Systems.cs" />
+    <Compile Include="Mechanics\Move\Systems.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj">
@@ -89,9 +88,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components\Trade\" />
-    <Folder Include="Systems\Production\" />
-    <Folder Include="Systems\Trade\" />
+    <Folder Include="Mechanics\AI\" />
+    <Folder Include="Mechanics\Trade\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

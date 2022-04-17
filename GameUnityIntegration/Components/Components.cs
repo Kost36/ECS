@@ -11,19 +11,19 @@ namespace Game.Components
     /// <summary>
     /// Компонент интеллекта корабля
     /// </summary>
-    public class ShipAi : ComponentBase { }
+    public class ShipAi : Component { }
     /// <summary>
     /// Компонент интеллекта корабля (Торговли)
     /// </summary>
-    public class ShipAiTrade : ComponentBase { }
+    public class ShipAiTrade : Component { }
     /// <summary>
     /// Компонент интеллекта корабля (Боевой)
     /// </summary>
-    public class ShipAiWar : ComponentBase { }
+    public class ShipAiWar : Component { }
     /// <summary>
     /// Компонент состояния корабля
     /// </summary>
-    public class ShipState : ComponentBase
+    public class ShipState : Component
     {
         /// <summary>
         /// Состояние корабля
@@ -34,7 +34,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент позиции
     /// </summary>
-    public class Pozition : ComponentBase
+    public class Pozition : Component
     {
         /// <summary>
         /// Позиция X
@@ -53,7 +53,7 @@ namespace Game.Components
     /// Компонент заданной позиции.
     /// Позиция, в которую нужно переместиться
     /// </summary>
-    public class PozitionSV : ComponentBase
+    public class PozitionSV : Component
     {
         /// <summary>
         /// Позиция X
@@ -71,7 +71,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент направления (Нормализованный)
     /// </summary>
-    public class Direction : ComponentBase
+    public class Direction : Component
     {
         /// <summary>
         /// Направление X (Номрализованное значение)
@@ -90,7 +90,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент энерги
     /// </summary>
-    public class Enargy : ComponentBase
+    public class Enargy : Component
     {
         /// <summary>
         /// Максимальный запас энергии
@@ -104,7 +104,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент прочности / здоровья
     /// </summary>
-    public class Health : ComponentBase
+    public class Health : Component
     {
         /// <summary>
         /// Максимальный запас прочности / здоровья
@@ -118,7 +118,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент щита
     /// </summary>
-    public class Shild : ComponentBase
+    public class Shild : Component
     {
         /// <summary>
         /// Максимальный запас щита
@@ -133,7 +133,7 @@ namespace Game.Components
     /// Компонент трюма (вместимости в м³) 
     /// м³
     /// </summary>
-    public class Hold : ComponentBase
+    public class Hold : Component
     {
         /// <summary>
         /// Максимальная вместимость в м³
@@ -148,7 +148,7 @@ namespace Game.Components
     /// Компонент веса
     /// Кг
     /// </summary>
-    public class Weight : ComponentBase
+    public class Weight : Component
     {
         /// <summary>
         /// Вес корабля (Кг)
@@ -160,7 +160,7 @@ namespace Game.Components
     /// Компонент скорости
     /// (m/sec)
     /// </summary>
-    public class Speed : ComponentBase
+    public class Speed : Component
     {
         /// <summary>
         /// Cкорости по оси X
@@ -192,7 +192,7 @@ namespace Game.Components
     /// Компонент заданной скорости.
     /// (m/sec)
     /// </summary>
-    public class SpeedSV : ComponentBase
+    public class SpeedSV : Component
     {
         /// <summary>
         /// Заданная скорость по оси X
@@ -219,7 +219,7 @@ namespace Game.Components
     /// Компонент скорости вращения
     /// (value/sec)
     /// </summary>
-    public class SpeedRotation : ComponentBase
+    public class SpeedRotation : Component
     {
         /// <summary>
         /// Cкорость вращения по оси X
@@ -241,7 +241,7 @@ namespace Game.Components
     /// Компонент ускорения
     /// (dm/sec)
     /// </summary>
-    public class Acceleration : ComponentBase
+    public class Acceleration : Component
     {
         /// <summary>
         /// Ускорение 
@@ -258,7 +258,7 @@ namespace Game.Components
     /// Компонент торможения
     /// (dm/sec)
     /// </summary>
-    public class Deceleration : ComponentBase
+    public class Deceleration : Component
     {
         /// <summary>
         /// Торможение 
@@ -275,7 +275,7 @@ namespace Game.Components
     /// Компонент регенерации энергии
     /// Value/сек
     /// </summary>
-    public class EnargyReGeneration : ComponentBase
+    public class EnargyReGeneration : Component
     {
         /// <summary>
         /// Регенерации энергии в секунду
@@ -286,7 +286,7 @@ namespace Game.Components
     /// Компонент регенерации щита
     /// Value/сек
     /// </summary>
-    public class ShildReGeneration : ComponentBase
+    public class ShildReGeneration : Component
     {
         /// <summary>
         /// Регенерации щита в секунду
@@ -300,7 +300,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент ремонта / исцеления
     /// </summary>
-    public class HealthReGeneration : ComponentBase
+    public class HealthReGeneration : Component
     {
         /// <summary>
         /// Ремонт / исцеление в секунду
@@ -315,7 +315,7 @@ namespace Game.Components
     /// <summary>
     /// Компонент вектора заданного перемещения
     /// </summary>
-    public class Way : ComponentBase
+    public class Way : Component
     {
         /// <summary>
         /// Длинна пути в метрах

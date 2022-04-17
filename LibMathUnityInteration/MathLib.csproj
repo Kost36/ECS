@@ -7,8 +7,8 @@
     <ProjectGuid>{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LibMathUnityInteration</RootNamespace>
-    <AssemblyName>LibMathUnityInteration</AssemblyName>
+    <RootNamespace>MathLib</RootNamespace>
+    <AssemblyName>MathLib</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

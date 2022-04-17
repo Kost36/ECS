@@ -70,7 +70,6 @@
     <Compile Include="Ship\ShipModules.cs" />
     <Compile Include="Ship\ShipBodys.cs" />
     <Compile Include="Entitys\Entitys.cs" />
-    <Compile Include="LibHelp\Vector.cs" />
     <Compile Include="Components\Production\Production.cs" />
     <Compile Include="Components\Products\Products.cs" />
     <Compile Include="Old\Components\Tasks\Tasks.cs" />
@@ -83,6 +82,10 @@
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj">
       <Project>{2F63CFF3-255A-4F91-BB44-CA7018FA1CAD}</Project>
       <Name>ECSCoreLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LibMathUnityInteration\MathLib.csproj">
+      <Project>{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}</Project>
+      <Name>MathLib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

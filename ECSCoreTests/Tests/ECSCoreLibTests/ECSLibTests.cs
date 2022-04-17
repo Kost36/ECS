@@ -9,6 +9,7 @@ using ECSCore;
 using ECSCoreTests.Components;
 using ECSCoreTests.Systems;
 using ECSCore.Exceptions;
+using ECSCore.Interfaces;
 
 namespace ECSCoreLibTests.Tests.ECSCoreLibTests
 {
@@ -143,9 +144,80 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         }
 
         [TestMethod()]
-        public void Test_10_FillingFilter()
+        public void Test_10_ChildEntity()
         {
-            IECS.Despose();
+            IECS?.Despose();
+            Test_00_InitializationIECS();
+
+            int startCountEntitys = IECSDebug.ManagerEntitys.CountEntitys;
+
+            Entity ship = IECS.AddEntity(new Ship());
+            Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 1);
+            Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
+            Assert.IsTrue(ship.ParentEntity == null);
+            Assert.IsTrue(ship.ChildEntitys.Count == 0);
+
+            Entity shipChild = (Entity)ship.AddChild(new Ship());
+            Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 2);
+            Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
+            Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
+            Assert.IsTrue(ship.ParentEntity == null);
+            Assert.IsTrue(ship.ChildEntitys.Count == 1);
+            Assert.IsTrue(ship.GetChild(shipChild.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ParentEntity != null);
+            Assert.IsTrue(shipChild.ParentEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
+
+            Entity shipChild1 = (Entity)ship.AddChild(new Ship());
+            Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 3);
+            Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
+            Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
+            Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
+            Assert.IsTrue(ship.ParentEntity == null);
+            Assert.IsTrue(ship.ChildEntitys.Count == 2);
+            Assert.IsTrue(ship.GetChild(shipChild.Id, out IEntity _));
+            Assert.IsTrue(ship.GetChild(shipChild1.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ParentEntity != null);
+            Assert.IsTrue(shipChild.ParentEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
+            Assert.IsTrue(shipChild1.ParentEntity != null);
+            Assert.IsTrue(shipChild1.ParentEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
+
+            Assert.IsTrue(ship.RemoveChild(shipChild1.Id, out IEntity entity));
+            Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 3);
+            Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
+            Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
+            Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
+            Assert.IsTrue(ship.ParentEntity == null);
+            Assert.IsTrue(ship.ChildEntitys.Count == 1);
+            Assert.IsTrue(ship.GetChild(shipChild.Id, out IEntity _));
+            Assert.IsFalse(ship.GetChild(shipChild1.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ParentEntity != null);
+            Assert.IsTrue(shipChild.ParentEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
+            Assert.IsTrue(shipChild1.ParentEntity == null);
+            Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
+
+            ship.Death();
+            Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 2);
+            Assert.IsFalse(IECS.GetEntity(ship.Id, out _));
+            Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
+            Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
+            Assert.IsTrue(ship.ParentEntity == null);
+            Assert.IsTrue(ship.ChildEntitys.Count == 0);
+            Assert.IsFalse(ship.GetChild(shipChild.Id, out IEntity _));
+            Assert.IsFalse(ship.GetChild(shipChild1.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ParentEntity == null);
+            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
+            Assert.IsTrue(shipChild1.ParentEntity == null);
+            Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
+        }
+
+        [TestMethod()]
+        public void Test_90_FillingFilter()
+        {
+            IECS?.Despose();
             Thread.Sleep(500);
             Test_00_InitializationIECS();
 
@@ -212,12 +284,12 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         }
 
         //[TestMethod()]
-        public void Test_11_SearchBug()
+        public void Test_91_SearchBug()
         {
             int i = 0;
             while (true)
             {
-                Test_10_FillingFilter();
+                Test_90_FillingFilter();
                 i++;
                 if (i > 100)
                 {

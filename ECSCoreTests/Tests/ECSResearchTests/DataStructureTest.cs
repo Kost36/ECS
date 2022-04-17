@@ -4,11 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ECSCoreTests
+namespace ECSCoreLibTests.Tests.ECSResearchTests
 {
     [TestClass()]
     public class TestPerformanceDotNet
@@ -60,18 +59,18 @@ namespace ECSCoreTests
             List<SpeedStruct> list2 = new List<SpeedStruct>(count); //11.5 мб
 
             //Заполнили
-            for (int i=0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 list1.Add(new PozitionStruct());
-                list2.Add(new SpeedStruct(1,1,1));
+                list2.Add(new SpeedStruct(1, 1, 1));
             }
 
             //Тест
             Stopwatch stopwatch = new Stopwatch();
-            float cnt=1;
+            float cnt = 1;
             float cntMax = 100;
-            float sum=0;
-            float aver=0;
+            float sum = 0;
+            float aver = 0;
             float max = 0;
             float min = 100000;
             while (cnt <= cntMax)
@@ -88,7 +87,7 @@ namespace ECSCoreTests
                     list1[i] = new PozitionStruct() { X = x, Y = y, Z = z };
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -137,7 +136,7 @@ namespace ECSCoreTests
                     list1[i] = new PozitionStruct() { X = x, Y = y, Z = z };
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -184,7 +183,7 @@ namespace ECSCoreTests
                     list1[i].PozitionStruct.Z = list1[i].PozitionStruct.Z + list1[i].SpeedStruct.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -246,7 +245,7 @@ namespace ECSCoreTests
                     list1[i].PozitionStruct.Z = list1[i].PozitionStruct.Z + list1[i].SpeedStruct.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -291,11 +290,11 @@ namespace ECSCoreTests
                 for (int i = 0; i < list1.Count; i++)
                 {
                     list1[i].X = list1[i].X + list2[i].DX;
-                    list1[i].Y= list1[i].Y + list2[i].DY;
+                    list1[i].Y = list1[i].Y + list2[i].DY;
                     list1[i].Z = list1[i].Z + list2[i].DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -343,7 +342,7 @@ namespace ECSCoreTests
                     list1[i].Z = list1[i].Z + list2[i].DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -389,7 +388,7 @@ namespace ECSCoreTests
                     list1[i].PozitionTest.Z = list1[i].PozitionTest.Z + list1[i].SpeedTest.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -455,7 +454,7 @@ namespace ECSCoreTests
                     list1[i].PozitionTest.Z = list1[i].PozitionTest.Z + list1[i].SpeedTest.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -509,7 +508,7 @@ namespace ECSCoreTests
                     list1[i].PozitionTest.Z = list1[i].PozitionTest.Z + list1[i].SpeedTest.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -552,7 +551,7 @@ namespace ECSCoreTests
                     groupClass.PozitionTest.Z = groupClass.PozitionTest.Z + groupClass.SpeedTest.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -592,7 +591,7 @@ namespace ECSCoreTests
                 list8.Add(i, new GroupClass() { PozitionTest = new PozitionTest(), SpeedTest = new SpeedTest() });
                 list9.Add(i, new GroupClass() { PozitionTest = new PozitionTest(), SpeedTest = new SpeedTest() });
             }
-            
+
             //Тест
             Stopwatch stopwatch = new Stopwatch();
             float cnt = 1;
@@ -614,7 +613,7 @@ namespace ECSCoreTests
                     groupClass.PozitionTest.Z = groupClass.PozitionTest.Z + groupClass.SpeedTest.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -697,7 +696,7 @@ namespace ECSCoreTests
                     groupClass.PozitionTest.Z = groupClass.PozitionTest.Z + groupClass.SpeedTest.DZ;
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -742,7 +741,7 @@ namespace ECSCoreTests
                     actionClear.Action(groupClass.PozitionTest, groupClass.SpeedTest);
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -784,7 +783,7 @@ namespace ECSCoreTests
                     action.Action(groupClass.PozitionTest, groupClass.SpeedTest);
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -826,7 +825,7 @@ namespace ECSCoreTests
                     action.Action(groupClass.PozitionTest, groupClass.SpeedTest);
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -868,7 +867,7 @@ namespace ECSCoreTests
                     action.Action(groupClass.PozitionTest, groupClass.SpeedTest);
                 }
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -914,14 +913,14 @@ namespace ECSCoreTests
                     action.Action(groupClass.PozitionTest, groupClass.SpeedTest);
                 }
                 stopwatch.Stop();
-                time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
                 sum = sum + time;
                 aver = sum / cnt;
                 Debug.WriteLine($"Поток: {threadNumb} Обработка: {count} шт. произведена за {time} мс");
                 Debug.WriteLine($"Среднее: {aver} Максимальное: {max} Минимальное: {min}");
-                
+
                 Thread.Sleep(0);
                 cnt++;
             }
@@ -958,7 +957,7 @@ namespace ECSCoreTests
             {
                 IAction action = new ActionFromActionAbstractFromIAction();
                 stopwatch.Restart();
-                int maxCountOnThread = (int)Math.Ceiling((float)list1.Count / (float)countThreads); //Считаем количество объектов на один поток
+                int maxCountOnThread = (int)Math.Ceiling(list1.Count / (float)countThreads); //Считаем количество объектов на один поток
                 int i = 0; //Количество элементов для пропуска
                 while (true)
                 {
@@ -971,7 +970,7 @@ namespace ECSCoreTests
                     i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
                 } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -984,7 +983,7 @@ namespace ECSCoreTests
 
             void RunPart(List<KeyValuePair<int, GroupClass>> items, IAction action)
             {
-                for(int i=0; i<items.Count; i++)
+                for (int i = 0; i < items.Count; i++)
                 {
                     action.Action(items[i].Value.PozitionTest, items[i].Value.SpeedTest);
                 }
@@ -1018,7 +1017,7 @@ namespace ECSCoreTests
                 stopwatch.Restart();
                 Parallel.ForEach(list1, item => action.Action(item.Value.PozitionTest, item.Value.SpeedTest));
                 stopwatch.Stop();
-                float time = ((float)stopwatch.ElapsedTicks) / ((float)TimeSpan.TicksPerMillisecond);
+                float time = stopwatch.ElapsedTicks / (float)TimeSpan.TicksPerMillisecond;
                 Debug.WriteLine($"Обработка: {count} шт. произведена за {time} мс");
                 if (time > max) { max = time; }
                 if (time < min) { min = time; }
@@ -1038,7 +1037,7 @@ namespace ECSCoreTests
             thread2.Start();
             while (true)
             {
-                if(thread1.ThreadState == System.Threading.ThreadState.Stopped)
+                if (thread1.ThreadState == System.Threading.ThreadState.Stopped)
                 {
                     if (thread2.ThreadState == System.Threading.ThreadState.Stopped)
                     {
@@ -1051,8 +1050,8 @@ namespace ECSCoreTests
         [TestMethod()]
         public void Test_20_Test_ParallelSystems_20Thread()
         {
-            List<Thread> threads = new List<Thread>(); 
-            for(int i=0; i<20; i++)
+            List<Thread> threads = new List<Thread>();
+            for (int i = 0; i < 20; i++)
             {
                 threads.Add(new Thread(Test_16_Test_CallAbstract_Interface));
             }

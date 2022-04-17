@@ -5,15 +5,10 @@ using ECSCoreTests.Components;
 using ECSCoreTests.Entitys;
 using ECSCoreTests.Systems;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace ECSCoreTests
+namespace ECSCoreLibTests.Tests.ECSCoreLibTests
 {
     [TestClass()]
     public class ECS_02Tests_Performance
@@ -55,7 +50,7 @@ namespace ECSCoreTests
                     Debug.WriteLine(IECSDebug.GetInfo(true));
                     if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
                     {
-                        if(controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
+                        if (controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
                         {
                             break;
                         }
@@ -71,7 +66,7 @@ namespace ECSCoreTests
             IECSDebug.ManagerSystems.ClearStatisticSystems();
 
             int k = 0;
-            while (k<10)
+            while (k < 10)
             {
                 Thread.Sleep(1000);
                 Debug.WriteLine(IECSDebug.GetInfo(true));
@@ -146,7 +141,7 @@ namespace ECSCoreTests
             Thread.Sleep(500);
             Test_00_InitializationIECS();
             int i = 0;
-            while (i<10)
+            while (i < 10)
             {
                 Test_02_MechanicMove();
             }

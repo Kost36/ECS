@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
-using ECSCore.Interfaces;
 using ECSCore.BaseObjects;
 using ECSCore.Interfaces.ECS;
 using ECSCoreTests.Entitys;
@@ -15,7 +10,7 @@ using ECSCoreTests.Components;
 using ECSCoreTests.Systems;
 using ECSCore.Exceptions;
 
-namespace ECSCoreTests
+namespace ECSCoreLibTests.Tests.ECSCoreLibTests
 {
     [TestClass()]
     public class ECS_01Tests_Work
@@ -53,7 +48,7 @@ namespace ECSCoreTests
         {
             Assert.IsTrue(IECS.GetEntity(_entity.Id, out Entity ship));
             Assert.IsNotNull(ship);
-            Assert.IsTrue(ship.Id==1);
+            Assert.IsTrue(ship.Id == 1);
         }
 
         [TestMethod()]
@@ -73,7 +68,7 @@ namespace ECSCoreTests
             entity.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
             Assert.IsTrue(entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
-            Assert.ThrowsException<ExceptionEntityHaveComponent>(()=> entity.Add(new Pozition() { X = 1, Y = 1, Z = 1 }));
+            Assert.ThrowsException<ExceptionEntityHaveComponent>(() => entity.Add(new Pozition() { X = 1, Y = 1, Z = 1 }));
             Assert.IsTrue(entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
             IECS.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10, Id = 4 });
@@ -101,7 +96,7 @@ namespace ECSCoreTests
             _entity.Remove<Pozition>();
             Assert.IsTrue(_entity.Components.Count == 0);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
-            IECS.RemoveComponent<Pozition>(4); 
+            IECS.RemoveComponent<Pozition>(4);
             Assert.IsTrue(IECS.GetEntity(4, out Entity Entity));
             Assert.IsTrue(Entity.Components.Count == 0);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 0);
@@ -118,7 +113,7 @@ namespace ECSCoreTests
             entity.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
             Assert.IsTrue(entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
-            entity.Add(new Speed() { dX=1,dY=5, dZ=8 });
+            entity.Add(new Speed() { dX = 1, dY = 5, dZ = 8 });
             Assert.IsTrue(entity.Components.Count == 2);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 2);
             Assert.IsTrue(IECS.GetEntity(6, out Entity entity1));
@@ -193,13 +188,13 @@ namespace ECSCoreTests
                         }
                     }
                     count++;
-                    if (count>= countWait)
+                    if (count >= countWait)
                     {
                         Assert.Fail();
                     }
                 }
 
-                if (j%10000 == 0)
+                if (j % 10000 == 0)
                 {
                     IECSDebug.ManagerSystems.ClearStatisticSystems();
                 }
@@ -223,7 +218,7 @@ namespace ECSCoreTests
             {
                 Test_10_FillingFilter();
                 i++;
-                if (i>100)
+                if (i > 100)
                 {
                     return;
                 }
@@ -235,7 +230,7 @@ namespace ECSCoreTests
         {
             IECS.Despose();
             Thread.Sleep(500);
-            Assert.IsNull(ECSCore.ECS.Instance);
+            Assert.IsNull(ECS.Instance);
         }
     }
 }

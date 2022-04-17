@@ -57,9 +57,9 @@
       <Project>{1E6A94E5-0654-4DA2-B264-784C99DAE908}</Project>
       <Name>ECSCoreUnityIntegration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LibMathUnityInteration\LibMath.csproj">
+    <ProjectReference Include="..\LibMathUnityInteration\MathLib.csproj">
       <Project>{c9dc0f6c-b265-4f74-b92e-b4741b4b56ad}</Project>
-      <Name>LibMath</Name>
+      <Name>MathLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

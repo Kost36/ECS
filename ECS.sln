@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31515.178
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECSCoreTests", "ECSCoreTests\ECSCoreTests.csproj", "{C1788E43-598F-4CB8-AA69-BF5543087EEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECSCoreLibTests", "ECSCoreTests\ECSCoreLibTests.csproj", "{C1788E43-598F-4CB8-AA69-BF5543087EEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECSCoreLib", "ECSCoreLib\ECSCoreLib.csproj", "{2F63CFF3-255A-4F91-BB44-CA7018FA1CAD}"
 EndProject
@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECSCoreUnityIntegration", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameUnityIntegration", "GameUnityIntegration\GameUnityIntegration.csproj", "{2601F7CC-760C-4A35-AFB6-7A7509393F61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibMath", "LibMathUnityInteration\LibMath.csproj", "{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLib", "LibMathUnityInteration\MathLib.csproj", "{C9DC0F6C-B265-4F74-B92E-B4741B4B56AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ECS", "ECS", "{CF58B93E-8CD4-41FE-B5DA-D51AF6CDA3CB}"
 EndProject

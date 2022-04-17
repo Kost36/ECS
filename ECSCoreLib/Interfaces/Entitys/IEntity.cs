@@ -1,11 +1,11 @@
 ﻿using ECSCore.Interfaces.Components;
 
-namespace ECSCore.Interfaces.Entitys
+namespace ECSCore.Interfaces
 {
     /// <summary>
     /// Интерфейс сущьности
     /// </summary>
-    internal interface IEntity
+    public interface IEntity
     {
         /// <summary>
         /// Идентификатор сущьности
@@ -13,11 +13,23 @@ namespace ECSCore.Interfaces.Entitys
         int Id { get; set; }
 
         /// <summary>
+        /// Родительская сущьность
+        /// </summary>
+        IEntity ParentEntity { get; set; }
+
+        /// <summary>
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
         void Add<T>(T component)
             where T : IComponent;
+
+        /// <summary>
+        /// Добавить дочернюю сущьность
+        /// </summary>
+        /// <param name="entity"> дочерняя сущьность </param>
+        IEntity AddChild<T>(T entity)
+            where T : IEntity;
 
         /// <summary>
         /// Получить компонент (Если есть)
@@ -35,6 +47,12 @@ namespace ECSCore.Interfaces.Entitys
         /// <returns></returns>
         void Remove<T>()
             where T : IComponent;
+
+        /// <summary>
+        /// Удалить дочернюю сущьность
+        /// </summary>
+        bool RemoveChild<T>(int idChildEntity, out T entity)
+            where T : IEntity;
 
         /// <summary>
         /// Уничтожить сущьность

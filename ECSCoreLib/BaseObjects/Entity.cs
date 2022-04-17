@@ -1,6 +1,6 @@
 ﻿using ECSCore.Exceptions;
+using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
-using ECSCore.Interfaces.Entitys;
 using System;
 using System.Collections.Generic;
 
@@ -18,9 +18,19 @@ namespace ECSCore.BaseObjects
         public int Id { get; set; }
 
         /// <summary>
+        /// Родительская сущьность
+        /// </summary>
+        public IEntity ParentEntity { get; set; }
+
+        /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
         public List<IComponent> Components { get; } = new List<IComponent>();
+
+        /// <summary>
+        /// Дочерние сущьности
+        /// </summary>
+        public Dictionary<int, IEntity> ChildEntitys { get; } = new Dictionary<int, IEntity>();
 
         /// <summary>
         /// Добавить компонент
@@ -34,6 +44,25 @@ namespace ECSCore.BaseObjects
         }
 
         /// <summary>
+        /// Добавить дочернюю сущьность
+        /// </summary>
+        /// <param name="entity"> дочерняя сущьность </param>
+        public IEntity AddChild<T>(T entity)
+            where T : IEntity
+        {
+            if (entity.Id == 0)
+            {
+                ECS.Instance.AddEntity(entity);
+            } //Если сущьность не проинициализирована
+            lock (ChildEntitys)
+            {
+                this.ChildEntitys.Add(entity.Id, entity);
+            }
+            entity.ParentEntity = this;
+            return entity;
+        }
+
+        /// <summary>
         /// Получить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
@@ -43,6 +72,20 @@ namespace ECSCore.BaseObjects
             where T : IComponent
         {
             return GetComponent(out component);
+        }
+
+        /// <summary>
+        /// Получить дочернюю сущьность
+        /// </summary>
+        public bool GetChild<T>(int idChildEntity, out T entity)
+            where T : IEntity
+        {
+            lock (ChildEntitys)
+            {
+                bool result = ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut);
+                entity = (T)entityOut;
+                return result;
+            }
         }
 
         /// <summary>
@@ -67,11 +110,36 @@ namespace ECSCore.BaseObjects
         }
 
         /// <summary>
+        /// Удалить дочернюю сущьность
+        /// </summary>
+        public bool RemoveChild<T>(int idChildEntity, out T entity)
+            where T : IEntity
+        {
+            lock (ChildEntitys)
+            {
+                if (ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut))
+                {
+                    entity = (T)entityOut;
+                    entityOut.ParentEntity = null;
+                    return ChildEntitys.Remove(idChildEntity);
+                }
+                entity = default;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Уничтожить сущьность
         /// </summary>
         public void Death()
         {
-            ECS.Instance.RemoveEntity(this.Id);
+            foreach (IEntity entity in ChildEntitys.Values)
+            {
+                entity.ParentEntity = null;
+            } //Отвяжемся от всех дочерних сущьностей
+            ChildEntitys.Clear(); //Очистим дочерние сущьности
+            ParentEntity?.RemoveChild(this.Id, out IEntity _); //Отвяжемся от родительской сущьности
+            ECS.Instance.RemoveEntity(this.Id); //Удалимся
         }
 
         /// <summary>
@@ -106,7 +174,7 @@ namespace ECSCore.BaseObjects
         {
             lock (Components)
             {
-                foreach (IComponent Component in Components)
+                foreach (ComponentBase Component in Components)
                 {
                     if (Component is T t)
                     {

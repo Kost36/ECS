@@ -4,10 +4,10 @@ using System;
 namespace GameLib.Entitys.StaticEntitys
 {
     /// <summary>
-    /// Система
+    /// Звездная система
     /// </summary>
     [Serializable]
-    public class System : Entity { }
+    public class Star : Entity { }
 
     /// <summary>
     /// Сектор

@@ -18,6 +18,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         private static IECS IECS;
         private static IECSDebug IECSDebug;
         private static Entity _entity;
+
         [TestMethod()]
         public void Test_00_InitializationIECS()
         {

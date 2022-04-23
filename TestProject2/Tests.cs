@@ -36,6 +36,7 @@ namespace GameLib.Tests
             stantion.Add(new Enargy() { Count = 1000 });
             stantion.Add(new Ore() { Count = 1000 });
             stantion.Add(new Metal() { Count = 0 });
+            stantion.Add(new Warehouse() { Volume = 0, VolumeMax=10000 });
 
             while (true)
             {

@@ -1,4 +1,6 @@
-﻿using ECSCore.BaseObjects;
+﻿using ECSCore.Attributes;
+using ECSCore.BaseObjects;
+using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using System.Collections.Generic;
@@ -49,7 +51,10 @@ namespace GameLib.Components.WorkFlow
         public int CountMetalProd;
     }
 
-    public class ProdactionMetalSystem : SystemExistComponents<ProdactionMetal, Enargy, Ore, Metal>, ISystemActionAdd, ISystemAction, ISystemActionRemove
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [AttributeSystemPriority(1)]
+    [AttributeSystemEnable]
+    public class ProdactionMetalSystem : SystemExistComponents<ProdactionMetal, Enargy, Ore, Metal>, ISystemAction
     {
         public override void Action(int entityId, ProdactionMetal prodactionMetal, Enargy enargy, Ore ore, Metal metal, float _)
         {
@@ -65,7 +70,7 @@ namespace GameLib.Components.WorkFlow
             {
                 prodactionMetal.Percent += prodactionMetal.Performance;
             }
-            if (prodactionMetal.Percent > 100)
+            if (prodactionMetal.Percent >= 100)
             {
                 prodactionMetal.Percent -= 100;
                 if (IECS.GetComponent(entityId, out Warehouse warehouse))
@@ -73,8 +78,8 @@ namespace GameLib.Components.WorkFlow
                     if(warehouse.VolumeMax - warehouse.Volume > metal.Volume * metal.Count)
                     {
                         metal.Count += prodactionMetal.CountMetalProd;
-                        enargy.Count += prodactionMetal.CountEnargyRaw;
-                        ore.Count += prodactionMetal.CountOreRaw;
+                        enargy.Count -= prodactionMetal.CountEnargyRaw;
+                        ore.Count -= prodactionMetal.CountOreRaw;
                     }
                     else
                     {

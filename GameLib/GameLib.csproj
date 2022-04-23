@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <OutputPath>D:\Unity\UnityProjects\Game\Assets\Lib\</OutputPath>
+    <!--<OutputPath>D:\Unity\UnityProjects\Game\Assets\Lib\</OutputPath>-->
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

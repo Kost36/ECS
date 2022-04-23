@@ -92,7 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj">
-      <Project>{2F63CFF3-255A-4F91-BB44-CA7018FA1CAD}</Project>
+      <Project>{2f63cff3-255a-4f91-bb44-ca7018fa1cad}</Project>
       <Name>ECSCoreLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\LibMathUnityInteration\MathLib.csproj">

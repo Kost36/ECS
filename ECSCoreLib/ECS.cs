@@ -73,7 +73,6 @@ namespace ECSCore
                 throw new ExceptionECSIsInitializated("ECS was initialized before");
             }
             _ecs._managerEntitys = new ManagerEntitys(); //Инициализация менеджера сущьностей
-            //_ecs._managerComponents = new ManagerComponents(); //Инициализация менеджера компонент
             _ecs._managerFilters = new ManagerFilters(_ecs); //Создадим менеджера фильтров
             _ecs._managerSystems = new ManagerSystems(_ecs, assembly, _ecs._managerFilters); //Создадим менеджера систем
 
@@ -230,8 +229,6 @@ namespace ECSCore
                 }
                 info = info.Append($"ECSHaveN'tTimeToBeCalculateFilterSystems: {this.ManagerSystems.IsNotHaveTimeToBeCalculateFilters} \r\n");
                 info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
-                //info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
-                //info = info.Append($"CountComponentCollections: {this.ManagerComponents.CountCollectionsComponent} \r\n");
                 info = info.Append($"CountRegistredSystems: {this.ManagerSystems.CountSystems} \r\n");
                 info = info.Append($"CountEnableSystems: {this.ManagerSystems.CountEnableSystems} \r\n");
                 info = info.Append($"CountDisableSystems: {this.ManagerSystems.CountDisableSystems} \r\n");
@@ -247,8 +244,6 @@ namespace ECSCore
                 info = info.Append($"Entitys: \r\n");
                 info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
                 info = info.Append($"Components: \r\n");
-                //info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
-                //info = info.Append($"CountComponentCollections: {this.ManagerComponents.CountCollectionsComponent} \r\n");
                 info = info.Append($"Systems: \r\n");
                 info = info.Append($"CountRegistredSystems: {this.ManagerSystems.CountSystems} \r\n");
                 info = info.Append($"CountEnableSystems: {this.ManagerSystems.CountEnableSystems} \r\n");
@@ -325,7 +320,6 @@ namespace ECSCore
                 _ecs._managerEntitys = null;
                 _ecs._managerFilters = null;
                 _ecs._managerSystems = null;
-                //_ecs._managerComponents = null;
                 _ecs = null;
             }
         }

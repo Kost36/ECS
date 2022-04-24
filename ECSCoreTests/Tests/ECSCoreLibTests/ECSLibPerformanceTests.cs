@@ -12,10 +12,11 @@ using System.Threading;
 namespace ECSCoreLibTests.Tests.ECSCoreLibTests
 {
     [TestClass()]
-    public class ECS_02Tests_Performance
+    public class ECSLibPerformanceTests
     {
         private static IECS IECS;
         private static IECSDebug IECSDebug;
+
         [TestMethod()]
         public void Test_00_InitializationIECS()
         {
@@ -138,7 +139,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         [TestMethod()]
         public void Test_03_MechanicMove()
         {
-            int timeOutMin = 60;
+            int timeOutMin = 70;
             DateTime dataTimeEnd = DateTime.Now.AddMinutes(timeOutMin);  
             IECS.Despose();
             Thread.Sleep(500);

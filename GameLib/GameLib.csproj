@@ -78,6 +78,7 @@
     <Compile Include="Mechanics\Move\Systems\AccelerateSystem.cs" />
     <Compile Include="Mechanics\Move\Systems\ControlEndPositionSystem.cs" />
     <Compile Include="Mechanics\Move\Systems\StartMoveSystem.cs" />
+    <Compile Include="WorkFlow\NewProduct\Products.cs" />
     <Compile Include="WorkFlow\Prodaction.cs" />
     <Compile Include="Components\Components.cs" />
     <Compile Include="WorkFlow\Other.cs" />

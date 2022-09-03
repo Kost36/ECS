@@ -14,7 +14,7 @@ using ECSCore.Interfaces;
 namespace ECSCoreLibTests.Tests.ECSCoreLibTests
 {
     [TestClass()]
-    public class ECS_01Tests_Work
+    public class ECSLibFastTests
     {
         private static IECS IECS;
         private static IECSDebug IECSDebug;
@@ -212,98 +212,6 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
             Assert.IsTrue(shipChild1.ParentEntity == null);
             Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
-        }
-
-        [TestMethod()]
-        public void Test_90_FillingFilter()
-        {
-            IECS?.Despose();
-            Thread.Sleep(500);
-            Test_00_InitializationIECS();
-
-            int entityCount = 100000;
-            int j = 0;
-            while (j < entityCount)
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    Entity ship = IECS.AddEntity(new Ship());
-                    ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
-                    //Thread.Sleep(1);
-                    ship.Add(new PozitionSV() { X = 1000, Y = 1000, Z = 1000 });
-                    //Thread.Sleep(1);
-                    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
-                    j++;
-                }
-
-                int count = 0;
-                int countWait = 100;
-                while (true)
-                {
-                    Thread.Sleep(10);
-                    Debug.WriteLine(IECSDebug.GetInfo(true));
-                    if (IECSDebug.ManagerSystems.GetSystem(out StartMoveSystem startMoveSystem))
-                    {
-                        if (startMoveSystem.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
-                        {
-
-                        }
-                        else
-                        {
-                            //continue;
-                        }
-                    }
-                    if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove))
-                    {
-                        if (controlSpeedSystemRemove.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
-                        {
-                            break;
-                        }
-                    }
-                    count++;
-                    if (count >= countWait)
-                    {
-                        Assert.Fail();
-                    }
-                }
-
-                if (j % 10000 == 0)
-                {
-                    IECSDebug.ManagerSystems.ClearStatisticSystems();
-                }
-            }
-
-            if (IECSDebug.ManagerSystems.GetSystem(out ControlSpeedSystemRemove controlSpeedSystemRemove1))
-            {
-                if (controlSpeedSystemRemove1.GetFilterCount() == IECSDebug.ManagerEntitys.CountEntitys)
-                {
-                    return;
-                }
-            }
-            Assert.Fail();
-        }
-
-        //[TestMethod()]
-        public void Test_91_SearchBug()
-        {
-            int i = 0;
-            while (true)
-            {
-                Test_90_FillingFilter();
-                i++;
-                if (i > 100)
-                {
-                    return;
-                }
-            }
-        }
-
-        [TestMethod()]
-        public void Test_99_ECSDespose()
-        {
-            IECS.Despose();
-            Thread.Sleep(500);
-            Assert.IsNull(ECS.Instance);
         }
     }
 }

@@ -89,7 +89,6 @@
     <Compile Include="Interfaces\Filters\IJobToFilter.cs" />
     <Compile Include="Interfaces\GroupComponents\IGroupComponents.cs" />
     <Compile Include="Interfaces\Systems\ISystem.cs" />
-    <Compile Include="Managers\ManagerComponents.cs" />
     <Compile Include="Managers\ManagerEntitys.cs" />
     <Compile Include="Managers\ManagerFilters.cs" />
     <Compile Include="Managers\ManagerSystems.cs" />

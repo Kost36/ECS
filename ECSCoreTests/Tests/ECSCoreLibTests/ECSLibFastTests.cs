@@ -213,5 +213,88 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Assert.IsTrue(shipChild1.ParentEntity == null);
             Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
         }
+
+        [TestMethod()]
+        public void Test_11_ExcludeFilterCallForAddInclude()
+        {
+            IECS?.Despose();
+            Test_00_InitializationIECS();
+
+            Entity entity = IECS.AddEntity(new Ship());
+            entity.Add(new Include());
+
+            Thread.Sleep(50);
+            if(entity.Get(out Include include))
+            {
+                if (!include.CallOfAdd)
+                {
+                    Assert.Fail("Can not call ActionAdd of system");
+                }
+            }
+
+            Thread.Sleep(100);
+            Assert.AreEqual(1, include.CallOfAddCount, "ActionAdd of system not actual count call");
+          
+            entity.Remove<Include>();
+
+            Thread.Sleep(50);
+            if (!include.CallOfRemove)
+            {
+                Assert.Fail("Can not call ActionRemove of system");
+            }
+
+            Thread.Sleep(100);
+            Assert.AreEqual(1, include.CallOfRemoveCount, "ActionRemove of system not actual count call");
+            Assert.IsTrue(include.CallActionCount > 5, "Action of system not more 5 count call");
+        }
+
+        [TestMethod()]
+        public void Test_12_ExcludeFilterCallForRemoveExclude()
+        {
+            IECS?.Despose();
+            Test_00_InitializationIECS();
+
+            Entity entity = IECS.AddEntity(new Ship());
+            entity.Add(new Exclude());
+            entity.Add(new Include());
+
+            Thread.Sleep(50);
+            if (entity.Get(out Include include))
+            {
+                if (include.CallOfAdd)
+                {
+                    Assert.Fail("ActionAdd of system is call");
+                }
+            }
+
+            entity.Remove<Exclude>();
+
+            Thread.Sleep(50);
+            if (entity.Get(out Include include1))
+            {
+                if (!include1.CallOfAdd)
+                {
+                    Assert.Fail("Can not call ActionAdd of system");
+                }
+            }
+
+            Thread.Sleep(100);
+            if (entity.Get(out Include include2))
+            {
+                Assert.AreEqual(1, include2.CallOfAddCount, "ActionAdd of system not actual count call");
+            }
+
+            entity.Add(new Exclude());
+            Thread.Sleep(50);
+
+            if (!include.CallOfRemove)
+            {
+                Assert.Fail("Can not call ActionRemove of system");
+            }
+
+            Thread.Sleep(100);
+            Assert.AreEqual(1, include.CallOfRemoveCount, "ActionRemove of system not actual count call");
+            Assert.IsTrue(include.CallActionCount > 5, "Action of system not more 5 count call");
+        }
     }
 }

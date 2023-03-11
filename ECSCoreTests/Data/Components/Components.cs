@@ -219,4 +219,25 @@ namespace ECSCoreTests.Components
         /// </summary>
         public bool EnargyHave;
     }
+
+    /// <summary>
+    /// Компонент для теста исключающих компонент системы
+    /// </summary>
+    [Serializable]
+    public class Exclude : ComponentBase { }
+
+    /// <summary>
+    /// Компонент для теста исключающих компонент системы
+    /// </summary>
+    [Serializable]
+    public class Include : ComponentBase
+    {
+        public bool CallOfRemove;
+        public int CallOfRemoveCount;
+
+        public bool CallOfAdd;
+        public int CallOfAddCount;
+
+        public int CallActionCount;
+    }
 }

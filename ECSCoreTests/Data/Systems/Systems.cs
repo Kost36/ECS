@@ -360,4 +360,35 @@ namespace ECSCoreTests.Systems
 
         }
     }
+
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec60Once)]
+    [AttributeSystemPriority(1)]
+    [AttributeSystemEnable]
+    [AttributeSystemParallelCountThreads(8)]
+    [AttributeExcludeComponentSystem(typeof(Exclude))]
+    public class TestExcludeSystem : SystemExistComponents<Include>, ISystemActionAdd, ISystemActionRemove, ISystemAction, ISystemParallel
+    {
+        public static Include IncludeForTest;
+
+        public override void ActionAdd(Include include, Entity entity)
+        {
+            include.CallOfAdd = true;
+            include.CallOfAddCount++;
+            IncludeForTest = include;
+        }
+
+        public override void Action(int entityId, Include include, float deltatime)
+        {
+            include.CallActionCount++;
+        }
+
+        public override void ActionRemove(int entityId)
+        {
+            if (IncludeForTest != null)
+            {
+                IncludeForTest.CallOfRemove = true;
+                IncludeForTest.CallOfRemoveCount++;
+            }
+        }
+    }
 }

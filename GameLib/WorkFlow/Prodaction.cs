@@ -13,16 +13,16 @@ namespace GameLib.Components.WorkFlow
     //    public int Volume;
     //}
 
-    public class Warehouse : ComponentBase
-    {
-        public int Volume;
-        public int VolumeMax;
-    }
+    //public class Warehouse : ComponentBase
+    //{
+    //    public int Volume;
+    //    public int VolumeMax;
+    //}
 
-    public class WarehouseOverFlow : ComponentBase
-    {
+    //public class WarehouseOverFlow : ComponentBase
+    //{
 
-    }
+    //}
 
     //public class Enargy : ComponentBase
     //{

@@ -89,7 +89,7 @@ namespace GameLib.WorkFlow.ReserchV1
     //        if (prodModul.Percent < 100)
     //        {
     //            //Производительность  = 1сек / (цикл производства(сек)  / 100%)  <= деление на 100, заменено умножением на 0.01
-    //            prodModul.Performance = 1    / (product.ProductionСycle * 0.01f); 
+    //            prodModul.Performance = 1 / (product.ProductionСycle * 0.01f);
     //            prodModul.Percent += prodModul.Performance;
     //        }
     //        if (prodModul.Percent >= 100)

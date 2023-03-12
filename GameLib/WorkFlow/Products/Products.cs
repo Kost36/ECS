@@ -163,6 +163,7 @@ namespace GameLib.Components.Products
     }
     #endregion
 
+    
     #region Сырьё 0 уровень (Добываемое)
     /// <summary>
     /// Руда

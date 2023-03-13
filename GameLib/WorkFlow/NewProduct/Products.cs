@@ -8,7 +8,7 @@ namespace GameLib.WorkFlow.NewProduct
     /// <summary>
     /// Продукт
     /// </summary>
-    public abstract class Product
+    public abstract class Product : ComponentBase
     {
         /// <summary>
         /// Тип
@@ -172,6 +172,11 @@ namespace GameLib.WorkFlow.NewProduct
             )
         { }
     }
+
+    /// <summary>
+    /// Энергия
+    /// </summary>
+    public sealed class Enargy : Product { }
 
     /// <summary>
     /// Руда

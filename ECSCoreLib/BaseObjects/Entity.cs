@@ -33,17 +33,6 @@ namespace ECSCore.BaseObjects
         public Dictionary<int, IEntity> ChildEntitys { get; } = new Dictionary<int, IEntity>();
 
         /// <summary>
-        /// Добавить компонент
-        /// </summary>
-        /// <param name="component"></param>
-        public void Add<T>(T component)
-            where T : IComponent
-        {
-            component.Id = this.Id;
-            ECS.Instance.AddComponent(component);
-        }
-
-        /// <summary>
         /// Добавить дочернюю сущьность
         /// </summary>
         /// <param name="entity"> дочерняя сущьность </param>
@@ -63,6 +52,50 @@ namespace ECSCore.BaseObjects
         }
 
         /// <summary>
+        /// Получить дочернюю сущьность
+        /// </summary>
+        public bool GetChild<T>(int idChildEntity, out T entity)
+            where T : IEntity
+        {
+            lock (ChildEntitys)
+            {
+                bool result = ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut);
+                entity = (T)entityOut;
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Удалить дочернюю сущьность
+        /// </summary>
+        public bool RemoveChild<T>(int idChildEntity, out T entity)
+            where T : IEntity
+        {
+            lock (ChildEntitys)
+            {
+                if (ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut))
+                {
+                    entity = (T)entityOut;
+                    entityOut.ParentEntity = null;
+                    return ChildEntitys.Remove(idChildEntity);
+                }
+                entity = default;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Добавить компонент
+        /// </summary>
+        /// <param name="component"></param>
+        public void Add<T>(T component)
+            where T : IComponent
+        {
+            component.Id = this.Id;
+            ECS.Instance.AddComponent(component);
+        }
+
+        /// <summary>
         /// Получить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
@@ -75,17 +108,14 @@ namespace ECSCore.BaseObjects
         }
 
         /// <summary>
-        /// Получить дочернюю сущьность
+        /// Получить компонент (Если есть)
         /// </summary>
-        public bool GetChild<T>(int idChildEntity, out T entity)
-            where T : IEntity
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
+        /// <param name="component"> Компонент(если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool Get(Type typeComponent, out IComponent component)
         {
-            lock (ChildEntitys)
-            {
-                bool result = ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut);
-                entity = (T)entityOut;
-                return result;
-            }
+            return GetComponent(typeComponent, out component);
         }
 
         /// <summary>
@@ -107,25 +137,6 @@ namespace ECSCore.BaseObjects
             where T : IComponent
         {
             ECS.Instance.RemoveComponent<T>(this.Id);
-        }
-
-        /// <summary>
-        /// Удалить дочернюю сущьность
-        /// </summary>
-        public bool RemoveChild<T>(int idChildEntity, out T entity)
-            where T : IEntity
-        {
-            lock (ChildEntitys)
-            {
-                if (ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut))
-                {
-                    entity = (T)entityOut;
-                    entityOut.ParentEntity = null;
-                    return ChildEntitys.Remove(idChildEntity);
-                }
-                entity = default;
-                return false;
-            }
         }
 
         /// <summary>
@@ -207,13 +218,36 @@ namespace ECSCore.BaseObjects
         {
             lock (Components)
             {
-                foreach (IComponent Component in Components)
+                foreach (var item in Components)
                 {
-                    if (Component.GetType().FullName == typeComponent.FullName)
+                    if (item.GetType().FullName == typeComponent.FullName)
                     {
                         return true;
                     }
                 }
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Получить компонент у сущьности
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <param name="component"> Компонент </param>
+        /// <returns> Флаг наличия компонента </returns>
+        private bool GetComponent(Type typeComponent, out IComponent component)
+        {
+            lock (Components)
+            {
+                foreach (var item in Components)
+                {
+                    if (item.GetType().FullName == typeComponent.FullName)
+                    {
+                        component = item;
+                        return true;
+                    }
+                }
+                component = default;
                 return false;
             }
         }

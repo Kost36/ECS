@@ -1,4 +1,5 @@
 ﻿using ECSCore.Interfaces.Components;
+using System;
 
 namespace ECSCore.Interfaces
 {
@@ -39,6 +40,14 @@ namespace ECSCore.Interfaces
         /// <returns> Флаг наличия компонента </returns>
         bool Get<T>(out T component)
             where T : IComponent;
+
+        /// <summary>
+        /// Получить компонент (Если есть)
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <param name="component"> Компонент(если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        bool Get(Type typeComponent, out IComponent component);
 
         /// <summary>
         /// Удалить дочернюю сущьность

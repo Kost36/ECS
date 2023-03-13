@@ -1,10 +1,13 @@
 ﻿using ECSCore;
 using ECSCore.Interfaces.ECS;
 using GameLib.Entitys.DynamicEntitys;
+using GameLib.Entitys.StaticEntitys;
+using GameLib.WorkFlow;
 using GameLib.WorkFlow.NewProduct;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace GameLib.Tests
 {
@@ -55,6 +58,27 @@ namespace GameLib.Tests
             ship.Get<Products>(out var product);
             product.Collection.TryGetValue((int)ProductType.Ore, out var ore);
             Assert.AreEqual(0, ore.Count); //Будет null
+        }
+
+        [TestMethod()]
+        public void TestProduction()
+        {
+            Init();
+
+            var stantion = IECS.AddEntity(new Stantion());
+            stantion.Add(new Ore() { Count = 10000 });
+            
+            var module1 = stantion.AddChild(new ModuleProduction());
+            module1.Add(new ProductionModuleBuild<Iron>());
+            var module2 = stantion.AddChild(new ModuleProduction());
+            module2.Add(new ProductionModuleBuild<Enargy>());
+
+            var end = false;
+            while (!end)
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("breakpoint");
+            }
         }
     }
 }

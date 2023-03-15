@@ -67,14 +67,16 @@ namespace ECSCore.BaseObjects
         {
             foreach (Type typeExistComponent in TypesExistComponents)
             {
-                if (typeComponet.FullName == typeExistComponent.FullName)
+                if (typeComponet.FullName == typeExistComponent.FullName ||
+                    typeComponet.BaseType.FullName == typeExistComponent.FullName)
                 {
                     return true;
                 }
             }
             foreach (Type typeWithoutComponent in TypesWithoutComponents)
             {
-                if (typeComponet.FullName == typeWithoutComponent.FullName)
+                if (typeComponet.FullName == typeWithoutComponent.FullName ||
+                    typeComponet.BaseType.FullName == typeWithoutComponent.FullName)
                 {
                     return true;
                 }

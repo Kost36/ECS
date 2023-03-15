@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <OutputPath>D:\Unity\UnityProjects\Game\Assets\Lib\</OutputPath>
+    <!--<OutputPath>D:\Unity\UnityProjects\Game\Assets\Lib\</OutputPath>-->
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -78,6 +78,7 @@
     <Compile Include="Mechanics\Move\Systems\AccelerateSystem.cs" />
     <Compile Include="Mechanics\Move\Systems\ControlEndPositionSystem.cs" />
     <Compile Include="Mechanics\Move\Systems\StartMoveSystem.cs" />
+    <Compile Include="WorkFlow\NewProduct\Products.cs" />
     <Compile Include="WorkFlow\Prodaction.cs" />
     <Compile Include="Components\Components.cs" />
     <Compile Include="WorkFlow\Other.cs" />
@@ -89,10 +90,15 @@
     <Compile Include="WorkFlow\Old\Components\Tasks\Tasks.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkFlow\ReserchV3.cs" />
+    <Compile Include="WorkFlow\ReserchV2.cs" />
+    <Compile Include="WorkFlow\ReserchV1.cs" />
+    <Compile Include="WorkFlow\WorkFlowProduction\Products.cs" />
+    <Compile Include="WorkFlow\WorkFlowProduction\Systems.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj">
-      <Project>{2F63CFF3-255A-4F91-BB44-CA7018FA1CAD}</Project>
+      <Project>{2f63cff3-255a-4f91-bb44-ca7018fa1cad}</Project>
       <Name>ECSCoreLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\LibMathUnityInteration\MathLib.csproj">

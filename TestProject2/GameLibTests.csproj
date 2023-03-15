@@ -1,11 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>.NETCoreApp,Version=v5.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
-
-    <Platforms>AnyCPU;x64</Platforms>
 
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -22,8 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj" />
-    <ProjectReference Include="..\LibForPerformanceTests\LibForPerformanceTests.csproj" />
-    <ProjectReference Include="..\LibMathUnityInteration\MathLib.csproj" />
+    <ProjectReference Include="..\GameLib\GameLib.csproj" />
   </ItemGroup>
 
 </Project>

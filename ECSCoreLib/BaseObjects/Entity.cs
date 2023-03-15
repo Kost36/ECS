@@ -1,6 +1,6 @@
 ﻿using ECSCore.Exceptions;
+using ECSCore.Interfaces;
 using ECSCore.Interfaces.Components;
-using ECSCore.Interfaces.Entitys;
 using System;
 using System.Collections.Generic;
 
@@ -18,9 +18,71 @@ namespace ECSCore.BaseObjects
         public int Id { get; set; }
 
         /// <summary>
+        /// Родительская сущьность
+        /// </summary>
+        public IEntity ParentEntity { get; set; }
+
+        /// <summary>
         /// Для отслеживания в тестах
         /// </summary>
         public List<IComponent> Components { get; } = new List<IComponent>();
+
+        /// <summary>
+        /// Дочерние сущьности
+        /// </summary>
+        public Dictionary<int, IEntity> ChildEntitys { get; } = new Dictionary<int, IEntity>();
+
+        /// <summary>
+        /// Добавить дочернюю сущьность
+        /// </summary>
+        /// <param name="entity"> дочерняя сущьность </param>
+        public IEntity AddChild<T>(T entity)
+            where T : IEntity
+        {
+            if (entity.Id == 0)
+            {
+                ECS.Instance.AddEntity(entity as Entity);
+            } //Если сущьность не проинициализирована
+            lock (ChildEntitys)
+            {
+                this.ChildEntitys.Add(entity.Id, entity);
+            }
+            entity.ParentEntity = this;
+            return entity;
+        }
+
+        /// <summary>
+        /// Получить дочернюю сущьность
+        /// </summary>
+        public bool GetChild<T>(int idChildEntity, out T entity)
+            where T : IEntity
+        {
+            lock (ChildEntitys)
+            {
+                bool result = ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut);
+                entity = (T)entityOut;
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Удалить дочернюю сущьность
+        /// </summary>
+        public bool RemoveChild<T>(int idChildEntity, out T entity)
+            where T : IEntity
+        {
+            lock (ChildEntitys)
+            {
+                if (ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut))
+                {
+                    entity = (T)entityOut;
+                    entityOut.ParentEntity = null;
+                    return ChildEntitys.Remove(idChildEntity);
+                }
+                entity = default;
+                return false;
+            }
+        }
 
         /// <summary>
         /// Добавить компонент
@@ -30,7 +92,7 @@ namespace ECSCore.BaseObjects
             where T : IComponent
         {
             component.Id = this.Id;
-            ECS.Instance.AddComponent(component, this);
+            ECS.Instance.AddComponent(component);
         }
 
         /// <summary>
@@ -43,6 +105,17 @@ namespace ECSCore.BaseObjects
             where T : IComponent
         {
             return GetComponent(out component);
+        }
+
+        /// <summary>
+        /// Получить компонент (Если есть)
+        /// </summary>
+        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
+        /// <param name="component"> Компонент(если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        public bool Get(Type typeComponent, out IComponent component)
+        {
+            return GetComponent(typeComponent, out component);
         }
 
         /// <summary>
@@ -63,7 +136,7 @@ namespace ECSCore.BaseObjects
         public void Remove<T>()
             where T : IComponent
         {
-            ECS.Instance.RemoveComponent<T>(this.Id, this);
+            ECS.Instance.RemoveComponent<T>(this.Id);
         }
 
         /// <summary>
@@ -71,7 +144,8 @@ namespace ECSCore.BaseObjects
         /// </summary>
         public void Death()
         {
-            ECS.Instance.RemoveEntity(this.Id);
+            UnbindParentAndChild(); //Отвязать родительские и дочерние сущьности
+            ECS.Instance.RemoveEntity(this.Id); //Удалимся
         }
 
         /// <summary>
@@ -106,7 +180,7 @@ namespace ECSCore.BaseObjects
         {
             lock (Components)
             {
-                foreach (IComponent Component in Components)
+                foreach (ComponentBase Component in Components)
                 {
                     if (Component is T t)
                     {
@@ -144,15 +218,51 @@ namespace ECSCore.BaseObjects
         {
             lock (Components)
             {
-                foreach (IComponent Component in Components)
+                foreach (var item in Components)
                 {
-                    if (Component.GetType().FullName == typeComponent.FullName)
+                    if (item.GetType().FullName == typeComponent.FullName)
                     {
                         return true;
                     }
                 }
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Получить компонент у сущьности
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <param name="component"> Компонент </param>
+        /// <returns> Флаг наличия компонента </returns>
+        private bool GetComponent(Type typeComponent, out IComponent component)
+        {
+            lock (Components)
+            {
+                foreach (var item in Components)
+                {
+                    if (item.GetType().FullName == typeComponent.FullName)
+                    {
+                        component = item;
+                        return true;
+                    }
+                }
+                component = default;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Отвязать родительские и дочерние сущьности
+        /// </summary>
+        private void UnbindParentAndChild()
+        {
+            foreach (IEntity entity in ChildEntitys.Values)
+            {
+                entity.ParentEntity = null;
+            } //Отвяжемся от всех дочерних сущьностей
+            ChildEntitys.Clear(); //Очистим дочерние сущьности
+            ParentEntity?.RemoveChild(this.Id, out IEntity _); //Отвяжемся от родительской сущьности
         }
     }
 }

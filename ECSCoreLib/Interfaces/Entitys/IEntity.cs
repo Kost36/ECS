@@ -1,11 +1,12 @@
 ﻿using ECSCore.Interfaces.Components;
+using System;
 
-namespace ECSCore.Interfaces.Entitys
+namespace ECSCore.Interfaces
 {
     /// <summary>
     /// Интерфейс сущьности
     /// </summary>
-    internal interface IEntity
+    public interface IEntity
     {
         /// <summary>
         /// Идентификатор сущьности
@@ -13,11 +14,23 @@ namespace ECSCore.Interfaces.Entitys
         int Id { get; set; }
 
         /// <summary>
+        /// Родительская сущьность
+        /// </summary>
+        IEntity ParentEntity { get; set; }
+
+        /// <summary>
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
         void Add<T>(T component)
             where T : IComponent;
+
+        /// <summary>
+        /// Добавить дочернюю сущьность
+        /// </summary>
+        /// <param name="entity"> дочерняя сущьность </param>
+        IEntity AddChild<T>(T entity)
+            where T : IEntity;
 
         /// <summary>
         /// Получить компонент (Если есть)
@@ -29,12 +42,32 @@ namespace ECSCore.Interfaces.Entitys
             where T : IComponent;
 
         /// <summary>
+        /// Получить компонент (Если есть)
+        /// </summary>
+        /// <param name="typeComponent"> Тип компонента </param>
+        /// <param name="component"> Компонент(если есть) / null </param>
+        /// <returns> Флаг наличия компонента </returns>
+        bool Get(Type typeComponent, out IComponent component);
+
+        /// <summary>
+        /// Удалить дочернюю сущьность
+        /// </summary>
+        bool GetChild<T>(int idChildEntity, out T entity)
+            where T : IEntity;
+
+        /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
         void Remove<T>()
             where T : IComponent;
+
+        /// <summary>
+        /// Удалить дочернюю сущьность
+        /// </summary>
+        bool RemoveChild<T>(int idChildEntity, out T entity)
+            where T : IEntity;
 
         /// <summary>
         /// Уничтожить сущьность

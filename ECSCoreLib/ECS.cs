@@ -73,7 +73,6 @@ namespace ECSCore
                 throw new ExceptionECSIsInitializated("ECS was initialized before");
             }
             _ecs._managerEntitys = new ManagerEntitys(); //Инициализация менеджера сущьностей
-            //_ecs._managerComponents = new ManagerComponents(); //Инициализация менеджера компонент
             _ecs._managerFilters = new ManagerFilters(_ecs); //Создадим менеджера фильтров
             _ecs._managerSystems = new ManagerSystems(_ecs, assembly, _ecs._managerFilters); //Создадим менеджера систем
 
@@ -152,12 +151,10 @@ namespace ECSCore
         {
             _managerEntitys.Remove(id);
             _managerFilters.Remove(id);
-            //_managerComponents.Remove(id);
         }
         #endregion
 
         #region Компоненты 
-        //TODO Соеденить методы: AddComponent<T>(T component) и AddComponent<T>(T component, Entity entity) что бы небыло дублирования одного и того же куска кода
         /// <summary>
         /// Добавить компонент.
         /// </summary>
@@ -170,28 +167,7 @@ namespace ECSCore
                 return;
             } //Получим сущьность от менеджера сущьностей
             entity.AddComponent(component); //Добавить к сущьности
-            //_managerComponents.Add<T>(component); //Передать менеджеру компонент
             _managerFilters.Add<T>(component); //Передать менеджеру фильтров 
-        } // TODO При добавлении компонента, который уже есть на сущьности кинет исключение: продумать действия в данной ситуации, и синхронизировать действие для Entity и Filters, что бы небыло разногласий
-
-        /// <summary>
-        /// Добавить компонент.
-        /// </summary>
-        /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
-        /// <param name="entity"> Сущьность, на которую добавляется компонент </param>
-        public void AddComponent<T>(T component, Entity entity)
-            where T : IComponent
-        {
-            if (entity == null)
-            {
-                if (_managerEntitys.Get(component.Id, out entity) == false)
-                {
-                    return;
-                } //Получим сущьность от менеджера сущьностей
-            } //Если сущьность не задана
-            entity.AddComponent(component); //Добавить к сущьности
-            //_managerComponents.Add<T>(component); //Передать менеджеру компонент
-            _managerFilters.Add<T>(component); //Передать менеджеру фильтров
         } // TODO При добавлении компонента, который уже есть на сущьности кинет исключение: продумать действия в данной ситуации, и синхронизировать действие для Entity и Filters, что бы небыло разногласий
 
         /// <summary>
@@ -211,7 +187,6 @@ namespace ECSCore
                 return false;
             } //Если у менеджера сущьностей нету сущьности
             return entity.Get(out component); //Получим компонент у сущьности
-            //return _managerComponents.Get(idEntity, out component);
         }
 
         /// <summary>
@@ -228,31 +203,9 @@ namespace ECSCore
                 return;
             }
             Entity.RemoveComponent<T>();
-            //_managerComponents.Remove<T>(idEntity);
             _managerFilters.Remove<T>(idEntity);
         }
 
-        /// <summary>
-        /// Удалить компонент (Если есть)
-        /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
-        /// <param name="idEntity"> Идентификатор сущьности </param>
-        /// <param name="entity"> Сущьность </param>
-        /// <returns></returns>
-        public void RemoveComponent<T>(int idEntity, Entity entity)
-            where T : IComponent
-        {
-            if (entity == null)
-            {
-                if (_managerEntitys.Get(idEntity, out entity) == false)
-                {
-                    return;
-                } //Получим от менеджера сущьностей
-            } //Если сущьность не задана
-            entity.RemoveComponent<T>();
-            //_managerComponents.Remove<T>(idEntity);
-            _managerFilters.Remove<T>(idEntity);
-        }
         #endregion
 
         #region Состояние ECS
@@ -276,8 +229,6 @@ namespace ECSCore
                 }
                 info = info.Append($"ECSHaveN'tTimeToBeCalculateFilterSystems: {this.ManagerSystems.IsNotHaveTimeToBeCalculateFilters} \r\n");
                 info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
-                //info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
-                //info = info.Append($"CountComponentCollections: {this.ManagerComponents.CountCollectionsComponent} \r\n");
                 info = info.Append($"CountRegistredSystems: {this.ManagerSystems.CountSystems} \r\n");
                 info = info.Append($"CountEnableSystems: {this.ManagerSystems.CountEnableSystems} \r\n");
                 info = info.Append($"CountDisableSystems: {this.ManagerSystems.CountDisableSystems} \r\n");
@@ -293,8 +244,6 @@ namespace ECSCore
                 info = info.Append($"Entitys: \r\n");
                 info = info.Append($"CountEntity: {this.ManagerEntitys.CountEntitys} \r\n");
                 info = info.Append($"Components: \r\n");
-                //info = info.Append($"CountComponents: {this.ManagerComponents.CountComponents} \r\n");
-                //info = info.Append($"CountComponentCollections: {this.ManagerComponents.CountCollectionsComponent} \r\n");
                 info = info.Append($"Systems: \r\n");
                 info = info.Append($"CountRegistredSystems: {this.ManagerSystems.CountSystems} \r\n");
                 info = info.Append($"CountEnableSystems: {this.ManagerSystems.CountEnableSystems} \r\n");
@@ -371,7 +320,6 @@ namespace ECSCore
                 _ecs._managerEntitys = null;
                 _ecs._managerFilters = null;
                 _ecs._managerSystems = null;
-                //_ecs._managerComponents = null;
                 _ecs = null;
             }
         }

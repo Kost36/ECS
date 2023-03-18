@@ -10,12 +10,30 @@ using System.Linq;
 
 namespace GameLib.WorkFlow
 {
+    public static class ProductTypeMatcher
+    {
+        //TODO Генерировать подготовку коллекции при запуске через рефлексию.
+        //Уйти от ручного заполнения коллекции при добавлении нового вида продукта
+
+        public static readonly Dictionary<ProductType, Type> Collection = new Dictionary<ProductType, Type>()
+        {
+            { ProductType.Enargy, typeof(Enargy) },
+            { ProductType.Ore, typeof(Ore) },
+            { ProductType.Iron, typeof(Iron) }
+        };
+
+        public static Type ToType(ProductType productType)
+        {
+            return Collection[productType];
+        }
+    }
+
     public static class ProductionInfos
     {
         private static readonly Dictionary<string, ProductionInfo> Collection = new Dictionary<string, ProductionInfo>()
         {
-            { typeof(Enargy).FullName, new ProductionInfo<Enargy>(cycleTimeInSec: 60, productCountInCycle: 300)},
-            { typeof(Iron).FullName, new ProductionInfo<Iron, Enargy, Ore>(cycleTimeInSec: 60, productCountInCycle: 10, raw1CountInCycle: 100, raw2CountInCycle: 20)},
+            { typeof(Enargy).FullName, new ProductionInfo<Enargy>(productType: ProductType.Enargy, cycleTimeInSec: 60, productCountInCycle: 300)},
+            { typeof(Iron).FullName, new ProductionInfo<Iron, Enargy, Ore>(productType: ProductType.Iron, cycleTimeInSec: 60, productCountInCycle: 10, raw1Type: ProductType.Enargy, raw1CountInCycle: 100, raw2Type: ProductType.Ore, raw2CountInCycle: 20)},
         };
 
         public static bool GetProductionInfo(Type typeProduct, out ProductionInfo productionInfo)
@@ -39,10 +57,11 @@ namespace GameLib.WorkFlow
         where TProduct : Product
     {
         public ProductionInfo(
+            ProductType productType,
             int cycleTimeInSec, 
             int productCountInCycle) : base(cycleTimeInSec)
         {
-            Product = new ProductInfo<TProduct>(countInCycle: productCountInCycle);
+            Product = new ProductInfo<TProduct>(productType: productType, countInCycle: productCountInCycle);
             Raws = new List<ProductInfo>();
         }
     }
@@ -51,14 +70,16 @@ namespace GameLib.WorkFlow
         where TRaw1 : Product
     {
         public ProductionInfo(
+            ProductType productType,
             int cycleTimeInSec, 
             int productCountInCycle,
+            ProductType raw1Type,
             int raw1CountInCycle) : base(cycleTimeInSec)
         {
-            Product = new ProductInfo<TProduct>(countInCycle: productCountInCycle);
+            Product = new ProductInfo<TProduct>(productType: productType, countInCycle: productCountInCycle);
             Raws = new List<ProductInfo>() 
             { 
-                new ProductInfo<TRaw1>(countInCycle: raw1CountInCycle)
+                new ProductInfo<TRaw1>(productType: raw1Type, countInCycle: raw1CountInCycle)
             };
         }
     }
@@ -68,16 +89,19 @@ namespace GameLib.WorkFlow
         where TRaw2 : Product
     {
         public ProductionInfo(
+            ProductType productType,
             int cycleTimeInSec,
-            int productCountInCycle, 
+            int productCountInCycle,
+            ProductType raw1Type,
             int raw1CountInCycle,
+            ProductType raw2Type,
             int raw2CountInCycle) : base(cycleTimeInSec)
         {
-            Product = new ProductInfo<TProduct>(countInCycle: productCountInCycle);
+            Product = new ProductInfo<TProduct>(productType: productType, countInCycle: productCountInCycle);
             Raws = new List<ProductInfo>()
             {
-                new ProductInfo<TRaw1>(countInCycle: raw1CountInCycle),
-                new ProductInfo<TRaw2>(countInCycle: raw2CountInCycle)
+                new ProductInfo<TRaw1>(productType: raw1Type, countInCycle: raw1CountInCycle),
+                new ProductInfo<TRaw2>(productType: raw2Type, countInCycle: raw2CountInCycle)
             };
         }
     }
@@ -88,18 +112,22 @@ namespace GameLib.WorkFlow
         where TRaw3 : Product
     {
         public ProductionInfo(
+            ProductType productType,
             int cycleTimeInSec, 
-            int productCountInCycle, 
-            int raw1CountInCycle, 
-            int raw2CountInCycle, 
+            int productCountInCycle,
+            ProductType raw1Type,
+            int raw1CountInCycle,
+            ProductType raw2Type,
+            int raw2CountInCycle,
+            ProductType raw3Type,
             int raw3CountInCycle) : base(cycleTimeInSec)
         {
-            Product = new ProductInfo<TProduct>(countInCycle: productCountInCycle);
+            Product = new ProductInfo<TProduct>(productType: productType, countInCycle: productCountInCycle);
             Raws = new List<ProductInfo>()
             {
-                new ProductInfo<TRaw1>(countInCycle: raw1CountInCycle),
-                new ProductInfo<TRaw2>(countInCycle: raw2CountInCycle),
-                new ProductInfo<TRaw3>(countInCycle: raw3CountInCycle)
+                new ProductInfo<TRaw1>(productType: raw1Type, countInCycle: raw1CountInCycle),
+                new ProductInfo<TRaw2>(productType: raw2Type, countInCycle: raw2CountInCycle),
+                new ProductInfo<TRaw3>(productType: raw3Type, countInCycle: raw3CountInCycle)
             };
         }
     }
@@ -111,35 +139,56 @@ namespace GameLib.WorkFlow
         where TRaw4 : Product
     {
         public ProductionInfo(
+            ProductType productType,
             int cycleTimeInSec,
             int productCountInCycle,
+            ProductType raw1Type,
             int raw1CountInCycle,
+            ProductType raw2Type,
             int raw2CountInCycle,
+            ProductType raw3Type,
             int raw3CountInCycle,
+            ProductType raw4Type,
             int raw4CountInCycle) : base(cycleTimeInSec)
         {
-            Product = new ProductInfo<TProduct>(countInCycle: productCountInCycle); 
+            Product = new ProductInfo<TProduct>(productType: productType, countInCycle: productCountInCycle); 
             Raws = new List<ProductInfo>()
             {
-                new ProductInfo<TRaw1>(countInCycle: raw1CountInCycle),
-                new ProductInfo<TRaw2>(countInCycle: raw2CountInCycle),
-                new ProductInfo<TRaw3>(countInCycle: raw3CountInCycle),
-                new ProductInfo<TRaw4>(countInCycle: raw4CountInCycle)
+                new ProductInfo<TRaw1>(productType: raw1Type, countInCycle: raw1CountInCycle),
+                new ProductInfo<TRaw2>(productType: raw2Type, countInCycle: raw2CountInCycle),
+                new ProductInfo<TRaw3>(productType: raw3Type, countInCycle: raw3CountInCycle),
+                new ProductInfo<TRaw4>(productType: raw4Type, countInCycle: raw4CountInCycle)
             };
         }
     }
 
     public abstract class ProductInfo
     {
-        public Type ProductType;
+        public Type TypeProduct;
+        public ProductType ProductType;
         public int CountInCycle;
     }
     public sealed class ProductInfo<TProduct> : ProductInfo
     {
-        public ProductInfo(int countInCycle)
+        public ProductInfo(ProductType productType, int countInCycle)
+        {
+            TypeProduct = typeof(TProduct);
+            ProductType = productType;
+            CountInCycle = countInCycle;
+        }
+    }
+
+    public abstract class Production : ComponentBase
+    {
+        public Type ProductType;
+        public float PercentCycle;
+    }
+    public sealed class Production<TProduct> : Production
+        where TProduct : Product
+    {
+        public Production()
         {
             ProductType = typeof(TProduct);
-            CountInCycle = countInCycle;
         }
     }
 
@@ -152,88 +201,40 @@ namespace GameLib.WorkFlow
     public sealed class ProductionModuleBuild<TProduct> : ProductionModuleBuild
         where TProduct : Product { }
 
-    public /*abstract*/ class ProductionModule : ComponentBase
+    public class ProductionModule : ComponentBase
     {
         public bool Enable;
+        public bool Work;
 
         public int CountProductOfCycle;
+        public ProductType ProductType;
 
         public int TimeCycleInSec;
         public float CycleCompletionPercentage;
-    }
-    public /*abstract*/ class ProductionModule1 : ProductionModule
-    {
-        public int CountRaw1OfCycle;
-    }
-    public /*abstract*/ class ProductionModule2 : ProductionModule
-    {
-        public int CountRaw1OfCycle;
-        public int CountRaw2OfCycle;
-    }
-    public /*abstract*/ class ProductionModule3 : ProductionModule
-    {
-        public int CountRaw1OfCycle;
-        public int CountRaw2OfCycle;
-        public int CountRaw3OfCycle;
-    }
-    public /*abstract*/ class ProductionModule4 : ProductionModule
-    {
-        public int CountRaw1OfCycle;
-        public int CountRaw2OfCycle;
-        public int CountRaw3OfCycle;
-        public int CountRaw4OfCycle;
-    }
 
+        public Dictionary<ProductType, Expense> RawExpenses = new Dictionary<ProductType, Expense>();
+    }
     public class WarehouseProductionModul : ComponentBase
     {
         public int Volume;
         public int VolumeMax;
         public int PercentFillingRaws;
 
-        public Type ProductType;
-        public int CountProduct;
+        public KeyValuePair<ProductType, Count> Product = new KeyValuePair<ProductType, Count>();
+        public Dictionary<ProductType, Count> Raws = new Dictionary<ProductType, Count>();
     }
-    public class WarehouseProductionModulRaw1 : WarehouseProductionModul
+
+    public class Expense
     {
-        public Type TypeRaw1;
-        public int CountRaw1;
-        public int MaxCountRaw1;
+        /// <summary>
+        /// Расход сырья за производственный цикл
+        /// </summary>
+        public int Value;
     }
-    public class WarehouseProductionModulRaw2 : WarehouseProductionModul
+    public class Count
     {
-        public Type TypeRaw1;
-        public int CountRaw1;
-        public int MaxCountRaw1;
-        public Type TypeRaw2;
-        public int CountRaw2;
-        public int MaxCountRaw2;
-    }
-    public class WarehouseProductionModulRaw3 : WarehouseProductionModul
-    {
-        public Type TypeRaw1;
-        public int CountRaw1;
-        public int MaxCountRaw1;
-        public Type TypeRaw2;
-        public int CountRaw2;
-        public int MaxCountRaw2;
-        public Type TypeRaw3;
-        public int CountRaw3;
-        public int MaxCountRaw3;
-    }
-    public class WarehouseProductionModulRaw4 : WarehouseProductionModul
-    {
-        public Type TypeRaw1;
-        public int CountRaw1;
-        public int MaxCountRaw1;
-        public Type TypeRaw2;
-        public int CountRaw2;
-        public int MaxCountRaw2;
-        public Type TypeRaw3;
-        public int CountRaw3;
-        public int MaxCountRaw3;
-        public Type TypeRaw4;
-        public int CountRaw4;
-        public int MaxCountRaw4;
+        public int Value;
+        public int MaxValue;
     }
 
     public class BridgeProductionModulToStantion : ComponentBase
@@ -246,190 +247,114 @@ namespace GameLib.WorkFlow
     [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(50)]
     [AttributeSystemEnable]
-    public class ProductionBuilderSystem : SystemExistComponents<ProductionModuleBuild>, ISystemActionAdd
+    public class ProductionBuilderSystem : SystemExistComponents<Production>, ISystemActionAdd
     {
-        public override void ActionAdd(ProductionModuleBuild productionModuleBuild, Entity entity)
+        public override void ActionAdd(Production production, Entity entity)
         {
-            var componentType = productionModuleBuild.GetType();
+            var componentType = production.GetType();
             if (componentType.IsGenericType)
             {
                 var productType = componentType.GetGenericArguments().First();
                 if (ProductionInfos.GetProductionInfo(productType, out var productionInfo)) 
                 {
-                    switch (productionInfo.Raws.Count())
+                    var productionModuleComponent = new ProductionModule() {
+                        Enable = true,
+                        TimeCycleInSec = productionInfo.CycleTimeInSec,
+                        CountProductOfCycle = productionInfo.Product.CountInCycle };
+                    var warehouseComponent = new WarehouseProductionModul() {
+                        PercentFillingRaws = 80,
+                        VolumeMax = 1000 }; //ProductType = productionInfo.Product.ProductType, };
+
+                    productionModuleComponent.ProductType = productionInfo.Product.ProductType;
+                    productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
+                    productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
+
+                    warehouseComponent.Product = new KeyValuePair<ProductType, Count>(
+                        productionInfo.Product.ProductType,
+                        new Count() {
+                            Value = 0 });
+
+                    foreach (var rawInfo in productionInfo.Raws)
                     {
-                        case 0:
-                            AddProductionWithoutRaws(entity, productionInfo);
-                            break;
-                        case 1:
-                            AddProductionWithOneRaws(entity, productionInfo);
-                            break;
-                        case 2:
-                            AddProductionWithTwoRaws(entity, productionInfo);
-                            break;
-                        case 3:
-                            AddProductionWithThreeRaws(entity, productionInfo);
-                            break;
-                        case 4:
-                            AddProductionWithFourRaws(entity, productionInfo);
-                            break;
-                        default:
-                            break;
+                        productionModuleComponent.RawExpenses.Add(
+                            rawInfo.ProductType,
+                            new Expense() {
+                                Value = rawInfo.CountInCycle }); 
+                        warehouseComponent.Raws.Add(
+                            rawInfo.ProductType,
+                            new Count() {
+                                Value = 0,
+                                MaxValue=1000 });
                     }
 
+                    entity.Add(productionModuleComponent);
+                    entity.Add(warehouseComponent);
                     entity.Add(productionInfo);
                     entity.Add(new BridgeProductionModulToStantion());
+                    
                     entity.Remove<ProductionModuleBuild>();
                 };
             }
         }
-
-        private void AddProductionWithoutRaws(Entity entity, ProductionInfo productionInfo)
-        {
-            var productionModuleComponent = new ProductionModule();
-            FillProductionModule(productionModuleComponent, productionInfo);
-            entity.Add(productionModuleComponent);
-
-            var warehouseComponent = new WarehouseProductionModul();
-            FillWarehouseProductionModul(warehouseComponent, productionInfo);
-            entity.Add(warehouseComponent);
-        }
-        private void AddProductionWithOneRaws(Entity entity, ProductionInfo productionInfo)
-        {
-            var productionModuleComponent = new ProductionModule1();
-            FillProductionModule(productionModuleComponent, productionInfo);
-            productionModuleComponent.CountRaw1OfCycle = productionInfo.Raws.Take(1).First().CountInCycle;
-            entity.Add(productionModuleComponent);
-
-            var warehouseComponent = new WarehouseProductionModulRaw1();
-            FillWarehouseProductionModul(warehouseComponent, productionInfo);
-            warehouseComponent.MaxCountRaw1 = 1000;
-            warehouseComponent.TypeRaw1 = productionInfo.Raws.Take(1).First().ProductType;
-            entity.Add(warehouseComponent);
-        }
-        private void AddProductionWithTwoRaws(Entity entity, ProductionInfo productionInfo)
-        {
-            var productionModuleComponent = new ProductionModule2();
-            FillProductionModule(productionModuleComponent, productionInfo);
-            productionModuleComponent.CountRaw1OfCycle = productionInfo.Raws.Take(1).First().CountInCycle;
-            productionModuleComponent.CountRaw2OfCycle = productionInfo.Raws.Skip(1).Take(1).First().CountInCycle;
-            entity.Add(productionModuleComponent);
-
-            var warehouseComponent = new WarehouseProductionModulRaw2();
-            FillWarehouseProductionModul(warehouseComponent, productionInfo);
-            warehouseComponent.MaxCountRaw1 = 1000;
-            warehouseComponent.TypeRaw1 = productionInfo.Raws.Take(1).First().ProductType;
-            warehouseComponent.MaxCountRaw2 = 1000;
-            warehouseComponent.TypeRaw2 = productionInfo.Raws.Skip(1).Take(1).First().ProductType;
-            entity.Add(warehouseComponent);
-        }
-        private void AddProductionWithThreeRaws(Entity entity, ProductionInfo productionInfo)
-        {
-            var productionModuleComponent = new ProductionModule3();
-            FillProductionModule(productionModuleComponent, productionInfo);
-            productionModuleComponent.CountRaw1OfCycle = productionInfo.Raws.Take(1).First().CountInCycle;
-            productionModuleComponent.CountRaw2OfCycle = productionInfo.Raws.Skip(1).Take(1).First().CountInCycle;
-            productionModuleComponent.CountRaw3OfCycle = productionInfo.Raws.Skip(2).Take(1).First().CountInCycle;
-            entity.Add(productionModuleComponent);
-
-            var warehouseComponent = new WarehouseProductionModulRaw3();
-            FillWarehouseProductionModul(warehouseComponent, productionInfo);
-            warehouseComponent.MaxCountRaw1 = 1000;
-            warehouseComponent.TypeRaw1 = productionInfo.Raws.Take(1).First().ProductType;
-            warehouseComponent.MaxCountRaw2 = 1000;
-            warehouseComponent.TypeRaw2 = productionInfo.Raws.Skip(1).Take(1).First().ProductType;
-            warehouseComponent.MaxCountRaw3 = 1000;
-            warehouseComponent.TypeRaw3 = productionInfo.Raws.Skip(2).Take(1).First().ProductType;
-            entity.Add(warehouseComponent);
-        }
-        private void AddProductionWithFourRaws(Entity entity, ProductionInfo productionInfo)
-        {
-            var productionModuleComponent = new ProductionModule4();
-            FillProductionModule(productionModuleComponent, productionInfo);
-            productionModuleComponent.CountRaw1OfCycle = productionInfo.Raws.Take(1).First().CountInCycle;
-            productionModuleComponent.CountRaw2OfCycle = productionInfo.Raws.Skip(1).Take(1).First().CountInCycle;
-            productionModuleComponent.CountRaw3OfCycle = productionInfo.Raws.Skip(2).Take(1).First().CountInCycle;
-            productionModuleComponent.CountRaw4OfCycle = productionInfo.Raws.Skip(3).Take(1).First().CountInCycle;
-            entity.Add(productionModuleComponent);
-
-            var warehouseComponent = new WarehouseProductionModulRaw4();
-            FillWarehouseProductionModul(warehouseComponent, productionInfo);
-            warehouseComponent.MaxCountRaw1 = 1000;
-            warehouseComponent.TypeRaw1 = productionInfo.Raws.Take(1).First().ProductType;
-            warehouseComponent.MaxCountRaw2 = 1000;
-            warehouseComponent.TypeRaw2 = productionInfo.Raws.Skip(1).Take(1).First().ProductType;
-            warehouseComponent.MaxCountRaw3 = 1000;
-            warehouseComponent.TypeRaw3 = productionInfo.Raws.Skip(2).Take(1).First().ProductType;
-            warehouseComponent.MaxCountRaw4 = 1000;
-            warehouseComponent.TypeRaw4 = productionInfo.Raws.Skip(3).Take(1).First().ProductType;
-            entity.Add(warehouseComponent);
-
-        }
-
-        private void FillProductionModule(ProductionModule productionModuleComponent, ProductionInfo productionInfo)
-        {
-            productionModuleComponent.Enable = true;
-            productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
-            productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
-        }
-        private void FillWarehouseProductionModul(WarehouseProductionModul warehouseComponent, ProductionInfo productionInfo)
-        {
-            warehouseComponent.PercentFillingRaws = 80;
-            warehouseComponent.VolumeMax = 1000;
-            warehouseComponent.ProductType = productionInfo.Product.ProductType;
-        }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Min1Once)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
     [AttributeSystemPriority(50)]
     [AttributeSystemEnable]
-    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, ProductionInfo>, ISystemAction
+    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModul>, ISystemAction
     {
-        public override void Action(int entityId, BridgeProductionModulToStantion bridgeProductionModulToStantion, ProductionInfo productionInfo, float deltaTime)
+        //TODO При добавлении моста есть смысл включить закупку сырья? Или этим должны заниматься AI станции \ Игрок? 
+
+        public override void Action(int entityId, BridgeProductionModulToStantion bridgeProductionModulToStantion, WarehouseProductionModul warehouseProductionModul, float deltaTime)
         {
             //Должна быть отдельная система для изменения процента заполнения склада Raw материалами (при добавлении компонента должно присвоиться значение процента и рассчитаться значения по каждому компоненту)
+            //Вызывается при измнении настроек и при добавлении (инициализации)
 
+            //Перемещение товара между производственным модулем и станцией
             if(IECS.GetEntity(entityId, out var entity))
             {
-                //Нужно переделать склад под формат со списком Raw 
-            }
-            //Проверить Warehouse
-            //Для всех Raw меньше максимального заполнения перетащить со станции.
-            //Ищем на родительской станции компонент продукта
-            //Если он есть
-            //Если хватает -> Вычитаем необходимое кол-во и прибавляем в Warehouse
-            //Если не хватает -> вычитаем остатки и прибавляем в Warehouse
-
-            //Перемещаем имеющиеся продукты с Warehouse на станцию.
-
-            WarehouseProductionModul warehouse;
-
-            if (entity.ParentEntity != null)
-            {
-                if (entity.ParentEntity.Get(productionInfo.Product.ProductType, out var component))
+                if(entity.ParentEntity != null)
                 {
-                    var product = (Product)component;
+                    if (warehouseProductionModul.Product.Value.Value>0)
+                    {
+                        if (entity.ParentEntity.Get(ProductTypeMatcher.ToType(warehouseProductionModul.Product.Key), out var component))
+                        {
+                            var product = (Product)component;
+                            if (true) //TODO Если на станции достаточно свободного места
+                            {
+                                product.Count += warehouseProductionModul.Product.Value.Value;
+                                warehouseProductionModul.Product.Value.Value = 0;
+                            }
+                            //TODO Если места не хватает, то переместить то кол-во товара, под которое есть место
+                        }
+                        else
+                        {
+                            //var product = (ComponentBase)Activator.CreateInstance(ProductTypeMatcher.ToType(warehouseProductionModul.Product.Key));
+                            //TODO Переместить продукт в компонент станции.
+                            //entity.ParentEntity.Add(product); //TODO Исключение
+                        }
+                    }
 
-                    //Получить склад станции
-                    //Если склада нету?
-                    if (true) //Если у станции достаточно места на складе
+                    foreach (var raw in warehouseProductionModul.Raws)
                     {
-                        //product.Count += warehouse.CountProduct;
-                        //warehouse.CountProduct = 0;
-                    }
-                    else //Если у станции недостаточно места на складе
-                    {
-                        var moveQuantity = 0; //Сколько продукта поместится в свободный объем
-                        product.Count += moveQuantity;
-                        warehouse.CountProduct -= moveQuantity;
-                    }
+                        if(entity.ParentEntity.Get(ProductTypeMatcher.ToType(raw.Key), out var component1))
+                        {
+                            var product = (Product)component1;
+                            var needValue = raw.Value.MaxValue - raw.Value.Value;
+                            if (product.Count > needValue)
+                            {
+                                raw.Value.Value += needValue;
+                                product.Count -= needValue;
+                            } //Если на станции хватает сырья для передачи производственному модулю
+                            else if (product.Count > 0)
+                            {
+                                raw.Value.Value += product.Count;
+                                product.Count = 0;
+                            } //Если на станции не хватает сырья для передачи производственному модулю
+                        }
+                    } //Перемещаем на склад производственного модуля сырье со станции
                 }
             }
-        }
-
-        private void CalculateRawMaxValuesInWarehouse()
-        {
-            //Рачсет перенести в систему обработки реакции на изменение значения процента заполнения
         }
     }
 
@@ -442,29 +367,18 @@ namespace GameLib.WorkFlow
         {
             if (productionModule.Enable)
             {
-                //Производительность = deltatime / (цикл производства(сек) / 100%)  <= деление на 100, заменено умножением на 0.01
-                var percent = deltatime / (productionModule.TimeCycleInSec * 0.01f);
-                productionModule.CycleCompletionPercentage += percent;
-
-                if (productionModule.CycleCompletionPercentage >= 100)
+                //Контроль производства
+                productionModule.Work = true;
+                foreach (var raw in warehouseProductionModul.Raws)
                 {
-                    productionModule.CycleCompletionPercentage -= 100;
-                    warehouseProductionModul.CountProduct += productionModule.CountProductOfCycle;
+                    if (productionModule.RawExpenses[raw.Key].Value > raw.Value.Value)
+                    {
+                        productionModule.Work = false;
+                        return;
+                    }
                 }
-            } //Если модуль работает
-        }
-    }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
-    public class ProductionSystem1 : SystemExistComponents<ProductionModule1, WarehouseProductionModulRaw1>, ISystemAction
-    {
-        public override void Action(int entityId, ProductionModule1 productionModule, WarehouseProductionModulRaw1 warehouseProductionModul, float deltatime)
-        {
-            if (productionModule.Enable)
-            {
-                if (warehouseProductionModul.CountRaw1 >= productionModule.CountRaw1OfCycle)
+                if (productionModule.Work)
                 {
                     //Производительность = deltatime / (цикл производства(сек) / 100%)  <= деление на 100, заменено умножением на 0.01
                     var percent = deltatime / (productionModule.TimeCycleInSec * 0.01f);
@@ -473,101 +387,16 @@ namespace GameLib.WorkFlow
                     if (productionModule.CycleCompletionPercentage >= 100)
                     {
                         productionModule.CycleCompletionPercentage -= 100;
-                        warehouseProductionModul.CountRaw1 -= productionModule.CountRaw1OfCycle;
-                        warehouseProductionModul.CountProduct += productionModule.CountProductOfCycle;
-                    }
-                } //Если сырья хватает
-            } //Если модуль работает
-        }
-    }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
-    public class ProductionSystem2 : SystemExistComponents<ProductionModule2, WarehouseProductionModulRaw2>, ISystemAction
-    {
-        public override void Action(int entityId, ProductionModule2 productionModule, WarehouseProductionModulRaw2 warehouseProductionModul, float deltatime)
-        {
-            if (productionModule.Enable)
-            {
-                if (warehouseProductionModul.CountRaw1 >= productionModule.CountRaw1OfCycle
-                    && warehouseProductionModul.CountRaw2 >= productionModule.CountRaw2OfCycle)
-                {
-                    //Производительность = deltatime / (цикл производства(сек) / 100%)  <= деление на 100, заменено умножением на 0.01
-                    var percent = deltatime / (productionModule.TimeCycleInSec * 0.01f);
-                    productionModule.CycleCompletionPercentage += percent;
+                        warehouseProductionModul.Product.Value.Value += productionModule.CountProductOfCycle;
 
-                    if (productionModule.CycleCompletionPercentage >= 100)
-                    {
-                        productionModule.CycleCompletionPercentage -= 100;
-                        warehouseProductionModul.CountRaw1 -= productionModule.CountRaw1OfCycle;
-                        warehouseProductionModul.CountRaw2 -= productionModule.CountRaw2OfCycle;
-                        warehouseProductionModul.CountProduct += productionModule.CountProductOfCycle;
-                    }
-                } //Если сырья хватает
-            } //Если модуль работает
-        }
-    }
-
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
-    public class ProductionSystem3 : SystemExistComponents<ProductionModule3, WarehouseProductionModulRaw3>, ISystemAction
-    {
-        public override void Action(int entityId, ProductionModule3 productionModule, WarehouseProductionModulRaw3 warehouseProductionModul, float deltatime)
-        {
-            if (productionModule.Enable)
-            {
-                if (warehouseProductionModul.CountRaw1 >= productionModule.CountRaw1OfCycle
-                    && warehouseProductionModul.CountRaw2 >= productionModule.CountRaw2OfCycle
-                    && warehouseProductionModul.CountRaw3 >= productionModule.CountRaw3OfCycle)
-                {
-                    //Производительность = deltatime / (цикл производства(сек) / 100%)  <= деление на 100, заменено умножением на 0.01
-                    var percent = deltatime / (productionModule.TimeCycleInSec * 0.01f);
-                    productionModule.CycleCompletionPercentage += percent;
-
-                    if (productionModule.CycleCompletionPercentage >= 100)
-                    {
-                        productionModule.CycleCompletionPercentage -= 100;
-                        warehouseProductionModul.CountRaw1 -= productionModule.CountRaw1OfCycle;
-                        warehouseProductionModul.CountRaw2 -= productionModule.CountRaw2OfCycle;
-                        warehouseProductionModul.CountRaw3 -= productionModule.CountRaw3OfCycle;
-                        warehouseProductionModul.CountProduct += productionModule.CountProductOfCycle;
-                    }
-                } //Если сырья хватает
-            } //Если модуль работает
-        }
-    }
-
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
-    public class ProductionSystem4 : SystemExistComponents<ProductionModule4, WarehouseProductionModulRaw4>, ISystemAction
-    {
-        public override void Action(int entityId, ProductionModule4 productionModule, WarehouseProductionModulRaw4 warehouseProductionModul, float deltatime)
-        {
-            if (productionModule.Enable)
-            {
-                if (warehouseProductionModul.CountRaw1 >= productionModule.CountRaw1OfCycle
-                    && warehouseProductionModul.CountRaw2 >= productionModule.CountRaw2OfCycle
-                    && warehouseProductionModul.CountRaw3 >= productionModule.CountRaw3OfCycle
-                    && warehouseProductionModul.CountRaw4 >= productionModule.CountRaw4OfCycle)
-                {
-                    //Производительность = deltatime / (цикл производства(сек) / 100%)  <= деление на 100, заменено умножением на 0.01
-                    var percent = deltatime / (productionModule.TimeCycleInSec * 0.01f);
-                    productionModule.CycleCompletionPercentage += percent;
-
-                    if (productionModule.CycleCompletionPercentage >= 100)
-                    {
-                        productionModule.CycleCompletionPercentage -= 100;
-                        warehouseProductionModul.CountRaw1 -= productionModule.CountRaw1OfCycle;
-                        warehouseProductionModul.CountRaw2 -= productionModule.CountRaw2OfCycle;
-                        warehouseProductionModul.CountRaw3 -= productionModule.CountRaw3OfCycle;
-                        warehouseProductionModul.CountRaw4 -= productionModule.CountRaw4OfCycle;
-                        warehouseProductionModul.CountProduct += productionModule.CountProductOfCycle;
-                    }
-                } //Если сырья хватает
-            } //Если модуль работает
+                        foreach (var rawExpense in productionModule.RawExpenses)
+                        {
+                            warehouseProductionModul.Raws[rawExpense.Key].Value -= rawExpense.Value.Value;
+                        }
+                    } //Если производственный цикл завершен
+                } //Если модуль работает
+            }
         }
     }
     #endregion

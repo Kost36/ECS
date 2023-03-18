@@ -2,11 +2,12 @@
 using ECSCore.Interfaces.ECS;
 using GameLib;
 using GameLib.Entitys.StaticEntitys;
-using GameLib.WorkFlow.WorkFlowProduction;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
 using System.Threading;
+using GameLib.WorkFlow;
+using GameLib.WorkFlow.NewProduct;
 
 namespace GameLibTests
 {
@@ -60,18 +61,14 @@ namespace GameLibTests
         {
             Init();
             var entity = IECS.AddEntity(new Stantion());
-            entity.Add(new Production<Iron>());
             entity.Add(new Enargy() { Count = 10000 });
             entity.Add(new Ore() { Count = 10000 });
-            entity.Add(new Sand() { Count = 10000 });
+            entity.Add(new Iron() { Count = 0 }); //TODO Должно автоматом накинуться
 
-            var entity1 = IECS.AddEntity(new Stantion());
-            entity1.Add(new Production<Silicon>());
-            entity1.Add(new Enargy() { Count = 10000 });
-            entity1.Add(new Ore() { Count = 10000 });
-            entity1.Add(new Sand() { Count = 10000 });
+            var entity1 = entity.AddChild(new GameLib.Entitys.StaticEntitys.ProductionModule());
+            entity1.Add(new Production<Iron>());
+
             var end = false;
-
             while (!end)
             {
                 Thread.Sleep(1000);

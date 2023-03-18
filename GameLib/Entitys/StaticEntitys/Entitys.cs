@@ -35,6 +35,12 @@ namespace GameLib.Entitys.StaticEntitys
     public class Stantion : Entity { }
 
     /// <summary>
+    /// Производственный модуль
+    /// </summary>
+    [Serializable]
+    public class ProductionModule : Entity { }
+
+    /// <summary>
     /// Стационарная турель в космическом пространстве
     /// </summary>
     [Serializable]

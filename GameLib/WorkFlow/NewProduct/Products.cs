@@ -176,8 +176,13 @@ namespace GameLib.WorkFlow.NewProduct
     /// <summary>
     /// Энергия
     /// </summary>
-    public sealed class Enargy : Product { }
-
+    public sealed class Enargy : Product
+    {
+        public Enargy()
+        {
+            ProductType = ProductType.Enargy;
+        }
+    }
     /// <summary>
     /// Руда
     /// </summary>
@@ -241,6 +246,10 @@ namespace GameLib.WorkFlow.NewProduct
     /// </summary>
     public enum ProductType 
     {
+        /// <summary>
+        /// Энергия
+        /// </summary>
+        Enargy,
         /// <summary>
         /// Руда
         /// </summary>

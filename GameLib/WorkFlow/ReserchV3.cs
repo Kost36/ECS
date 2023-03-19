@@ -33,7 +33,7 @@ namespace GameLib.WorkFlow
         private static readonly Dictionary<string, ProductionInfo> Collection = new Dictionary<string, ProductionInfo>()
         {
             { typeof(Enargy).FullName, new ProductionInfo<Enargy>(productType: ProductType.Enargy, cycleTimeInSec: 60, productCountInCycle: 300)},
-            { typeof(Iron).FullName, new ProductionInfo<Iron, Enargy, Ore>(productType: ProductType.Iron, cycleTimeInSec: 60, productCountInCycle: 10, raw1Type: ProductType.Enargy, raw1CountInCycle: 100, raw2Type: ProductType.Ore, raw2CountInCycle: 20)},
+            { typeof(Iron).FullName, new ProductionInfo<Iron, Enargy, Ore>(productType: ProductType.Iron, cycleTimeInSec: 90, productCountInCycle: 10, raw1Type: ProductType.Enargy, raw1CountInCycle: 100, raw2Type: ProductType.Ore, raw2CountInCycle: 20)},
         };
 
         public static bool GetProductionInfo(Type typeProduct, out ProductionInfo productionInfo)
@@ -263,7 +263,7 @@ namespace GameLib.WorkFlow
                         CountProductOfCycle = productionInfo.Product.CountInCycle };
                     var warehouseComponent = new WarehouseProductionModul() {
                         PercentFillingRaws = 80,
-                        VolumeMax = 1000 }; //ProductType = productionInfo.Product.ProductType, };
+                        VolumeMax = 1000 };
 
                     productionModuleComponent.ProductType = productionInfo.Product.ProductType;
                     productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
@@ -284,7 +284,7 @@ namespace GameLib.WorkFlow
                             rawInfo.ProductType,
                             new Count() {
                                 Value = 0,
-                                MaxValue=1000 });
+                                MaxValue = rawInfo.CountInCycle + rawInfo.CountInCycle });
                     }
 
                     entity.Add(productionModuleComponent);
@@ -298,12 +298,17 @@ namespace GameLib.WorkFlow
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [AttributeSystemCalculate(SystemCalculateInterval.Min1Once)]
     [AttributeSystemPriority(50)]
     [AttributeSystemEnable]
-    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModul>, ISystemAction
+    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModul>, ISystemActionAdd, ISystemAction
     {
         //TODO При добавлении моста есть смысл включить закупку сырья? Или этим должны заниматься AI станции \ Игрок? 
+
+        public override void ActionAdd(BridgeProductionModulToStantion bridgeProductionModulToStantion, WarehouseProductionModul warehouseProductionModul, Entity entity)
+        {
+            MoveProduct(entity, warehouseProductionModul);
+        }
 
         public override void Action(int entityId, BridgeProductionModulToStantion bridgeProductionModulToStantion, WarehouseProductionModul warehouseProductionModul, float deltaTime)
         {
@@ -311,50 +316,55 @@ namespace GameLib.WorkFlow
             //Вызывается при измнении настроек и при добавлении (инициализации)
 
             //Перемещение товара между производственным модулем и станцией
-            if(IECS.GetEntity(entityId, out var entity))
+            if (IECS.GetEntity(entityId, out var entity))
             {
-                if(entity.ParentEntity != null)
-                {
-                    if (warehouseProductionModul.Product.Value.Value>0)
-                    {
-                        if (entity.ParentEntity.Get(ProductTypeMatcher.ToType(warehouseProductionModul.Product.Key), out var component))
-                        {
-                            var product = (Product)component;
-                            if (true) //TODO Если на станции достаточно свободного места
-                            {
-                                product.Count += warehouseProductionModul.Product.Value.Value;
-                                warehouseProductionModul.Product.Value.Value = 0;
-                            }
-                            //TODO Если места не хватает, то переместить то кол-во товара, под которое есть место
-                        }
-                        else
-                        {
-                            //var product = (ComponentBase)Activator.CreateInstance(ProductTypeMatcher.ToType(warehouseProductionModul.Product.Key));
-                            //TODO Переместить продукт в компонент станции.
-                            //entity.ParentEntity.Add(product); //TODO Исключение
-                        }
-                    }
-
-                    foreach (var raw in warehouseProductionModul.Raws)
-                    {
-                        if(entity.ParentEntity.Get(ProductTypeMatcher.ToType(raw.Key), out var component1))
-                        {
-                            var product = (Product)component1;
-                            var needValue = raw.Value.MaxValue - raw.Value.Value;
-                            if (product.Count > needValue)
-                            {
-                                raw.Value.Value += needValue;
-                                product.Count -= needValue;
-                            } //Если на станции хватает сырья для передачи производственному модулю
-                            else if (product.Count > 0)
-                            {
-                                raw.Value.Value += product.Count;
-                                product.Count = 0;
-                            } //Если на станции не хватает сырья для передачи производственному модулю
-                        }
-                    } //Перемещаем на склад производственного модуля сырье со станции
-                }
+                MoveProduct(entity, warehouseProductionModul);
             }
+        }
+
+        private void MoveProduct(Entity entity, WarehouseProductionModul warehouse)
+        {
+            if (entity.ParentEntity != null)
+            {
+                if (warehouse.Product.Value.Value > 0)
+                {
+                    if (entity.ParentEntity.Get(ProductTypeMatcher.ToType(warehouse.Product.Key), out var component))
+                    {
+                        var product = (Product)component;
+                        if (true) //TODO Если на станции достаточно свободного места
+                        {
+                            product.Count += warehouse.Product.Value.Value;
+                            warehouse.Product.Value.Value = 0;
+                        }
+                        //TODO Если места не хватает, то переместить то кол-во товара, под которое есть место
+                    }
+                    else
+                    {
+                        //var product = (ComponentBase)Activator.CreateInstance(ProductTypeMatcher.ToType(warehouseProductionModul.Product.Key));
+                        //TODO Переместить продукт в компонент станции.
+                        //entity.ParentEntity.Add(product); //TODO Исключение
+                    }
+                }
+
+                foreach (var raw in warehouse.Raws)
+                {
+                    if (entity.ParentEntity.Get(ProductTypeMatcher.ToType(raw.Key), out var component1))
+                    {
+                        var product = (Product)component1;
+                        var needValue = raw.Value.MaxValue - raw.Value.Value;
+                        if (product.Count > needValue)
+                        {
+                            raw.Value.Value += needValue;
+                            product.Count -= needValue;
+                        } //Если на станции хватает сырья для передачи производственному модулю
+                        else if (product.Count > 0)
+                        {
+                            raw.Value.Value += product.Count;
+                            product.Count = 0;
+                        } //Если на станции не хватает сырья для передачи производственному модулю
+                    }
+                } //Перемещаем на склад производственного модуля сырье со станции
+            } //Перемещение товара между производственным модулем и станцией
         }
     }
 

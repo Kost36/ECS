@@ -1,7 +1,7 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces;
 
-namespace GameLib.Components.Products
+namespace GameLib.Components.WorkFlow.Products
 {
     #region Базовый объект товара
     /// <summary>
@@ -163,7 +163,6 @@ namespace GameLib.Components.Products
     }
     #endregion
 
-    
     #region Сырьё 0 уровень (Добываемое)
     /// <summary>
     /// Руда

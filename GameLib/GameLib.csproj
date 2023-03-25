@@ -62,6 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ProductTypeAttribute.cs" />
+    <Compile Include="Components\Warehouse.cs" />
+    <Compile Include="Datas\Count.cs" />
+    <Compile Include="Exceptions\ExceptionProductNotHaveAttribute.cs" />
+    <Compile Include="Products\Lvl0\Battery.cs" />
+    <Compile Include="Products\Lvl0\Ore.cs" />
+    <Compile Include="Products\Lvl1\Iron.cs" />
+    <Compile Include="Components\Product.cs" />
+    <Compile Include="Mechanics\Production\Datas\Expense.cs" />
     <Compile Include="Entitys\DynamicEntitys\Entitys.cs" />
     <Compile Include="Entitys\StaticEntitys\Entitys.cs" />
     <Compile Include="Mechanics\Move\Components\PozitionSV.cs" />
@@ -78,23 +87,30 @@
     <Compile Include="Mechanics\Move\Systems\AccelerateSystem.cs" />
     <Compile Include="Mechanics\Move\Systems\ControlEndPositionSystem.cs" />
     <Compile Include="Mechanics\Move\Systems\StartMoveSystem.cs" />
+    <Compile Include="Mechanics\Production\Components\BridgeProductionModulToStantion.cs" />
+    <Compile Include="Mechanics\Production\Components\Production.cs" />
+    <Compile Include="Mechanics\Production\Components\ProductionInfo.cs" />
+    <Compile Include="Mechanics\Production\Components\ProductionModule.cs" />
+    <Compile Include="Mechanics\Production\Components\ProductionModuleBuild.cs" />
+    <Compile Include="Mechanics\Production\Components\WarehouseProductionModul.cs" />
+    <Compile Include="Mechanics\Production\Datas\ProductInfo.cs" />
+    <Compile Include="Mechanics\Production\Entites\ModuleProduction.cs" />
+    <Compile Include="Products\ProductType.cs" />
+    <Compile Include="Providers\ProductionInfoProvider.cs" />
+    <Compile Include="Products\ProductTypeMatcher.cs" />
+    <Compile Include="Mechanics\Production\Systems\BridgeProductionModulToStantionSystem.cs" />
+    <Compile Include="Mechanics\Production\Systems\ProductionBuilderSystem.cs" />
+    <Compile Include="Mechanics\Production\Systems\ProductionSystem.cs" />
+    <Compile Include="Providers\ProductTypeProvider.cs" />
     <Compile Include="WorkFlow\NewProduct\Products.cs" />
-    <Compile Include="WorkFlow\Prodaction.cs" />
     <Compile Include="Components\Components.cs" />
-    <Compile Include="WorkFlow\Other.cs" />
     <Compile Include="GetAssembly.cs" />
     <Compile Include="Ship\ShipModules.cs" />
     <Compile Include="Ship\ShipBodys.cs" />
-    <Compile Include="WorkFlow\Production.cs" />
     <Compile Include="WorkFlow\Products\Products.cs" />
-    <Compile Include="WorkFlow\Old\Components\Tasks\Tasks.cs" />
     <Compile Include="Enums\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkFlow\ReserchV3.cs" />
-    <Compile Include="WorkFlow\ReserchV2.cs" />
-    <Compile Include="WorkFlow\ReserchV1.cs" />
     <Compile Include="WorkFlow\WorkFlowProduction\Products.cs" />
-    <Compile Include="WorkFlow\WorkFlowProduction\Systems.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj">
@@ -107,10 +123,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Matchers\" />
     <Folder Include="Mechanics\AI\" />
     <Folder Include="Mechanics\Balance\" />
-    <Folder Include="Mechanics\Production\" />
     <Folder Include="Mechanics\Trade\" />
+    <Folder Include="Products\Lvl2\" />
+    <Folder Include="Products\Lvl3\" />
+    <Folder Include="Products\Lvl4\" />
+    <Folder Include="Products\Lvl5\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

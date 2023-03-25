@@ -1,13 +1,17 @@
 ﻿using ECSCore;
 using ECSCore.Interfaces.ECS;
 using GameLib;
+using GameLib.Components;
+using GameLib.Datas;
 using GameLib.Entitys.StaticEntitys;
+using GameLib.Mechanics.Production.Components;
+using GameLib.Products;
+using GameLib.Products.Lvl1;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using GameLib.WorkFlow;
-using GameLib.WorkFlow.NewProduct;
 
 namespace GameLibTests
 {
@@ -29,83 +33,62 @@ namespace GameLibTests
         }
 
         [TestMethod()]
-        public void TestMemory()
-        {
-            Init();
-
-            //var countObjects = 1000000; 
-            //for (int i=0; i < countObjects; i++)
-            //{
-            //    var entity = IECS.AddEntity(new Stantion());
-            //    entity.Add(new Enargy());
-            //} //321 Mb
-
-            var countObjects = 1000000;
-            for (int i = 0; i < countObjects; i++)
-            {
-                var entity = IECS.AddEntity(new Stantion());
-                entity.Add(new Iron());
-            } //321 Mb
-
-            var end = false;
-            while (!end)
-            {
-                Thread.Sleep(1000);
-
-                Console.WriteLine("breakpoint");
-            }
-        }
-
-        [TestMethod()]
         public void Test()
         {
             Init();
             var entity = IECS.AddEntity(new Stantion());
-            entity.Add(new Enargy() { Count = 1000 });
-            entity.Add(new Ore() { Count = 1000 });
-            entity.Add(new Iron() { Count = 0 }); //TODO Должно автоматом накинуться
+            entity.Add(new Warehouse()
+            {
+                VolumeMax = 100000,
+                Products = new Dictionary<ProductType, Count>() 
+                {
+                    { ProductType.Battery, new Count() { Value = 1000, MaxValue = 5000 } },
+                    { ProductType.Ore, new Count() { Value = 1000, MaxValue = 5000 } }
+                }
+            });
 
             var entity1 = entity.AddChild(new GameLib.Entitys.StaticEntitys.ProductionModule());
             entity1.Add(new Production<Iron>());
 
             Thread.Sleep(1000);
 
-            entity.Get<Enargy>(out var enargy);
-            entity.Get<Ore>(out var ore);
-            entity.Get<Iron>(out var iron);
-            entity1.Get<WarehouseProductionModul>(out var warehouse);
-            entity1.Get<GameLib.WorkFlow.ProductionModule>(out var productionModule);
+            entity.Get<Warehouse>(out var warehouseStantion);
+            entity1.Get<WarehouseProductionModul>(out var warehouseModule);
+            entity1.Get<GameLib.Mechanics.Production.Components.ProductionModule>(out var productionModule);
 
             var end = false;
             var secCount = 0;
             while (!end)
             {
                 Thread.Sleep(1000);
+                
+                if( warehouseStantion.Products.TryGetValue(ProductType.Iron, out var irone)) { }
 
                 Debug.WriteLine($"{Environment.NewLine}" +
                     $"Stantion: {Environment.NewLine}" +
                     $"EntityId [{entity.Id}] " +
-                    $"Enargy [{enargy.Count}] " +
-                    $"Ore [{ore.Count}] " +
-                    $"Irone [{iron.Count}] ");
+                    $"Enargy [{warehouseStantion.Products[ProductType.Battery]?.Value}] " +
+                    $"Ore [{warehouseStantion.Products[ProductType.Ore]?.Value}] " +
+                    $"Irone [{irone?.Value}] ");
+
                 Debug.WriteLine($"ProductionModule: {Environment.NewLine}" +
                     $"Module enable [{productionModule.Enable}] " +
                     $"Module work [{productionModule.Work}] " +
                     $"Module cycle [{productionModule.CycleCompletionPercentage}]% " +
                     $"EntityId [{entity1.Id}] " +
-                    $"Enargy [{warehouse.Raws[ProductType.Enargy].Value}] " +
-                    $"Ore [{warehouse.Raws[ProductType.Ore].Value}] " +
-                    $"Irone [{warehouse.Product.Value.Value}] ");
+                    $"Enargy [{warehouseModule.Raws[ProductType.Battery].Value}] " +
+                    $"Ore [{warehouseModule.Raws[ProductType.Ore].Value}] " +
+                    $"Irone [{warehouseModule.Product.Value.Value}] ");
 
                 secCount++;
                 if (secCount > 185) //Прошло 3 минуты 5 сек
                 {
-                    Assert.IsTrue(iron.Count > 0, "Not add irone to stantion");
+                    Assert.IsTrue(warehouseStantion.Products[ProductType.Iron]?.Value > 0, "Not add irone to stantion");
                 }
 
-                if (iron.Count > 100)
+                if (irone?.Value > 100)
                 {
-                    //return;
+                    return;
                 } //Ожидать результат по таймауту и бросать TestFail, если не дождались
             }
         }

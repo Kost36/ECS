@@ -4,8 +4,8 @@ using GameLib.Components;
 namespace GameLib.Products.Lvl0
 {
     /// <summary>
-    /// Руда
+    /// Энергия
     /// </summary>
-    [ProductType(ProductType.Ore)]
-    public sealed class Ore : Product { }
+    [ProductType(ProductType.Enargy)]
+    public sealed class Enargy : Product { }
 }

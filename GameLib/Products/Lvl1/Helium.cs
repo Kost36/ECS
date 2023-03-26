@@ -4,8 +4,8 @@ using GameLib.Components;
 namespace GameLib.Products.Lvl1
 {
     /// <summary>
-    /// Жедезо
+    /// Гелий
     /// </summary>
-    [ProductType(ProductType.Iron)]
-    public sealed class Iron : Product { }
+    [ProductType(ProductType.Helium)]
+    public sealed class Helium : Product { }
 }

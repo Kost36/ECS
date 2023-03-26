@@ -6,7 +6,7 @@ using GameLib.Datas;
 using GameLib.Entitys.StaticEntitys;
 using GameLib.Mechanics.Production.Components;
 using GameLib.Products;
-using GameLib.Products.Lvl1;
+using GameLib.Products.Lvl2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

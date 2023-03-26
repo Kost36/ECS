@@ -142,4 +142,38 @@ namespace GameLib.Mechanics.Production.Components
             };
         }
     }
+    public sealed class ProductionInfo<TProduct, TRaw1, TRaw2, TRaw3, TRaw4, TRaw5> : ProductionInfo
+        where TProduct : Product
+        where TRaw1 : Product
+        where TRaw2 : Product
+        where TRaw3 : Product
+        where TRaw4 : Product
+        where TRaw5 : Product
+    {
+        public ProductionInfo(
+            ProductType productType,
+            int cycleTimeInSec,
+            int productCountInCycle,
+            ProductType raw1Type,
+            int raw1CountInCycle,
+            ProductType raw2Type,
+            int raw2CountInCycle,
+            ProductType raw3Type,
+            int raw3CountInCycle,
+            ProductType raw4Type,
+            int raw4CountInCycle,
+            ProductType raw5Type,
+            int raw5CountInCycle) : base(cycleTimeInSec)
+        {
+            Product = new ProductInfo<TProduct>(productType: productType, countInCycle: productCountInCycle);
+            Raws = new List<ProductInfo>()
+            {
+                new ProductInfo<TRaw1>(productType: raw1Type, countInCycle: raw1CountInCycle),
+                new ProductInfo<TRaw2>(productType: raw2Type, countInCycle: raw2CountInCycle),
+                new ProductInfo<TRaw3>(productType: raw3Type, countInCycle: raw3CountInCycle),
+                new ProductInfo<TRaw4>(productType: raw4Type, countInCycle: raw4CountInCycle),
+                new ProductInfo<TRaw5>(productType: raw5Type, countInCycle: raw5CountInCycle)
+            };
+        }
+    }
 }

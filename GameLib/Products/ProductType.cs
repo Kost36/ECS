@@ -12,26 +12,25 @@
 
         #region Восполняемые
         /// <summary>
-        /// Аккумулятор / батарея без энергии.
-        /// Пустой
+        /// Энергия
         /// </summary>
-        BatteryEmpty,
+        Enargy,
         /// <summary>
         /// Аккумулятор / батарея с энергией.
         /// 3 кВт
         /// </summary>
         Battery,
         /// <summary>
-        /// Грязная вода
-        /// </summary>
-        WaterDirty,
-        /// <summary>
         /// Вода
         /// </summary>
         Water,
         #endregion
 
-        #region Сырьё 0 уровень (Добываемые)
+        #region Сырьё 1 уровень (Добываемые)
+        /// <summary>
+        /// Грязная вода
+        /// </summary>
+        WaterDirty,
         /// <summary>
         /// Руда
         /// </summary>
@@ -60,9 +59,13 @@
         /// Гелий
         /// </summary>
         Helium,
+        /// <summary>
+        /// Литий
+        /// </summary>
+        Lithium,
         #endregion
 
-        #region Материалы 1 уровень (Производимое)
+        #region Материалы 2 уровень (Производимое)
         /// <summary>
         /// Железо
         /// </summary>
@@ -70,7 +73,7 @@
         /// <summary>
         /// Медь
         /// </summary>
-        Сopper,
+        Copper,
         /// <summary>
         /// Алюминий
         /// </summary>
@@ -91,9 +94,13 @@
         /// Каучук
         /// </summary>
         Elastic,
+        /// <summary>
+        /// Удобрение
+        /// </summary>
+        Fertilizer,
         #endregion
 
-        #region Материалы 2 уровень (Производимое)
+        #region Материалы 3 уровень (Производимое)
         /// <summary>
         /// Металл
         /// </summary>
@@ -107,24 +114,25 @@
         /// </summary>
         Plastic,
         /// <summary>
-        /// Провода
-        /// </summary>
-        Wiring,
-        /// <summary>
         /// Кремниевая пластина
         /// </summary>
         SiliconWafer,
-        /// <summary>
-        /// Удобрение
-        /// </summary>
-        Fertilizer,
         /// <summary>
         /// Стекло
         /// </summary>
         Glass,
         #endregion
 
-        #region Товары 3 уровень (Производимое) => Высокотехнологичные  
+        #region Товары 4 уровень (Производимое) => Высокотехнологичные          
+        /// <summary>
+        /// Провода
+        /// </summary>
+        Wiring,
+        /// <summary>
+        /// Аккумулятор / батарея без энергии.
+        /// Пустой
+        /// </summary>
+        BatteryEmpty,
         /// <summary>
         /// Электроника
         /// </summary>
@@ -143,11 +151,11 @@
         Sheathing,
         #endregion
 
-        #region Товары 4 уровень (Производимое) => Оружие, дроны, турели, модули, ракеты
+        #region Товары 5 уровень (Производимое) => Оружие, дроны, турели, модули, ракеты
 
         #endregion
 
-        #region Товары 5 уровень (Производимое) => Станции, корабли
+        #region Товары 6 уровень (Производимое) => Станции, корабли
 
         #endregion
 

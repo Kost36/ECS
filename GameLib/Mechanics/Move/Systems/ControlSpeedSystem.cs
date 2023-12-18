@@ -6,10 +6,10 @@ using GameLib.Mechanics.Move.Components;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(15)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(15)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way, WayToStop>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)

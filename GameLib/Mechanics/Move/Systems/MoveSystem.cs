@@ -7,10 +7,10 @@ using GameLib.Mechanics.Move.Components;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
-    [AttributeSystemPriority(5)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Sec30Once)]
+    [SystemPriority(5)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Pozition pozition, Speed speed, float deltatime)

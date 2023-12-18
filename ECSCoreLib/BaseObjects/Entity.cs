@@ -8,7 +8,7 @@ namespace ECSCore.BaseObjects
 {
     /// <summary>
     /// Базовый класс сущьности.
-    /// Все сущьности наследовать от данного класса
+    /// Все сущьности должны наследоваться от данного класса
     /// </summary>
     public abstract class Entity : IEntity
     {
@@ -18,66 +18,69 @@ namespace ECSCore.BaseObjects
         public int Id { get; set; }
 
         /// <summary>
-        /// Родительская сущьность
+        /// Ссылка на внешнюю сущьность, в которой находится текущая сущьность
         /// </summary>
-        public IEntity ParentEntity { get; set; }
+        public IEntity ExternalEntity { get; set; }
 
         /// <summary>
-        /// Для отслеживания в тестах
+        /// Вложенные сущьности
+        /// </summary>
+        public Dictionary<int, IEntity> NestedEntites { get; } = new Dictionary<int, IEntity>();
+
+        /// <summary>
+        /// Компоненты
         /// </summary>
         public List<IComponent> Components { get; } = new List<IComponent>();
 
         /// <summary>
-        /// Дочерние сущьности
+        /// Добавить вложенную сущьность
         /// </summary>
-        public Dictionary<int, IEntity> ChildEntitys { get; } = new Dictionary<int, IEntity>();
-
-        /// <summary>
-        /// Добавить дочернюю сущьность
-        /// </summary>
-        /// <param name="entity"> дочерняя сущьность </param>
-        public IEntity AddChild<T>(T entity)
+        /// <param name="entity"> вложенная сущьность </param>
+        public IEntity AddNestedEntity<T>(T entity)
             where T : IEntity
         {
             if (entity.Id == 0)
             {
                 ECS.Instance.AddEntity(entity as Entity);
             } //Если сущьность не проинициализирована
-            lock (ChildEntitys)
+
+            lock (NestedEntites)
             {
-                this.ChildEntitys.Add(entity.Id, entity);
+                NestedEntites.Add(entity.Id, entity);
             }
-            entity.ParentEntity = this;
+
+            entity.ExternalEntity = this;
+
             return entity;
         }
 
         /// <summary>
-        /// Получить дочернюю сущьность
+        /// Получить вложенную сущьность
         /// </summary>
-        public bool GetChild<T>(int idChildEntity, out T entity)
+        public bool TryGetNestedEntity<T>(int idChildEntity, out T entity)
             where T : IEntity
         {
-            lock (ChildEntitys)
+            lock (NestedEntites)
             {
-                bool result = ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut);
+                bool result = NestedEntites.TryGetValue(idChildEntity, out IEntity entityOut);
                 entity = (T)entityOut;
                 return result;
             }
         }
 
         /// <summary>
-        /// Удалить дочернюю сущьность
+        /// Удалить вложенную сущьность
         /// </summary>
-        public bool RemoveChild<T>(int idChildEntity, out T entity)
+        public bool RemoveNestedEntity<T>(int idChildEntity, out T entity)
             where T : IEntity
         {
-            lock (ChildEntitys)
+            lock (NestedEntites)
             {
-                if (ChildEntitys.TryGetValue(idChildEntity, out IEntity entityOut))
+                if (NestedEntites.TryGetValue(idChildEntity, out IEntity entityOut))
                 {
                     entity = (T)entityOut;
-                    entityOut.ParentEntity = null;
-                    return ChildEntitys.Remove(idChildEntity);
+                    entityOut.ExternalEntity = null;
+                    return NestedEntites.Remove(idChildEntity);
                 }
                 entity = default;
                 return false;
@@ -88,7 +91,7 @@ namespace ECSCore.BaseObjects
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
-        public void Add<T>(T component)
+        public void AddComponent<T>(T component)
             where T : IComponent
         {
             component.Id = this.Id;
@@ -101,21 +104,21 @@ namespace ECSCore.BaseObjects
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        public bool Get<T>(out T component)
+        public bool TryGetComponent<T>(out T component)
             where T : IComponent
         {
-            return GetComponent(out component);
+            return TryGetComponentInternal<T>(out component);
         }
 
         /// <summary>
-        /// Получить компонент (Если есть)
+        /// Получить компонент
         /// </summary>
-        /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
+        /// <param name="typeComponent"> Тип компонента </param>
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        public bool Get(Type typeComponent, out IComponent component)
+        public bool TryGetComponent(Type typeComponent, out IComponent component)
         {
-            return GetComponent(typeComponent, out component);
+            return TryGetComponentInternal(typeComponent, out component);
         }
 
         /// <summary>
@@ -123,17 +126,27 @@ namespace ECSCore.BaseObjects
         /// </summary>
         /// <param name="typeComponent"> Тип компонента </param>
         /// <returns> Флаг наличия компонента </returns>
-        public bool CheckExist(Type typeComponent)
+        public bool CheckExistComponent(Type typeComponent)
         {
-            return CheckExistComponent(typeComponent);
+            lock (Components)
+            {
+                foreach (var item in Components)
+                {
+                    if (item.GetType().FullName == typeComponent.FullName)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
 
         /// <summary>
-        /// Удалить компонент (Если есть)
+        /// Удалить компонент
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
-        public void Remove<T>()
+        public void RemoveComponent<T>()
             where T : IComponent
         {
             ECS.Instance.RemoveComponent<T>(this.Id);
@@ -148,34 +161,21 @@ namespace ECSCore.BaseObjects
             ECS.Instance.RemoveEntity(this.Id); //Удалимся
         }
 
-        /// <summary>
-        /// Добавить компонент в коллекцию сущьности
-        /// </summary>
-        /// <typeparam name="T"> Generic - тип компонента </typeparam>
-        /// <param name="component"> Компонент </param>
-        internal void AddComponent<T>(T component)
+        internal void AddComponentInternal<T>(T component)
             where T : IComponent
         {
-            //if (GetComponent(out T componentInEntity))
-            if (GetComponent(out T _))
+            if (TryGetComponentInternal(out T _))
             {
                 throw new ExceptionEntityHaveComponent($"У сущьности: {Id} уже есть компонент: {typeof(T).Name}");
-                //componentInEntity = component;
-                //return;
-            } //Если нету
+            }
+
             lock (Components)
             {
                 Components.Add(component);
             }
         }
-
-        /// <summary>
-        /// Получить компонент из своего списка
-        /// </summary>
-        /// <typeparam name="T"> Generic тип компонента </typeparam>
-        /// <param name="component"> Компонент </param>
-        /// <returns></returns>
-        private bool GetComponent<T>(out T component)
+        
+        internal bool TryGetComponentInternal<T>(out T component)
             where T : IComponent
         {
             lock (Components)
@@ -193,49 +193,7 @@ namespace ECSCore.BaseObjects
             }
         }
 
-        /// <summary>
-        /// Удалить компонент из коллекции сущьности
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        internal void RemoveComponent<T>()
-            where T : IComponent
-        {
-            if (GetComponent(out T Component))
-            {
-                lock (Components)
-                {
-                    Components.Remove(Component);
-                }
-            } //Если есть в коллекции
-        }
-
-        /// <summary>
-        /// Проверить наличие компонента у сущьности
-        /// </summary>
-        /// <param name="typeComponent"> Тип компонента </param>
-        /// <returns> Флаг наличия компонента </returns>
-        private bool CheckExistComponent(Type typeComponent)
-        {
-            lock (Components)
-            {
-                foreach (var item in Components)
-                {
-                    if (item.GetType().FullName == typeComponent.FullName)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Получить компонент у сущьности
-        /// </summary>
-        /// <param name="typeComponent"> Тип компонента </param>
-        /// <param name="component"> Компонент </param>
-        /// <returns> Флаг наличия компонента </returns>
-        private bool GetComponent(Type typeComponent, out IComponent component)
+        internal bool TryGetComponentInternal(Type typeComponent, out IComponent component)
         {
             lock (Components)
             {
@@ -252,17 +210,31 @@ namespace ECSCore.BaseObjects
             }
         }
 
+        internal void RemoveComponentInternal<T>()
+            where T : IComponent
+        {
+            if (TryGetComponent(out T Component))
+            {
+                lock (Components)
+                {
+                    Components.Remove(Component);
+                }
+            }
+        }
+
         /// <summary>
-        /// Отвязать родительские и дочерние сущьности
+        /// Отвязать внешние и вложенные сущьности
         /// </summary>
         private void UnbindParentAndChild()
         {
-            foreach (IEntity entity in ChildEntitys.Values)
+            foreach (IEntity entity in NestedEntites.Values)
             {
-                entity.ParentEntity = null;
-            } //Отвяжемся от всех дочерних сущьностей
-            ChildEntitys.Clear(); //Очистим дочерние сущьности
-            ParentEntity?.RemoveChild(this.Id, out IEntity _); //Отвяжемся от родительской сущьности
+                entity.ExternalEntity = null;
+            }
+
+            NestedEntites.Clear();
+
+            ExternalEntity?.RemoveNestedEntity(this.Id, out IEntity _);
         }
     }
 }

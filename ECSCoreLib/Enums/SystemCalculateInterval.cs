@@ -1,55 +1,6 @@
 ﻿namespace ECSCore.Enums
 {
     /// <summary>
-    /// Скорость выполнения систем;
-    /// Регулируется, путем множителя deltaTime у систем
-    /// </summary>
-    public enum ECSSpeed
-    {
-        /// <summary>
-        /// Пауза
-        /// </summary>
-        Pause,
-        /// <summary>
-        /// Нормальная скорость X1
-        /// </summary>
-        Run,
-        /// <summary>
-        /// Замедление X0.5
-        /// </summary>
-        X_0_5,
-        /// <summary>
-        /// Ускорение X2
-        /// </summary>
-        X_2_0,
-        /// <summary>
-        /// Ускорение X4
-        /// </summary>
-        X_4_0,
-        /// <summary>
-        /// Ускорение X8
-        /// </summary>
-        X_8_0,
-        /// <summary>
-        /// Ускорение X16
-        /// </summary>
-        X_16_0,
-    }
-    /// <summary>
-    /// Тип фаилов сохранения
-    /// </summary>
-    public enum TypeFileSave
-    {
-        /// <summary>
-        /// Json Формат
-        /// </summary>
-        Json,
-        /// <summary>
-        /// Бинарный формат
-        /// </summary>
-        Bin,
-    }
-    /// <summary>
     /// Интервал обработки системы
     /// </summary>
     public enum SystemCalculateInterval
@@ -146,45 +97,5 @@
         /// 1 Раза в день / 1 Раз в 24 часа
         /// </summary>
         Day1Once = 86400000
-    }
-    /// <summary>
-    /// Тип выполнения системы
-    /// </summary>
-    internal enum SystemActionType
-    {
-        /// <summary>
-        /// Выполнить в текущем потоке
-        /// </summary>
-        RunInThisThread,
-        /// <summary>
-        /// Выполнить в одном отдельном потоке
-        /// </summary>
-        RunInOneThread,
-        /// <summary>
-        /// Выполнить в нескольких отдельных потоках
-        /// </summary>
-        RunInThreads,
-        /// <summary>
-        /// Выполнить в введенном потоке
-        /// </summary>
-        RunInInjectThread,
-    }
-    /// <summary>
-    /// Контроль задержки выполнения / вычисления
-    /// </summary>
-    internal enum ControlTypeDelay
-    {
-        /// <summary>
-        /// Не контролировать задержку выполнения
-        /// </summary>
-        Not,
-        /// <summary>
-        /// Контролировать выполнение системы
-        /// </summary>
-        DelayRunSystem,
-        /// <summary>
-        /// Контролировать вычиследние фильтра системы
-        /// </summary>
-        DelayCalculateFiltersSystem
     }
 }

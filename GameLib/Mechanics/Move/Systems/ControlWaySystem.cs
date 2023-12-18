@@ -8,10 +8,10 @@ using MathLib;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(10)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(10)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class ControlWaySystem : SystemExistComponents<Pozition, PozitionSV, Way>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Pozition pozition, PozitionSV pozitionSV, Way way, float deltatime)

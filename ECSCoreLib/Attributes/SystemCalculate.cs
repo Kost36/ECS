@@ -10,9 +10,13 @@ namespace ECSCore.Attributes
     /// * Желательный интервал (мс),
     /// * Перечисление
     /// </summary>
-    public class AttributeSystemCalculate : Attribute
+    public class SystemCalculate : Attribute
     {
-        #region Конструкторы
+        /// <summary>
+        /// Интервал обработки системы (ms)
+        /// </summary>
+        public int CalculateInterval { get; private set; } = (int)SystemCalculateInterval.Sec1Once;
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -35,7 +39,7 @@ namespace ECSCore.Attributes
         /// 0,02  -> 1  раз  в 50 сек;
         /// 0,016 ~> 1  раз  в    мин;
         /// </param>
-        public AttributeSystemCalculate(float maxСPS)
+        public SystemCalculate(float maxСPS)
         {
             if (maxСPS > 60)
             {
@@ -45,8 +49,10 @@ namespace ECSCore.Attributes
             {
                 maxСPS = 0.016f;
             } //Нижний лимит
-            CalculateInterval = (int)(1000 / maxСPS); //Расчет интервала в ms
+
+            CalculateInterval = (int)(1000 / maxСPS);
         }
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -62,7 +68,7 @@ namespace ECSCore.Attributes
         /// 43.200.000 = 1  раз в 12 часов;
         /// 86.400.000 = 1  раз в сутки;
         /// </param>
-        public AttributeSystemCalculate(int interval)
+        public SystemCalculate(int interval)
         {
             if (interval > 86400000)
             {
@@ -72,23 +78,19 @@ namespace ECSCore.Attributes
             {
                 interval = 17;
             } //Нижний лимит
-            CalculateInterval = interval; //Передадим интервал
+
+            CalculateInterval = interval;
         }
+
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="systemCalculateInterval">
         /// Перечисление интервала обработки систем
         /// </param>
-        public AttributeSystemCalculate(SystemCalculateInterval systemCalculateInterval)
+        public SystemCalculate(SystemCalculateInterval systemCalculateInterval)
         {
-            CalculateInterval = (int)systemCalculateInterval; //Зададим интервал
+            CalculateInterval = (int)systemCalculateInterval;
         }
-        #endregion
-
-        /// <summary>
-        /// Интервал обработки системы (ms)
-        /// </summary>
-        public int CalculateInterval { get; private set; } = (int)SystemCalculateInterval.Sec1Once;
     }
 }

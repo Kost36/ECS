@@ -9,10 +9,8 @@ namespace ECSCore.Systems
     /// </summary>
     internal class JobSystem
     {
-        #region Конструкторы
-        /// <summary>
-        /// Конструктор
-        /// </summary>
+        private Stopwatch _stopwatch = new Stopwatch();
+
         public JobSystem(SystemBase system, long ticksPoint)
         {
             System = system;
@@ -20,13 +18,7 @@ namespace ECSCore.Systems
             TicksNextRun = ticksPoint;
             CalculateNextRun();
         }
-        #endregion
 
-        #region Поля
-        private Stopwatch _stopwatch = new Stopwatch();
-        #endregion
-
-        #region Свойства
         /// <summary>
         /// Система
         /// </summary>
@@ -51,9 +43,7 @@ namespace ECSCore.Systems
         /// Метка времени следующего выполнения
         /// </summary>
         public long TicksNextRun { get; set; }
-        #endregion
 
-        #region Приватные методы
         /// <summary>
         /// Расчет deltaTime 
         /// </summary>
@@ -62,13 +52,11 @@ namespace ECSCore.Systems
         /// <returns> Интервал времени в секундах </returns>
         private float CalculateDeltaTime(long ticksPoint, float speedRun)
         {
-            float deltaTimeInSec = ((float)(ticksPoint - TicksOldRun) / (float)TimeSpan.TicksPerSecond) * speedRun; //Интервал в секундах
-            TicksOldRun = ticksPoint; //Метка времени последнего выполнения
+            float deltaTimeInSec = ((float)(ticksPoint - TicksOldRun) / (float)TimeSpan.TicksPerSecond) * speedRun;
+            TicksOldRun = ticksPoint;
             return deltaTimeInSec;
         }
-        #endregion
 
-        #region Публичные методы
         /// <summary>
         /// Сбросить метки времени
         /// </summary>
@@ -96,8 +84,8 @@ namespace ECSCore.Systems
         public void FilterCalculateTime(long limitTimeTicks = 0)
         {
             _stopwatch.Restart();
-            System.CalculateFilter(limitTimeTicks); //Вычисляем фильтр некоторое (Свободное) время
-            SystemStatistic.AddFilterCalculateStatistic(_stopwatch.ElapsedTicks); //Добавить в статистику
+            System.CalculateFilter(limitTimeTicks);
+            SystemStatistic.AddFilterCalculateStatistic(_stopwatch.ElapsedTicks);
             _stopwatch.Stop();
         }
 
@@ -109,23 +97,20 @@ namespace ECSCore.Systems
         /// <param name="speedRun"> Множитель скорости выполнения </param>
         public void Run(long ticksPoint, long ticksWorkManagerSystem, float speedRun)
         {
-            //Предобработка фильтра
             _stopwatch.Restart();
             System.CalculateFilter();
-            SystemStatistic.AddFilterCalculateStatistic(_stopwatch.ElapsedTicks); //Добавить в статистику
+            SystemStatistic.AddFilterCalculateStatistic(_stopwatch.ElapsedTicks);
 
-            //Расчет deltaTime
             _stopwatch.Restart();
-            System.DeltaTime = CalculateDeltaTime(ticksPoint, speedRun); //Расчет DeltaTime
+            System.DeltaTime = CalculateDeltaTime(ticksPoint, speedRun);
 
-            //Обработка системы
             if (System.IsAction)
             {
                 System.RunAction(); //TODO Фиксация объектов => потокобезопасность
-            } //Если система имеет интерфейс Action
-            SystemStatistic.AddRunStatistic(_stopwatch.ElapsedTicks, ticksWorkManagerSystem); //Добавить в статистику
+            }
+
+            SystemStatistic.AddRunStatistic(_stopwatch.ElapsedTicks, ticksWorkManagerSystem);
             _stopwatch.Stop();
         }
-        #endregion
     }
 }

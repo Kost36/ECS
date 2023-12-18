@@ -5,13 +5,13 @@ namespace ECSCore.BaseObjects
 {
     /// <summary>
     /// Базовый класс компонента.
-    /// Все компоненты наследовать от данного класса
+    /// Все компоненты должны наследоваться от данного класса
     /// </summary>
     [Serializable]
     public abstract class ComponentBase : IComponent
     {
         /// <summary>
-        /// Идентификатор сущьности
+        /// Идентификатор сущьности, на которой висит компонент
         /// </summary>
         public int Id { get; set; }
     }

@@ -7,7 +7,6 @@ namespace ECSCore.Systems
     /// </summary>
     internal class SystemStatistic
     {
-        #region Поля
         /// <summary>
         /// Сумарное количество вычислений фильтра
         /// </summary>
@@ -36,9 +35,7 @@ namespace ECSCore.Systems
         /// Максимальное время выполнения системы в тиках
         /// </summary>
         private float _timeMaxRunInTicks;
-        #endregion
 
-        #region Свойства
         /// <summary>
         /// Сумарное количество выполнений
         /// </summary>
@@ -68,9 +65,7 @@ namespace ECSCore.Systems
         /// Максимально время вычисления фильтра системы в мс
         /// </summary>
         public float MaxTimeFilterCalculateMs { get { return _timeMaxFilterCalculateInTicks / TimeSpan.TicksPerMillisecond; } }
-        #endregion
 
-        #region Публичные методы
         /// <summary>
         /// Добавить статистику по выполнению
         /// </summary>
@@ -107,14 +102,15 @@ namespace ECSCore.Systems
             _sumRunTimeTikcs = 0;
             _timeMaxRunInTicks = 0;
             _timeAverRunInTicks = 0;
+
             //Фильтры
             _sumFilterCalculateCount = 0;
             _sumFilterCalculateTimeTikcs = 0;
             _timeMaxFilterCalculateInTicks = 0;
             _timeAverFilterCalculateInTicks = 0;
+
             //Производительность
             PercentTimeUsePerformance = 0;
         }
-        #endregion
     }
 }

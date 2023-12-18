@@ -39,9 +39,9 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
                 for (int i = 0; i < 10000; i++)
                 {
                     Entity ship = IECS.AddEntity(new Ship());
-                    ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
-                    ship.Add(new PozitionSV() { X = 500, Y = 500, Z = 500 });
-                    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 5000 });
+                    ship.AddComponent(new Pozition() { X = 0, Y = 0, Z = 0 });
+                    ship.AddComponent(new PozitionSV() { X = 500, Y = 500, Z = 500 });
+                    ship.AddComponent(new Enargy() { EnargyFact = 100, EnargyMax = 5000 });
                     j++;
                 }
 
@@ -94,25 +94,25 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
                 if (IECS.GetEntity(entityId, out Entity entity))
                 {
                     Debug.WriteLine($"Сущьность: {entityId}");
-                    if (entity.Get(out Enargy enargy))
+                    if (entity.TryGetComponent(out Enargy enargy))
                     {
                         Debug.WriteLine($"Энергия: {enargy.EnargyFact}/{enargy.EnargyMax}");
                     }
-                    if (entity.Get(out Pozition pozition))
+                    if (entity.TryGetComponent(out Pozition pozition))
                     {
                         Debug.WriteLine($"Позиция: {pozition.X}|{pozition.Y}|{pozition.Z}");
                     }
-                    if (entity.Get(out Way way))
+                    if (entity.TryGetComponent(out Way way))
                     {
                         Debug.WriteLine($"Путь: {way.Len}");
                     }
-                    if (entity.Get(out WayToStop wayToStop))
+                    if (entity.TryGetComponent(out WayToStop wayToStop))
                     {
                         Debug.WriteLine($"Путь останова: {wayToStop.Len}; Энергии достаточно для полного останова: {wayToStop.EnargyHave}");
                     }
-                    if (entity.Get(out Speed speed))
+                    if (entity.TryGetComponent(out Speed speed))
                     {
-                        if (entity.Get(out Acceleration _))
+                        if (entity.TryGetComponent(out Acceleration _))
                         {
                             Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}; Ускорение/Замедление: True");
                         }
@@ -121,7 +121,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
                             Debug.WriteLine($"Скорость: {speed.dX}|{speed.dY}|{speed.dZ}; {speed.SpeedFact}/{speed.SpeedMax}");
                         }
                     }
-                    if (entity.Get(out SpeedSV speedSV))
+                    if (entity.TryGetComponent(out SpeedSV speedSV))
                     {
                         Debug.WriteLine($"Скорость заданная: {speedSV.SVSpeed}; Изменение заданной скорости: {speedSV.Update}");
                     }

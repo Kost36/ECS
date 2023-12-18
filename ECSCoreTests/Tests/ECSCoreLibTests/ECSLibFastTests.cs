@@ -67,10 +67,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         public void Test_04_AddComponent()
         {
             Assert.IsTrue(IECS.GetEntity(2, out Entity entity));
-            entity.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
+            entity.AddComponent(new Pozition() { X = 0, Y = 0, Z = 0 });
             Assert.IsTrue(entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
-            Assert.ThrowsException<ExceptionEntityHaveComponent>(() => entity.Add(new Pozition() { X = 1, Y = 1, Z = 1 }));
+            Assert.ThrowsException<ExceptionEntityHaveComponent>(() => entity.AddComponent(new Pozition() { X = 1, Y = 1, Z = 1 }));
             Assert.IsTrue(entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
             IECS.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10, Id = 4 });
@@ -83,7 +83,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         [TestMethod()]
         public void Test_05_GetComponent()
         {
-            Assert.IsTrue(_entity.Get(out Pozition pozition));
+            Assert.IsTrue(_entity.TryGetComponent(out Pozition pozition));
             Assert.IsNotNull(pozition);
             Assert.IsTrue(IECS.GetComponent(4, out Pozition pozition1));
             Assert.IsNotNull(pozition1);
@@ -95,7 +95,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         [TestMethod()]
         public void Test_06_RemoveComponent()
         {
-            _entity.Remove<Pozition>();
+            _entity.RemoveComponent<Pozition>();
             Assert.IsTrue(_entity.Components.Count == 0);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
             IECS.RemoveComponent<Pozition>(4);
@@ -112,17 +112,17 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         public void Test_07_AddComponentToFilter()
         {
             IECS.GetEntity(5, out Entity entity);
-            entity.Add(new Pozition() { X = 1, Y = 2, Z = 3 });
+            entity.AddComponent(new Pozition() { X = 1, Y = 2, Z = 3 });
             Assert.IsTrue(entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 1);
-            entity.Add(new Speed() { dX = 1, dY = 5, dZ = 8 });
+            entity.AddComponent(new Speed() { dX = 1, dY = 5, dZ = 8 });
             Assert.IsTrue(entity.Components.Count == 2);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 2);
             Assert.IsTrue(IECS.GetEntity(6, out Entity entity1));
-            entity1.Add(new Pozition() { X = 10, Y = 10, Z = 10 });
+            entity1.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10 });
             Assert.IsTrue(entity1.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
-            entity1.Add(new Speed());
+            entity1.AddComponent(new Speed());
             Assert.IsTrue(entity1.Components.Count == 2);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 4);
             Thread.Sleep(2500);
@@ -133,10 +133,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         [TestMethod()]
         public void Test_09_RemoveComponentFromFilter()
         {
-            _entity.Remove<Speed>();
+            _entity.RemoveComponent<Speed>();
             Assert.IsTrue(_entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
-            _entity.Remove<Way>();
+            _entity.RemoveComponent<Way>();
             Assert.IsTrue(_entity.Components.Count == 1);
             //Assert.IsTrue(IECSDebug.ManagerComponents.CountComponents == 3);
             Thread.Sleep(1000);
@@ -154,64 +154,64 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Entity ship = IECS.AddEntity(new Ship());
             Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 1);
             Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
-            Assert.IsTrue(ship.ParentEntity == null);
-            Assert.IsTrue(ship.ChildEntitys.Count == 0);
+            Assert.IsTrue(ship.ExternalEntity == null);
+            Assert.IsTrue(ship.NestedEntites.Count == 0);
 
-            Entity shipChild = (Entity)ship.AddChild(new Ship());
+            Entity shipChild = (Entity)ship.AddNestedEntity(new Ship());
             Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 2);
             Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
-            Assert.IsTrue(ship.ParentEntity == null);
-            Assert.IsTrue(ship.ChildEntitys.Count == 1);
-            Assert.IsTrue(ship.GetChild(shipChild.Id, out IEntity _));
-            Assert.IsTrue(shipChild.ParentEntity != null);
-            Assert.IsTrue(shipChild.ParentEntity.Id == ship.Id);
-            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
+            Assert.IsTrue(ship.ExternalEntity == null);
+            Assert.IsTrue(ship.NestedEntites.Count == 1);
+            Assert.IsTrue(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ExternalEntity != null);
+            Assert.IsTrue(shipChild.ExternalEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild.NestedEntites.Count == 0);
 
-            Entity shipChild1 = (Entity)ship.AddChild(new Ship());
+            Entity shipChild1 = (Entity)ship.AddNestedEntity(new Ship());
             Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 3);
             Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
-            Assert.IsTrue(ship.ParentEntity == null);
-            Assert.IsTrue(ship.ChildEntitys.Count == 2);
-            Assert.IsTrue(ship.GetChild(shipChild.Id, out IEntity _));
-            Assert.IsTrue(ship.GetChild(shipChild1.Id, out IEntity _));
-            Assert.IsTrue(shipChild.ParentEntity != null);
-            Assert.IsTrue(shipChild.ParentEntity.Id == ship.Id);
-            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
-            Assert.IsTrue(shipChild1.ParentEntity != null);
-            Assert.IsTrue(shipChild1.ParentEntity.Id == ship.Id);
-            Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
+            Assert.IsTrue(ship.ExternalEntity == null);
+            Assert.IsTrue(ship.NestedEntites.Count == 2);
+            Assert.IsTrue(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
+            Assert.IsTrue(ship.TryGetNestedEntity(shipChild1.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ExternalEntity != null);
+            Assert.IsTrue(shipChild.ExternalEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild.NestedEntites.Count == 0);
+            Assert.IsTrue(shipChild1.ExternalEntity != null);
+            Assert.IsTrue(shipChild1.ExternalEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild1.NestedEntites.Count == 0);
 
-            Assert.IsTrue(ship.RemoveChild(shipChild1.Id, out IEntity entity));
+            Assert.IsTrue(ship.RemoveNestedEntity(shipChild1.Id, out IEntity entity));
             Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 3);
             Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
-            Assert.IsTrue(ship.ParentEntity == null);
-            Assert.IsTrue(ship.ChildEntitys.Count == 1);
-            Assert.IsTrue(ship.GetChild(shipChild.Id, out IEntity _));
-            Assert.IsFalse(ship.GetChild(shipChild1.Id, out IEntity _));
-            Assert.IsTrue(shipChild.ParentEntity != null);
-            Assert.IsTrue(shipChild.ParentEntity.Id == ship.Id);
-            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
-            Assert.IsTrue(shipChild1.ParentEntity == null);
-            Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
+            Assert.IsTrue(ship.ExternalEntity == null);
+            Assert.IsTrue(ship.NestedEntites.Count == 1);
+            Assert.IsTrue(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
+            Assert.IsFalse(ship.TryGetNestedEntity(shipChild1.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ExternalEntity != null);
+            Assert.IsTrue(shipChild.ExternalEntity.Id == ship.Id);
+            Assert.IsTrue(shipChild.NestedEntites.Count == 0);
+            Assert.IsTrue(shipChild1.ExternalEntity == null);
+            Assert.IsTrue(shipChild1.NestedEntites.Count == 0);
 
             ship.Death();
             Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 2);
             Assert.IsFalse(IECS.GetEntity(ship.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
-            Assert.IsTrue(ship.ParentEntity == null);
-            Assert.IsTrue(ship.ChildEntitys.Count == 0);
-            Assert.IsFalse(ship.GetChild(shipChild.Id, out IEntity _));
-            Assert.IsFalse(ship.GetChild(shipChild1.Id, out IEntity _));
-            Assert.IsTrue(shipChild.ParentEntity == null);
-            Assert.IsTrue(shipChild.ChildEntitys.Count == 0);
-            Assert.IsTrue(shipChild1.ParentEntity == null);
-            Assert.IsTrue(shipChild1.ChildEntitys.Count == 0);
+            Assert.IsTrue(ship.ExternalEntity == null);
+            Assert.IsTrue(ship.NestedEntites.Count == 0);
+            Assert.IsFalse(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
+            Assert.IsFalse(ship.TryGetNestedEntity(shipChild1.Id, out IEntity _));
+            Assert.IsTrue(shipChild.ExternalEntity == null);
+            Assert.IsTrue(shipChild.NestedEntites.Count == 0);
+            Assert.IsTrue(shipChild1.ExternalEntity == null);
+            Assert.IsTrue(shipChild1.NestedEntites.Count == 0);
         }
 
         [TestMethod()]
@@ -221,10 +221,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Test_00_InitializationIECS();
 
             Entity entity = IECS.AddEntity(new Ship());
-            entity.Add(new Include());
+            entity.AddComponent(new Include());
 
             Thread.Sleep(50);
-            if(entity.Get(out Include include))
+            if(entity.TryGetComponent(out Include include))
             {
                 if (!include.CallOfAdd)
                 {
@@ -235,7 +235,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Thread.Sleep(100);
             Assert.AreEqual(1, include.CallOfAddCount, "ActionAdd of system not actual count call");
           
-            entity.Remove<Include>();
+            entity.RemoveComponent<Include>();
 
             Thread.Sleep(50);
             if (!include.CallOfRemove)
@@ -255,11 +255,11 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Test_00_InitializationIECS();
 
             Entity entity = IECS.AddEntity(new Ship());
-            entity.Add(new Exclude());
-            entity.Add(new Include());
+            entity.AddComponent(new Exclude());
+            entity.AddComponent(new Include());
 
             Thread.Sleep(50);
-            if (entity.Get(out Include include))
+            if (entity.TryGetComponent(out Include include))
             {
                 if (include.CallOfAdd)
                 {
@@ -267,10 +267,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
                 }
             }
 
-            entity.Remove<Exclude>();
+            entity.RemoveComponent<Exclude>();
 
             Thread.Sleep(50);
-            if (entity.Get(out Include include1))
+            if (entity.TryGetComponent(out Include include1))
             {
                 if (!include1.CallOfAdd)
                 {
@@ -279,12 +279,12 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             }
 
             Thread.Sleep(100);
-            if (entity.Get(out Include include2))
+            if (entity.TryGetComponent(out Include include2))
             {
                 Assert.AreEqual(1, include2.CallOfAddCount, "ActionAdd of system not actual count call");
             }
 
-            entity.Add(new Exclude());
+            entity.AddComponent(new Exclude());
             Thread.Sleep(50);
 
             if (!include.CallOfRemove)
@@ -306,10 +306,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             IECS.Pause();
 
             var ship = IECS.AddEntity(new Ship());
-            ship.Add(new Pozition());
-            ship.Add(new Speed() { dX =1});
+            ship.AddComponent(new Pozition());
+            ship.AddComponent(new Speed() { dX =1});
 
-            ship.Get<Pozition>(out var poz);
+            ship.TryGetComponent<Pozition>(out var poz);
 
             var sec = 0;
             var timeSec = 10;
@@ -336,10 +336,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             IECS.Pause();
 
             var ship = IECS.AddEntity(new Ship());
-            ship.Add(new Pozition());
-            ship.Add(new Speed() { dX = 1 });
+            ship.AddComponent(new Pozition());
+            ship.AddComponent(new Speed() { dX = 1 });
 
-            ship.Get<Pozition>(out var poz);
+            ship.TryGetComponent<Pozition>(out var poz);
 
             var sec = 0;
             var timeSec = 60;
@@ -371,10 +371,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             IECS.Pause();
 
             var ship = IECS.AddEntity(new Ship());
-            ship.Add(new Pozition());
-            ship.Add(new Speed() { dX = 1 });
+            ship.AddComponent(new Pozition());
+            ship.AddComponent(new Speed() { dX = 1 });
 
-            ship.Get<Pozition>(out var poz);
+            ship.TryGetComponent<Pozition>(out var poz);
 
             var sec = 0;
             var timeSec = 60;
@@ -407,10 +407,10 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             IECS.Pause();
 
             var ship = IECS.AddEntity(new Ship());
-            ship.Add(new Pozition());
-            ship.Add(new Speed() { dX = 1 });
+            ship.AddComponent(new Pozition());
+            ship.AddComponent(new Speed() { dX = 1 });
 
-            ship.Get<Pozition>(out var poz);
+            ship.TryGetComponent<Pozition>(out var poz);
 
             var sec = 0;
             var timeSec = 60;

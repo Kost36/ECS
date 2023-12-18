@@ -186,7 +186,7 @@ namespace ECSCore
                 component = default;
                 return false;
             } //Если у менеджера сущьностей нету сущьности
-            return entity.Get(out component); //Получим компонент у сущьности
+            return entity.TryGetComponent(out component); //Получим компонент у сущьности
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ namespace ECSCore
             {
                 return;
             }
-            Entity.RemoveComponent<T>();
+            Entity.RemoveComponentInternal<T>();
             _managerFilters.Remove<T>(idEntity);
         }
 

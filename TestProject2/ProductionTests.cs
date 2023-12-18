@@ -37,7 +37,7 @@ namespace GameLibTests
         {
             Init();
             var entity = IECS.AddEntity(new Stantion());
-            entity.Add(new Warehouse()
+            entity.AddComponent(new Warehouse()
             {
                 VolumeMax = 100000,
                 Products = new Dictionary<ProductType, Count>() 
@@ -47,14 +47,14 @@ namespace GameLibTests
                 }
             });
 
-            var entity1 = entity.AddChild(new GameLib.Entitys.StaticEntitys.ProductionModule());
-            entity1.Add(new Production<Iron>());
+            var entity1 = entity.AddNestedEntity(new GameLib.Entitys.StaticEntitys.ProductionModule());
+            entity1.AddComponent(new Production<Iron>());
 
             Thread.Sleep(1000);
 
-            entity.Get<Warehouse>(out var warehouseStantion);
-            entity1.Get<WarehouseProductionModul>(out var warehouseModule);
-            entity1.Get<GameLib.Mechanics.Production.Components.ProductionModule>(out var productionModule);
+            entity.TryGetComponent<Warehouse>(out var warehouseStantion);
+            entity1.TryGetComponent<WarehouseProductionModul>(out var warehouseModule);
+            entity1.TryGetComponent<GameLib.Mechanics.Production.Components.ProductionModule>(out var productionModule);
 
             var end = false;
             var secCount = 0;

@@ -33,27 +33,15 @@ namespace ECSCore.Systems
     public abstract class SystemExistComponents<ExistComponentT1> : SystemBase
         where ExistComponentT1 : IComponent
     {
-        /// <summary>
-        /// Фильтр
-        /// </summary>
         internal Filter<GroupComponentsExist<ExistComponentT1>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1>>();
 
-        /// <summary>
-        /// 
-        /// </summary>
         internal override FilterBase FilterBase => Filter;
 
-        /// <summary>
-        /// Получение ссылки на фильтр
-        /// </summary>
         internal override void GetFilter(ManagerFilters managerFilters)
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1>>)(managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1>>), Filter.TypesWithoutComponents));
         }
 
-        /// <summary>
-        /// Подготовка к выполнению, вызывается перед каждым выполнением
-        /// </summary>
         internal override void CalculateFilter(long limitTimeTicks = 0)
         {
             if (limitTimeTicks == 0)
@@ -66,78 +54,56 @@ namespace ECSCore.Systems
             }
         }
 
-        /// <summary>
-        /// Выполнение системы
-        /// </summary>
-        /// <param name="systemActionType"></param>
-        /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
                 case SystemActionType.RunInThisThread:
-                    Run(null); //Выполнить в текущем потоке
+                    Run(null);
                     break;
                 case SystemActionType.RunInOneThread:
-                    ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
+                    ThreadPool.QueueUserWorkItem(Run);
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread);
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
                     break;
-            } //Взависимости от типа выполнения
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции
-        /// </summary>
-        /// <param name="state"></param>
         private void Run(object state)
         {
             foreach (var item in Filter.Collection)
             {
                 Action(item.Key, item.Value.ExistComponent1, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по части коллекции
-        /// </summary>
-        /// <param name="sliceCollection"> Часть коллекции </param>
         private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции в нескольких потоках
-        /// </summary>
         private void RunInCountThread(int maxCountOnThread)
         {
-            int i = 0; //Количество элементов для пропуска
+            int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList(); //Получим часть коллекции
-                ThreadPool.QueueUserWorkItem(o => { RunPart(items); }); //Вызываем в отдельном потоке
+                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
                     return;
-                } //Если вся коллекция обработана
-                i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
-            } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
+                }
+                i += maxCountOnThread;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TGroupComponents"></typeparam>
-        /// <param name="groupComponents"></param>
-        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1>;
@@ -185,33 +151,18 @@ namespace ECSCore.Systems
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
     {
-        /// <summary>
-        /// Фильтр
-        /// </summary>
-        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>> Filter 
-        { 
-            get; 
-            set; 
-        } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>();
+        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>> Filter { get; set; } = 
+            new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>();
 
-        /// <summary>
-        /// 
-        /// </summary>
         internal override FilterBase FilterBase => Filter;
 
-        /// <summary>
-        /// Получение ссылки на фильтр
-        /// </summary>
         internal override void GetFilter(ManagerFilters managerFilters)
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>)
-                (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>), Filter.TypesWithoutComponents));
+                (managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2>>), 
+                Filter.TypesWithoutComponents));
         }
 
-        /// <summary>
-        /// Подготовка к выполнению, вызывается перед каждым выполнением
-        /// </summary>
         internal override void CalculateFilter(long limitTimeTicks = 0)
         {
             if (limitTimeTicks == 0)
@@ -224,82 +175,56 @@ namespace ECSCore.Systems
             }
         }
 
-        /// <summary>
-        /// Выполнение системы
-        /// </summary>
-        /// <param name="systemActionType"></param>
-        /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
                 case SystemActionType.RunInThisThread:
-                    Run(null); //Выполнить в текущем потоке
+                    Run(null);
                     break;
                 case SystemActionType.RunInOneThread:
-                    ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
+                    ThreadPool.QueueUserWorkItem(Run);
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread);
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
                     break;
-            } //Взависимости от типа выполнения
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции
-        /// </summary>
-        /// <param name="state"></param>
         private void Run(object state)
         {
             foreach (var item in Filter.Collection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по части коллекции
-        /// </summary>
-        /// <param name="sliceCollection"> Часть коллекции </param>
         private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции в нескольких потоках
-        /// </summary>
         private void RunInCountThread(int maxCountOnThread)
         {
-            int i = 0; //Количество элементов для пропуска
+            int i = 0;
             while (true)
             {
-                //if (Filter.Collection.Count > 0)
-                //{
-                //    ThreadPool.GetAvailableThreads(out int a, out int b);
-                //} //Тест для точки останова
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList(); //Получим часть коллекции
-                ThreadPool.QueueUserWorkItem(o => { RunPart(items); }); //Вызываем в отдельном потоке
+                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
                     return;
-                } //Если вся коллекция обработана
-                i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
-            } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
+                }
+                i += maxCountOnThread;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TGroupComponents"></typeparam>
-        /// <param name="groupComponents"></param>
-        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2>;
@@ -351,19 +276,11 @@ namespace ECSCore.Systems
         where ExistComponentT2 : IComponent
         where ExistComponentT3 : IComponent
     {
-        /// <summary>
-        /// Фильтр
-        /// </summary>
-        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>();
+        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>> Filter { get; set; } = 
+            new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>();
 
-        /// <summary>
-        /// 
-        /// </summary>
         internal override FilterBase FilterBase => Filter;
 
-        /// <summary>
-        /// Получение ссылки на фильтр
-        /// </summary>
         internal override void GetFilter(ManagerFilters managerFilters)
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>)
@@ -371,9 +288,6 @@ namespace ECSCore.Systems
                 (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>), Filter.TypesWithoutComponents));
         }
 
-        /// <summary>
-        /// Подготовка к выполнению, вызывается перед каждым выполнением
-        /// </summary>
         internal override void CalculateFilter(long limitTimeTicks = 0)
         {
             if (limitTimeTicks == 0)
@@ -386,78 +300,57 @@ namespace ECSCore.Systems
             }
         }
 
-        /// <summary>
-        /// Выполнение системы
-        /// </summary>
-        /// <param name="systemActionType"></param>
-        /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
                 case SystemActionType.RunInThisThread:
-                    Run(null); //Выполнить в текущем потоке
+                    Run(null);
                     break;
                 case SystemActionType.RunInOneThread:
-                    ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
+                    ThreadPool.QueueUserWorkItem(Run);
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread);
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
                     break;
-            } //Взависимости от типа выполнения
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции
-        /// </summary>
-        /// <param name="state"></param>
+
         private void Run(object state)
         {
             foreach (var item in Filter.Collection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по части коллекции
-        /// </summary>
-        /// <param name="sliceCollection"> Часть коллекции </param>
         private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции в нескольких потоках
-        /// </summary>
         private void RunInCountThread(int maxCountOnThread)
         {
-            int i = 0; //Количество элементов для пропуска
+            int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList(); //Получим часть коллекции
-                ThreadPool.QueueUserWorkItem(o => { RunPart(items); }); //Вызываем в отдельном потоке
+                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
                     return;
-                } //Если вся коллекция обработана
-                i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
-            } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
+                }
+                i += maxCountOnThread;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TGroupComponents"></typeparam>
-        /// <param name="groupComponents"></param>
-        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>;
@@ -513,29 +406,18 @@ namespace ECSCore.Systems
         where ExistComponentT3 : IComponent
         where ExistComponentT4 : IComponent
     {
-        /// <summary>
-        /// Фильтр
-        /// </summary>
-        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>();
+        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>> Filter { get; set; } = 
+            new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>();
 
-        /// <summary>
-        /// 
-        /// </summary>
         internal override FilterBase FilterBase => Filter;
 
-        /// <summary>
-        /// Получение ссылки на фильтр
-        /// </summary>
         internal override void GetFilter(ManagerFilters managerFilters)
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>)
-                (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>), Filter.TypesWithoutComponents));
+                (managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>), 
+                Filter.TypesWithoutComponents));
         }
 
-        /// <summary>
-        /// Подготовка к выполнению, вызывается перед каждым выполнением
-        /// </summary>
         internal override void CalculateFilter(long limitTimeTicks = 0)
         {
             if (limitTimeTicks == 0)
@@ -548,78 +430,56 @@ namespace ECSCore.Systems
             }
         }
 
-        /// <summary>
-        /// Выполнение системы
-        /// </summary>
-        /// <param name="systemActionType"></param>
-        /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
                 case SystemActionType.RunInThisThread:
-                    Run(null); //Выполнить в текущем потоке
+                    Run(null);
                     break;
                 case SystemActionType.RunInOneThread:
-                    ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
+                    ThreadPool.QueueUserWorkItem(Run);
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread);
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
                     break;
-            } //Взависимости от типа выполнения
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции
-        /// </summary>
-        /// <param name="state"></param>
         private void Run(object state)
         {
             foreach (var item in Filter.Collection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по части коллекции
-        /// </summary>
-        /// <param name="sliceCollection"> Часть коллекции </param>
         private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции в нескольких потоках
-        /// </summary>
         private void RunInCountThread(int maxCountOnThread)
         {
-            int i = 0; //Количество элементов для пропуска
+            int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList(); //Получим часть коллекции
-                ThreadPool.QueueUserWorkItem(o => { RunPart(items); }); //Вызываем в отдельном потоке
+                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
                     return;
-                } //Если вся коллекция обработана
-                i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
-            } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
+                } 
+                i += maxCountOnThread;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TGroupComponents"></typeparam>
-        /// <param name="groupComponents"></param>
-        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>;
@@ -679,29 +539,18 @@ namespace ECSCore.Systems
         where ExistComponentT4 : IComponent
         where ExistComponentT5 : IComponent
     {
-        /// <summary>
-        /// Фильтр
-        /// </summary>
-        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>();
+        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>> Filter { get; set; } = 
+            new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>();
 
-        /// <summary>
-        /// 
-        /// </summary>
         internal override FilterBase FilterBase => Filter;
 
-        /// <summary>
-        /// Получение ссылки на фильтр
-        /// </summary>
         internal override void GetFilter(ManagerFilters managerFilters)
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>)
-                (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>), Filter.TypesWithoutComponents));
+                (managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>), 
+                Filter.TypesWithoutComponents));
         }
 
-        /// <summary>
-        /// Подготовка к выполнению, вызывается перед каждым выполнением
-        /// </summary>
         internal override void CalculateFilter(long limitTimeTicks = 0)
         {
             if (limitTimeTicks == 0)
@@ -714,78 +563,56 @@ namespace ECSCore.Systems
             }
         }
 
-        /// <summary>
-        /// Выполнение системы
-        /// </summary>
-        /// <param name="systemActionType"></param>
-        /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
                 case SystemActionType.RunInThisThread:
-                    Run(null); //Выполнить в текущем потоке
+                    Run(null);
                     break;
                 case SystemActionType.RunInOneThread:
-                    ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
+                    ThreadPool.QueueUserWorkItem(Run);
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread);
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
                     break;
-            } //Взависимости от типа выполнения
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции
-        /// </summary>
-        /// <param name="state"></param>
         private void Run(object state)
         {
             foreach (var item in Filter.Collection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по части коллекции
-        /// </summary>
-        /// <param name="sliceCollection"> Часть коллекции </param>
         private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции в нескольких потоках
-        /// </summary>
         private void RunInCountThread(int maxCountOnThread)
         {
-            int i = 0; //Количество элементов для пропуска
+            int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList(); //Получим часть коллекции
-                ThreadPool.QueueUserWorkItem(o => { RunPart(items); }); //Вызываем в отдельном потоке
+                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
                     return;
-                } //Если вся коллекция обработана
-                i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
-            } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
+                }
+                i += maxCountOnThread;
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TGroupComponents"></typeparam>
-        /// <param name="groupComponents"></param>
-        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
             GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>;
@@ -849,29 +676,18 @@ namespace ECSCore.Systems
         where ExistComponentT5 : IComponent
         where ExistComponentT6 : IComponent
     {
-        /// <summary>
-        /// Фильтр
-        /// </summary>
-        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>> Filter { get; set; } = new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>();
+        internal Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>> Filter { get; set; } = 
+            new Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>();
 
-        /// <summary>
-        /// 
-        /// </summary>
         internal override FilterBase FilterBase => Filter;
 
-        /// <summary>
-        /// Получение ссылки на фильтр
-        /// </summary>
         internal override void GetFilter(ManagerFilters managerFilters)
         {
             Filter = (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>)
-                (managerFilters.GetFilter(typeof
-                (Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>), Filter.TypesWithoutComponents));
+                (managerFilters.GetFilter(typeof(Filter<GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>), 
+                Filter.TypesWithoutComponents));
         }
 
-        /// <summary>
-        /// Подготовка к выполнению, вызывается перед каждым выполнением
-        /// </summary>
         internal override void CalculateFilter(long limitTimeTicks = 0)
         {
             if (limitTimeTicks == 0)
@@ -884,81 +700,60 @@ namespace ECSCore.Systems
             }
         }
 
-        /// <summary>
-        /// Выполнение системы
-        /// </summary>
-        /// <param name="systemActionType"></param>
-        /// <param name="maxCountOnThread"></param>
         internal override void Aсtion(SystemActionType systemActionType = SystemActionType.RunInThisThread, int maxCountOnThread = int.MaxValue)
         {
             switch (systemActionType)
             {
                 case SystemActionType.RunInThisThread:
-                    Run(null); //Выполнить в текущем потоке
+                    Run(null);
                     break;
                 case SystemActionType.RunInOneThread:
-                    ThreadPool.QueueUserWorkItem(Run); //Выполнить в отдельном потоке
+                    ThreadPool.QueueUserWorkItem(Run);
                     break;
                 case SystemActionType.RunInThreads:
-                    RunInCountThread(maxCountOnThread); //Выполнить в нескольких потоках
+                    RunInCountThread(maxCountOnThread);
                     break;
                 case SystemActionType.RunInInjectThread:
                     Run(null); //TODO Выполнить в введенном потоке
                     break;
-            } //Взависимости от типа выполнения
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции
-        /// </summary>
-        /// <param name="state"></param>
         private void Run(object state)
         {
             foreach (var item in Filter.Collection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, item.Value.ExistComponent6, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по части коллекции
-        /// </summary>
-        /// <param name="sliceCollection"> Часть коллекции </param>
         private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
                 Action(item.Key, item.Value.ExistComponent1, item.Value.ExistComponent2, item.Value.ExistComponent3, item.Value.ExistComponent4, item.Value.ExistComponent5, item.Value.ExistComponent6, DeltaTime);
-            } //Проходимся по коллекции и вызываем Action для каждого элемента
+            }
         }
 
-        /// <summary>
-        /// Выполнение итерирования по коллекции в нескольких потоках
-        /// </summary>
         private void RunInCountThread(int maxCountOnThread)
         {
-            int i = 0; //Количество элементов для пропуска
+            int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList(); //Получим часть коллекции
-                ThreadPool.QueueUserWorkItem(o => { RunPart(items); }); //Вызываем в отдельном потоке
+                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
                     return;
-                } //Если вся коллекция обработана
-                i += maxCountOnThread; //Вычисляем кол-во элементов для пропуска
-            } //Делим коллекцию и обрабатываем части коллекции в отдельных потоках
+                }
+                i += maxCountOnThread;
+            } 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="TGroupComponents"></typeparam>
-        /// <param name="groupComponents"></param>
-        /// <param name="entity"></param>
         internal override void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
         {
-            GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6> groupComponentsExist = groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>;
+            GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6> groupComponentsExist = 
+                groupComponents as GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>;
             ActionAdd(groupComponentsExist.ExistComponent1, groupComponentsExist.ExistComponent2, groupComponentsExist.ExistComponent3, groupComponentsExist.ExistComponent4, groupComponentsExist.ExistComponent5, groupComponentsExist.ExistComponent6, entity);
         }
 

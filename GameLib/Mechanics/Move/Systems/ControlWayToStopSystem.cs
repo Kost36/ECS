@@ -7,10 +7,10 @@ using GameLib.Mechanics.Move.Components;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(9)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(9)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class ControlWayToStopSystem : SystemExistComponents<WayToStop, Speed, Acceleration, Enargy>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, WayToStop wayToStop, Speed speed, Acceleration acceleration, Enargy enargy, float deltatime)

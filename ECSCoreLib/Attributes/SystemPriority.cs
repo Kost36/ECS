@@ -9,8 +9,16 @@ namespace ECSCore.Attributes
     /// 50 - Минимальный приоритет;
     /// 0 - Неприоритетная система (Невыполняется, если более приоритетные системы не успевают вовремя обрабатываться);
     /// </summary>
-    public class AttributeSystemPriority : Attribute
+    public class SystemPriority : Attribute
     {
+        /// <summary>
+        /// 50 - min priority => 1 - max priority;
+        /// 1 - Максимальный приоритет;
+        /// 50 - Минимальный приоритет;
+        /// 0 - Неприоритетная система (Невыполняется, если более приоритетные системы не успевают вовремя обрабатываться);
+        /// </summary>
+        public int Priority { get; set; } = 50;
+
         /// <summary>
         /// Конструктор
         /// </summary>
@@ -20,25 +28,18 @@ namespace ECSCore.Attributes
         /// 50 - Минимальный приоритет;
         /// 0 - Неприоритетная система (Невыполняется, если более приоритетные системы не успевают вовремя обрабатываться);
         /// </param>
-        public AttributeSystemPriority(int priority)
+        public SystemPriority(int priority)
         {
-            Priority = priority;
-            if (Priority < 0)
+            if (priority < 0)
             {
-                Priority = 0;
+                priority = 0;
             }
-            if (Priority > 50)
+            if (priority > 50)
             {
-                Priority = 50;
+                priority = 50;
             }
-        }
 
-        /// <summary>
-        /// 50 - min priority => 1 - max priority;
-        /// 1 - Максимальный приоритет;
-        /// 50 - Минимальный приоритет;
-        /// 0 - Неприоритетная система (Невыполняется, если более приоритетные системы не успевают вовремя обрабатываться);
-        /// </summary>
-        public int Priority { get; set; } = 50;
+            Priority = priority;
+        }
     }
 }

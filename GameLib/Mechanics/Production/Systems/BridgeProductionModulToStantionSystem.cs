@@ -9,9 +9,9 @@ using GameLib.Mechanics.Production.Components;
 
 namespace GameLib.Mechanics.Production.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Min1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Min1Once)]
+    [SystemPriority(50)]
+    [SystemEnable]
     public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModul>, ISystemActionAdd, ISystemAction
     {
         public override void ActionAdd(BridgeProductionModulToStantion _, WarehouseProductionModul warehouseProductionModul, Entity entity)
@@ -37,9 +37,9 @@ namespace GameLib.Mechanics.Production.Systems
         /// <param name="warehouseModul"> Склад производственного модуля </param>
         private void MoveProducts(Entity entity, WarehouseProductionModul warehouseModul)
         {
-            if (entity.ParentEntity != null)
+            if (entity.ExternalEntity != null)
             {
-                if (entity.ParentEntity.Get<Warehouse>(out var warehouseStantion))
+                if (entity.ExternalEntity.TryGetComponent<Warehouse>(out var warehouseStantion))
                 {
                     MoveProduct(warehouseModul, warehouseStantion);
                     MoveRaws(warehouseStantion, warehouseModul);

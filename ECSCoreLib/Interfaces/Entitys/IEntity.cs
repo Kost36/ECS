@@ -14,60 +14,60 @@ namespace ECSCore.Interfaces
         int Id { get; set; }
 
         /// <summary>
-        /// Родительская сущьность
+        /// Ссылка на внешнюю сущьность, в которой находится текущая сущьность
         /// </summary>
-        IEntity ParentEntity { get; set; }
+        IEntity ExternalEntity { get; set; }
+
+        /// <summary>
+        /// Добавить вложенную сущьность
+        /// </summary>
+        /// <param name="entity"> вложенная сущьность </param>
+        IEntity AddNestedEntity<T>(T entity)
+            where T : IEntity;
+
+        /// <summary>
+        /// Получить вложенную сущьность
+        /// </summary>
+        bool TryGetNestedEntity<T>(int idChildEntity, out T entity)
+            where T : IEntity;
+
+        /// <summary>
+        /// Удалить вложенную сущьность
+        /// </summary>
+        bool RemoveNestedEntity<T>(int idChildEntity, out T entity)
+            where T : IEntity;
 
         /// <summary>
         /// Добавить компонент
         /// </summary>
         /// <param name="component"></param>
-        void Add<T>(T component)
+        void AddComponent<T>(T component)
             where T : IComponent;
 
         /// <summary>
-        /// Добавить дочернюю сущьность
-        /// </summary>
-        /// <param name="entity"> дочерняя сущьность </param>
-        IEntity AddChild<T>(T entity)
-            where T : IEntity;
-
-        /// <summary>
-        /// Получить компонент (Если есть)
+        /// Получить компонент
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        bool Get<T>(out T component)
+        bool TryGetComponent<T>(out T component)
             where T : IComponent;
 
         /// <summary>
-        /// Получить компонент (Если есть)
+        /// Получить компонент
         /// </summary>
         /// <param name="typeComponent"> Тип компонента </param>
         /// <param name="component"> Компонент(если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        bool Get(Type typeComponent, out IComponent component);
-
-        /// <summary>
-        /// Удалить дочернюю сущьность
-        /// </summary>
-        bool GetChild<T>(int idChildEntity, out T entity)
-            where T : IEntity;
+        bool TryGetComponent(Type typeComponent, out IComponent component);
 
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
-        void Remove<T>()
+        void RemoveComponent<T>()
             where T : IComponent;
-
-        /// <summary>
-        /// Удалить дочернюю сущьность
-        /// </summary>
-        bool RemoveChild<T>(int idChildEntity, out T entity)
-            where T : IEntity;
 
         /// <summary>
         /// Уничтожить сущьность

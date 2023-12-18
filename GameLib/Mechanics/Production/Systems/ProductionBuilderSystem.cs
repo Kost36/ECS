@@ -13,9 +13,9 @@ using System.Linq;
 
 namespace GameLib.Mechanics.Production.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(50)]
+    [SystemEnable]
     public class ProductionBuilderSystem : SystemExistComponents<Components.Production>, ISystemActionAdd
     {
         public override void ActionAdd(Components.Production production, Entity entity)
@@ -66,12 +66,12 @@ namespace GameLib.Mechanics.Production.Systems
                             });
                     }
 
-                    entity.Add(productionModuleComponent);
-                    entity.Add(warehouseComponent);
-                    entity.Add(productionInfo);
-                    entity.Add(new BridgeProductionModulToStantion());
+                    entity.AddComponent(productionModuleComponent);
+                    entity.AddComponent(warehouseComponent);
+                    entity.AddComponent(productionInfo);
+                    entity.AddComponent(new BridgeProductionModulToStantion());
 
-                    entity.Remove<ProductionModuleBuild>();
+                    entity.RemoveComponent<ProductionModuleBuild>();
                 };
             }
         }

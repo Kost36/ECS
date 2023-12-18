@@ -6,10 +6,10 @@ using GameLib.Mechanics.Move.Components;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(20)]
-    [AttributeSystemEnable]
-    [AttributeExcludeComponentSystem(typeof(Acceleration))]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(20)]
+    [SystemEnable]
+    [ExcludeComponentSystem(typeof(Acceleration))]
     public class ControlEndPositionSystem : SystemExistComponents<Way, Speed>, ISystemAction
     {
         public override void Action(int entityId, Way way, Speed speed, float deltatime)

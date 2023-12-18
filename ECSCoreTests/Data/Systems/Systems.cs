@@ -8,9 +8,9 @@ using ECSCoreTests.Lib;
 
 namespace ECSCoreTests.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(5)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(5)]
+    [SystemEnable]
     public class StartMoveSystem : SystemExistComponents<Pozition, PozitionSV>, ISystemActionAdd
     {
         public override void ActionAdd(Pozition pozition, PozitionSV pozitionSV, Entity entity)
@@ -20,10 +20,10 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(9)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(9)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class ControlWaySystem : SystemExistComponents<Pozition, PozitionSV, Way>, ISystemAction, ISystemActionAdd, ISystemParallel
     {
         public override void ActionAdd(Pozition existComponentT1, PozitionSV existComponentT2, Way existComponentT3, Entity entity)
@@ -61,9 +61,9 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(9)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(9)]
+    [SystemEnable]
     public class ControlWayToStopSystem : SystemExistComponents<WayToStop, Speed, Acceleration, Enargy>, ISystemAction
     {
         public override void Action(int entityId, WayToStop wayToStop, Speed speed, Acceleration acceleration, Enargy enargy, float deltatime)
@@ -81,10 +81,10 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Min30Once)]
-    [AttributeSystemPriority(15)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Min30Once)]
+    [SystemPriority(15)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way, WayToStop>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
@@ -154,10 +154,10 @@ namespace ECSCoreTests.Systems
         
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(15)]
-    [AttributeSystemEnable]
-    [AttributeExcludeComponentSystem(typeof(Acceleration))]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(15)]
+    [SystemEnable]
+    [ExcludeComponentSystem(typeof(Acceleration))]
     public class ControlAccelerateSystem : SystemExistComponents<SpeedSV>, ISystemAction
     {
         public override void Action(int entityId, SpeedSV speedSV, float deltatime)
@@ -187,9 +187,9 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
-    [AttributeSystemPriority(5)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec30Once)]
+    [SystemPriority(5)]
+    [SystemEnable]
     //[AttributeSystemParallelCountThreads(8)]
     public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction//, ISystemParallel
     {
@@ -201,10 +201,10 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(10)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(10)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class EnargyRegenerationSystem : SystemExistComponents<Enargy, EnargyReGeneration>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, Enargy enargy, EnargyReGeneration enargyReGeneration, float deltatime)
@@ -221,10 +221,10 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Min5Once)]
-    [AttributeSystemPriority(10)]
-    [AttributeSystemEnable]
-    [AttributeExcludeComponentSystem(typeof(EnargyReGeneration))]
+    [SystemCalculate(SystemCalculateInterval.Min5Once)]
+    [SystemPriority(10)]
+    [SystemEnable]
+    [ExcludeComponentSystem(typeof(EnargyReGeneration))]
     public class EnargyRegenerationStartSystem : SystemExistComponents<Enargy>, ISystemAction
     {
         public override void Action(int entityId, Enargy enargy, float deltatime)
@@ -239,9 +239,9 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(20)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(20)]
+    [SystemEnable]
     public class ControlSpeedSystemRemove : SystemExistComponents<Way>, ISystemAction, ISystemActionRemove
     {
         public override void Action(int entityId, Way way, float deltatime)
@@ -266,10 +266,10 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(1)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(1)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
     public class AccselerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Enargy>, ISystemAction, ISystemParallel
     {
         public override void Action(int entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Enargy enargy, float deltatime)
@@ -361,11 +361,11 @@ namespace ECSCoreTests.Systems
         }
     }
 
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec60Once)]
-    [AttributeSystemPriority(1)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
-    [AttributeExcludeComponentSystem(typeof(Exclude))]
+    [SystemCalculate(SystemCalculateInterval.Sec60Once)]
+    [SystemPriority(1)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
+    [ExcludeComponentSystem(typeof(Exclude))]
     public class TestExcludeSystem : SystemExistComponents<Include>, ISystemActionAdd, ISystemActionRemove, ISystemAction, ISystemParallel
     {
         public static Include IncludeForTest;

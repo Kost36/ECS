@@ -6,9 +6,9 @@ using GameLib.Mechanics.Production.Components;
 
 namespace GameLib.Mechanics.Production.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(50)]
+    [SystemEnable]
     public class ProductionSystem : SystemExistComponents<ProductionModule, WarehouseProductionModul>, ISystemAction
     {
         public override void Action(int entityId, ProductionModule productionModule, WarehouseProductionModul warehouseProductionModul, float deltatime)

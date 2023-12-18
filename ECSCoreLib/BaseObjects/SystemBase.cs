@@ -124,10 +124,10 @@ namespace ECSCore.BaseObjects
             //Аттрибуты
 
             //Приоритет выполнения системы
-            AttributeSystemPriority attributeSystemPriority = type.GetCustomAttribute<AttributeSystemPriority>();
+            SystemPriority attributeSystemPriority = type.GetCustomAttribute<SystemPriority>();
             if (attributeSystemPriority == null)
             {
-                throw new ExceptionSystemNotHaveAttribute(typeof(AttributeSystemPriority), type);
+                throw new ExceptionSystemNotHaveAttribute(typeof(SystemPriority), type);
             } //Если у системы нету атрибута приоритетности
             else
             {
@@ -135,16 +135,16 @@ namespace ECSCore.BaseObjects
             } //Если у системы есть атрибут приоритетности
 
             //Интервал обработки системы
-            AttributeSystemCalculate attributeSystemCalculate = type.GetCustomAttribute<AttributeSystemCalculate>();
+            SystemCalculate attributeSystemCalculate = type.GetCustomAttribute<SystemCalculate>();
             if (attributeSystemCalculate == null)
             {
-                throw new ExceptionSystemNotHaveAttribute(typeof(AttributeSystemCalculate), type);
+                throw new ExceptionSystemNotHaveAttribute(typeof(SystemCalculate), type);
             } //Если у системы нету атрибута интервала обработки 
             IntervalTicks = attributeSystemCalculate.CalculateInterval * TimeSpan.TicksPerMillisecond;
 
             //Активация / блокировка системы
             IsEnable = true; //Стандартно: все системы включены
-            AttributeSystemEnable attributeSystemEnable = type.GetCustomAttribute<AttributeSystemEnable>();
+            SystemEnable attributeSystemEnable = type.GetCustomAttribute<SystemEnable>();
             if (attributeSystemEnable != null)
             {
                 IsEnable = attributeSystemEnable.IsEnable;
@@ -152,7 +152,7 @@ namespace ECSCore.BaseObjects
 
             //Возможность раннего/предварительного выполнения системы
             EarlyExecutionTicks = 0; //Стандартно: - предварительное выполнение системы выключено
-            AttributeSystemEarlyExecution attributeSystemEarlyExecution = type.GetCustomAttribute<AttributeSystemEarlyExecution>();
+            SystemEarlyExecution attributeSystemEarlyExecution = type.GetCustomAttribute<SystemEarlyExecution>();
             if (attributeSystemEarlyExecution != null)
             {
                 EarlyExecutionTicks = (long)(((float)IntervalTicks / 100f) * attributeSystemEarlyExecution.PercentThresholdTime);
@@ -160,14 +160,14 @@ namespace ECSCore.BaseObjects
 
             //Количество потоков для распараллеливания
             CountThreads = 1; //Стандартно: если включено распараллеливание, то выполняется в одном отдельном потоке
-            AttributeSystemParallelCountThreads attributeSystemParallelCountThreads = type.GetCustomAttribute<AttributeSystemParallelCountThreads>();
+            SystemParallelCountThreads attributeSystemParallelCountThreads = type.GetCustomAttribute<SystemParallelCountThreads>();
             if (attributeSystemParallelCountThreads != null)
             {
                 CountThreads = attributeSystemParallelCountThreads.CountThreads;
             } //Если у системы есть атрибут - колличества потоков для параллельного выполнения 
 
             //Исключающиеся из системы компонент
-            AttributeExcludeComponentSystem attributeExcludeComponentSystem = type.GetCustomAttribute<AttributeExcludeComponentSystem>();
+            ExcludeComponentSystem attributeExcludeComponentSystem = type.GetCustomAttribute<ExcludeComponentSystem>();
             if (attributeExcludeComponentSystem != null)
             {
                 ExcludeComponentType = attributeExcludeComponentSystem.ExcludeComponentType;

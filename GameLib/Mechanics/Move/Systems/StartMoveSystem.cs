@@ -8,9 +8,9 @@ using GameLib.Mechanics.Move.Components;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(10)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(10)]
+    [SystemEnable]
     public class StartMoveSystem : SystemExistComponents<Pozition, PozitionSV>, ISystemActionAdd
     {
         public override void ActionAdd(Pozition pozition, PozitionSV pozitionSV, Entity entity)

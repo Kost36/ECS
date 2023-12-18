@@ -9,17 +9,6 @@ namespace ECSCore.Managers
     /// </summary>
     public class ManagerEntitys
     {
-        #region Конструктор
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        internal ManagerEntitys()
-        {
-            _entitys = new Dictionary<int, Entity>();
-        }
-        #endregion
-
-        #region Поля
         /// <summary>
         /// Последний использованный Id
         /// </summary>
@@ -32,9 +21,12 @@ namespace ECSCore.Managers
         /// Коллекция сущьностей
         /// </summary>
         private readonly Dictionary<int, Entity> _entitys;
-        #endregion
 
-        #region Свойства
+        internal ManagerEntitys()
+        {
+            _entitys = new Dictionary<int, Entity>();
+        }
+
         /// <summary>
         /// Количество существующих сущьностей
         /// </summary>
@@ -42,9 +34,7 @@ namespace ECSCore.Managers
         {
             get { return _entitys.Count; }
         }
-        #endregion
 
-        #region Публичные методы
         /// <summary>
         /// Получить первый id сущьности из коллекции
         /// </summary>
@@ -53,27 +43,12 @@ namespace ECSCore.Managers
         {
             return _entitys.Keys.FirstOrDefault();
         }
-        #endregion
 
-        #region Внутренние методы
-        /// <summary>
-        /// Добавить сущьность
-        /// 1) Присваивает Id
-        /// 2) Добавляет сущьность в коллекцию 
-        /// </summary>
-        /// <param name="entity"> Экземпляр сущьности </param>
-        /// <returns> IEntity (с присвоенным Id) / null </returns>
         internal Entity Add(Entity entity)
         {
-            return Registration(entity); //Присвоим id и добавим в коллекцию
+            return Registration(entity);
         }
 
-        /// <summary>
-        /// Получить сущьность по id, если есть
-        /// </summary>
-        /// <param name="id"> Идентификатор сущьности</param>
-        /// <param name="Entity"> Сущьность (Если есть) / null </param>
-        /// <returns> Флаг наличия сущьности </returns>
         internal bool Get(int id, out Entity Entity)
         {
             lock (_entitys)
@@ -82,52 +57,37 @@ namespace ECSCore.Managers
             }
         }
 
-        /// <summary>
-        /// Удаление сущьности по id
-        /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
         internal bool Remove(int id)
         {
-            return RemoveEntity(id); //Удалим сущьность
+            return RemoveEntity(id);
         }
-        #endregion
 
-        #region Приватные методы
-        /// <summary>
-        /// Добавим сущьность в коллекцию
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns> IEntity / null </returns>
         private Entity Registration(Entity entity)
         {
             lock (_entitys)
             {
                 if (_queueFreeID.Count > 0)
                 {
-                    entity.Id = _queueFreeID.Dequeue(); //Получим id из очереди
-                } //Если в очереди есть свободные id
+                    entity.Id = _queueFreeID.Dequeue();
+                }
                 else
                 {
-                    _endUseId++; //Инкрементируем счетчик
-                    entity.Id = _endUseId; //Присвоим новый id
-                } //Иначе
+                    _endUseId++;
+                    entity.Id = _endUseId;
+                }
+
                 _entitys.Add(entity.Id, entity);
             }
             return entity;
         }
 
-        /// <summary>
-        /// Удаление сущьности
-        /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
         private bool RemoveEntity(int id)
         {
             lock (_entitys)
             {
-                _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
-                return _entitys.Remove(id); //Удалим сущьность из коллекции
+                _queueFreeID.Enqueue(id);
+                return _entitys.Remove(id);
             }
         }
-        #endregion
     }
 }

@@ -296,5 +296,142 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Assert.AreEqual(1, include.CallOfRemoveCount, "ActionRemove of system not actual count call");
             Assert.IsTrue(include.CallActionCount > 5, "Action of system not more 5 count call");
         }
+
+        [TestMethod()]
+        public void Test_13_Pause()
+        {
+            IECS?.Despose();
+            Test_00_InitializationIECS();
+
+            IECS.Pause();
+
+            var ship = IECS.AddEntity(new Ship());
+            ship.Add(new Pozition());
+            ship.Add(new Speed() { dX =1});
+
+            ship.Get<Pozition>(out var poz);
+
+            var sec = 0;
+            var timeSec = 10;
+            while (true)
+            {
+                if (sec > timeSec)
+                {
+                    break;
+                }
+                Debug.WriteLine(poz.X);
+                Thread.Sleep(1000);
+                sec++;
+            }
+
+            Assert.AreEqual(0, poz.X);
+        }
+
+        [TestMethod()]
+        public void Test_14_Run()
+        {
+            IECS?.Despose();
+            Test_00_InitializationIECS();
+
+            IECS.Pause();
+
+            var ship = IECS.AddEntity(new Ship());
+            ship.Add(new Pozition());
+            ship.Add(new Speed() { dX = 1 });
+
+            ship.Get<Pozition>(out var poz);
+
+            var sec = 0;
+            var timeSec = 60;
+
+            IECS.Run();
+
+            while (true)
+            {
+                if (sec > timeSec)
+                {
+                    IECS.Pause();
+                    break;
+                }
+                Debug.WriteLine(poz.X);
+                Thread.Sleep(1000);
+                sec++;
+            }
+
+            Assert.IsTrue(poz.X < 62);
+            Assert.IsTrue(poz.X > 58);
+        }
+
+        [TestMethod()]
+        public void Test_15_Speed_X0_5()
+        {
+            IECS?.Despose();
+            Test_00_InitializationIECS();
+
+            IECS.Pause();
+
+            var ship = IECS.AddEntity(new Ship());
+            ship.Add(new Pozition());
+            ship.Add(new Speed() { dX = 1 });
+
+            ship.Get<Pozition>(out var poz);
+
+            var sec = 0;
+            var timeSec = 60;
+
+            IECS.Run();
+            IECS.SetSpeed(ECSCore.Enums.ECSSpeed.X_0_5);
+
+            while (true)
+            {
+                if (sec > timeSec)
+                {
+                    IECS.Pause();
+                    break;
+                }
+                Debug.WriteLine(poz.X);
+                Thread.Sleep(1000);
+                sec++;
+            }
+
+            Assert.IsTrue(poz.X > 28);
+            Assert.IsTrue(poz.X < 32);
+        }
+
+        [TestMethod()]
+        public void Test_15_Speed_X2()
+        {
+            IECS?.Despose();
+            Test_00_InitializationIECS();
+
+            IECS.Pause();
+
+            var ship = IECS.AddEntity(new Ship());
+            ship.Add(new Pozition());
+            ship.Add(new Speed() { dX = 1 });
+
+            ship.Get<Pozition>(out var poz);
+
+            var sec = 0;
+            var timeSec = 60;
+
+            IECS.Run();
+            IECS.SetSpeed(ECSCore.Enums.ECSSpeed.X_2_0);
+
+            while (true)
+            {
+                if (sec > timeSec)
+                {
+                    IECS.Pause();
+                    break;
+                }
+                Debug.WriteLine(poz.X);
+                Thread.Sleep(1000);
+                sec++;
+            }
+
+            Assert.IsTrue(poz.X > 118);
+            Assert.IsTrue(poz.X < 124);
+        }
     }
 }

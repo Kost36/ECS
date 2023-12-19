@@ -16,10 +16,10 @@ namespace GameLib.Mechanics.Move.Systems
         {
             if (way.InitOk && way.Len < 1 && speed.Fact < 0.1)
             {
-                IECS.RemoveComponent<Way>(entityId); //Удалим путь
-                IECS.RemoveComponent<PozitionSV>(entityId); //Удалим точку перемещения
-                IECS.RemoveComponent<Speed>(entityId); //Удалим скорость
-                IECS.RemoveComponent<SpeedSV>(entityId); //Удалим заданную скорость
+                IECS.RemoveComponent<Way>(entityId);
+                IECS.RemoveComponent<PozitionSV>(entityId);
+                IECS.RemoveComponent<Speed>(entityId);
+                IECS.RemoveComponent<SpeedSV>(entityId);
             }
         }
     }

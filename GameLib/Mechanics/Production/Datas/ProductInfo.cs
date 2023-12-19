@@ -1,4 +1,4 @@
-﻿using GameLib.Products;
+﻿using GameLib.Enums;
 using System;
 
 namespace GameLib.Mechanics.Production.Datas

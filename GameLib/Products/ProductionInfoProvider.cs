@@ -1,4 +1,5 @@
-﻿using GameLib.Mechanics.Production.Components;
+﻿using GameLib.Enums;
+using GameLib.Mechanics.Production.Components;
 using GameLib.Products.Food;
 using GameLib.Products.Lvl0;
 using GameLib.Products.Lvl1;

@@ -1,6 +1,6 @@
 ﻿using GameLib.Attributes;
+using GameLib.Enums;
 using GameLib.Exceptions;
-using GameLib.Products;
 using System;
 using System.Reflection;
 

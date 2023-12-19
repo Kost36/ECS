@@ -62,7 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\ProductTypeAttribute.cs" />
+    <Compile Include="Attributes\ProductType.cs" />
     <Compile Include="Components\Warehouse.cs" />
     <Compile Include="Datas\Count.cs" />
     <Compile Include="Exceptions\ExceptionProductNotHaveAttribute.cs" />
@@ -134,7 +134,7 @@
     <Compile Include="Products\Lvl3\Plastic.cs" />
     <Compile Include="Products\Lvl3\Rubber.cs" />
     <Compile Include="Products\Lvl3\Metal.cs" />
-    <Compile Include="Products\ProductType.cs" />
+    <Compile Include="Enums\ProductType.cs" />
     <Compile Include="Products\ProductionInfoProvider.cs" />
     <Compile Include="Products\ProductTypeMatcher.cs" />
     <Compile Include="Mechanics\Production\Systems\BridgeProductionModulToStantionSystem.cs" />
@@ -173,6 +173,10 @@
     <Folder Include="Mechanics\Trade\" />
     <Folder Include="Products\Lvl5\" />
     <Folder Include="Products\Lvl6\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mechanics\Mining\Mining.md" />
+    <None Include="Mechanics\Move\Move.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

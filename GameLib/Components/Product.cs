@@ -1,5 +1,5 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Products;
+using GameLib.Enums;
 using GameLib.Providers;
 
 namespace GameLib.Components
@@ -9,9 +9,6 @@ namespace GameLib.Components
     /// </summary>
     public abstract class Product : ComponentBase
     {
-        /// <summary>
-        /// Конструктор
-        /// </summary>
         public Product()
         {
             var productType = ProductTypeProvider.GetProductType(typeof(Product));

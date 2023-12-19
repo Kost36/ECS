@@ -25,6 +25,7 @@ namespace GameLib.Mechanics.Move.Components
         /// (m/sec)
         /// </summary>
         public float dZ;
+
         /// <summary>
         /// Фактической скорости
         /// (m/sec)
@@ -34,6 +35,6 @@ namespace GameLib.Mechanics.Move.Components
         /// Максимальной скорости
         /// (m/sec)
         /// </summary>
-        public float Max;
+        public float Max; //TODO Зависит от характиристик корабля (Двигатель; + МБ Масса?)
     }
 }

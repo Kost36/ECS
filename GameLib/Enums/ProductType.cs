@@ -1,4 +1,4 @@
-﻿namespace GameLib.Products
+﻿namespace GameLib.Enums
 {
     /// <summary>
     /// Тип продукта
@@ -28,9 +28,9 @@
 
         #region Сырьё 1 уровень (Добываемые)
         /// <summary>
-        /// Грязная вода
+        /// Лед
         /// </summary>
-        WaterDirty,
+        Ice,
         /// <summary>
         /// Руда
         /// </summary>
@@ -66,6 +66,10 @@
         #endregion
 
         #region Материалы 2 уровень (Производимое)
+        /// <summary>
+        /// Грязная вода
+        /// </summary>
+        WaterDirty,
         /// <summary>
         /// Железо
         /// </summary>

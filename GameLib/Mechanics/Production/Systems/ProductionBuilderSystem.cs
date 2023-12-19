@@ -4,6 +4,7 @@ using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Datas;
+using GameLib.Enums;
 using GameLib.Mechanics.Production.Components;
 using GameLib.Mechanics.Production.Datas;
 using GameLib.Products;

@@ -29,7 +29,7 @@ namespace GameLib.Mechanics.Move.Systems
                         {
                             if (acceleration.SpeedOk)
                             {
-                                IECS.RemoveComponent<Acceleration>(entityId); //Удалить компонент ускорения
+                                IECS.RemoveComponent<Acceleration>(entityId);
                             }
                             else
                             {
@@ -43,6 +43,7 @@ namespace GameLib.Mechanics.Move.Systems
 
                 speedSV.Update = false;
                 acceleration.SpeedOk = false;
+
                 //Ускорение
                 if (speedSV.dXSV < speed.dX)
                 {

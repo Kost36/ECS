@@ -31,7 +31,7 @@ namespace GameLib.Mechanics.Move.Systems
             way.NormZ = vector.Z;
 
             //Инициализация пройдена
-            if (way.InitOk == false)
+            if (!way.InitOk)
             {
                 way.InitOk = true;
             }

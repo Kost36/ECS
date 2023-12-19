@@ -18,11 +18,13 @@ namespace GameLib.Mechanics.Move.Systems
             float timeDeAcc = speed.Fact / acceleration.Acc; //Сколько времени нужно замедляться
             wayToStop.Len = (speed.Fact * timeDeAcc) / 2f; //Путь останова
             float enargyNeed = timeDeAcc * acceleration.EnargyUse; //Необходимое колличество энергии для останова
+            
             if (enargyNeed > enargy.Fact)
             {
                 wayToStop.EnargyHave = false;
                 return;
-            } //Если энергии меньше, чем нужно
+            }
+
             wayToStop.EnargyHave = true;
         }
     }

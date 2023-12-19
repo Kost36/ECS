@@ -1,8 +1,8 @@
 ﻿using ECSCore.BaseObjects;
 using GameLib.Mechanics.Production.Datas;
 using System.Collections.Generic;
-using GameLib.Products;
 using GameLib.Components;
+using GameLib.Enums;
 
 namespace GameLib.Mechanics.Production.Components
 {

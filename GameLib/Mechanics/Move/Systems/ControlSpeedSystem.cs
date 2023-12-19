@@ -23,13 +23,14 @@ namespace GameLib.Mechanics.Move.Systems
             {
                 SpeedDown(speed, speedSV);
             } //Если энергии нехватает на останов и оставшийся путь меньше пути останова*2
+
             //Ускорение
             else if (way.Len > wayToStop.Len * 3)
             {
                 if (speedSV.SVSpeed == speed.Max)
                 {
                     return;
-                } //Есди заданная скорость равна максимальной
+                }
                 SpeedUp(speed, speedSV);
             } //Если оставшийся путь в 3 раз больше пути останова
             else
@@ -59,6 +60,7 @@ namespace GameLib.Mechanics.Move.Systems
                 }
             }
         }
+
         private void SpeedDown(Speed speed, SpeedSV speedSV)
         {
             if (speedSV.SVSpeed > 0)

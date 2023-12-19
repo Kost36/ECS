@@ -1,5 +1,6 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
+using GameLib.Enums;
 
 namespace GameLib.Products.Lvl0
 {

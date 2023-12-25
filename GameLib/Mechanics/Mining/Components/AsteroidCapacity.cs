@@ -4,20 +4,22 @@ using GameLib.Enums;
 namespace GameLib.Mechanics.Mining.Components
 {
     /// <summary>
-    /// Вместимость сырья в астеройде
+    /// Минерал астеройда
     /// </summary>
-    public class AsteroidCapacity : ComponentBase
+    public class Mineral : ComponentBase
     {
         /// <summary>
         /// Тип минерала
         /// </summary>
-        public MineralType Mineral { get; set; }
+        public MineralType Type { get; set; }
+        
         /// <summary>
         /// Начальный объем
         /// </summary>
         public int InitialCapacity { get;  set; }
+       
         /// <summary>
-        /// остаточный объем
+        /// Остаточный объем
         /// </summary>
         public int Capacity { get; set; }
     }

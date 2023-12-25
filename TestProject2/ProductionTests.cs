@@ -8,22 +8,8 @@ using System.Diagnostics;
 namespace GameLibTests
 {
     [TestClass()]
-    public class ProductionTests
+    public sealed class ProductionTests : BaseTest
     {
-        private static IECS IECS;
-        private static IECSDebug IECSDebug;
-
-        public void Init()
-        {
-            ECS.Initialization(GetAssembly.Get());
-            IECS = ECS.InstanceIECS;
-            IECSDebug = ECS.InstanceDebug;
-
-            Console.WriteLine("ОК");
-            Assert.IsNotNull(IECS);
-            Debug.WriteLine(IECSDebug.GetInfo());
-        }
-
         //[TestMethod()]
         //public void Test()
         //{

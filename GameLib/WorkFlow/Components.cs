@@ -24,35 +24,6 @@ namespace GameLib.WorkFlow
     }
 
     /// <summary>
-    /// Компонент энерги
-    /// </summary>
-    [Serializable]
-    public class Enargy : ComponentBase
-    {
-        /// <summary>
-        /// Максимальный запас энергии
-        /// </summary>
-        public float Max;
-        /// <summary>
-        /// Фактический запас энергии
-        /// </summary>
-        public float Fact;
-    }
-
-    /// <summary>
-    /// Компонент регенерации энергии
-    /// Value/сек
-    /// </summary>
-    [Serializable]
-    public class EnargyReGeneration : ComponentBase
-    {
-        /// <summary>
-        /// Регенерации энергии в секунду
-        /// </summary>
-        public float Regen = 5;
-    }
-
-    /// <summary>
     /// Компонент прочности / здоровья
     /// </summary>
     [Serializable]

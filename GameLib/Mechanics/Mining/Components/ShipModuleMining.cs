@@ -7,12 +7,13 @@ namespace GameLib.Mechanics.Mining.Components
     /// </summary>
     public class ShipModuleMining : ComponentBase
     {
-    }
-
-    /// <summary>
-    /// Корабельный модуль торговли 
-    /// </summary>
-    public class ShipModuleЕrading : ComponentBase
-    {
+        /// <summary>
+        /// Энергопотребление в секунду
+        /// </summary>
+        public float EnergyConsumptionPerSec;
+        /// <summary>
+        /// Процент выполнения в секунду
+        /// </summary>
+        public float CompletionPercentagePerSec;
     }
 }

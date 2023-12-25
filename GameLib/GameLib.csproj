@@ -63,19 +63,47 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ProductType.cs" />
+    <Compile Include="Components\Energy\EnergyRegeneration.cs" />
+    <Compile Include="Components\Energy\EnergyCapacity.cs" />
+    <Compile Include="Components\Energy\Energy.cs" />
     <Compile Include="Components\Hold.cs" />
     <Compile Include="Components\Pozition.cs" />
     <Compile Include="Components\Warehouse.cs" />
     <Compile Include="Components\Weight.cs" />
     <Compile Include="Datas\Count.cs" />
+    <Compile Include="Entitys\DynamicEntitys\Ship.cs" />
     <Compile Include="Exceptions\ExceptionProductNotHaveAttribute.cs" />
     <Compile Include="Mechanics\Balance\Components\MineralsSettings.cs" />
     <Compile Include="Mechanics\Balance\Entites\MineralsBalancer.cs" />
-    <Compile Include="Mechanics\Mining\Components\A.cs" />
+    <Compile Include="Mechanics\Company\Components\OwnerСompany.cs" />
+    <Compile Include="Mechanics\Company\Components\RegistrationInformation.cs" />
+    <Compile Include="Mechanics\Company\Components\KnownInformations.cs" />
+    <Compile Include="Mechanics\Company\Entites\Company.cs" />
+    <Compile Include="Mechanics\Company\Informations\TypeInformation.cs" />
+    <Compile Include="Mechanics\Company\Informations\InformationManager.cs" />
+    <Compile Include="Mechanics\Company\Informations\Information.cs" />
+    <Compile Include="Mechanics\Company\Informations\ShipInformation.cs" />
+    <Compile Include="Mechanics\Company\Informations\AsteroidInformation.cs" />
+    <Compile Include="Mechanics\Company\Informations\StantionInformation.cs" />
+    <Compile Include="Mechanics\Company\Informations\TypeInformationToTimeSpanConverter.cs" />
+    <Compile Include="Mechanics\Company\Systems\RegistrationInformationSystem.cs" />
+    <Compile Include="Mechanics\Company\Systems\ControlInformationExpirationsSystem.cs" />
+    <Compile Include="Mechanics\Company\Systems\ControlShipInformationExpirationsSystem.cs" />
+    <Compile Include="Mechanics\Detection\Components\ShipModuleScout.cs" />
+    <Compile Include="Mechanics\Mining\AI\Components\MiningAI.cs" />
+    <Compile Include="Mechanics\Mining\AI\Enums\MiningAIState.cs" />
+    <Compile Include="Mechanics\Sector\Components\SectorSize.cs" />
+    <Compile Include="Mechanics\Sector\Components\SpeedLimit.cs" />
+    <Compile Include="Mechanics\Sector\Entites\Sector.cs" />
+    <Compile Include="WorkFlow\A.cs" />
     <Compile Include="Mechanics\Mining\Components\AsteroidCapacity.cs" />
+    <Compile Include="Mechanics\Mining\Components\Mining.cs" />
+    <Compile Include="Mechanics\Mining\Components\ShipCommandMining.cs" />
+    <Compile Include="Mechanics\Mining\Components\ShipMiningSetting.cs" />
     <Compile Include="Mechanics\Mining\Components\ShipModuleMining.cs" />
     <Compile Include="Mechanics\Mining\Entites\Asteroid.cs" />
     <Compile Include="Enums\MineralType.cs" />
+    <Compile Include="Mechanics\Trading\Components\ShipModuleTrading.cs" />
     <Compile Include="Products\Food\Fish.cs" />
     <Compile Include="Products\Food\Meat.cs" />
     <Compile Include="Products\Food\CompoundFeed.cs" />
@@ -167,16 +195,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entitys\" />
     <Folder Include="Matchers\" />
     <Folder Include="Mechanics\AI\" />
     <Folder Include="Mechanics\Balance\Systems\" />
+    <Folder Include="Mechanics\Detection\Co\" />
+    <Folder Include="Mechanics\Detection\Systems\" />
     <Folder Include="Mechanics\Mining\Systems\" />
-    <Folder Include="Mechanics\Sector\Components\" />
-    <Folder Include="Mechanics\Sector\Entites\" />
     <Folder Include="Mechanics\Sector\Systems\" />
     <Folder Include="Mechanics\Stantion\" />
-    <Folder Include="Mechanics\Trade\" />
     <Folder Include="Products\Lvl5\" />
     <Folder Include="Products\Lvl6\" />
   </ItemGroup>

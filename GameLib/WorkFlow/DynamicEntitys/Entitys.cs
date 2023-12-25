@@ -4,12 +4,6 @@ using System;
 namespace GameLib.WorkFlow.DynamicEntitys
 {
     /// <summary>
-    /// Корабль
-    /// </summary>
-    [Serializable]
-    public class Ship : Entity { }
-
-    /// <summary>
     /// Дрон;
     /// Виды: Ремонтный/Грузовой/Защитный/Штурмовой
     /// </summary>

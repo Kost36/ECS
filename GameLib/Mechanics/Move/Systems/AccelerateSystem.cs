@@ -2,8 +2,8 @@
 using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
+using GameLib.Components.Energy;
 using GameLib.Mechanics.Move.Components;
-using GameLib.WorkFlow;
 using MathLib;
 
 namespace GameLib.Mechanics.Move.Systems
@@ -12,9 +12,9 @@ namespace GameLib.Mechanics.Move.Systems
     [SystemPriority(1)]
     [SystemEnable]
     [SystemParallelCountThreads(8)]
-    public class AccelerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Enargy>, ISystemAction, ISystemParallel
+    public class AccelerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Energy>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Enargy enargy, float deltatime)
+        public override void Action(int entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Energy enargy, float deltatime)
         {
             float enargyUse = acceleration.EnargyUse * DeltaTime;
             float acc = acceleration.Acc * DeltaTime;

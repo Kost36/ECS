@@ -1,12 +1,12 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
-using GameLib.Enums;
+using Type = GameLib.Enums.ProductType;
 
 namespace GameLib.Products.Lvl4
 {
     /// <summary>
     /// Корпус
     /// </summary>
-    [ProductType(ProductType.Body)]
+    [ProductType(Type.Body)]
     public sealed class Body : Product { }
 }

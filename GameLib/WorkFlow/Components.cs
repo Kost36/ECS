@@ -1,28 +1,8 @@
 ﻿using ECSCore.BaseObjects;
 using System;
 
-namespace GameLib.Components
+namespace GameLib.WorkFlow
 {
-    /// <summary>
-    /// Компонент позиции
-    /// </summary>
-    [Serializable]
-    public class Pozition : ComponentBase
-    {
-        /// <summary>
-        /// Позиция X
-        /// </summary>
-        public float X;
-        /// <summary>
-        /// Позиция Y
-        /// </summary>
-        public float Y;
-        /// <summary>
-        /// Позиция Z
-        /// </summary>
-        public float Z;
-    }
-
     /// <summary>
     /// Компонент направления (Нормализованный)
     /// </summary>
@@ -135,35 +115,5 @@ namespace GameLib.Components
         /// Использование энергии в секунду
         /// </summary>
         public float EnargyUse = 10;
-    }
-
-    /// <summary>
-    /// Компонент трюма (вместимости в м³) 
-    /// м³
-    /// </summary>
-    [Serializable]
-    public class Hold : ComponentBase
-    {
-        /// <summary>
-        /// Максимальная вместимость в м³
-        /// </summary>
-        public float Max;
-        /// <summary>
-        /// Занято емкости в м³
-        /// </summary>
-        public float Use;
-    }
-
-    /// <summary>
-    /// Компонент веса
-    /// Кг
-    /// </summary>
-    [Serializable]
-    public class Weight : ComponentBase
-    {
-        /// <summary>
-        /// Вес корабля (Кг)
-        /// </summary>
-        public float Fact;
     }
 }

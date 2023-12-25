@@ -1,14 +1,14 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Enums;
+using GameLib.WorkFlow;
 using System.Collections.Generic;
-using static GameLib.Components.ShipModules.ShipModule;
+using static GameLib.WorkFlow.Ship.ShipModule;
 
-namespace GameLib.Components.ShipModules
+namespace GameLib.WorkFlow.Ship
 {
     /// <summary>
     /// Базовый компонент корпуса корабля
     /// </summary>
-    public abstract class ShipBody : ComponentBase 
+    public abstract class ShipBody : ComponentBase
     {
         /// <summary>
         /// Максимальная прочность

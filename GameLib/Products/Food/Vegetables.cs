@@ -1,12 +1,12 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
-using GameLib.Enums;
+using Type = GameLib.Enums.ProductType;
 
 namespace GameLib.Products.Food
 {
     /// <summary>
     /// Овощи 
     /// </summary>
-    [ProductType(ProductType.Vegetables)]
+    [ProductType(Type.Vegetables)]
     public sealed class Vegetables : Product { }
 }

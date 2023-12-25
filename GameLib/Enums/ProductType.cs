@@ -8,88 +8,107 @@
         /// <summary>
         /// Неизвестный
         /// </summary>
-        Unknown,
+        Unknown = -1,
 
-        #region Восполняемые
+        #region 0 Уровень 
+        // Восполняемые; 1 - 9
+
         /// <summary>
         /// Энергия
         /// </summary>
-        Enargy,
+        Enargy = 1,
         /// <summary>
         /// Аккумулятор / батарея с энергией.
         /// 3 кВт
         /// </summary>
-        Battery,
+        Battery = 2,
         /// <summary>
         /// Вода
         /// </summary>
-        Water,
+        Water = 3,
+
         #endregion
 
-        #region Сырьё 1 уровень (Добываемые)
+        #region 1 уровень - сырьё
+        // Добываемые; 10 - 49 
+
         /// <summary>
         /// Лед
         /// </summary>
-        Ice,
-        /// <summary>
-        /// Руда
-        /// </summary>
-        Ore,
-        /// <summary>
-        /// Песок
-        /// </summary>
-        Sand,
-        /// <summary>
-        /// Углерод
-        /// </summary>
-        Carbon,
-        /// <summary>
-        /// Водород
-        /// </summary>
-        Hydrogen,
-        /// <summary>
-        /// Азот
-        /// </summary>
-        Nitrogen,
-        /// <summary>
-        /// Метан
-        /// </summary>
-        Methane,
-        /// <summary>
-        /// Гелий
-        /// </summary>
-        Helium,
-        /// <summary>
-        /// Литий
-        /// </summary>
-        Lithium,
-        #endregion
+        Ice = 10,
 
-        #region Материалы 2 уровень (Производимое)
-        /// <summary>
-        /// Грязная вода
-        /// </summary>
-        WaterDirty,
         /// <summary>
         /// Железо
         /// </summary>
-        Iron,
+        Iron = 11,
         /// <summary>
         /// Медь
         /// </summary>
-        Copper,
+        Copper = 12,
+        /// <summary>
+        /// Титан
+        /// </summary>
+        Titanium = 13,
+        /// <summary>
+        /// Хром
+        /// </summary>
+        Сhrome = 14,
         /// <summary>
         /// Алюминий
         /// </summary>
-        Aluminum,
+        Aluminum = 23,
+        //Олово
+        //Свинец
+        //Цинк
+        //Серебро 
+        //Золото
+
         /// <summary>
         /// Кремний
         /// </summary>
-        Silicon,
+        Silicon = 15,
+        /// <summary>
+        /// Углерод
+        /// </summary>
+        Carbon = 16,
         /// <summary>
         /// Сера
         /// </summary>
-        Sulfur,
+        Sulfur = 24,
+
+        /// <summary>
+        /// Литий
+        /// </summary>
+        Lithium = 17,
+        /// <summary>
+        /// Магний
+        /// </summary>
+        Magnesium = 18,
+        /// <summary>
+        /// Кальций
+        /// </summary>
+        Calcium = 19,
+
+        /// <summary>
+        /// Гелий
+        /// </summary>
+        Helium = 20,
+        /// <summary>
+        /// Метан
+        /// </summary>
+        Methane = 21,
+        /// <summary>
+        /// Азот
+        /// </summary>
+        Nitrogen = 22,
+        //Аргон
+        //Неон
+
+        #endregion
+
+        #region 2 уровень - материалы
+        // Производимое - простое; 50 - 99
+
         /// <summary>
         /// Амиак
         /// </summary>
@@ -102,9 +121,46 @@
         /// Удобрение
         /// </summary>
         Fertilizer,
+        /// <summary>
+        /// Водород
+        /// </summary>
+        Hydrogen,
+
+        #endregion
+        
+        #region 3 уровень - еда 
+        // Производимое; 100 - 199
+
+        /// <summary>
+        /// Зерно
+        /// </summary>
+        Grain,
+        /// <summary>
+        /// Овощи 
+        /// </summary>
+        Vegetables,
+        /// <summary>
+        /// Фрукты  
+        /// </summary>
+        Fruit,
+        /// <summary>
+        /// Комбикорм  
+        /// </summary>
+        CompoundFeed,
+        /// <summary>
+        /// Рыба  
+        /// </summary>
+        Fish,
+        /// <summary>
+        /// Мясо  
+        /// </summary>
+        Meat,
+
         #endregion
 
-        #region Материалы 3 уровень (Производимое)
+        #region 4 уровень - материалы
+        // Производимое - обычное; 200 - 299
+
         /// <summary>
         /// Металл
         /// </summary>
@@ -125,9 +181,12 @@
         /// Стекло
         /// </summary>
         Glass,
+
         #endregion
 
-        #region Товары 4 уровень (Производимое) => Высокотехнологичные          
+        #region 5 уровень - товары
+        // Производимое - сложное; 300 - 399   
+
         /// <summary>
         /// Провода
         /// </summary>
@@ -153,41 +212,22 @@
         /// Обшивка
         /// </summary>
         Sheathing,
-        #endregion
-
-        #region Товары 5 уровень (Производимое) => Оружие, дроны, турели, модули, ракеты
 
         #endregion
 
-        #region Товары 6 уровень (Производимое) => Станции, корабли
+        #region 6 уровень - оружие, дроны, турели, модули, ракеты
+        // Производимое - высокотехнологичное; 1000 - 1999
 
         #endregion
 
-        #region Еда (Производимое)
-        /// <summary>
-        /// Зерно
-        /// </summary>
-        Grain,
-        /// <summary>
-        /// Овощи 
-        /// </summary>
-        Vegetables,
-        /// <summary>
-        /// Фрукты  
-        /// </summary>
-        Fruit,
-        /// <summary>
-        /// Комбикорм  
-        /// </summary>
-        CompoundFeed,
-        /// <summary>
-        /// Рыба  
-        /// </summary>
-        Fish,
-        /// <summary>
-        /// Мясо  
-        /// </summary>
-        Meat,
+        #region 7 уровень - cтанции, корабли
+        // Производимое - высокотехнологичное; 2000 - 2999 
+
         #endregion
     }
 }
+
+/// <summary>
+/// Грязная вода
+/// </summary>
+//WaterDirty,

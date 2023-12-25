@@ -1,4 +1,4 @@
-﻿namespace GameLib.Enums
+﻿namespace GameLib.WorkFlow
 {
     /// <summary>
     /// Размер корпуса корабля

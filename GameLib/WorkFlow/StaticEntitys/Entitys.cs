@@ -1,7 +1,7 @@
 ﻿using ECSCore.BaseObjects;
 using System;
 
-namespace GameLib.Entitys.StaticEntitys
+namespace GameLib.WorkFlow.StaticEntitys
 {
     /// <summary>
     /// Звездная система

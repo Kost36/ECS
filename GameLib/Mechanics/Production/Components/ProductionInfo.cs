@@ -12,7 +12,7 @@ namespace GameLib.Mechanics.Production.Components
     public abstract class ProductionInfo : ComponentBase
     {
         /// <summary>
-        /// Конструктор
+        ///
         /// </summary>
         /// <param name="cycleTimeInSec"> Время производственного цикла </param>
         public ProductionInfo(int cycleTimeInSec)
@@ -23,15 +23,15 @@ namespace GameLib.Mechanics.Production.Components
         /// <summary>
         /// Время производственного цикла
         /// </summary>
-        public int CycleTimeInSec;
+        public int CycleTimeInSec { get; set; }
         /// <summary>
         /// Информация о продукте
         /// </summary>
-        public ProductInfo Product;
+        public ProductInfo Product { get; set; }
         /// <summary>
         /// Список сырьевых продуктов
         /// </summary>
-        public IEnumerable<ProductInfo> Raws;
+        public IEnumerable<ProductInfo> Raws { get; set; }
     }
 
     public sealed class ProductionInfo<TProduct> : ProductionInfo

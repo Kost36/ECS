@@ -3,7 +3,7 @@
 namespace GameLib.Attributes
 {
     /// <summary>
-    /// Атрибут типа продукта
+    /// Атрибут тип продукта
     /// </summary>
     public sealed class ProductType : Attribute
     {

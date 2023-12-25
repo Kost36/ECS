@@ -35,9 +35,9 @@ namespace GameLib.Products
             { ProductType.Water, typeof(Water) },
 
             //Добываемые товары,
-            { ProductType.WaterDirty, typeof(WaterDirty) },
-            { ProductType.Ore, typeof(Ore) },
-            { ProductType.Sand, typeof(Sand) },
+            //{ ProductType.WaterDirty, typeof(WaterDirty) },
+            //{ ProductType.Ore, typeof(Ore) },
+            //{ ProductType.Sand, typeof(Sand) },
             { ProductType.Carbon, typeof(Carbon) },
             { ProductType.Nitrogen, typeof(Nitrogen) },
             { ProductType.Hydrogen, typeof(Hydrogen) },
@@ -75,7 +75,6 @@ namespace GameLib.Products
         };
 
         /// <summary>
-        /// Привести Type к ProductType
         /// </summary>
         /// <param name="productType"> Тип продукта </param>
         public static Type ToType(ProductType productType)

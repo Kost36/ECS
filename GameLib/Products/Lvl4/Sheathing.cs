@@ -1,12 +1,12 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
-using GameLib.Enums;
+using Type = GameLib.Enums.ProductType;
 
 namespace GameLib.Products.Lvl4
 {
     /// <summary>
     /// Обшивка
     /// </summary>
-    [ProductType(ProductType.Sheathing)]
+    [ProductType(Type.Sheathing)]
     public sealed class Sheathing : Product { }
 }

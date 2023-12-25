@@ -1,7 +1,7 @@
 ﻿using ECSCore.BaseObjects;
 using System;
 
-namespace GameLib.Entitys.DynamicEntitys
+namespace GameLib.WorkFlow.DynamicEntitys
 {
     /// <summary>
     /// Корабль

@@ -1,12 +1,12 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
-using GameLib.Enums;
+using Type = GameLib.Enums.ProductType;
 
 namespace GameLib.Products.Lvl4
 {
     /// <summary>
     /// Аккумулятор / батарея без энергией.
     /// </summary>
-    [ProductType(ProductType.BatteryEmpty)]
+    [ProductType(Type.BatteryEmpty)]
     public sealed class BatteryEmpty : Product { }
 }

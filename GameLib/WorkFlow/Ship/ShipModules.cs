@@ -1,7 +1,7 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Enums;
+using GameLib.WorkFlow;
 
-namespace GameLib.Components.ShipModules
+namespace GameLib.WorkFlow.Ship
 {
     /// <summary>
     /// Модули корабля

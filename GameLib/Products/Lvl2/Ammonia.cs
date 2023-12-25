@@ -1,12 +1,12 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
-using GameLib.Enums;
+using Type = GameLib.Enums.ProductType;
 
 namespace GameLib.Products.Lvl2
 {
     /// <summary>
     /// Амиак
     /// </summary>
-    [ProductType(ProductType.Ammonia)]
+    [ProductType(Type.Ammonia)]
     public sealed class Ammonia : Product { }
 }

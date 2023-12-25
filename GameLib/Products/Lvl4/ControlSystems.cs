@@ -1,12 +1,12 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
-using GameLib.Enums;
+using Type = GameLib.Enums.ProductType;
 
 namespace GameLib.Products.Lvl4
 {
     /// <summary>
     /// Системы управления
     /// </summary>
-    [ProductType(ProductType.ControlSystems)]
+    [ProductType(Type.ControlSystems)]
     public sealed class ControlSystems : Product { }
 }

@@ -63,14 +63,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ProductType.cs" />
+    <Compile Include="Components\Hold.cs" />
+    <Compile Include="Components\Pozition.cs" />
     <Compile Include="Components\Warehouse.cs" />
+    <Compile Include="Components\Weight.cs" />
     <Compile Include="Datas\Count.cs" />
     <Compile Include="Exceptions\ExceptionProductNotHaveAttribute.cs" />
     <Compile Include="Mechanics\Balance\Components\MineralsSettings.cs" />
     <Compile Include="Mechanics\Balance\Entites\MineralsBalancer.cs" />
+    <Compile Include="Mechanics\Mining\Components\A.cs" />
     <Compile Include="Mechanics\Mining\Components\AsteroidCapacity.cs" />
+    <Compile Include="Mechanics\Mining\Components\ShipModuleMining.cs" />
     <Compile Include="Mechanics\Mining\Entites\Asteroid.cs" />
-    <Compile Include="Mechanics\Mining\Minerals.cs" />
+    <Compile Include="Enums\MineralType.cs" />
     <Compile Include="Products\Food\Fish.cs" />
     <Compile Include="Products\Food\Meat.cs" />
     <Compile Include="Products\Food\CompoundFeed.cs" />
@@ -103,8 +108,8 @@
     <Compile Include="Products\Lvl2\Iron.cs" />
     <Compile Include="Components\Product.cs" />
     <Compile Include="Mechanics\Production\Datas\Expense.cs" />
-    <Compile Include="Entitys\DynamicEntitys\Entitys.cs" />
-    <Compile Include="Entitys\StaticEntitys\Entitys.cs" />
+    <Compile Include="WorkFlow\DynamicEntitys\Entitys.cs" />
+    <Compile Include="WorkFlow\StaticEntitys\Entitys.cs" />
     <Compile Include="Mechanics\Move\Components\PozitionSV.cs" />
     <Compile Include="Mechanics\Move\Components\Acceleration.cs" />
     <Compile Include="Mechanics\Move\Components\WayToStop.cs" />
@@ -142,12 +147,12 @@
     <Compile Include="Mechanics\Production\Systems\ProductionSystem.cs" />
     <Compile Include="Providers\ProductTypeProvider.cs" />
     <Compile Include="WorkFlow\NewProduct\Products.cs" />
-    <Compile Include="Components\Components.cs" />
+    <Compile Include="WorkFlow\Components.cs" />
     <Compile Include="GetAssembly.cs" />
-    <Compile Include="Ship\ShipModules.cs" />
-    <Compile Include="Ship\ShipBodys.cs" />
+    <Compile Include="WorkFlow\Ship\ShipModules.cs" />
+    <Compile Include="WorkFlow\Ship\ShipBodys.cs" />
     <Compile Include="WorkFlow\Products\Products.cs" />
-    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="WorkFlow\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkFlow\WorkFlowProduction\Products.cs" />
   </ItemGroup>
@@ -162,6 +167,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Entitys\" />
     <Folder Include="Matchers\" />
     <Folder Include="Mechanics\AI\" />
     <Folder Include="Mechanics\Balance\Systems\" />

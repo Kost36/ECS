@@ -16,7 +16,7 @@ namespace GameLib.Algorithms.QuadTree
 
         public TreeNode<T> Root;
 
-        public Stack<TreeNode<T>> PoolNodes = new Stack<TreeNode<T>>();
+        public Stack<TreeItem<T>> PoolItems = new Stack<TreeItem<T>>();
         public Dictionary<T, TreeItem<T>> AllItems = new Dictionary<T, TreeItem<T>>();
 
         public QuadTree(int splitCount, int depthLimit, Quad region)
@@ -29,9 +29,7 @@ namespace GameLib.Algorithms.QuadTree
 
         public TreeNode<T> CreateNode(TreeNode<T> parent, int depth, Quad quad)
         {
-            var treeNode = PoolNodes.Count > 0
-                ? PoolNodes.Pop()
-                : new TreeNode<T>(this, parent, depth, quad);
+            var treeNode = new TreeNode<T>(this, parent, depth, quad);
 
             return treeNode;
         }
@@ -40,6 +38,9 @@ namespace GameLib.Algorithms.QuadTree
         {
             if (AllItems.TryGetValue(value, out TreeItem<T> item))
             {
+                item.Point.X = point.X;
+                item.Point.Y = point.Y;
+
                 item.Node.Update(item);
                 return;
             }
@@ -64,6 +65,20 @@ namespace GameLib.Algorithms.QuadTree
             Root.FindСollisionsForCircle(circle, collisions);
             return collisions.Count > 0;
         }
+
+        public List<TreeNode<T>> GetAllTreeNodes()
+        {
+            var treeNodes = new List<TreeNode<T>>();
+            Root.GetTreeNodes(treeNodes);
+            return treeNodes;
+        }
+
+        public List<TreeItem<T>> GetAllTreeItems()
+        {
+            var treeItems = new List<TreeItem<T>>();
+            Root.GetTreeItems(treeItems);
+            return treeItems;
+        }
     }
 
     public class TreeNode<T>
@@ -85,6 +100,7 @@ namespace GameLib.Algorithms.QuadTree
             Tree = tree;
             Parent = parent;
             Depth = depth;
+            Quad = quad;
 
             IsSplited = false;
 
@@ -131,6 +147,7 @@ namespace GameLib.Algorithms.QuadTree
                 && Depth < Tree.DepthLimit)
             {
                 IsSplited = true;
+                //Rebuild TreeNode
             }
         }
 
@@ -143,12 +160,15 @@ namespace GameLib.Algorithms.QuadTree
 
             Remove(item);
             Tree.Root.Add(item);
+
+            //Rebuild TreeNode???
         }
 
         public bool Remove(TreeItem<T> item)
         {
             if (Items.Remove(item))
             {
+                //Rebuild Parent TreeNode
                 return true;
             }
 
@@ -208,6 +228,34 @@ namespace GameLib.Algorithms.QuadTree
             }
         }
 
+        public override string ToString()
+        {
+            return $"Quad:[{Quad}]; Depth:[{Depth}]; IsSplited:[{IsSplited}]; ItemsCount:[{Items.Count}]";
+        }
+
+        public void GetTreeNodes(List<TreeNode<T>> treeNodes)
+        {
+            treeNodes.Add(this);
+            for (int i = 0; i < 4; ++i)
+            {
+                if (Childs[i] != null)
+                {
+                    Childs[i].GetTreeNodes(treeNodes);
+                }
+            }
+        }
+
+        public void GetTreeItems(List<TreeItem<T>> treeItems)
+        {
+            treeItems.AddRange(Items);
+            for (int i = 0; i < 4; ++i)
+            {
+                if (Childs[i] != null)
+                {
+                    Childs[i].GetTreeItems(treeItems);
+                }
+            }
+        }
     }
 
     public class TreeItem<T>
@@ -221,6 +269,11 @@ namespace GameLib.Algorithms.QuadTree
             Value = value;
             Point = point;
         }
+
+        public override string ToString()
+        {
+            return $"Point:[{Point}]; Value:[{Value}]";
+        }
     }
 
     public struct Point
@@ -232,6 +285,11 @@ namespace GameLib.Algorithms.QuadTree
         {
             X = x;
             Y = y;
+        }
+
+        public override string ToString()
+        {
+            return $"X:[{X}]; Y:[{Y}]";
         }
     }
 
@@ -254,6 +312,11 @@ namespace GameLib.Algorithms.QuadTree
         public bool PointIsInside(Point point)
         {
             return Math.Pow(point.X - Center.X, 2f) + Math.Pow(point.Y - Center.Y, 2f) <= Math.Pow(Radius, 2f);
+        }
+
+        public override string ToString()
+        {
+            return $"Center:[{Center}]; Radius:[{Radius}]";
         }
     }
 
@@ -308,6 +371,11 @@ namespace GameLib.Algorithms.QuadTree
         {
             return point.X >= Min.X && point.Y >= Min.Y
                 && point.X <= Max.X && point.Y <= Max.Y;
+        }
+
+        public override string ToString()
+        {
+            return $"Min:[{Min}]; Max:[{Max}]; Center:[{Center}]; Width:[{Width}]; Height:[{Height}]";
         }
     }
 }

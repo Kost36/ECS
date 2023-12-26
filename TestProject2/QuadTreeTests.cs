@@ -2,6 +2,7 @@
 using GameLib.Components;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameLibTests
 {
@@ -48,7 +49,6 @@ namespace GameLibTests
             new Point(0,0), 
             new Point(10000, 10000));
 
-
         [TestMethod()]
         public void QuadTreeFillingTest()
         {
@@ -60,12 +60,148 @@ namespace GameLibTests
             }
 
             Assert.AreEqual(_positions.Count, quadTree.AllItems.Count);
+            Assert.AreEqual(_positions.Count, quadTree.GetAllTreeItems().Count);
+
+            var expectedNodeCount = 5;
+            Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
         }
 
-        //Повторное добавление -> должно обновить
-        //Обновление позиции -> должно найти по ключу и переместить в нужный quad
-        //Обновление позиции -> должно переместить в нужный quad и удалить из текущего
-        //Удаление -> 
+        [TestMethod()]
+        public void QuadTreeUpdateTest()
+        {
+            var quadTree = new QuadTree<Position>(_splitCount, _depth, _region);
+            var position = _positions.First();
+
+            foreach (var pos in _positions)
+            {
+                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+            }
+
+            position.X = 999;
+            position.Y = 999;
+            position.Z = 999;
+            quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+
+            Assert.AreEqual(_positions.Count, quadTree.AllItems.Count);
+            Assert.AreEqual(_positions.Count, quadTree.GetAllTreeItems().Count);
+
+            var expectedNodeCount = 5;
+            Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
+        }
+
+        [TestMethod()]
+        public void QuadTreeUpdateWithMovingToOtherQuadTest()
+        {
+            var quadTree = new QuadTree<Position>(_splitCount, _depth, _region);
+            var position = _positions.Where(p => p.X == 10000).First();
+
+            foreach (var pos in _positions)
+            {
+                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+            }
+
+            position.X = 0;
+            position.Y = 0;
+            position.Z = 0;
+            quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+
+            Assert.AreEqual(_positions.Count, quadTree.AllItems.Count);
+            Assert.AreEqual(_positions.Count, quadTree.GetAllTreeItems().Count);
+
+            var expectedNodeCount = 5;
+            Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
+        }
+
+        [TestMethod()]
+        public void QuadTreeRemoveTest()
+        {
+            var quadTree = new QuadTree<Position>(_splitCount, _depth, _region);
+            var position = _positions.First();
+
+            foreach (var pos in _positions)
+            {
+                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+            }
+
+            quadTree.Remove(position);
+
+            var expectedItemsCount = _positions.Count - 1;
+            Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
+            Assert.AreEqual(expectedItemsCount, quadTree.GetAllTreeItems().Count);
+
+            var expectedNodeCount = 5;
+            Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
+        }
+
+        [TestMethod()]
+        public void QuadTreeRemoveWithRemoveTreeNodeTest()
+        {
+            var quadTree = new QuadTree<Position>(_splitCount, _depth, _region);
+
+            foreach (var pos in _positions)
+            {
+                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+            }
+
+            var expectedItemsCount = _positions.Count;
+            Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
+            Assert.AreEqual(expectedItemsCount, quadTree.GetAllTreeItems().Count);
+
+            var expectedNodeCount = 5;
+            Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
+
+            foreach (var pos in _positions)
+            {
+                quadTree.Remove(pos);
+            }
+
+            expectedItemsCount = 0;
+            Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
+            Assert.AreEqual(expectedItemsCount, quadTree.GetAllTreeItems().Count);
+
+            expectedNodeCount = 1; //Root
+            Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
+        }
+
+        [TestMethod()]
+        public void QuadTreeUpdateWithRemoveTreeNodeTest()
+        {
+            var quadTree = new QuadTree<Position>(_splitCount, _depth, _region);
+
+            var positions = new List<Position>();
+
+            var expectedItemsCount = 30;
+
+            for (int i = 0; i < expectedItemsCount; i++)
+            {
+                positions.Add(new Position() { X = 0, Y = 0, Z = 0 });
+            }
+
+            Assert.AreEqual(expectedItemsCount, positions.Count);
+
+            foreach (var pos in _positions)
+            {
+                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+            }
+
+            Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
+            Assert.AreEqual(expectedItemsCount, quadTree.GetAllTreeItems().Count);
+
+            //var expectedNodeCount = 5;
+            //Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
+
+            //foreach (var pos in _positions)
+            //{
+            //    quadTree.Remove(pos);
+            //}
+
+            //expectedItemsCount = 0;
+            //Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
+            //Assert.AreEqual(expectedItemsCount, quadTree.GetAllTreeItems().Count);
+
+            //expectedNodeCount = 1; //Root
+            //Assert.AreEqual(expectedNodeCount, quadTree.GetAllTreeNodes().Count);
+        }
         //Поиск ->
     }
 }

@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\QuadTree.cs" />
     <Compile Include="Attributes\ProductType.cs" />
     <Compile Include="Components\Energy\EnergyRegeneration.cs" />
     <Compile Include="Components\Energy\EnergyCapacity.cs" />
@@ -89,7 +90,8 @@
     <Compile Include="Mechanics\Company\Systems\RegistrationInformationSystem.cs" />
     <Compile Include="Mechanics\Company\Systems\ControlInformationExpirationsSystem.cs" />
     <Compile Include="Mechanics\Company\Systems\ControlShipInformationExpirationsSystem.cs" />
-    <Compile Include="Mechanics\Detection\Components\ShipModuleScout.cs" />
+    <Compile Include="Mechanics\Detection\Components\ShipModuleScanner.cs" />
+    <Compile Include="Mechanics\Detection\Systems\ControlInformationExpirationsSystem.cs" />
     <Compile Include="Mechanics\Mining\AI\Components\MiningAI.cs" />
     <Compile Include="Mechanics\Mining\AI\Enums\MiningAIState.cs" />
     <Compile Include="Mechanics\Sector\Components\SectorSize.cs" />
@@ -198,8 +200,6 @@
     <Folder Include="Matchers\" />
     <Folder Include="Mechanics\AI\" />
     <Folder Include="Mechanics\Balance\Systems\" />
-    <Folder Include="Mechanics\Detection\Co\" />
-    <Folder Include="Mechanics\Detection\Systems\" />
     <Folder Include="Mechanics\Mining\Systems\" />
     <Folder Include="Mechanics\Sector\Systems\" />
     <Folder Include="Mechanics\Stantion\" />

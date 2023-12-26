@@ -4,19 +4,21 @@ namespace GameLib.Algorithms
 {
     public abstract class QuadTreeBase<T>
     {
+        private Quad _region;
         private readonly int _splitCount;
         private readonly int _depthLimit;
         private readonly Stack<Node> _poolNodes = new Stack<Node>();
         private readonly Stack<Item> _poolItems = new Stack<Item>();
 
-        protected readonly Node _root;
+        protected Node _root;
         protected readonly Dictionary<T, Item> _allItems = new Dictionary<T, Item>();
 
         protected QuadTreeBase(int splitCount, int depthLimit, ref Quad region)
         {
-            _root = CreateNode(this, null, 0, ref region);
+            _region = region;
             _splitCount = splitCount;
             _depthLimit = depthLimit;
+            _root = CreateNode(this, null, 0);
         }
 
         protected void Add(T value, ref Quad quad)
@@ -61,7 +63,12 @@ namespace GameLib.Algorithms
             return item;
         }
 
-        private Node CreateNode(QuadTreeBase<T> tree, Node parent, int depth, ref Quad quad)
+        protected Node CreateNode(QuadTreeBase<T> tree, Node parent, int depth)
+        {
+            return CreateNode(tree, parent, depth, ref _region);
+        }
+
+        protected Node CreateNode(QuadTreeBase<T> tree, Node parent, int depth, ref Quad quad)
         {
             var branch = tree._poolNodes.Count > 0 
                 ? tree._poolNodes.Pop() 
@@ -72,10 +79,11 @@ namespace GameLib.Algorithms
 
         protected class Node
         {
-            internal Node[] _nodes = new Node[4];
-            internal List<Item> _items = new List<Item>();
+            private List<Item> _items = new List<Item>();
 
-            internal QuadTreeBase<T> _tree;
+            internal Node[] _nodes = new Node[4];
+
+            private QuadTreeBase<T> _tree;
             internal Node _parent;
             internal Quad[] _quads;
             internal int _depth;
@@ -163,6 +171,30 @@ namespace GameLib.Algorithms
                 {
                     _isSplited = true;
                 }
+            }
+
+            internal bool Remove(Item item)
+            {
+                if (_items.Remove(item))
+                {
+                    return true;
+                }
+
+                if (_isSplited)
+                {
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        if (_nodes[i] != null)
+                        {
+                            if (_nodes[i].Remove(item))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                return false;
             }
 
             /// <summary>
@@ -336,5 +368,4 @@ namespace GameLib.Algorithms
 }
 
 //1) Объект изменил свою позицию, нужен API для валидации и перемещения объекта по дереву
-//2) Объект пропал нужен API для и удаления объекта из дерева
 //3) Поиск с уточнением в радиусе

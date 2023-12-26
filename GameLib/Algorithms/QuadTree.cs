@@ -65,6 +65,21 @@ namespace GameLib.Algorithms
         }
 
         /// <summary>
+        /// Удалить Элемент из коллекции
+        /// </summary>
+        /// <param name="value">Элемент</param>
+        public void Remove(T value)
+        {
+            if (!_allItems.TryGetValue(value, out Item item))
+            {
+                return;
+            }
+
+            _allItems.Remove(value);
+            _root.Remove(item);
+        }
+
+        /// <summary>
         /// Найдите все объекты, находящиеся в области.
         /// </summary>
         /// <param name="quad">Область поиска</param>
@@ -133,7 +148,7 @@ namespace GameLib.Algorithms
         public void Clear()
         {
             _root.Clear();
-            _root._tree = this;
+            _root = CreateNode(this, null, 0);
             _allItems.Clear();
         }
     }

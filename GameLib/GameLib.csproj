@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithms\QuadTree.cs" />
+    <Compile Include="Algorithms\QuadTreeBase.cs" />
     <Compile Include="Attributes\ProductType.cs" />
     <Compile Include="Components\Energy\EnergyRegeneration.cs" />
     <Compile Include="Components\Energy\EnergyCapacity.cs" />

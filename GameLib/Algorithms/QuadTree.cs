@@ -11,13 +11,13 @@ namespace GameLib.Algorithms
     /// <typeparam name="T"> Тип данных </typeparam>
     public class QuadTree<T>
     {
-        internal static readonly Stack<Node> PoolNodes = new Stack<Node>();
-        internal static readonly Stack<Item> PoolItems = new Stack<Item>();
+        private readonly int _splitCount;
+        private readonly int _depthLimit;
 
         private readonly Node _root;
-        private readonly Dictionary<T, Item> _itemLookup = new Dictionary<T, Item>();
-        internal readonly int SplitCount;
-        internal readonly int DepthLimit;
+        private readonly Stack<Node> _poolNodes = new Stack<Node>();
+        private readonly Stack<Item> _poolItems = new Stack<Item>();
+        private readonly Dictionary<T, Item> _allItems = new Dictionary<T, Item>();
 
         /// <summary>
         /// Количество нод
@@ -33,8 +33,8 @@ namespace GameLib.Algorithms
         public QuadTree(int splitCount, int depthLimit, ref Quad region)
         {
             _root = CreateNode(this, null, 0, ref region);
-            SplitCount = splitCount;
-            DepthLimit = depthLimit;
+            _splitCount = splitCount;
+            _depthLimit = depthLimit;
         }
         /// <summary>
         /// 
@@ -64,7 +64,7 @@ namespace GameLib.Algorithms
         {
             _root.Clear();
             _root._tree = this;
-            _itemLookup.Clear();
+            _allItems.Clear();
         }
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace GameLib.Algorithms
         /// <param name="quad">Размер элемента</param>
         public void Add(T value, ref Quad quad)
         {
-            if (!_itemLookup.TryGetValue(value, out Item item))
+            if (!_allItems.TryGetValue(value, out Item item))
             {
                 item = CreateItem(value, ref quad);
-                _itemLookup.Add(value, item);
+                _allItems.Add(value, item);
             }
             _root.Add(item);
         }
@@ -159,7 +159,7 @@ namespace GameLib.Algorithms
         public bool FindCollisionsWithItem(T value, out List<T> values)
         {
             values = new List<T>();
-            if (_itemLookup.TryGetValue(value, out Item item))
+            if (_allItems.TryGetValue(value, out Item item))
             {
                 item.Node.FindCollisions(item, values);
             }
@@ -189,9 +189,9 @@ namespace GameLib.Algorithms
             }
         }
 
-        private static Item CreateItem(T value, ref Quad quad)
+        private Item CreateItem(T value, ref Quad quad)
         {
-            var item = PoolItems.Count > 0 ? PoolItems.Pop() : new Item();
+            var item = _poolItems.Count > 0 ? _poolItems.Pop() : new Item();
 
             item.Value = value;
             item.Quad = quad;
@@ -199,54 +199,54 @@ namespace GameLib.Algorithms
             return item;
         }
 
-        private static Node CreateNode(QuadTree<T> tree, Node parent, int depth, ref Quad quad)
+        private Node CreateNode(QuadTree<T> tree, Node parent, int depth, ref Quad quad)
         {
-            var branch = PoolNodes.Count > 0 
-                ? PoolNodes.Pop() 
+            var branch = tree._poolNodes.Count > 0 
+                ? tree._poolNodes.Pop() 
                 : new Node(tree, parent, depth, ref quad);
 
             return branch;
         }
 
-        internal class Node
+        protected class Node
         {
             internal Node[] _nodes = new Node[4];
             internal List<Item> _items = new List<Item>();
 
             internal QuadTree<T> _tree;
             internal Node _parent;
-            internal Quad[] _quads = new Quad[4];
+            internal Quad[] _quads;
             internal int _depth;
-            public bool _isSplited;
+            internal bool _isSplited;
 
-            public Node(QuadTree<T> tree, Node parent, int depth, ref Quad quad)
+            internal Node(QuadTree<T> tree, Node parent, int depth, ref Quad quad)
             {
                 _tree = tree;
                 _parent = parent;
                 _isSplited = false;
                 _depth = depth;
+
                 float midX = quad.MinX + (quad.MaxX - quad.MinX) * 0.5f;
                 float midY = quad.MinY + (quad.MaxY - quad.MinY) * 0.5f;
-                _quads[0].Set(quad.MinX, quad.MinY, midX, midY);
-                _quads[1].Set(midX, quad.MinY, quad.MaxX, midY);
-                _quads[2].Set(midX, midY, quad.MaxX, quad.MaxY);
-                _quads[3].Set(quad.MinX, midY, midX, quad.MaxY);
+                _quads = new Quad[]
+                {
+                    new Quad(quad.MinX, quad.MinY, midX, midY),
+                    new Quad(midX, quad.MinY, quad.MaxX, midY),
+                    new Quad(midX, midY, quad.MaxX, quad.MaxY),
+                    new Quad(quad.MinX, midY, midX, quad.MaxY),
+                };
             }
 
             /// <summary>
             /// Очистить
             /// </summary>
-            public void Clear()
+            internal void Clear()
             {
-                _tree = null;
-                _parent = null;
-                _isSplited = false;
-
                 for (int i = 0; i < 4; ++i)
                 {
                     if (_nodes[i] != null)
                     {
-                        PoolNodes.Push(_nodes[i]);
+                        _tree._poolNodes.Push(_nodes[i]);
                         _nodes[i].Clear();
                         _nodes[i] = null;
                     }
@@ -254,10 +254,14 @@ namespace GameLib.Algorithms
 
                 for (int i = 0; i < _items.Count; ++i)
                 {
-                    PoolItems.Push(_items[i]);
+                    _tree._poolItems.Push(_items[i]);
                     _items[i].Node = null;
                     _items[i].Value = default;
                 }
+
+                _tree = null;
+                _parent = null;
+                _isSplited = false;
 
                 _items.Clear();
             }
@@ -266,7 +270,7 @@ namespace GameLib.Algorithms
             /// Добавить элемент
             /// </summary>
             /// <param name="item"></param>
-            public void Add(Item item)
+            internal void Add(Item item)
             {
                 if (_isSplited)
                 {
@@ -276,7 +280,7 @@ namespace GameLib.Algorithms
                         {
                             if (_nodes[i] == null)
                             {
-                                _nodes[i] = CreateNode(_tree, this, _depth + 1, ref _quads[i]);
+                                _nodes[i] = _tree.CreateNode(_tree, this, _depth + 1, ref _quads[i]);
                             }
 
                             _nodes[i].Add(item);
@@ -292,8 +296,8 @@ namespace GameLib.Algorithms
                 _items.Add(item);
                 item.Node = this;
 
-                if (_items.Count >= _tree.SplitCount
-                    && _depth < _tree.DepthLimit)
+                if (_items.Count >= _tree._splitCount
+                    && _depth < _tree._depthLimit)
                 {
                     _isSplited = true;
                 }
@@ -304,7 +308,7 @@ namespace GameLib.Algorithms
             /// </summary>
             /// <param name="quad">Область поиска</param>
             /// <param name="values">Найденные объекты</param>
-            public void SearchInsideQuad(ref Quad quad, List<T> values)
+            internal void SearchInsideQuad(ref Quad quad, List<T> values)
             {
                 FindCollisionsDown(ref quad, values);
             }
@@ -315,7 +319,7 @@ namespace GameLib.Algorithms
             /// <param name="x">Координата X</param>
             /// <param name="y">Координата Y</param>
             /// <param name="values">Найденные колизии</param>
-            public void SearchСollisionWithPoint(float x, float y, List<T> values)
+            internal void SearchСollisionWithPoint(float x, float y, List<T> values)
             {
                 if (_items.Count > 0)
                 {
@@ -342,7 +346,7 @@ namespace GameLib.Algorithms
             /// </summary>
             /// <param name="item">Элемент</param>
             /// <param name="values">Колизии</param>
-            public void FindCollisions(Item item, List<T> values)
+            internal void FindCollisions(Item item, List<T> values)
             {
                 FindCollisionsFromThis(item, ref item.Quad, values);
 
@@ -417,37 +421,25 @@ namespace GameLib.Algorithms
             }
         }
 
-        internal class Item
+        protected class Item
         {
-            public Node Node;
-            public T Value;
-            public Quad Quad;
+            internal Node Node;
+            internal T Value;
+            internal Quad Quad;
         }
     }
 
+    /// <summary>
+    /// Квадрат
+    /// </summary>
     public struct Quad
     {
-        public float MinX;
-        public float MinY;
-        public float MaxX;
-        public float MaxY;
+        public float MinX { get; }
+        public float MinY { get; }
+        public float MaxX { get; }
+        public float MaxY { get; }
 
         public Quad(float minX, float minY, float maxX, float maxY)
-        {
-            MinX = minX;
-            MinY = minY;
-            MaxX = maxX;
-            MaxY = maxY;
-        }
-
-        /// <summary>
-        /// Задать позиции квадрата
-        /// </summary>
-        /// <param name="minX">Minimum x.</param>
-        /// <param name="minY">Minimum y.</param>
-        /// <param name="maxX">Max x.</param>
-        /// <param name="maxY">Max y.</param>
-        public void Set(float minX, float minY, float maxX, float maxY)
         {
             MinX = minX;
             MinY = minY;

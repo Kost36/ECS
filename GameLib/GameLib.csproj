@@ -54,6 +54,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,14 +63,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\QuadTree.cs" />
-    <Compile Include="Algorithms\QuadTreeBase.cs" />
+    <Compile Include="WorkFlow\QuadTree.cs" />
+    <Compile Include="WorkFlow\QuadTreeBase.cs" />
+    <Compile Include="Algorithms\QuadTree\QuadTree.cs" />
     <Compile Include="Attributes\ProductType.cs" />
     <Compile Include="Components\Energy\EnergyRegeneration.cs" />
     <Compile Include="Components\Energy\EnergyCapacity.cs" />
     <Compile Include="Components\Energy\Energy.cs" />
     <Compile Include="Components\Hold.cs" />
-    <Compile Include="Components\Pozition.cs" />
+    <Compile Include="Components\Position.cs" />
     <Compile Include="Components\Warehouse.cs" />
     <Compile Include="Components\Weight.cs" />
     <Compile Include="Datas\Count.cs" />
@@ -141,7 +143,7 @@
     <Compile Include="Mechanics\Production\Datas\Expense.cs" />
     <Compile Include="WorkFlow\DynamicEntitys\Entitys.cs" />
     <Compile Include="WorkFlow\StaticEntitys\Entitys.cs" />
-    <Compile Include="Mechanics\Move\Components\PozitionSV.cs" />
+    <Compile Include="Mechanics\Move\Components\PositionSV.cs" />
     <Compile Include="Mechanics\Move\Components\Acceleration.cs" />
     <Compile Include="Mechanics\Move\Components\WayToStop.cs" />
     <Compile Include="Mechanics\Move\Components\Way.cs" />

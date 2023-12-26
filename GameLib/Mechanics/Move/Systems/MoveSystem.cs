@@ -11,13 +11,13 @@ namespace GameLib.Mechanics.Move.Systems
     [SystemPriority(5)]
     [SystemEnable]
     [SystemParallelCountThreads(8)]
-    public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction, ISystemParallel
+    public class MoveSystem : SystemExistComponents<Position, Speed>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, Pozition pozition, Speed speed, float deltatime)
+        public override void Action(int entityId, Position position, Speed speed, float deltatime)
         {
-            pozition.X += speed.dX * DeltaTime;
-            pozition.Y += speed.dY * DeltaTime;
-            pozition.Z += speed.dZ * DeltaTime;
+            position.X += speed.dX * DeltaTime;
+            position.Y += speed.dY * DeltaTime;
+            position.Z += speed.dZ * DeltaTime;
         }
     }
 }

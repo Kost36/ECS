@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GameLib.Algorithms
+namespace GameLib.WorkFlow
 {
     /// <summary>
     /// Структура.

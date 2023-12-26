@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GameLib.Algorithms
+namespace GameLib.WorkFlow
 {
     public abstract class QuadTreeBase<T>
     {
@@ -70,8 +70,8 @@ namespace GameLib.Algorithms
 
         protected Node CreateNode(QuadTreeBase<T> tree, Node parent, int depth, ref Quad quad)
         {
-            var branch = tree._poolNodes.Count > 0 
-                ? tree._poolNodes.Pop() 
+            var branch = tree._poolNodes.Count > 0
+                ? tree._poolNodes.Pop()
                 : new Node(tree, parent, depth, ref quad);
 
             return branch;
@@ -310,7 +310,7 @@ namespace GameLib.Algorithms
             private void FindCollisionsParent(ref Quad quad, List<T> values)
             {
                 FindCollisionsFromThis(ref quad, values);
-                
+
                 FindCollisionsUp(ref quad, values);
             }
         }

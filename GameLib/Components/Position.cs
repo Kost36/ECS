@@ -7,7 +7,7 @@ namespace GameLib.Components
     /// Компонент позиции
     /// </summary>
     [Serializable]
-    public class Pozition : ComponentBase
+    public class Position : ComponentBase
     {
         /// <summary>
         /// Позиция X

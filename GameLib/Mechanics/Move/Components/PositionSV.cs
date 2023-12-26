@@ -8,7 +8,7 @@ namespace GameLib.Mechanics.Move.Components
     /// Позиция, в которую нужно переместиться
     /// </summary>
     [Serializable]
-    public class PozitionSV : ComponentBase
+    public class PositionSV : ComponentBase
     {
         public float X;
         public float Y;

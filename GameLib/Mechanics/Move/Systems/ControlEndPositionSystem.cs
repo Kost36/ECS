@@ -17,7 +17,7 @@ namespace GameLib.Mechanics.Move.Systems
             if (way.InitOk && way.Len < 1 && speed.Fact < 0.1)
             {
                 IECS.RemoveComponent<Way>(entityId);
-                IECS.RemoveComponent<PozitionSV>(entityId);
+                IECS.RemoveComponent<PositionSV>(entityId);
                 IECS.RemoveComponent<Speed>(entityId);
                 IECS.RemoveComponent<SpeedSV>(entityId);
             }

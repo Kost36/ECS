@@ -12,14 +12,14 @@ namespace GameLib.Mechanics.Move.Systems
     [SystemPriority(10)]
     [SystemEnable]
     [SystemParallelCountThreads(8)]
-    public class ControlWaySystem : SystemExistComponents<Pozition, PozitionSV, Way>, ISystemAction, ISystemParallel
+    public class ControlWaySystem : SystemExistComponents<Position, PositionSV, Way>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, Pozition pozition, PozitionSV pozitionSV, Way way, float deltatime)
+        public override void Action(int entityId, Position position, PositionSV positionSV, Way way, float deltatime)
         {
             //Рассчет вектора направления
-            way.LenX = pozitionSV.X - pozition.X;
-            way.LenY = pozitionSV.Y - pozition.Y;
-            way.LenZ = pozitionSV.Z - pozition.Z;
+            way.LenX = positionSV.X - position.X;
+            way.LenY = positionSV.Y - position.Y;
+            way.LenZ = positionSV.Z - position.Z;
 
             //Рассчет расстояния до заданной точки 
             way.Len = Vector.Len(way.LenX, way.LenY, way.LenZ);

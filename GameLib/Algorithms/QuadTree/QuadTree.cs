@@ -16,7 +16,6 @@ namespace GameLib.Algorithms.QuadTree
 
         public TreeNode<T> Root;
 
-        public Stack<TreeItem<T>> PoolItems = new Stack<TreeItem<T>>();
         public Dictionary<T, TreeItem<T>> AllItems = new Dictionary<T, TreeItem<T>>();
 
         public QuadTree(int splitCount, int depthLimit, Quad region)
@@ -27,15 +26,13 @@ namespace GameLib.Algorithms.QuadTree
             Root = new TreeNode<T>(this, null, 0, Region);
         }
 
-        public TreeNode<T> CreateNode(TreeNode<T> parent, int depth, Quad quad)
-        {
-            var treeNode = new TreeNode<T>(this, parent, depth, quad);
-
-            return treeNode;
-        }
-
         public void AddOrUpdate(T value, Point point)
         {
+            if (!Region.PointIsInside(point))
+            {
+                throw new ArgumentException($"Object [{point}] is located outside the controlled region [{Region}]");
+            }
+
             if (AllItems.TryGetValue(value, out TreeItem<T> item))
             {
                 item.Point.X = point.X;
@@ -127,7 +124,7 @@ namespace GameLib.Algorithms.QuadTree
                     {
                         if (Childs[i] == null)
                         {
-                            Childs[i] = Tree.CreateNode(this, Depth + 1, ChildQuads[i]);
+                            Childs[i] = new TreeNode<T>(Tree, this, Depth + 1, ChildQuads[i]);
                         }
 
                         Childs[i].Add(item);
@@ -140,15 +137,16 @@ namespace GameLib.Algorithms.QuadTree
                 return;
             }
 
-            Items.Add(item);
-            item.Node = this;
-
-            if (Items.Count >= Tree.SplitCount
+            if (Items.Count + 1 >= Tree.SplitCount
                 && Depth < Tree.DepthLimit)
             {
                 IsSplited = true;
-                //Rebuild TreeNode
+                MovingNodeItemsDown(item);
+                return;
             }
+
+            Items.Add(item);
+            item.Node = this;
         }
 
         public void Update(TreeItem<T> item)
@@ -158,17 +156,18 @@ namespace GameLib.Algorithms.QuadTree
                 return;
             }
 
-            Remove(item);
             Tree.Root.Add(item);
-
-            //Rebuild TreeNode???
+            Remove(item);
         }
 
         public bool Remove(TreeItem<T> item)
         {
             if (Items.Remove(item))
             {
-                //Rebuild Parent TreeNode
+                if (Items.Count == 0)
+                {
+                    Rebuild();
+                }
                 return true;
             }
 
@@ -187,6 +186,61 @@ namespace GameLib.Algorithms.QuadTree
             }
 
             return false;
+        }
+        
+        public void MovingNodeItemsDown(TreeItem<T> newItem)
+        {
+            Add(newItem);
+
+            //Bug when add object with point outside the QuadTree region
+            //var cloneItems = Items.GetRange(0, Items.Count);
+            //foreach (var item in cloneItems)
+            foreach (var item in Items)
+            {
+                Add(item);
+            }
+
+            Items = new List<TreeItem<T>>();
+        }
+
+        public void Rebuild()
+        {
+            RemoveСhilds();
+            if (СhildsIsEmpty())
+            {
+                if (Items.Count == 0)
+                {
+                    Parent?.Rebuild();
+                }
+            }
+        }
+
+        public void RemoveСhilds()
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                if (Childs[i] != null)
+                {
+                    if (!Childs[i].HasInsideItems())
+                    {
+                        Childs[i].Destroy();
+                        Childs[i] = null;
+                    }
+                }
+            }
+        }
+
+        public bool СhildsIsEmpty()
+        {
+            for (int i = 0; i < 4; ++i)
+            {
+                if (Childs[i] != null)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void FindСollisionsForCircle(Circle circle, List<T> collisions)
@@ -230,7 +284,10 @@ namespace GameLib.Algorithms.QuadTree
 
         public override string ToString()
         {
-            return $"Quad:[{Quad}]; Depth:[{Depth}]; IsSplited:[{IsSplited}]; ItemsCount:[{Items.Count}]";
+            var insideItems = new List<TreeItem<T>>();
+            GetTreeItems(insideItems);
+
+            return $"Node:[{GetHashCode()}]; Quad:[{Quad}]; Depth:[{Depth}]; IsSplited:[{IsSplited}]; Items:[{Items.Count}]; InsideItems [{insideItems.Count}]";
         }
 
         public void GetTreeNodes(List<TreeNode<T>> treeNodes)
@@ -256,6 +313,34 @@ namespace GameLib.Algorithms.QuadTree
                 }
             }
         }
+
+        public bool HasInsideItems()
+        {
+            if (Items.Count > 0)
+            {
+                return true;
+            }
+
+            for (int i = 0; i < 4; ++i)
+            {
+                if (Childs[i] != null)
+                {
+                    if (Childs[i].HasInsideItems())
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public void Destroy()
+        {
+            Tree = null;
+            Parent = null;
+            ChildQuads = null;
+        }
     }
 
     public class TreeItem<T>
@@ -272,7 +357,7 @@ namespace GameLib.Algorithms.QuadTree
 
         public override string ToString()
         {
-            return $"Point:[{Point}]; Value:[{Value}]";
+            return $"Node:[{Node.GetHashCode()}]; Point:[{Point}]; Value:[{Value}]";
         }
     }
 
@@ -379,6 +464,3 @@ namespace GameLib.Algorithms.QuadTree
         }
     }
 }
-
-//Заспличенные области должны рассплититься в родительсткую, если в них нету объектов
-//При сплитинге объекты в родительской ноде должны распределиться по дочерним???

@@ -14,7 +14,7 @@ namespace GameLib.Mechanics.Company.Informations
         /// <summary>
         /// Идентификатор сущьности
         /// </summary>
-        public int EntityId;
+        public Guid EntityId;
         /// <summary>
         /// Срок годности информации
         /// </summary>

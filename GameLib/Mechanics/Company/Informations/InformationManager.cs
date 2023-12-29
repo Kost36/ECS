@@ -13,7 +13,7 @@ namespace GameLib.Mechanics.Company.Informations
         /// <summary>
         /// Коллекция известных объектов
         /// </summary>
-        private Dictionary<int, Type> _collection = new Dictionary<int, Type>();
+        private Dictionary<Guid, Type> _collection = new Dictionary<Guid, Type>();
 
         /// <summary>
         /// Добавить информацию об объекте
@@ -35,7 +35,7 @@ namespace GameLib.Mechanics.Company.Informations
         public void ControlExpiration()
         {
             var dateTimeNow = DateTimeOffset.UtcNow;
-            var keysForRemove = new List<int>();
+            var keysForRemove = new List<Guid>();
             foreach (var item in _collection)
             {
                 if (dateTimeNow > item.Value.ExpirationTime)

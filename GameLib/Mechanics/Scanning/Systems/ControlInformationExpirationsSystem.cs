@@ -48,12 +48,12 @@ namespace GameLib.Mechanics.Scanning.Systems
 
             var entityIds = SpaceEntityManager.GetIdEntitesInRadius(position, shipModuleScanner.ScanerRange);
 
+            //Получить у компании компонент KnownInformations и добавить полученные сущьности в соответствующие менеджеры
+            //Лучше иметь компонент, именно с ссылкой на KnownInformations компании. И иметь отдельную систему, которая предоставит данный компонент с ссылкой в сущьности (станции/корабли/игрок) этой компании
             if (IECS.GetEntity(ownerСompany.CompanyEntityId, out Entity entity))
             {
-
                 //Добавить информацию по ним в коллекцию
 
-                //TODO Добавили Id сущьности в коллекцию, потом что то произошло и из ECS пропала сущьность (ее уничтожили) => позже создалась другия сущьность под этим id !!!
             }
         }
     }

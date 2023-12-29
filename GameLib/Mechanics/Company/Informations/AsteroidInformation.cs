@@ -1,11 +1,13 @@
-﻿namespace GameLib.Mechanics.Company.Informations
+﻿using System;
+
+namespace GameLib.Mechanics.Company.Informations
 {
     /// <summary>
     /// Информация об известном астеройде
     /// </summary>
     public sealed class AsteroidInformation : Information
     {
-        public AsteroidInformation(int entityId)
+        public AsteroidInformation(Guid entityId)
         {
             EntityId = entityId;
             TypeInformation = TypeInformation.Asteroid;

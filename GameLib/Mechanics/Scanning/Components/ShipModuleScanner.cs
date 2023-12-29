@@ -1,6 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 
-namespace GameLib.Mechanics.Detection.Components
+namespace GameLib.Mechanics.Scanning.Components
 {
     /// <summary>
     /// Разведовательный модуль корабля
@@ -10,7 +10,7 @@ namespace GameLib.Mechanics.Detection.Components
         /// <summary>
         /// Диапазон сканирования
         /// </summary>
-        public long ScanerRange = 25000;
+        public long ScanerRange = 5000;
 
         /// <summary>
         /// Энергопотребление сканирования

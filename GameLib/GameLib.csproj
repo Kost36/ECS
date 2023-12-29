@@ -63,6 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\SectorSize.cs" />
+    <Compile Include="Static\SpaceEntityManager.cs" />
     <Compile Include="WorkFlow\QuadTree.cs" />
     <Compile Include="WorkFlow\QuadTreeBase.cs" />
     <Compile Include="Algorithms\QuadTree\QuadTree.cs" />
@@ -93,8 +95,8 @@
     <Compile Include="Mechanics\Company\Systems\RegistrationInformationSystem.cs" />
     <Compile Include="Mechanics\Company\Systems\ControlInformationExpirationsSystem.cs" />
     <Compile Include="Mechanics\Company\Systems\ControlShipInformationExpirationsSystem.cs" />
-    <Compile Include="Mechanics\Detection\Components\ShipModuleScanner.cs" />
-    <Compile Include="Mechanics\Detection\Systems\ControlInformationExpirationsSystem.cs" />
+    <Compile Include="Mechanics\Scanning\Components\ShipModuleScanner.cs" />
+    <Compile Include="Mechanics\Scanning\Systems\ControlInformationExpirationsSystem.cs" />
     <Compile Include="Mechanics\Mining\AI\Components\MiningAI.cs" />
     <Compile Include="Mechanics\Mining\AI\Enums\MiningAIState.cs" />
     <Compile Include="Mechanics\Sector\Components\SectorSize.cs" />

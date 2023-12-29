@@ -1,4 +1,6 @@
-﻿namespace ECSCore.Interfaces.Components
+﻿using System;
+
+namespace ECSCore.Interfaces.Components
 {
     /// <summary>
     /// Интерфейс компонента
@@ -8,6 +10,6 @@
         /// <summary>
         /// Идентификатор сущьности, на которой находится компонент
         /// </summary>
-        int Id { get; set; }
+        Guid Id { get; set; }
     }
 }

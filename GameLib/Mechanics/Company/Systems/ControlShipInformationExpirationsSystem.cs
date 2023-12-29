@@ -2,6 +2,7 @@
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Mechanics.Company.Components;
+using System;
 
 namespace GameLib.Mechanics.Company.Systems
 {
@@ -13,7 +14,7 @@ namespace GameLib.Mechanics.Company.Systems
     [SystemEnable]
     public class ControlShipInformationExpirationsSystem : SystemExistComponents<KnownInformations>, ISystemAction
     {
-        public override void Action(int entityId, KnownInformations knownInformations, float deltatime)
+        public override void Action(Guid entityId, KnownInformations knownInformations, float deltatime)
         {
             knownInformations.ShipInformationManager.ControlExpiration();
         }

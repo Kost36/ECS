@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using System;
 
 namespace GameLib.Mechanics.Company.Components
 {
@@ -10,6 +11,6 @@ namespace GameLib.Mechanics.Company.Components
         /// <summary>
         /// Идентификатор сущьности компании
         /// </summary>
-        public int CompanyEntityId;
+        public Guid CompanyEntityId;
     }
 }

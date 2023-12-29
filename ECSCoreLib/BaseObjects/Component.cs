@@ -13,6 +13,6 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Идентификатор сущьности, на которой висит компонент
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

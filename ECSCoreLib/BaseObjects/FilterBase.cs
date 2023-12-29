@@ -172,7 +172,7 @@ namespace ECSCore.BaseObjects
         /// Удалить из фильтра сущьность
         /// </summary>
         /// <param name="entityId"> Идентификатор сущьности </param>
-        public void RemoveEntity(int entityId)
+        public void RemoveEntity(Guid entityId)
         {
             lock (JobToFilters)
             {
@@ -182,9 +182,9 @@ namespace ECSCore.BaseObjects
         #endregion
 
         #region IFilterActionGroup Реализуется наследником
-        public abstract void TryAdd(int entityId);
-        public abstract void TryRemove(int entityId);
-        public abstract void TryRemoveEntity(int entityId);
+        public abstract void TryAdd(Guid entityId);
+        public abstract void TryRemove(Guid entityId);
+        public abstract void TryRemoveEntity(Guid entityId);
         #endregion
     }
 }

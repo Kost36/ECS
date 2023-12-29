@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,15 +17,15 @@ namespace ECSCore.Managers
         /// <summary>
         /// Очередь свободных Id
         /// </summary>
-        private readonly Queue<int> _queueFreeID = new Queue<int>();
+        //private readonly Queue<Guid> _queueFreeID = new Queue<int>();
         /// <summary>
         /// Коллекция сущьностей
         /// </summary>
-        private readonly Dictionary<int, Entity> _entitys;
+        private readonly Dictionary<Guid, Entity> _entitys;
 
         internal ManagerEntitys()
         {
-            _entitys = new Dictionary<int, Entity>();
+            _entitys = new Dictionary<Guid, Entity>();
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace ECSCore.Managers
         /// Получить первый id сущьности из коллекции
         /// </summary>
         /// <returns></returns>
-        public int GetIdFirstEntity()
+        public Guid GetIdFirstEntity()
         {
             return _entitys.Keys.FirstOrDefault();
         }
@@ -49,7 +50,7 @@ namespace ECSCore.Managers
             return Registration(entity);
         }
 
-        internal bool Get(int id, out Entity Entity)
+        internal bool Get(Guid id, out Entity Entity)
         {
             lock (_entitys)
             {
@@ -57,35 +58,36 @@ namespace ECSCore.Managers
             }
         }
 
-        internal bool Remove(int id)
+        internal bool Remove(Guid id)
         {
             return RemoveEntity(id);
         }
 
         private Entity Registration(Entity entity)
         {
+            entity.Id = Guid.NewGuid();
             lock (_entitys)
             {
-                if (_queueFreeID.Count > 0)
-                {
-                    entity.Id = _queueFreeID.Dequeue();
-                }
-                else
-                {
-                    _endUseId++;
-                    entity.Id = _endUseId;
-                }
+                //if (_queueFreeID.Count > 0)
+                //{
+                //    entity.Id = _queueFreeID.Dequeue();
+                //}
+                //else
+                //{
+                //    _endUseId++;
+                //    entity.Id = _endUseId;
+                //}
 
                 _entitys.Add(entity.Id, entity);
             }
             return entity;
         }
 
-        private bool RemoveEntity(int id)
+        private bool RemoveEntity(Guid id)
         {
             lock (_entitys)
             {
-                _queueFreeID.Enqueue(id);
+                //_queueFreeID.Enqueue(id);
                 return _entitys.Remove(id);
             }
         }

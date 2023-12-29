@@ -20,7 +20,7 @@ namespace GameLib.Mechanics.Scanning.Systems
     [SystemEnable]
     public class ScannerSystem : SystemExistComponents<Energy, Position, ShipModuleScanner, OwnerСompany>, ISystemAction
     {
-        public override void Action(int entityId, Energy energy, Position position, ShipModuleScanner shipModuleScanner, OwnerСompany ownerСompany, float deltatime)
+        public override void Action(Guid entityId, Energy energy, Position position, ShipModuleScanner shipModuleScanner, OwnerСompany ownerСompany, float deltatime)
         {
             if (!shipModuleScanner.Enable)
             {

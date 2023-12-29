@@ -3,6 +3,7 @@ using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Mechanics.Move.Components;
+using System;
 
 namespace GameLib.Mechanics.Move.Systems
 {
@@ -12,7 +13,7 @@ namespace GameLib.Mechanics.Move.Systems
     [ExcludeComponentSystem(typeof(Acceleration))]
     public class ControlAccelerateSystem : SystemExistComponents<SpeedSV>, ISystemAction
     {
-        public override void Action(int entityId, SpeedSV speedSV, float deltatime)
+        public override void Action(Guid entityId, SpeedSV speedSV, float deltatime)
         {
             if (speedSV.Update)
             {

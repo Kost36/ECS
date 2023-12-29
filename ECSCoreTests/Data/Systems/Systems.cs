@@ -5,6 +5,7 @@ using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using ECSCoreTests.Components;
 using ECSCoreTests.Lib;
+using System;
 
 namespace ECSCoreTests.Systems
 {
@@ -37,7 +38,7 @@ namespace ECSCoreTests.Systems
                 IECS.AddComponent(new SpeedSV() { Id = entity.Id });
             } //Если задания скорости нету
         }
-        public override void Action(int entityId, Pozition pozition, PozitionSV pozitionSV, Way way, float deltatime)
+        public override void Action(Guid entityId, Pozition pozition, PozitionSV pozitionSV, Way way, float deltatime)
         {
             //Рассчет вектора направления
             way.LenX = pozitionSV.X - pozition.X;
@@ -66,7 +67,7 @@ namespace ECSCoreTests.Systems
     [SystemEnable]
     public class ControlWayToStopSystem : SystemExistComponents<WayToStop, Speed, Acceleration, Enargy>, ISystemAction
     {
-        public override void Action(int entityId, WayToStop wayToStop, Speed speed, Acceleration acceleration, Enargy enargy, float deltatime)
+        public override void Action(Guid entityId, WayToStop wayToStop, Speed speed, Acceleration acceleration, Enargy enargy, float deltatime)
         {
             //Сколько времени нужно замедляться
             float timeDeAcc = speed.SpeedFact / acceleration.Acc;
@@ -87,7 +88,7 @@ namespace ECSCoreTests.Systems
     [SystemParallelCountThreads(8)]
     public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way, WayToStop>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
+        public override void Action(Guid entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
         {
             //Замедление
             if (wayToStop.EnargyHave && way.Len < wayToStop.Len*1.1)
@@ -160,7 +161,7 @@ namespace ECSCoreTests.Systems
     [ExcludeComponentSystem(typeof(Acceleration))]
     public class ControlAccelerateSystem : SystemExistComponents<SpeedSV>, ISystemAction
     {
-        public override void Action(int entityId, SpeedSV speedSV, float deltatime)
+        public override void Action(Guid entityId, SpeedSV speedSV, float deltatime)
         {
             if (speedSV.Update)
             {
@@ -193,7 +194,7 @@ namespace ECSCoreTests.Systems
     //[AttributeSystemParallelCountThreads(8)]
     public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction//, ISystemParallel
     {
-        public override void Action(int entityId, Pozition pozition, Speed speed, float deltatime)
+        public override void Action(Guid entityId, Pozition pozition, Speed speed, float deltatime)
         {
             pozition.X += speed.dX * DeltaTime;
             pozition.Y += speed.dY * DeltaTime;
@@ -207,7 +208,7 @@ namespace ECSCoreTests.Systems
     [SystemParallelCountThreads(8)]
     public class EnargyRegenerationSystem : SystemExistComponents<Enargy, EnargyReGeneration>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, Enargy enargy, EnargyReGeneration enargyReGeneration, float deltatime)
+        public override void Action(Guid entityId, Enargy enargy, EnargyReGeneration enargyReGeneration, float deltatime)
         {
             if (enargy.EnargyFact < enargy.EnargyMax)
             {
@@ -227,7 +228,7 @@ namespace ECSCoreTests.Systems
     [ExcludeComponentSystem(typeof(EnargyReGeneration))]
     public class EnargyRegenerationStartSystem : SystemExistComponents<Enargy>, ISystemAction
     {
-        public override void Action(int entityId, Enargy enargy, float deltatime)
+        public override void Action(Guid entityId, Enargy enargy, float deltatime)
         {
             if (enargy.EnargyFact < enargy.EnargyMax*0.9)
             {
@@ -244,7 +245,7 @@ namespace ECSCoreTests.Systems
     [SystemEnable]
     public class ControlSpeedSystemRemove : SystemExistComponents<Way>, ISystemAction, ISystemActionRemove
     {
-        public override void Action(int entityId, Way way, float deltatime)
+        public override void Action(Guid entityId, Way way, float deltatime)
         {
             if (way.InitOk && way.Len < 1)
             {
@@ -256,7 +257,7 @@ namespace ECSCoreTests.Systems
             }
         }
 
-        public override void ActionRemove(int entityId)
+        public override void ActionRemove(Guid entityId)
         {
             if (IECS.GetComponent(entityId, out PozitionSV _) == false)
             {
@@ -272,7 +273,7 @@ namespace ECSCoreTests.Systems
     [SystemParallelCountThreads(8)]
     public class AccselerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Enargy>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Enargy enargy, float deltatime)
+        public override void Action(Guid entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Enargy enargy, float deltatime)
         {
             float enargyUse = acceleration.EnargyUse * DeltaTime;
             float acc = acceleration.Acc * DeltaTime;
@@ -377,12 +378,12 @@ namespace ECSCoreTests.Systems
             IncludeForTest = include;
         }
 
-        public override void Action(int entityId, Include include, float deltatime)
+        public override void Action(Guid entityId, Include include, float deltatime)
         {
             include.CallActionCount++;
         }
 
-        public override void ActionRemove(int entityId)
+        public override void ActionRemove(Guid entityId)
         {
             if (IncludeForTest != null)
             {

@@ -5,6 +5,7 @@ using ECSCore.Systems;
 using GameLib.Components;
 using GameLib.Mechanics.Move.Components;
 using MathLib;
+using System;
 
 namespace GameLib.Mechanics.Move.Systems
 {
@@ -14,7 +15,7 @@ namespace GameLib.Mechanics.Move.Systems
     [SystemParallelCountThreads(8)]
     public class ControlWaySystem : SystemExistComponents<Position, PositionSV, Way>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, Position position, PositionSV positionSV, Way way, float deltatime)
+        public override void Action(Guid entityId, Position position, PositionSV positionSV, Way way, float deltatime)
         {
             //Рассчет вектора направления
             way.LenX = positionSV.X - position.X;

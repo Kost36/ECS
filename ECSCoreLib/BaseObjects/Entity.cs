@@ -15,7 +15,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Идентификатор сущьности
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Ссылка на внешнюю сущьность, в которой находится текущая сущьность
@@ -25,7 +25,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Вложенные сущьности
         /// </summary>
-        public Dictionary<int, IEntity> NestedEntites { get; } = new Dictionary<int, IEntity>();
+        public Dictionary<Guid, IEntity> NestedEntites { get; } = new Dictionary<Guid, IEntity>();
 
         /// <summary>
         /// Компоненты
@@ -39,7 +39,7 @@ namespace ECSCore.BaseObjects
         public IEntity AddNestedEntity<T>(T entity)
             where T : IEntity
         {
-            if (entity.Id == 0)
+            if (entity.Id == Guid.Empty)
             {
                 ECS.Instance.AddEntity(entity as Entity);
             } //Если сущьность не проинициализирована
@@ -57,7 +57,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Получить вложенную сущьность
         /// </summary>
-        public bool TryGetNestedEntity<T>(int idChildEntity, out T entity)
+        public bool TryGetNestedEntity<T>(Guid idChildEntity, out T entity)
             where T : IEntity
         {
             lock (NestedEntites)
@@ -71,7 +71,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Удалить вложенную сущьность
         /// </summary>
-        public bool RemoveNestedEntity<T>(int idChildEntity, out T entity)
+        public bool RemoveNestedEntity<T>(Guid idChildEntity, out T entity)
             where T : IEntity
         {
             lock (NestedEntites)

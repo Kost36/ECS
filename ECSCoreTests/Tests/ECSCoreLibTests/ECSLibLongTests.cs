@@ -16,11 +16,13 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
     {
         private static IECS IECS;
         private static IECSDebug IECSDebug;
-        private static Entity _entity;
 
         [TestMethod()]
         public void Test_00_InitializationIECS()
         {
+            IECS?.Despose();
+            Thread.Sleep(500);
+
             Ship ship = new();
             ECS.Initialization(ship.GetType().Assembly);
             IECS = ECS.InstanceIECS;

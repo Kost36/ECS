@@ -11,7 +11,7 @@ namespace ECSCore.Interfaces
         /// <summary>
         /// Идентификатор сущьности
         /// </summary>
-        int Id { get; set; }
+        Guid Id { get; set; }
 
         /// <summary>
         /// Ссылка на внешнюю сущьность, в которой находится текущая сущьность
@@ -28,13 +28,13 @@ namespace ECSCore.Interfaces
         /// <summary>
         /// Получить вложенную сущьность
         /// </summary>
-        bool TryGetNestedEntity<T>(int idChildEntity, out T entity)
+        bool TryGetNestedEntity<T>(Guid idChildEntity, out T entity)
             where T : IEntity;
 
         /// <summary>
         /// Удалить вложенную сущьность
         /// </summary>
-        bool RemoveNestedEntity<T>(int idChildEntity, out T entity)
+        bool RemoveNestedEntity<T>(Guid idChildEntity, out T entity)
             where T : IEntity;
 
         /// <summary>

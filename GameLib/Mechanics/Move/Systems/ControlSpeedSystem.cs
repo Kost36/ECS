@@ -3,6 +3,7 @@ using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Mechanics.Move.Components;
+using System;
 
 namespace GameLib.Mechanics.Move.Systems
 {
@@ -12,7 +13,7 @@ namespace GameLib.Mechanics.Move.Systems
     [SystemParallelCountThreads(8)]
     public class ControlSpeedSystem : SystemExistComponents<Speed, SpeedSV, Way, WayToStop>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
+        public override void Action(Guid entityId, Speed speed, SpeedSV speedSV, Way way, WayToStop wayToStop, float deltatime)
         {
             //Замедление
             if (wayToStop.EnargyHave == true && way.Len < wayToStop.Len * 1.1)

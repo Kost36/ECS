@@ -1,13 +1,14 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Interfaces.Filters;
+using System;
 
 namespace ECSCore.Filters.Jobs
 {
     internal class JobTryRemoveEntity : IJobToFilter
     {
-        private readonly int _entityId;
+        private readonly Guid _entityId;
 
-        internal JobTryRemoveEntity(int entityId)
+        internal JobTryRemoveEntity(Guid entityId)
         {
             _entityId = entityId;
         }

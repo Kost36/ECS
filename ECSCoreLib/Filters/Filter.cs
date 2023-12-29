@@ -18,7 +18,7 @@ namespace ECSCore.Filters
             Init();
         }
 
-        public Dictionary<int, TGroupComponents> Collection { get; set; } = new Dictionary<int, TGroupComponents>();
+        public Dictionary<Guid, TGroupComponents> Collection { get; set; } = new Dictionary<Guid, TGroupComponents>();
 
         /// <summary>
         /// Количество отслеживаемых сущьностей в фильтре
@@ -66,7 +66,7 @@ namespace ECSCore.Filters
         /// Удалить группу компонент из коллекции фильтра
         /// </summary>
         /// <param name="entityId"> Идентификатор сущьности </param>
-        private void RemoveFromCollection(int entityId)
+        private void RemoveFromCollection(Guid entityId)
         {
             lock (Collection)
             {
@@ -85,7 +85,7 @@ namespace ECSCore.Filters
             }
         }
 
-        public override void TryAdd(int entityId)
+        public override void TryAdd(Guid entityId)
         {
             lock (Collection)
             {
@@ -116,7 +116,7 @@ namespace ECSCore.Filters
             }
         }
 
-        public override void TryRemove(int entityId)
+        public override void TryRemove(Guid entityId)
         {
             lock (_groupComponents)
             {
@@ -134,7 +134,7 @@ namespace ECSCore.Filters
             }
         }
 
-        public override void TryRemoveEntity(int entityId)
+        public override void TryRemoveEntity(Guid entityId)
         {
             lock (Collection)
             {

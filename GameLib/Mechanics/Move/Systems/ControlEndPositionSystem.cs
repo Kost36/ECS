@@ -3,6 +3,7 @@ using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Mechanics.Move.Components;
+using System;
 
 namespace GameLib.Mechanics.Move.Systems
 {
@@ -12,7 +13,7 @@ namespace GameLib.Mechanics.Move.Systems
     [ExcludeComponentSystem(typeof(Acceleration))]
     public class ControlEndPositionSystem : SystemExistComponents<Way, Speed>, ISystemAction
     {
-        public override void Action(int entityId, Way way, Speed speed, float deltatime)
+        public override void Action(Guid entityId, Way way, Speed speed, float deltatime)
         {
             if (way.InitOk && way.Len < 1 && speed.Fact < 0.1)
             {

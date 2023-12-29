@@ -1,6 +1,7 @@
 ﻿using GameLib.Algorithms.QuadTree;
 using GameLib.Components;
 using GameLib.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,7 +46,7 @@ namespace GameLib.Static
         /// <summary>
         /// Получить идентификаторы сущьностей, которые находятся в радиусе
         /// </summary>
-        public static List<int> GetIdEntitesInRadius(Position position, long radius)
+        public static List<Guid> GetIdEntitesInRadius(Position position, long radius)
         {
             lock (_lockObject)
             {

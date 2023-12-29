@@ -30,9 +30,13 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         }
 
         [TestMethod()]
-        public void Test_02_MechanicMove()
+        public void Test_01_MechanicMove()
         {
-            int entityCount = 180000;// 180000 - ПК //280000 - Рабочий ноут
+            IECS?.Despose();
+            Thread.Sleep(500);
+            Test_00_InitializationIECS();
+
+            int entityCount = 50000; // 250000 Личный ноут (на гране с учетом перехода на guid)// 180000 - ПК //280000 - Рабочий ноут
             int j = 0;
             while (j < entityCount)
             {
@@ -83,7 +87,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
                 Thread.Sleep(1000);
                 Debug.WriteLine(IECSDebug.GetInfo(true));
 
-                int entityId = IECSDebug.ManagerEntitys.GetIdFirstEntity();
+                Guid entityId = IECSDebug.ManagerEntitys.GetIdFirstEntity();
 
 
                 if (l % 100 == 0)
@@ -137,11 +141,11 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
         }
 
         [TestMethod()]
-        public void Test_03_MechanicMove()
+        public void Test_02_MechanicMove()
         {
             int timeOutMin = 70;
             DateTime dataTimeEnd = DateTime.Now.AddMinutes(timeOutMin);  
-            IECS.Despose();
+            IECS?.Despose();
             Thread.Sleep(500);
             Test_00_InitializationIECS();
             int i = 0;

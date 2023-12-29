@@ -6,6 +6,7 @@ using ECSCore.Systems;
 using GameLib.Components;
 using GameLib.Datas;
 using GameLib.Mechanics.Production.Components;
+using System;
 
 namespace GameLib.Mechanics.Production.Systems
 {
@@ -19,7 +20,7 @@ namespace GameLib.Mechanics.Production.Systems
             MoveProducts(entity, warehouseProductionModul);
         }
 
-        public override void Action(int entityId, BridgeProductionModulToStantion _, WarehouseProductionModul warehouseProductionModul, float deltaTime)
+        public override void Action(Guid entityId, BridgeProductionModulToStantion _, WarehouseProductionModul warehouseProductionModul, float deltaTime)
         {
             //Должна быть отдельная система для изменения процента заполнения склада Raw материалами (при добавлении компонента должно присвоиться значение процента и рассчитаться значения по каждому компоненту)
             //Вызывается при измнении настроек и при добавлении (инициализации)

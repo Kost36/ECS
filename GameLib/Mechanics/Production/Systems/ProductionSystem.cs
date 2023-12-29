@@ -3,6 +3,7 @@ using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Mechanics.Production.Components;
+using System;
 
 namespace GameLib.Mechanics.Production.Systems
 {
@@ -11,7 +12,7 @@ namespace GameLib.Mechanics.Production.Systems
     [SystemEnable]
     public class ProductionSystem : SystemExistComponents<ProductionModule, WarehouseProductionModul>, ISystemAction
     {
-        public override void Action(int entityId, ProductionModule productionModule, WarehouseProductionModul warehouseProductionModul, float deltatime)
+        public override void Action(Guid entityId, ProductionModule productionModule, WarehouseProductionModul warehouseProductionModul, float deltatime)
         {
             if (productionModule.Enable)
             {

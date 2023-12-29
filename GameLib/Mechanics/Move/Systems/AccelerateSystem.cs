@@ -5,6 +5,7 @@ using ECSCore.Systems;
 using GameLib.Components.Energy;
 using GameLib.Mechanics.Move.Components;
 using MathLib;
+using System;
 
 namespace GameLib.Mechanics.Move.Systems
 {
@@ -14,7 +15,7 @@ namespace GameLib.Mechanics.Move.Systems
     [SystemParallelCountThreads(8)]
     public class AccelerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Energy>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Energy enargy, float deltatime)
+        public override void Action(Guid entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Energy enargy, float deltatime)
         {
             float enargyUse = acceleration.EnargyUse * DeltaTime;
             float acc = acceleration.Acc * DeltaTime;

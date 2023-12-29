@@ -132,37 +132,41 @@ namespace ECSCore.Managers
         public StringBuilder GetInfo(bool small = false)
         {
             StringBuilder info = new StringBuilder();
+
+            var systems = new List<JobSystem>();
             lock (_systemQueue)
             {
-                foreach (JobSystem jobSystem in _systemQueue)
+                systems = _systemQueue.OrderByDescending(system => system.SystemStatistic.PercentTimeUsePerformance).ToList();
+            }
+
+            foreach (JobSystem jobSystem in systems)
+            {
+                if (small)
                 {
-                    if (small)
-                    {
-                        info = info.Append(
-                            $" PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance:P};" +
-                            $" MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs:F4}; " +
-                            $" AverTimeUseInMs: {jobSystem.SystemStatistic.AverTimeUseMs:F4}; " +
-                            $" MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs:F4}; " +
-                            $" AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs:F4}; " +
-                            $" Name: {jobSystem.System.GetType().FullName}; " +
-                            $" IsEnable: {jobSystem.System.IsEnable}; " +
-                            $" IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
-                    }
-                    else
-                    {
-                        info = info.Append($"<<<<<<<<<<InfoOfSystem>>>>>>>>>> \r\n");
-                        info = info.Append($"Name: {jobSystem.System.GetType().FullName} \r\n");
-                        info = info.Append($"IsEnable: {jobSystem.System.IsEnable} \r\n");
-                        info = info.Append($"Priority: {jobSystem.System.Priority} (0-NotUse; 1-MaxPriority; 50-MinPriority) \r\n");
-                        info = info.Append($"IntervalRunInTicks: {jobSystem.System.IntervalTicks} \r\n");
-                        info = info.Append($"IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
-                        info = info.Append($"UseCount: {jobSystem.SystemStatistic.SummUseCount} \r\n");
-                        info = info.Append($"MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs} \r\n");
-                        info = info.Append($"AverTimeUseMs: {jobSystem.SystemStatistic.AverTimeUseMs} \r\n");
-                        info = info.Append($"MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs} \r\n");
-                        info = info.Append($"AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs} \r\n");
-                        info = info.Append($"PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance} \r\n");
-                    }
+                    info = info.Append(
+                        $" PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance:P};" +
+                        $" MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs:F4}; " +
+                        $" AverTimeUseInMs: {jobSystem.SystemStatistic.AverTimeUseMs:F4}; " +
+                        $" MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs:F4}; " +
+                        $" AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs:F4}; " +
+                        $" Name: {jobSystem.System.GetType().FullName}; " +
+                        $" IsEnable: {jobSystem.System.IsEnable}; " +
+                        $" IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
+                }
+                else
+                {
+                    info = info.Append($"<<<<<<<<<<InfoOfSystem>>>>>>>>>> \r\n");
+                    info = info.Append($"Name: {jobSystem.System.GetType().FullName} \r\n");
+                    info = info.Append($"IsEnable: {jobSystem.System.IsEnable} \r\n");
+                    info = info.Append($"Priority: {jobSystem.System.Priority} (0-NotUse; 1-MaxPriority; 50-MinPriority) \r\n");
+                    info = info.Append($"IntervalRunInTicks: {jobSystem.System.IntervalTicks} \r\n");
+                    info = info.Append($"IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
+                    info = info.Append($"UseCount: {jobSystem.SystemStatistic.SummUseCount} \r\n");
+                    info = info.Append($"MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs} \r\n");
+                    info = info.Append($"AverTimeUseMs: {jobSystem.SystemStatistic.AverTimeUseMs} \r\n");
+                    info = info.Append($"MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs} \r\n");
+                    info = info.Append($"AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs} \r\n");
+                    info = info.Append($"PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance} \r\n");
                 }
             }
             return info;

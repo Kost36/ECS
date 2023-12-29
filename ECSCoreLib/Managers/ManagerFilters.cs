@@ -94,7 +94,7 @@ namespace ECSCore.Managers
             }
         }
 
-        internal void Remove<T>(int id)
+        internal void Remove<T>(Guid id)
         {
             if (_ecs.GetEntity(id, out Entity entity))
             {
@@ -105,7 +105,7 @@ namespace ECSCore.Managers
             }
         }
 
-        internal void Remove(int id)
+        internal void Remove(Guid id)
         {
             foreach (IFilter filter in _filters)
             {

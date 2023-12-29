@@ -7,6 +7,7 @@ using ECSCore.Managers;
 using System.Threading;
 using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace ECSCore.Systems
 {
@@ -81,7 +82,7 @@ namespace ECSCore.Systems
             }
         }
 
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1>>> sliceCollection)
+        private void RunPart(List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
@@ -94,7 +95,7 @@ namespace ECSCore.Systems
             int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
                 ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
@@ -123,7 +124,7 @@ namespace ECSCore.Systems
         /// <param name="entityId"> Идентификатор сущьности </param>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
-        public virtual void Action(int entityId, ExistComponentT1 existComponentT1, float deltaTime) { }
+        public virtual void Action(Guid entityId, ExistComponentT1 existComponentT1, float deltaTime) { }
     }
 
     /// <summary>
@@ -202,7 +203,7 @@ namespace ECSCore.Systems
             }
         }
 
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> sliceCollection)
+        private void RunPart(List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
@@ -215,7 +216,7 @@ namespace ECSCore.Systems
             int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
                 ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
@@ -246,7 +247,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
-        public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, float deltaTime) { }
+        public virtual void Action(Guid entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, float deltaTime) { }
     }
 
     /// <summary>
@@ -328,7 +329,7 @@ namespace ECSCore.Systems
             }
         }
 
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> sliceCollection)
+        private void RunPart(List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
@@ -341,7 +342,7 @@ namespace ECSCore.Systems
             int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
                 ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
@@ -374,7 +375,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="existComponentT3"> Компонент №3 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
-        public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, float deltaTime) { }
+        public virtual void Action(Guid entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, float deltaTime) { }
     }
 
     /// <summary>
@@ -457,7 +458,7 @@ namespace ECSCore.Systems
             }
         }
 
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> sliceCollection)
+        private void RunPart(List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
@@ -470,7 +471,7 @@ namespace ECSCore.Systems
             int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
                 ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
@@ -505,7 +506,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT3"> Компонент №3 </param>
         /// <param name="existComponentT4"> Компонент №4 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
-        public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, float deltaTime) { }
+        public virtual void Action(Guid entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, float deltaTime) { }
     }
 
     /// <summary>
@@ -590,7 +591,7 @@ namespace ECSCore.Systems
             }
         }
 
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> sliceCollection)
+        private void RunPart(List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
@@ -603,7 +604,7 @@ namespace ECSCore.Systems
             int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
                 ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
@@ -640,7 +641,7 @@ namespace ECSCore.Systems
         /// <param name="existComponentT4"> Компонент №4 </param>
         /// <param name="existComponentT5"> Компонент №5 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
-        public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, float deltaTime) { }
+        public virtual void Action(Guid entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, float deltaTime) { }
     }
 
     /// <summary>
@@ -727,7 +728,7 @@ namespace ECSCore.Systems
             }
         }
 
-        private void RunPart(List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>> sliceCollection)
+        private void RunPart(List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>> sliceCollection)
         {
             foreach (var item in sliceCollection)
             {
@@ -740,7 +741,7 @@ namespace ECSCore.Systems
             int i = 0;
             while (true)
             {
-                List<KeyValuePair<int, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
+                List<KeyValuePair<Guid, GroupComponentsExist<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6>>> items = Filter.Collection.Skip(i).Take(maxCountOnThread).ToList();
                 ThreadPool.QueueUserWorkItem(o => { RunPart(items); });
                 if (i > Filter.Collection.Count)
                 {
@@ -780,6 +781,6 @@ namespace ECSCore.Systems
         /// <param name="existComponentT5"> Компонент №5 </param>
         /// <param name="existComponentT6"> Компонент №6 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
-        public virtual void Action(int entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, ExistComponentT6 existComponentT6, float deltaTime) { }
+        public virtual void Action(Guid entityId, ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, ExistComponentT6 existComponentT6, float deltaTime) { }
     }
 }

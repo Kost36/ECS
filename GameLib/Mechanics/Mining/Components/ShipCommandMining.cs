@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using System;
 
 namespace GameLib.Mechanics.Mining.Components
 {
@@ -10,6 +11,6 @@ namespace GameLib.Mechanics.Mining.Components
         /// <summary>
         /// Целевой астеройд
         /// </summary>
-        public int TargetAsteroidId;
+        public Guid TargetAsteroidId;
     }
 }

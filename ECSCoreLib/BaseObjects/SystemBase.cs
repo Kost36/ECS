@@ -273,7 +273,7 @@ namespace ECSCore.BaseObjects
         /// Выполнить AсtionRemove системы
         /// </summary>
         /// <param name="entityId"> Идентификатор сущьности </param>
-        internal void RunAсtionRemove(int entityId)
+        internal void RunAсtionRemove(Guid entityId)
         {
             if (IsUseInjectThread)
             {
@@ -313,7 +313,7 @@ namespace ECSCore.BaseObjects
         /// Метод обработки удаленной группы компонент из фильтра системы
         /// </summary>
         /// <param name="entityId"> Идентификатор сущьности </param>
-        public virtual void ActionRemove(int entityId) { }
+        public virtual void ActionRemove(Guid entityId) { }
         #endregion
     }
 }

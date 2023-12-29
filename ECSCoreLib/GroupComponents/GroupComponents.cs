@@ -25,7 +25,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -44,7 +44,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -96,7 +96,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -119,7 +119,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -181,7 +181,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -208,7 +208,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -281,7 +281,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -312,7 +312,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -397,7 +397,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -432,7 +432,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -528,7 +528,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {
@@ -567,7 +567,7 @@ namespace ECSCore.GroupComponents
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public override bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity)
+        public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
             if (eCS.GetEntity(entityId, out entity))
             {

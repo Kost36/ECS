@@ -1,7 +1,6 @@
 ﻿using ECSCore.Attributes;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
-using GameLib.Entitys;
 using GameLib.Mechanics.Company.Components;
 using System;
 
@@ -17,7 +16,7 @@ namespace GameLib.Mechanics.Company.Systems
     {
         public override void Action(Guid entityId, KnownInformations knownInformations, float deltatime)
         {
-            knownInformations.AvailableInformations.ControlExpiration(typeof(Stantion));
+            knownInformations.AvailableInformations.ControlExpiration(typeof(Entitys.Stantion));
         }
     }
 }

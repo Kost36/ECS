@@ -14,9 +14,9 @@ namespace GameLib.Providers
         /// Получить тип продукта
         /// </summary>
         /// <param name="type"> Тип объекта </param>
-        public static Enums.ProductType GetProductType(Type type)
+        public static Mechanics.Products.Enums.ProductType GetProductType(Type type)
         {
-            ProductType attribute = type.GetCustomAttribute<ProductType>();
+            ProductTypeAttribute attribute = type.GetCustomAttribute<ProductTypeAttribute>();
             if (attribute == null)
             {
                 throw new ExceptionProductNotHaveAttribute($"Сlass [{type.FullName}] does not have AttributeProductType");

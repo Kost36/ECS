@@ -2,7 +2,7 @@
 using GameLib.Mechanics.Production.Datas;
 using System.Collections.Generic;
 using GameLib.Components;
-using GameLib.Enums;
+using GameLib.Mechanics.Products.Enums;
 
 namespace GameLib.Mechanics.Production.Components
 {

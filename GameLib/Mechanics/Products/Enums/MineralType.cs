@@ -1,4 +1,4 @@
-﻿namespace GameLib.Enums
+﻿namespace GameLib.Mechanics.Products.Enums
 {
     /// <summary>
     /// Минералы добываемые на астеройдах

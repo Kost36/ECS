@@ -1,6 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 using GameLib.Datas;
-using GameLib.Enums;
+using GameLib.Mechanics.Products.Enums;
 using System.Collections.Generic;
 
 namespace GameLib.Mechanics.Production.Components

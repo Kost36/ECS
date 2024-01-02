@@ -1,5 +1,5 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Enums;
+using GameLib.Mechanics.Products.Enums;
 
 namespace GameLib.Mechanics.Mining.Components
 {

@@ -1,5 +1,5 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Enums;
+using GameLib.Mechanics.Products.Enums;
 using GameLib.Providers;
 
 namespace GameLib.Components

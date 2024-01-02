@@ -1,17 +1,14 @@
-﻿namespace GameLib.Datas
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GameLib.Datas
 {
-    /// <summary>
-    /// Количество
-    /// </summary>
-    public sealed class Count
+    public class Count
     {
-        /// <summary>
-        /// Количество
-        /// </summary>
         public int Value;
-        /// <summary>
-        /// Максимальное количество
-        /// </summary>
-        public int MaxValue = int.MaxValue;
+        public int MaxValue;
     }
 }

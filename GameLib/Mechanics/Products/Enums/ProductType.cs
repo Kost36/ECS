@@ -1,4 +1,4 @@
-﻿namespace GameLib.Enums
+﻿namespace GameLib.Mechanics.Products.Enums
 {
     /// <summary>
     /// Тип продукта
@@ -127,7 +127,7 @@
         Hydrogen,
 
         #endregion
-        
+
         #region 3 уровень - еда 
         // Производимое; 100 - 199
 
@@ -226,8 +226,3 @@
         #endregion
     }
 }
-
-/// <summary>
-/// Грязная вода
-/// </summary>
-//WaterDirty,

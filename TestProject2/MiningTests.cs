@@ -1,11 +1,11 @@
 ﻿using ECSCore.Interfaces.ECS;
 using GameLib.Components.Energy;
 using GameLib.Entitys;
-using GameLib.Enums;
 using GameLib.Mechanics.Mining.AI.Components;
 using GameLib.Mechanics.Mining.AI.Enums;
 using GameLib.Mechanics.Mining.Components;
 using GameLib.Mechanics.Mining.Entites;
+using GameLib.Mechanics.Products.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace GameLibTests

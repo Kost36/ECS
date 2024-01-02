@@ -2,8 +2,9 @@
 {
     /// <summary>
     /// Зона сектора
+    /// В Километрах
     /// </summary>
-    public static class SectorSize
+    public sealed class SectorSize
     {
         /// <summary>
         /// Начальная позиция сектора по оси X
@@ -18,11 +19,11 @@
         /// <summary>
         /// Ширина сектора (Ось X)
         /// </summary>
-        public const long Width = 10000;
+        public const long Width = 1000000;
 
         /// <summary>
         /// Высота сектора (Ось Y)
         /// </summary>
-        public const long Height = 10000;
+        public const long Height = 1000000;
     }
 }

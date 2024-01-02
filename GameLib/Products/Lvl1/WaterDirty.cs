@@ -1,6 +1,6 @@
 ﻿using GameLib.Attributes;
 using GameLib.Components;
-using Type = GameLib.Enums.ProductType;
+using Type = GameLib.Mechanics.Products.Enums.ProductType;
 
 namespace GameLib.Products.Lvl1
 {

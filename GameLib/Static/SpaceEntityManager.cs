@@ -1,6 +1,7 @@
-﻿using GameLib.Algorithms.QuadTree;
+﻿using GameLib.Collections.QuadTree;
 using GameLib.Components;
 using GameLib.Constants;
+using GameLib.Structures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,3 +64,8 @@ namespace GameLib.Static
         }
     }
 }
+
+//Todo 
+//1) Сущьность пропадает из пространства (к примеру произошла стыковка корабля со станцией) 
+//2) Сущьность уничтожена
+//3) Сущьность переместилась

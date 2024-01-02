@@ -1,5 +1,6 @@
-﻿using GameLib.Algorithms.QuadTree;
+﻿using GameLib.Collections.QuadTree;
 using GameLib.Components;
+using GameLib.Structures;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,4 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Mechanics.Company.Informations;
 using System;
 
 namespace GameLib.Mechanics.Company.Components
@@ -9,11 +8,6 @@ namespace GameLib.Mechanics.Company.Components
     /// </summary>
     public class RegistrationInformation : ComponentBase
     {
-        /// <summary>
-        /// Тип информации
-        /// </summary>
-        public TypeInformation TypeInformation;
-
         /// <summary>
         /// Идентификатор сущьности, по которой получена информация
         /// </summary>

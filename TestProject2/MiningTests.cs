@@ -1,6 +1,6 @@
 ﻿using ECSCore.Interfaces.ECS;
 using GameLib.Components.Energy;
-using GameLib.Entitys.DynamicEntitys;
+using GameLib.Entitys;
 using GameLib.Enums;
 using GameLib.Mechanics.Mining.AI.Components;
 using GameLib.Mechanics.Mining.AI.Enums;

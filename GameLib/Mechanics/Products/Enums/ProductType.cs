@@ -10,7 +10,7 @@
         /// </summary>
         Unknown = -1,
 
-        #region 0 Уровень 
+        #region 0 Уровень
         // Восполняемые; 1 - 9
 
         /// <summary>

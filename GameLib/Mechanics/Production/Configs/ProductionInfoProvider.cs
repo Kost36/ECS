@@ -6,6 +6,7 @@ using GameLib.Products.Lvl1;
 using GameLib.Products.Lvl2;
 using GameLib.Products.Lvl3;
 using GameLib.Products.Lvl4;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -155,11 +156,15 @@ namespace GameLib.Products
         /// <summary>
         /// Получить информацию о производимом продукте
         /// </summary>
-        /// <param name="productType"> Тип производимого продукта </param>
-        /// <param name="productionInfo"> Информация о производимом продукте </param>
-        public static bool GetProductionInfo(ProductType productType, out ProductionInfo productionInfo)
+        /// <param name="productType">Перечисление типа производимого товара</param>
+        public static ProductionInfo GetProductionInfo(ProductType productType)
         {
-            return _collection.TryGetValue(productType, out productionInfo);
+            if (!_collection.TryGetValue(productType, out var productionInfo))
+            {
+                throw new ArgumentException($"Production info not found for product type [{productType}]");
+            }
+
+            return productionInfo;
         }
     }
 }

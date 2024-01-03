@@ -13,14 +13,14 @@ namespace GameLib.Mechanics.Production.Systems
     [SystemCalculate(SystemCalculateInterval.Min1Once)]
     [SystemPriority(50)]
     [SystemEnable]
-    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModul>, ISystemActionAdd, ISystemAction
+    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModule>, ISystemActionAdd, ISystemAction
     {
-        public override void ActionAdd(BridgeProductionModulToStantion _, WarehouseProductionModul warehouseProductionModul, Entity entity)
+        public override void ActionAdd(BridgeProductionModulToStantion _, WarehouseProductionModule warehouseProductionModul, Entity entity)
         {
             MoveProducts(entity, warehouseProductionModul);
         }
 
-        public override void Action(Guid entityId, BridgeProductionModulToStantion _, WarehouseProductionModul warehouseProductionModul, float deltaTime)
+        public override void Action(Guid entityId, BridgeProductionModulToStantion _, WarehouseProductionModule warehouseProductionModul, float deltaTime)
         {
             //Должна быть отдельная система для изменения процента заполнения склада Raw материалами (при добавлении компонента должно присвоиться значение процента и рассчитаться значения по каждому компоненту)
             //Вызывается при измнении настроек и при добавлении (инициализации)
@@ -36,7 +36,7 @@ namespace GameLib.Mechanics.Production.Systems
         /// </summary>
         /// <param name="entity"> Сущьность производственного модуля </param>
         /// <param name="warehouseModul"> Склад производственного модуля </param>
-        private void MoveProducts(Entity entity, WarehouseProductionModul warehouseModul)
+        private void MoveProducts(Entity entity, WarehouseProductionModule warehouseModul)
         {
             if (entity.ExternalEntity != null)
             {
@@ -53,7 +53,7 @@ namespace GameLib.Mechanics.Production.Systems
         /// </summary>
         /// <param name="warehouseModule"> Склад производственного модуля </param>
         /// <param name="warehouseStantion"> Склад станции </param>
-        private void MoveProduct(WarehouseProductionModul warehouseModule, Warehouse warehouseStantion)
+        private void MoveProduct(WarehouseProductionModule warehouseModule, Warehouse warehouseStantion)
         {
             if(warehouseModule.Product.Value.Value == 0)
             {
@@ -80,7 +80,7 @@ namespace GameLib.Mechanics.Production.Systems
         /// </summary>
         /// <param name="warehouseStantion"> Склад станции </param>
         /// <param name="warehouseModule"> Склад производственного модуля </param>
-        private void MoveRaws(Warehouse warehouseStantion, WarehouseProductionModul warehouseModule)
+        private void MoveRaws(Warehouse warehouseStantion, WarehouseProductionModule warehouseModule)
         {
             foreach (var raw in warehouseModule.Raws)
             {

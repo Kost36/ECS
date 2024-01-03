@@ -25,55 +25,54 @@ namespace GameLib.Mechanics.Production.Systems
             if (componentType.IsGenericType)
             {
                 var productType = componentType.GetGenericArguments().First();
-                if (ProductionInfoProvider.GetProductionInfo(ProductTypeProvider.GetProductType(productType), out var productionInfo))
+                var productionInfo = ProductionInfoProvider.GetProductionInfo(ProductTypeProvider.GetProductType(productType));
+
+                var productionModuleComponent = new ProductionModule()
                 {
-                    var productionModuleComponent = new ProductionModule()
-                    {
-                        Enable = true,
-                        TimeCycleInSec = productionInfo.CycleTimeInSec,
-                        CountProductOfCycle = productionInfo.Product.CountInCycle
-                    };
-                    var warehouseComponent = new WarehouseProductionModul()
-                    {
-                        PercentFillingRaws = 80,
-                        VolumeMax = 1000
-                    };
+                    Enable = true,
+                    TimeCycleInSec = productionInfo.CycleTimeInSec,
+                    CountProductOfCycle = productionInfo.Product.CountInCycle
+                };
+                var warehouseComponent = new WarehouseProductionModule()
+                {
+                    PercentFillingRaws = 80,
+                    VolumeMax = 1000
+                };
 
-                    productionModuleComponent.ProductType = productionInfo.Product.ProductType;
-                    productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
-                    productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
+                productionModuleComponent.ProductType = productionInfo.Product.ProductType;
+                productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
+                productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
 
-                    warehouseComponent.Product = new KeyValuePair<ProductType, Count>(
-                        productionInfo.Product.ProductType,
+                warehouseComponent.Product = new KeyValuePair<ProductType, Count>(
+                    productionInfo.Product.ProductType,
+                    new Count()
+                    {
+                        Value = 0
+                    });
+
+                foreach (var rawInfo in productionInfo.Raws)
+                {
+                    productionModuleComponent.RawExpenses.Add(
+                        rawInfo.ProductType,
+                        new Expense()
+                        {
+                            Value = rawInfo.CountInCycle
+                        });
+                    warehouseComponent.Raws.Add(
+                        rawInfo.ProductType,
                         new Count()
                         {
-                            Value = 0
+                            Value = 0,
+                            MaxValue = rawInfo.CountInCycle + rawInfo.CountInCycle
                         });
+                }
 
-                    foreach (var rawInfo in productionInfo.Raws)
-                    {
-                        productionModuleComponent.RawExpenses.Add(
-                            rawInfo.ProductType,
-                            new Expense()
-                            {
-                                Value = rawInfo.CountInCycle
-                            });
-                        warehouseComponent.Raws.Add(
-                            rawInfo.ProductType,
-                            new Count()
-                            {
-                                Value = 0,
-                                MaxValue = rawInfo.CountInCycle + rawInfo.CountInCycle
-                            });
-                    }
+                entity.AddComponent(productionModuleComponent);
+                entity.AddComponent(warehouseComponent);
+                entity.AddComponent(productionInfo);
+                entity.AddComponent(new BridgeProductionModulToStantion());
 
-                    entity.AddComponent(productionModuleComponent);
-                    entity.AddComponent(warehouseComponent);
-                    entity.AddComponent(productionInfo);
-                    entity.AddComponent(new BridgeProductionModulToStantion());
-
-                    entity.RemoveComponent<ProductionModuleBuild>();
-                };
+                entity.RemoveComponent<ProductionModuleBuild>();
             }
         }
     }

@@ -8,7 +8,7 @@ namespace GameLib.Mechanics.Production.Components
     /// <summary>
     /// Склад производственного модуля
     /// </summary>
-    public class WarehouseProductionModul : ComponentBase
+    public class WarehouseProductionModule : ComponentBase
     {
         /// <summary>
         /// Занятый объем склада

@@ -8,9 +8,7 @@ using GameLib.Mechanics.Production.Components;
 using GameLib.Mechanics.Production.Datas;
 using GameLib.Mechanics.Products.Enums;
 using GameLib.Products;
-using GameLib.Providers;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GameLib.Mechanics.Production.Systems
 {
@@ -21,59 +19,54 @@ namespace GameLib.Mechanics.Production.Systems
     {
         public override void ActionAdd(Components.Production production, Entity entity)
         {
-            var componentType = production.GetType();
-            if (componentType.IsGenericType)
+            var productionInfo = ProductionInfoProvider.GetProductionInfo(production.ProductType);
+
+            var productionModuleComponent = new ProductionModule()
             {
-                var productType = componentType.GetGenericArguments().First();
-                var productionInfo = ProductionInfoProvider.GetProductionInfo(ProductTypeProvider.GetProductType(productType));
+                Enable = true,
+                TimeCycleInSec = productionInfo.CycleTimeInSec,
+                CountProductOfCycle = productionInfo.Product.CountInCycle
+            };
+            var warehouseComponent = new WarehouseProductionModule()
+            {
+                PercentFillingRaws = 80,
+                VolumeMax = 1000
+            };
 
-                var productionModuleComponent = new ProductionModule()
+            productionModuleComponent.ProductType = productionInfo.Product.ProductType;
+            productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
+            productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
+
+            warehouseComponent.Product = new KeyValuePair<ProductType, Count>(
+                productionInfo.Product.ProductType,
+                new Count()
                 {
-                    Enable = true,
-                    TimeCycleInSec = productionInfo.CycleTimeInSec,
-                    CountProductOfCycle = productionInfo.Product.CountInCycle
-                };
-                var warehouseComponent = new WarehouseProductionModule()
-                {
-                    PercentFillingRaws = 80,
-                    VolumeMax = 1000
-                };
+                    Value = 0
+                });
 
-                productionModuleComponent.ProductType = productionInfo.Product.ProductType;
-                productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
-                productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
-
-                warehouseComponent.Product = new KeyValuePair<ProductType, Count>(
-                    productionInfo.Product.ProductType,
+            foreach (var rawInfo in productionInfo.Raws)
+            {
+                productionModuleComponent.RawExpenses.Add(
+                    rawInfo.ProductType,
+                    new Expense()
+                    {
+                        Value = rawInfo.CountInCycle
+                    });
+                warehouseComponent.Raws.Add(
+                    rawInfo.ProductType,
                     new Count()
                     {
-                        Value = 0
+                        Value = 0,
+                        MaxValue = rawInfo.CountInCycle + rawInfo.CountInCycle
                     });
-
-                foreach (var rawInfo in productionInfo.Raws)
-                {
-                    productionModuleComponent.RawExpenses.Add(
-                        rawInfo.ProductType,
-                        new Expense()
-                        {
-                            Value = rawInfo.CountInCycle
-                        });
-                    warehouseComponent.Raws.Add(
-                        rawInfo.ProductType,
-                        new Count()
-                        {
-                            Value = 0,
-                            MaxValue = rawInfo.CountInCycle + rawInfo.CountInCycle
-                        });
-                }
-
-                entity.AddComponent(productionModuleComponent);
-                entity.AddComponent(warehouseComponent);
-                entity.AddComponent(productionInfo);
-                entity.AddComponent(new BridgeProductionModulToStantion());
-
-                entity.RemoveComponent<ProductionModuleBuild>();
             }
+
+            entity.AddComponent(productionModuleComponent);
+            entity.AddComponent(warehouseComponent);
+            entity.AddComponent(productionInfo);
+            entity.AddComponent(new BridgeProductionModulToStantion());
+
+            entity.RemoveComponent<ProductionModuleBuild>();
         }
     }
 }

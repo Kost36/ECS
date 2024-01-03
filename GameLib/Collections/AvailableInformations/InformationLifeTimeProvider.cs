@@ -22,7 +22,7 @@ namespace GameLib.Collections.AvailableInformations
             if (!_lifeTimeCollection.TryGetValue(key, out var lifeTime))
             {
                 lifeTime = entity.GetType().GetAttributeValue(
-                    (LifeTimeInformation lifeTimeInformation) => lifeTimeInformation.LifeTime);
+                    (LifeTimeInformationAttribute lifeTimeInformation) => lifeTimeInformation.LifeTime);
 
                 _lifeTimeCollection.Add(key, lifeTime);
             }
@@ -38,7 +38,7 @@ namespace GameLib.Collections.AvailableInformations
             if (!_lifeTimeCollection.TryGetValue(key, out var lifeTime))
             {
                 lifeTime = component.GetType().GetAttributeValue(
-                    (LifeTimeInformation lifeTimeInformation) => lifeTimeInformation.LifeTime);
+                    (LifeTimeInformationAttribute lifeTimeInformation) => lifeTimeInformation.LifeTime);
 
                 _lifeTimeCollection.Add(key, lifeTime);
             }

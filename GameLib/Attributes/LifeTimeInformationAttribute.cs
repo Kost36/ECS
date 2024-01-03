@@ -6,9 +6,9 @@ namespace GameLib.Attributes
     /// Атрибут время хранения информации о сущьности / компоненнте
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public sealed class LifeTimeInformation : Attribute
+    public sealed class LifeTimeInformationAttribute : Attribute
     {
-        public LifeTimeInformation(int hours = 0, int minutes = 1, int seconds = 0)
+        public LifeTimeInformationAttribute(int hours = 0, int minutes = 1, int seconds = 0)
         {
             LifeTime = new TimeSpan(hours, minutes, seconds);
         }

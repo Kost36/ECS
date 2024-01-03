@@ -1,4 +1,5 @@
 ﻿using ECSCore.BaseObjects;
+using GameLib.Datas;
 using GameLib.Mechanics.Products.Enums;
 using System.Collections.Generic;
 
@@ -22,6 +23,6 @@ namespace GameLib.Mechanics.Stantion.Components
         /// Key - Тип продукта
         /// Value - Количество продукта
         /// </summary>
-        public Dictionary<ProductType, int> Collection = new Dictionary<ProductType, int>();
+        public Dictionary<ProductType, Count> Products = new Dictionary<ProductType, Count>();
     }
 }

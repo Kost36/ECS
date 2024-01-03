@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameLib.Datas
+﻿namespace GameLib.Datas
 {
     public class Count
     {
         public int Value;
-        public int MaxValue;
+        public int MaxValue = int.MaxValue;
     }
 }

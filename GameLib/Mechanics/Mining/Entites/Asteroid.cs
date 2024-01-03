@@ -8,6 +8,6 @@ namespace GameLib.Mechanics.Mining.Entites
     /// Астеройд
     /// </summary>
     [Serializable]
-    [LifeTimeInformation(minutes: 24)]
+    [LifeTimeInformation(hours: 24)]
     public class Asteroid : Entity { }
 }

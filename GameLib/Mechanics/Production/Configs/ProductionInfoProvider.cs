@@ -1,11 +1,6 @@
 ﻿using GameLib.Mechanics.Production.Components;
+using GameLib.Mechanics.Production.Datas;
 using GameLib.Mechanics.Products.Enums;
-using GameLib.Products.Food;
-using GameLib.Products.Lvl0;
-using GameLib.Products.Lvl1;
-using GameLib.Products.Lvl2;
-using GameLib.Products.Lvl3;
-using GameLib.Products.Lvl4;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,141 +12,164 @@ namespace GameLib.Products
     /// </summary>
     public static class ProductionInfoProvider
     {
+
         /// <summary>
         /// Коллекция информации о производстве уровня 0
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl0Collection = 
-            new Dictionary<ProductType, ProductionInfo>()
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl0Collection = new Dictionary<ProductType, ProductionInfo>()
         {
             //Восполняемые товары
             {
                 ProductType.Enargy,
-                new ProductionInfo<Enargy>(
-                    productType: ProductType.Enargy, cycleTimeInSec: 60, productCountInCycle: 300)
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Enargy, 300),
+                    rawCountInfos: new List<ProductionCountInfo>())
             },
             {
                 ProductType.Battery,
-                new ProductionInfo<Battery, BatteryEmpty, Enargy>(
-                    productType: ProductType.Battery, cycleTimeInSec: 60, productCountInCycle: 300,
-                    raw1Type: ProductType.BatteryEmpty, raw1CountInCycle: 300,
-                    raw2Type: ProductType.Enargy, raw2CountInCycle: 300)
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Battery, 300),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.BatteryEmpty, 300) },
+                        { new ProductionCountInfo(ProductType.Enargy, 400) }})
             },
-            //{
-            //    ProductType.Water,
-            //    new ProductionInfo<Water, WaterDirty, Enargy>(
-            //        productType: ProductType.Water, cycleTimeInSec: 60, productCountInCycle: 300,
-            //        raw1Type: ProductType.WaterDirty, raw1CountInCycle: 300,
-            //        raw2Type: ProductType.Enargy, raw2CountInCycle: 300)
-            //},
+            {
+                ProductType.Water,
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Water, 300),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.Ice, 300) },
+                        { new ProductionCountInfo(ProductType.Enargy, 300) }})
+            },
         };
+
         /// <summary>
         /// Коллекция информации о производстве уровня 1
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl1Collection = 
-            new Dictionary<ProductType, ProductionInfo>()
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl1Collection = new Dictionary<ProductType, ProductionInfo>()
         {
             //Не производится - добывается на астеройдах
         };
+
         /// <summary>
         /// Коллекция информации о производстве уровня 2
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl2Collection = 
-            new Dictionary<ProductType, ProductionInfo>()
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl2Collection = new Dictionary<ProductType, ProductionInfo>()
         {
         };
+
         /// <summary>
         /// Коллекция информации о производстве уровня 3
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl3Collection =
-            new Dictionary<ProductType, ProductionInfo>()
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl3Collection = new Dictionary<ProductType, ProductionInfo>()
+        {
+            //Еда
             {
-                //Еда
-                {
-                    ProductType.Grain,
-                    new ProductionInfo<Grain, Water, Enargy>(
-                        productType: ProductType.Grain, cycleTimeInSec: 60, productCountInCycle: 10,
-                        raw1Type: ProductType.Water, raw1CountInCycle: 20,
-                        raw2Type: ProductType.Enargy, raw2CountInCycle: 20)
-                },
-                {
-                    ProductType.Fruit,
-                    new ProductionInfo<Fruit, Water, Enargy>(
-                        productType: ProductType.Fruit, cycleTimeInSec: 60, productCountInCycle: 10,
-                        raw1Type: ProductType.Water, raw1CountInCycle: 20,
-                        raw2Type: ProductType.Enargy, raw2CountInCycle: 20)
-                },
-                {
-                    ProductType.Vegetables,
-                    new ProductionInfo<Vegetables, Water, Enargy>(
-                        productType: ProductType.Vegetables, cycleTimeInSec: 60, productCountInCycle: 10,
-                        raw1Type: ProductType.Water, raw1CountInCycle: 20,
-                        raw2Type: ProductType.Enargy, raw2CountInCycle: 20)
-                },
-                {
-                    ProductType.CompoundFeed,
-                    new ProductionInfo<CompoundFeed, Water, Enargy, Grain, Fruit, Vegetables>(
-                        productType: ProductType.CompoundFeed, cycleTimeInSec: 60, productCountInCycle: 10,
-                        raw1Type: ProductType.Water, raw1CountInCycle: 20,
-                        raw2Type: ProductType.Enargy, raw2CountInCycle: 20,
-                        raw3Type: ProductType.Grain, raw3CountInCycle: 10,
-                        raw4Type: ProductType.Fruit, raw4CountInCycle: 10,
-                        raw5Type: ProductType.Vegetables, raw5CountInCycle: 10)
-                },
-                {
-                    ProductType.Fish,
-                    new ProductionInfo<Fish, Water, Enargy, CompoundFeed>(
-                        productType: ProductType.Fish, cycleTimeInSec: 60, productCountInCycle: 10,
-                        raw1Type: ProductType.Water, raw1CountInCycle: 20,
-                        raw2Type: ProductType.Enargy, raw2CountInCycle: 20,
-                        raw3Type: ProductType.CompoundFeed, raw3CountInCycle: 20)
-                },
-                {
-                    ProductType.Meat,
-                    new ProductionInfo<Meat, Water, Enargy, CompoundFeed>(
-                        productType: ProductType.Meat, cycleTimeInSec: 60, productCountInCycle: 10,
-                        raw1Type: ProductType.Water, raw1CountInCycle: 20,
-                        raw2Type: ProductType.Enargy, raw2CountInCycle: 20,
-                        raw3Type: ProductType.CompoundFeed, raw3CountInCycle: 20)
-                },
-            };
+                ProductType.Grain,
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Grain, 10),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.Water, 20) },
+                        { new ProductionCountInfo(ProductType.Enargy, 20) }})
+            },
+            {
+                ProductType.Fruit,
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Fruit, 10),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.Water, 20) },
+                        { new ProductionCountInfo(ProductType.Enargy, 20) }})
+            },
+            {
+                ProductType.Vegetables,
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Vegetables, 10),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.Water, 20) },
+                        { new ProductionCountInfo(ProductType.Enargy, 20) }})
+            },
+            {
+                ProductType.CompoundFeed,
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.CompoundFeed, 10),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.Water, 20) },
+                        { new ProductionCountInfo(ProductType.Enargy, 20) },
+                        { new ProductionCountInfo(ProductType.Grain, 10) },
+                        { new ProductionCountInfo(ProductType.Fruit, 10) },
+                        { new ProductionCountInfo(ProductType.Vegetables, 10) }})
+            },
+            {
+                ProductType.Fish,
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Fish, 10),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.Water, 20) },
+                        { new ProductionCountInfo(ProductType.Enargy, 20) },
+                        { new ProductionCountInfo(ProductType.CompoundFeed, 20) }})
+            },
+            {
+                ProductType.Meat,
+                new ProductionInfo(
+                    cycleTimeInSec: 60,
+                    productionCountInfo: new ProductionCountInfo(ProductType.Meat, 10),
+                    rawCountInfos: new List<ProductionCountInfo>() {
+                        { new ProductionCountInfo(ProductType.Water, 20) },
+                        { new ProductionCountInfo(ProductType.Enargy, 20) },
+                        { new ProductionCountInfo(ProductType.CompoundFeed, 20) }})
+            },
+        };
+
         /// <summary>
         /// Коллекция информации о производстве уровня 4
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl4Collection =
-            new Dictionary<ProductType, ProductionInfo>()
-            {
-            };
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl4Collection = new Dictionary<ProductType, ProductionInfo>()
+        {
+        };
+
         /// <summary>
         /// Коллекция информации о производстве уровня 5
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl5Collection =
-            new Dictionary<ProductType, ProductionInfo>()
-            {
-            };
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl5Collection = new Dictionary<ProductType, ProductionInfo>()
+        {
+        };
+
         /// <summary>
         /// Коллекция информации о производстве уровня 6
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl6Collection =
-            new Dictionary<ProductType, ProductionInfo>()
-            {
-            };
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl6Collection = new Dictionary<ProductType, ProductionInfo>()
+        {
+        };
+
         /// <summary>
         /// Коллекция информации о производстве уровня 7
         /// </summary>
-        private static readonly Dictionary<ProductType, ProductionInfo> _lvl7Collection =
-            new Dictionary<ProductType, ProductionInfo>()
-            {
-            };
+        private static readonly Dictionary<ProductType, ProductionInfo> _lvl7Collection = new Dictionary<ProductType, ProductionInfo>()
+        {
+        };
 
-        private static readonly Dictionary<ProductType, ProductionInfo> _collection = 
-            (Dictionary<ProductType, ProductionInfo>)_lvl0Collection
+        private static readonly Dictionary<ProductType, ProductionInfo> _collection = new Dictionary<ProductType, ProductionInfo>();
+
+        static ProductionInfoProvider()
+        {
+            _collection = _lvl0Collection
                 .Concat(_lvl1Collection)
                 .Concat(_lvl2Collection)
                 .Concat(_lvl3Collection)
                 .Concat(_lvl4Collection)
                 .Concat(_lvl5Collection)
                 .Concat(_lvl6Collection)
-                .Concat(_lvl7Collection);
+                .Concat(_lvl7Collection)
+                .ToDictionary(x => x.Key, x => x.Value);
+        }
 
         /// <summary>
         /// Получить информацию о производимом продукте
@@ -345,3 +363,5 @@ namespace GameLib.Products
 
 //    //Производимые - станции, корабли
 //};
+
+//Todo Заполнить

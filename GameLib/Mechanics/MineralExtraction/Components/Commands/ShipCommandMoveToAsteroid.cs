@@ -1,12 +1,12 @@
 ﻿using ECSCore.BaseObjects;
 using System;
 
-namespace GameLib.Mechanics.Mining.Components
+namespace GameLib.Mechanics.MineralExtraction.Components.Commands
 {
     /// <summary>
-    /// Команда добычи с астеройда
+    /// Команда переместиться к астеройду
     /// </summary>
-    public class ShipCommandMining : ComponentBase
+    public class ShipCommandMoveToAsteroid : ComponentBase
     {
         /// <summary>
         /// Целевой астеройд

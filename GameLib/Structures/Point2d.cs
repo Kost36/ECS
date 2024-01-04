@@ -1,11 +1,11 @@
 ﻿namespace GameLib.Structures
 {
-    public struct Point
+    public struct Point2d
     {
         public long X;
         public long Y;
 
-        public Point(long x, long y)
+        public Point2d(long x, long y)
         {
             X = x;
             Y = y;

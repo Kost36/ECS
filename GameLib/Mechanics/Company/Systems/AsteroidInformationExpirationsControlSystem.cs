@@ -2,7 +2,7 @@
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Mechanics.Company.Components;
-using GameLib.Mechanics.Mining.Entites;
+using GameLib.Mechanics.MineralExtraction.Entites;
 using System;
 
 namespace GameLib.Mechanics.Company.Systems

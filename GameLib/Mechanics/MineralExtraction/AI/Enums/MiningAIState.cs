@@ -1,4 +1,4 @@
-﻿namespace GameLib.Mechanics.Mining.AI.Enums
+﻿namespace GameLib.Mechanics.MineralExtraction.AI.Enums
 {
     //Начальное состояние Wait -> В этом состоянии AI анализирует последующие действия (снабжать станцию/добывать на продажу/какой минерал будет добывать и т.д.)
     //Далее состояние может перейти в SearchAsteroid -> поиск астеройда для добычи.
@@ -12,32 +12,36 @@
     public enum MiningAIState
     {
         /// <summary>
-        /// Ожидание
+        /// Ожидание / Анализ
         /// </summary>
         Wait,
         /// <summary>
-        /// Поиск астеройда
+        /// Запуск перемещение к астеройду
         /// </summary>
-        SearchAsteroid,
+        StartMoveToAsteroid,
         /// <summary>
         /// Перемещение к астеройду
         /// </summary>
         MovingToAsteroid,
         /// <summary>
-        /// Добыча
+        /// Добыча c астеройда
         /// </summary>
-        Mining,
-        /// <summary>
-        /// Продажа минералов
-        /// </summary>
-        SearchStantionForSale,
+        MiningFromAsteroid,
         /// <summary>
         /// Перемещение к станции
         /// </summary>
         MovingToStantion,
         /// <summary>
+        /// Выгрузить на станцию
+        /// </summary>
+        UnloadToStantion,
+        /// <summary>
+        /// Продажа минералов
+        /// </summary>
+        SearchStantionForSale,
+        /// <summary>
         /// Продажа
         /// </summary>
-        Sale,
+        SaleToStantion,
     }
 }

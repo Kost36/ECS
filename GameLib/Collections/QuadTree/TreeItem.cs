@@ -6,9 +6,9 @@ namespace GameLib.Collections.QuadTree
     {
         public readonly T Value;
         public TreeNode<T> Node;
-        public Point Point;
+        public Point2d Point;
 
-        public TreeItem(T value, Point point)
+        public TreeItem(T value, Point2d point)
         {
             Value = value;
             Point = point;

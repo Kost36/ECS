@@ -1,7 +1,7 @@
 ﻿using ECSCore.BaseObjects;
 using GameLib.Mechanics.Products.Enums;
 
-namespace GameLib.Mechanics.Mining.Components
+namespace GameLib.WorkFlow
 {
     /// <summary>
     /// Команда дабывать серье с астеройда

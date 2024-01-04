@@ -1,5 +1,4 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Datas;
 using GameLib.Mechanics.Products.Enums;
 using System.Collections.Generic;
 
@@ -17,12 +16,12 @@ namespace GameLib.Mechanics.Stantion.Components
         /// <summary>
         /// Максимальный объем склада
         /// </summary>
-        public int VolumeMax;
+        public int VolumeMax = int.MaxValue; //Todo получить от параметров станции
         /// <summary>
         /// Коллекция продуктов
         /// Key - Тип продукта
         /// Value - Количество продукта
         /// </summary>
-        public Dictionary<ProductType, Count> Products = new Dictionary<ProductType, Count>();
+        public Dictionary<ProductType, WarehouseProductInfo> Products = new Dictionary<ProductType, WarehouseProductInfo>();
     }
 }

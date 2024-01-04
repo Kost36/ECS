@@ -7,13 +7,13 @@ namespace GameLib.Structures
         /// <summary>
         /// Точка центра
         /// </summary>
-        public readonly Point Center;
+        public readonly Point2d Center;
         /// <summary>
         /// Радиус
         /// </summary>
         public readonly long Radius;
 
-        public Circle(Point center, long radius)
+        public Circle(Point2d center, long radius)
         {
             Center = center;
             Radius = radius;
@@ -23,7 +23,7 @@ namespace GameLib.Structures
         /// Точка находится внутри окружности
         /// </summary>
         /// <param name="point">Точка</param>
-        public bool PointIsInside(Point point)
+        public bool PointIsInside(Point2d point)
         {
             return Math.Pow(point.X - Center.X, 2f) + Math.Pow(point.Y - Center.Y, 2f) <= Math.Pow(Radius, 2f);
         }

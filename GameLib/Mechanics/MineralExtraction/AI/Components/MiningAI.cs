@@ -1,7 +1,7 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Mechanics.Mining.AI.Enums;
+using GameLib.Mechanics.MineralExtraction.AI.Enums;
 
-namespace GameLib.Mechanics.Mining.AI.Components
+namespace GameLib.Mechanics.MineralExtraction.AI.Components
 {
     /// <summary>
     /// Искусственный интелект шахтера

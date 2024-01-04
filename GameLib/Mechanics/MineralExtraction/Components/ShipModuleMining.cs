@@ -1,6 +1,6 @@
 ﻿using ECSCore.BaseObjects;
 
-namespace GameLib.Mechanics.Mining.Components
+namespace GameLib.Mechanics.MineralExtraction.Components
 {
     /// <summary>
     /// Корабельный модуль добычи ископаемых 
@@ -15,5 +15,9 @@ namespace GameLib.Mechanics.Mining.Components
         /// Процент выполнения в секунду
         /// </summary>
         public float CompletionPercentagePerSec;
+        /// <summary>
+        /// Количество добываемого сыря за цикл
+        /// </summary>
+        public int QuantityPerСycle = 5; //Todo в зависимости от типа модуля
     }
 }

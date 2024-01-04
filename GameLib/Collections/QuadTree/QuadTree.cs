@@ -26,7 +26,7 @@ namespace GameLib.Collections.QuadTree
             Root = new TreeNode<T>(this, null, 0, _region);
         }
 
-        public void AddOrUpdate(T value, Point point)
+        public void AddOrUpdate(T value, Point2d point)
         {
             if (!_region.PointIsInside(point))
             {

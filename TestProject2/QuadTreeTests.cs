@@ -49,8 +49,8 @@ namespace GameLibTests
         private readonly int _splitCount = 10;
         private readonly int _depth = 10;
         private readonly Quad _region = new(
-            new Point(0,0), 
-            new Point(10000, 10000));
+            new Point2d(0,0), 
+            new Point2d(10000, 10000));
 
         [TestMethod()]
         public void QuadTreeFillingTest()
@@ -59,7 +59,7 @@ namespace GameLibTests
 
             foreach (var pos in _positions)
             {
-                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+                quadTree.AddOrUpdate(pos, new Point2d((long)pos.X, (long)pos.Y));
             }
 
             Assert.AreEqual(_positions.Count, quadTree.AllItems.Count);
@@ -77,13 +77,13 @@ namespace GameLibTests
 
             foreach (var pos in _positions)
             {
-                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+                quadTree.AddOrUpdate(pos, new Point2d((long)pos.X, (long)pos.Y));
             }
 
             position.X = 999;
             position.Y = 999;
             position.Z = 999;
-            quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+            quadTree.AddOrUpdate(position, new Point2d((long)position.X, (long)position.Y));
 
             Assert.AreEqual(_positions.Count, quadTree.AllItems.Count);
             Assert.AreEqual(_positions.Count, quadTree.GetAllTreeItems().Count);
@@ -100,13 +100,13 @@ namespace GameLibTests
 
             foreach (var pos in _positions)
             {
-                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+                quadTree.AddOrUpdate(pos, new Point2d((long)pos.X, (long)pos.Y));
             }
 
             position.X = 0;
             position.Y = 0;
             position.Z = 0;
-            quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+            quadTree.AddOrUpdate(position, new Point2d((long)position.X, (long)position.Y));
 
             Assert.AreEqual(_positions.Count, quadTree.AllItems.Count);
             Assert.AreEqual(_positions.Count, quadTree.GetAllTreeItems().Count);
@@ -123,7 +123,7 @@ namespace GameLibTests
 
             foreach (var pos in _positions)
             {
-                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+                quadTree.AddOrUpdate(pos, new Point2d((long)pos.X, (long)pos.Y));
             }
 
             quadTree.Remove(position);
@@ -143,7 +143,7 @@ namespace GameLibTests
 
             foreach (var pos in _positions)
             {
-                quadTree.AddOrUpdate(pos, new Point((long)pos.X, (long)pos.Y));
+                quadTree.AddOrUpdate(pos, new Point2d((long)pos.X, (long)pos.Y));
             }
 
             var expectedItemsCount = _positions.Count;
@@ -184,7 +184,7 @@ namespace GameLibTests
 
             foreach (var position in positions)
             {
-                quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+                quadTree.AddOrUpdate(position, new Point2d((long)position.X, (long)position.Y));
             }
 
             Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
@@ -198,7 +198,7 @@ namespace GameLibTests
                 position.X = 0;
                 position.Y = 0;
                 position.Z = 0;
-                quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+                quadTree.AddOrUpdate(position, new Point2d((long)position.X, (long)position.Y));
             }
 
             Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
@@ -227,10 +227,10 @@ namespace GameLibTests
                 splitCount: splitCount, 
                 depthLimit: depthLimit, 
                 region: new Quad(
-                    new Point(0, 0),
-                    new Point(100, 100)));
+                    new Point2d(0, 0),
+                    new Point2d(100, 100)));
 
-            var area = new Circle(new Point(50, 50), 10);
+            var area = new Circle(new Point2d(50, 50), 10);
             var positionsInsideArea = new List<Position>() 
             {
                 new Position() { X = 40, Y = 50, Z = 0 },
@@ -259,7 +259,7 @@ namespace GameLibTests
             var expectedItemsCount = positions.Count();
             foreach (var position in positions)
             {
-                quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+                quadTree.AddOrUpdate(position, new Point2d((long)position.X, (long)position.Y));
             }
 
             Assert.AreEqual(expectedItemsCount, quadTree.AllItems.Count);
@@ -350,10 +350,10 @@ namespace GameLibTests
                 splitCount: splitCount,
                 depthLimit: depthLimit,
                 region: new Quad(
-                    new Point(0, 0),
-                    new Point(maxPozition, maxPozition)));
+                    new Point2d(0, 0),
+                    new Point2d(maxPozition, maxPozition)));
 
-            var area = new Circle(new Point(5000, 5000), 300);
+            var area = new Circle(new Point2d(5000, 5000), 300);
             var positions = new List<Position>();
             Random rnd = new Random();
 
@@ -369,7 +369,7 @@ namespace GameLibTests
 
             foreach (var position in positions)
             {
-                quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+                quadTree.AddOrUpdate(position, new Point2d((long)position.X, (long)position.Y));
             }
 
             Assert.AreEqual(itemCount, quadTree.AllItems.Count);

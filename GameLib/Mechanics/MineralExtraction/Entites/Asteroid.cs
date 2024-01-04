@@ -2,7 +2,7 @@
 using GameLib.Attributes;
 using System;
 
-namespace GameLib.Mechanics.Mining.Entites
+namespace GameLib.Mechanics.MineralExtraction.Entites
 {
     /// <summary>
     /// Астеройд

@@ -1,5 +1,4 @@
 ﻿using ECSCore.Interfaces.ECS;
-using GameLib.Datas;
 using GameLib.Entitys;
 using GameLib.Mechanics.Production.Components;
 using GameLib.Mechanics.Production.Entites;
@@ -19,23 +18,23 @@ namespace GameLibTests
         [TestMethod()]
         public void ProductionTest()
         {
-            var entity = IECS.AddEntity(new Stantion());
-            entity.AddComponent(new Warehouse()
+            var stantion = IECS.AddEntity(new Stantion());
+            stantion.AddComponent(new Warehouse()
             {
                 VolumeMax = 100000,
-                Products = new Dictionary<ProductType, Count>()
+                Products = new Dictionary<ProductType, WarehouseProductInfo>()
                 {
-                    { ProductType.Enargy, new Count() { Value = 1000, MaxValue = 5000 } },
-                    { ProductType.Ice, new Count() { Value = 1000, MaxValue = 5000 } }
+                    { ProductType.Enargy, new WarehouseProductInfo() { Count = 1000, MaxLimit = 5000 } },
+                    { ProductType.Ice, new WarehouseProductInfo() { Count = 1000, MaxLimit = 5000 } }
                 }
             });
 
-            var entity1 = entity.AddNestedEntity(new ModuleProduction());
+            var entity1 = stantion.AddNestedEntity(new ModuleProduction());
             entity1.AddComponent(new Production() { ProductType = ProductType.Water });
 
             Thread.Sleep(1000);
 
-            entity.TryGetComponent<Warehouse>(out var warehouseStantion);
+            stantion.TryGetComponent<Warehouse>(out var warehouseStantion);
             entity1.TryGetComponent<WarehouseProductionModule>(out var warehouseModule);
             entity1.TryGetComponent<ProductionModule>(out var productionModule);
 
@@ -49,10 +48,10 @@ namespace GameLibTests
 
                 Debug.WriteLine($"{Environment.NewLine}" +
                     $"Stantion: {Environment.NewLine}" +
-                    $"EntityId [{entity.Id}] " +
-                    $"Enargy [{warehouseStantion.Products[ProductType.Enargy]?.Value}] " +
-                    $"Ice [{warehouseStantion.Products[ProductType.Ice]?.Value}] " +
-                    $"Water [{water?.Value}] ");
+                    $"EntityId [{stantion.Id}] " +
+                    $"Enargy [{warehouseStantion.Products[ProductType.Enargy]?.Count}] " +
+                    $"Ice [{warehouseStantion.Products[ProductType.Ice]?.Count}] " +
+                    $"Water [{water?.Count}] ");
 
                 Debug.WriteLine($"ProductionModule: {Environment.NewLine}" +
                     $"Module enable [{productionModule.Enable}] " +
@@ -66,10 +65,10 @@ namespace GameLibTests
                 secCount++;
                 if (secCount > 185) //Прошло 3 минуты 5 сек
                 {
-                    Assert.IsTrue(warehouseStantion.Products[ProductType.Ice]?.Value > 0, "Not add irone to stantion");
+                    Assert.IsTrue(warehouseStantion.Products[ProductType.Ice]?.Count > 0, "Not add irone to stantion");
                 }
 
-                if (water?.Value > 100)
+                if (water?.Count > 100)
                 {
                     return;
                 } //Ожидать результат по таймауту и бросать TestFail, если не дождались
@@ -83,10 +82,10 @@ namespace GameLibTests
             entity.AddComponent(new Warehouse()
             {
                 VolumeMax = 100000,
-                Products = new Dictionary<ProductType, Count>()
+                Products = new Dictionary<ProductType, WarehouseProductInfo>()
                 {
-                    { ProductType.Enargy, new Count() { Value = 2000, MaxValue = 5000 } },
-                    { ProductType.Ice, new Count() { Value = 2000, MaxValue = 5000 } }
+                    { ProductType.Enargy, new WarehouseProductInfo() { Count = 2000, MaxLimit = 5000 } },
+                    { ProductType.Ice, new WarehouseProductInfo() { Count = 2000, MaxLimit = 5000 } }
                 }
             });
 
@@ -116,10 +115,10 @@ namespace GameLibTests
                 Debug.WriteLine($"{Environment.NewLine}" +
                     $"Stantion: {Environment.NewLine}" +
                     $"EntityId [{entity.Id}] " +
-                    $"Enargy [{warehouseStantion.Products[ProductType.Enargy]?.Value}] " +
-                    $"Ice [{warehouseStantion.Products[ProductType.Ice]?.Value}] " +
-                    $"Water [{water?.Value}] " +
-                    $"Grain [{grain?.Value}] ");
+                    $"Enargy [{warehouseStantion.Products[ProductType.Enargy]?.Count}] " +
+                    $"Ice [{warehouseStantion.Products[ProductType.Ice]?.Count}] " +
+                    $"Water [{water?.Count}] " +
+                    $"Grain [{grain?.Count}] ");
 
                 Debug.WriteLine($"ProductionModule1: {Environment.NewLine}" +
                     $"Module enable [{productionModule1.Enable}] " +
@@ -142,11 +141,11 @@ namespace GameLibTests
                 secCount++;
                 if (secCount > 185) //Прошло 3 минуты 5 сек
                 {
-                    Assert.IsTrue(warehouseStantion.Products[ProductType.Ice]?.Value > 0, "Not add irone to stantion");
-                    Assert.IsTrue(warehouseStantion.Products[ProductType.Grain]?.Value > 0, "Not add irone to stantion");
+                    Assert.IsTrue(warehouseStantion.Products[ProductType.Ice]?.Count > 0, "Not add irone to stantion");
+                    Assert.IsTrue(warehouseStantion.Products[ProductType.Grain]?.Count > 0, "Not add irone to stantion");
                 }
 
-                if (grain?.Value > 20)
+                if (grain?.Count > 20)
                 {
                     return;
                 } //Ожидать результат по таймауту и бросать TestFail, если не дождались

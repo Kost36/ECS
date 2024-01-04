@@ -6,6 +6,11 @@
     public enum MineralType
     {
         /// <summary>
+        /// Неизвестный
+        /// </summary>
+        Unknown = -1,
+
+        /// <summary>
         /// Лед
         /// -> Вода -> Водород, Кислород 
         /// </summary>

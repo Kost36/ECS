@@ -18,8 +18,8 @@ namespace GameLib.Static
             splitCount: 50, 
             depthLimit: 20, 
             region: new Quad(
-                min: new Point(SectorSize.StartPozitionX, SectorSize.StartPozitionY), 
-                max: new Point(SectorSize.StartPozitionX + SectorSize.Width, SectorSize.StartPozitionY + SectorSize.Height)));
+                min: new Point2d(SectorSize.StartPozitionX, SectorSize.StartPozitionY), 
+                max: new Point2d(SectorSize.StartPozitionX + SectorSize.Width, SectorSize.StartPozitionY + SectorSize.Height)));
 
         /// <summary>
         /// Добавить сущьность или обновить позицию сущьности
@@ -29,7 +29,7 @@ namespace GameLib.Static
         {
             lock (_lockObject)
             {
-                _quadTree.AddOrUpdate(position, new Point((long)position.X, (long)position.Y));
+                _quadTree.AddOrUpdate(position, new Point2d((long)position.X, (long)position.Y));
             }
         }
 
@@ -53,7 +53,7 @@ namespace GameLib.Static
             {
                 _quadTree.FindСollisionsForCircle(
                 new Circle(
-                    new Point(
+                    new Point2d(
                         (int)position.X,
                         (int)position.Y),
                     radius),

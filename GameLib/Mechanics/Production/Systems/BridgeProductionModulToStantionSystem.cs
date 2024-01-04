@@ -3,8 +3,8 @@ using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
-using GameLib.Datas;
 using GameLib.Mechanics.Production.Components;
+using GameLib.Mechanics.Production.Datas;
 using GameLib.Mechanics.Stantion.Components;
 using System;
 
@@ -49,7 +49,7 @@ namespace GameLib.Mechanics.Production.Systems
         /// Перемещение товаров между складами станции и производственного модуля
         /// </summary>
         /// <param name="entity"> Сущьность производственного модуля </param>
-        /// <param name="warehouseModul"> Склад производственного модуля </param>
+        /// <param name="warehouseModule"> Склад производственного модуля </param>
         private void MoveProducts(Entity entity, WarehouseProductionModule warehouseModule)
         {
             if (entity.ExternalEntity != null)
@@ -74,18 +74,12 @@ namespace GameLib.Mechanics.Production.Systems
                 return;
             }
 
-            if (warehouseStantion.Products.TryGetValue(warehouseModule.Product.Key, out var count))
+            if (!warehouseStantion.Products.TryGetValue(warehouseModule.Product.Key, out var warehouseProductInfo))
             {
-                Move(warehouseModule.Product.Value, count); //Переместим продукт на склад станции
+                //Todo Add component error or component msg
             }
-            else
-            {
-                warehouseStantion.Products.Add(warehouseModule.Product.Key, new Count()); //Добавим продукт на склад станции
-                if (warehouseStantion.Products.TryGetValue(warehouseModule.Product.Key, out count))
-                {
-                    Move(warehouseModule.Product.Value, count); //Переместим продукт на склад станции
-                }
-            }
+
+            Move(warehouseModule.Product.Value, warehouseProductInfo); //Переместим продукт на склад станции
         }
 
         /// <summary>
@@ -97,14 +91,14 @@ namespace GameLib.Mechanics.Production.Systems
         {
             foreach (var raw in warehouseModule.Raws)
             {
-                if (warehouseStantion.Products.TryGetValue(raw.Key, out var count))
+                if (warehouseStantion.Products.TryGetValue(raw.Key, out var warehouseProductInfo))
                 {
-                    if (count.Value == 0)
+                    if (warehouseProductInfo.Count == 0)
                     {
                         continue;
                     }
 
-                    Move(count, raw.Value); //Переместить товар на склад производственного модуля
+                    Move(warehouseProductInfo, raw.Value); //Переместить товар на склад производственного модуля
                 }
             }
         }
@@ -114,18 +108,38 @@ namespace GameLib.Mechanics.Production.Systems
         /// </summary>
         /// <param name="source"> Источник </param>
         /// <param name="destination"> Приемник </param>
-        private void Move(Count source, Count destination)
+        private void Move(Count source, WarehouseProductInfo destination)
         {
-            var availableСapacity = destination.MaxValue - destination.Value; //Разрешенное количество товара для перемещения на склад
+            var availableСapacity = destination.MaxLimit - destination.Count; //Разрешенное количество товара для перемещения на склад
             if (availableСapacity > source.Value)
             {
-                destination.Value += source.Value;
+                destination.Count += source.Value;
                 source.Value = 0;
             }
             else
             {
-                destination.Value += availableСapacity;
+                destination.Count += availableСapacity;
                 source.Value -= availableСapacity;
+            }
+        }
+
+        /// <summary>
+        /// Переместить продукт
+        /// </summary>
+        /// <param name="source"> Источник </param>
+        /// <param name="destination"> Приемник </param>
+        private void Move(WarehouseProductInfo source, Count destination)
+        {
+            var availableСapacity = destination.MaxLimit - destination.Value; //Разрешенное количество товара для перемещения на склад производственного модуля
+            if (availableСapacity > source.Count)
+            {
+                destination.Value += source.Count;
+                source.Count = 0;
+            }
+            else
+            {
+                destination.Value += availableСapacity;
+                source.Count -= availableСapacity;
             }
         }
     }

@@ -3,11 +3,12 @@ using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
-using GameLib.Datas;
 using GameLib.Mechanics.Production.Components;
 using GameLib.Mechanics.Production.Datas;
 using GameLib.Mechanics.Products.Enums;
+using GameLib.Mechanics.Stantion.Components;
 using GameLib.Products;
+using System;
 using System.Collections.Generic;
 
 namespace GameLib.Mechanics.Production.Systems
@@ -27,7 +28,7 @@ namespace GameLib.Mechanics.Production.Systems
                 TimeCycleInSec = productionInfo.CycleTimeInSec,
                 CountProductOfCycle = productionInfo.Product.CountInCycle
             };
-            var warehouseComponent = new WarehouseProductionModule()
+            var warehouseProductionModuleComponent = new WarehouseProductionModule()
             {
                 PercentFillingRaws = 80,
                 VolumeMax = 1000
@@ -37,7 +38,7 @@ namespace GameLib.Mechanics.Production.Systems
             productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
             productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
 
-            warehouseComponent.Product = new KeyValuePair<ProductType, Count>(
+            warehouseProductionModuleComponent.Product = new KeyValuePair<ProductType, Count>(
                 productionInfo.Product.ProductType,
                 new Count()
                 {
@@ -52,21 +53,66 @@ namespace GameLib.Mechanics.Production.Systems
                     {
                         Value = rawInfo.CountInCycle
                     });
-                warehouseComponent.Raws.Add(
+                warehouseProductionModuleComponent.Raws.Add(
                     rawInfo.ProductType,
                     new Count()
                     {
                         Value = 0,
-                        MaxValue = rawInfo.CountInCycle + rawInfo.CountInCycle
+                        MaxLimit = rawInfo.CountInCycle * 5
                     });
             }
 
+            PrepareStantion(entity, productionInfo);
+
             entity.AddComponent(productionModuleComponent);
-            entity.AddComponent(warehouseComponent);
+            entity.AddComponent(warehouseProductionModuleComponent);
             entity.AddComponent(productionInfo);
             entity.AddComponent(new BridgeProductionModulToStantion());
 
             entity.RemoveComponent<ProductionModuleBuild>();
+        }
+
+        private void PrepareStantion(Entity entity, ProductionInfo productionInfo)
+        {
+            if (entity.ExternalEntity == null)
+            {
+                //Todo Add component error or component msg
+                return;
+            }
+
+            if (!entity.ExternalEntity.TryGetComponent<Warehouse>(out var warehouseStantion))
+            {
+                warehouseStantion = new Warehouse();
+                entity.ExternalEntity.AddComponent(warehouseStantion);
+            }
+
+            AddProductInfo(warehouseStantion, productionInfo);
+            AddRawInfos(warehouseStantion, productionInfo);
+        }
+
+        private void AddProductInfo(Warehouse warehouseStantion, ProductionInfo productionInfo)
+        {
+            if (!warehouseStantion.Products.TryGetValue(productionInfo.Product.ProductType, out var warehouseProductInfo))
+            {
+                warehouseProductInfo = new WarehouseProductInfo();
+                warehouseStantion.Products.Add(productionInfo.Product.ProductType, warehouseProductInfo);
+            }
+
+            warehouseProductInfo.IsProduct = true;
+        }
+
+        private void AddRawInfos(Warehouse warehouseStantion, ProductionInfo productionInfo)
+        {
+            foreach (var raw in productionInfo.Raws)
+            {
+                if (!warehouseStantion.Products.TryGetValue(raw.ProductType, out var warehouseProductInfo))
+                {
+                    warehouseProductInfo = new WarehouseProductInfo();
+                    warehouseStantion.Products.Add(raw.ProductType, warehouseProductInfo);
+                }
+
+                warehouseProductInfo.IsRaw = true;
+            }
         }
     }
 }

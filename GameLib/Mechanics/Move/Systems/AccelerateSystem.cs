@@ -4,7 +4,7 @@ using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Components.Energy;
 using GameLib.Mechanics.Move.Components;
-using MathLib;
+using MathLib.Structures;
 using System;
 
 namespace GameLib.Mechanics.Move.Systems

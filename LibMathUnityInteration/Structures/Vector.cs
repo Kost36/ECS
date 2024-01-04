@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MathLib
+namespace MathLib.Structures
 {
     /// <summary>
     /// Вектор

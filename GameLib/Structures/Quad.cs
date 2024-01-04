@@ -4,19 +4,19 @@ namespace GameLib.Structures
 {
     public struct Quad
     {
-        private readonly Point _min;
-        private readonly Point _max;
-        private readonly Point _center;
+        private readonly Point2d _min;
+        private readonly Point2d _max;
+        private readonly Point2d _center;
         private readonly long _width;
         private readonly long _height;
 
-        public Quad(Point min, Point max)
+        public Quad(Point2d min, Point2d max)
         {
             _min = min;
             _max = max;
             _width = _max.X - _min.X;
             _height = _max.Y - _min.Y;
-            _center = new Point(
+            _center = new Point2d(
                 x: (long)Math.Round((_min.X + _max.X) * 0.5f),
                 y: (long)Math.Round((_min.Y + _max.Y) * 0.5f));
         }
@@ -49,7 +49,7 @@ namespace GameLib.Structures
         /// </summary>
         /// <param name="x">Центр точки. X</param>
         /// <param name="y">Центр точки. Y</param>
-        public bool PointIsInside(Point point)
+        public bool PointIsInside(Point2d point)
         {
             return point.X >= _min.X && point.Y >= _min.Y
                 && point.X <= _max.X && point.Y <= _max.Y;
@@ -64,12 +64,12 @@ namespace GameLib.Structures
             {
                 new Quad(_min, _center),
                 new Quad(
-                    min: new Point(_center.X, _min.Y),
-                    max: new Point(_max.X, _center.Y)),
+                    min: new Point2d(_center.X, _min.Y),
+                    max: new Point2d(_max.X, _center.Y)),
                 new Quad(_center, _max),
                 new Quad(
-                    min: new Point(_min.X, _center.Y),
-                    max: new Point(_center.X, _max.Y)),
+                    min: new Point2d(_min.X, _center.Y),
+                    max: new Point2d(_center.X, _max.Y)),
             };
         }
 

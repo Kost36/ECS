@@ -1,5 +1,5 @@
 ﻿using ECSCore.BaseObjects;
-using GameLib.Datas;
+using GameLib.Mechanics.Production.Datas;
 using GameLib.Mechanics.Products.Enums;
 using System.Collections.Generic;
 

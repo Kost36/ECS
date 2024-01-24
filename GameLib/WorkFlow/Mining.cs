@@ -44,15 +44,4 @@ namespace GameLib.WorkFlow
         /// </summary>
         public int QuantityForMining;
     }
-
-    /// <summary>
-    /// Команда переместиться к астеройду
-    /// </summary>
-    public class CommandMoveToAsteroid : ComponentBase
-    {
-        /// <summary>
-        /// Идентификатор сущьности астероида
-        /// </summary>
-        public int AsteroidEntityId;
-    }
 }

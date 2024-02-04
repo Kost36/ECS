@@ -1,6 +1,5 @@
 ﻿using GameLib.Attributes;
 using GameLib.Exceptions;
-using GameLib.Products;
 using System;
 using System.Reflection;
 
@@ -15,14 +14,14 @@ namespace GameLib.Providers
         /// Получить тип продукта
         /// </summary>
         /// <param name="type"> Тип объекта </param>
-        public static ProductType GetProductType(Type type)
+        public static Mechanics.Products.Enums.ProductType GetProductType(Type type)
         {
             ProductTypeAttribute attribute = type.GetCustomAttribute<ProductTypeAttribute>();
             if (attribute == null)
             {
                 throw new ExceptionProductNotHaveAttribute($"Сlass [{type.FullName}] does not have AttributeProductType");
             }
-            return attribute.ProductType;
+            return attribute.Type;
         }
     }
 }

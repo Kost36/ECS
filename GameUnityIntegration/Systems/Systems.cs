@@ -3,7 +3,7 @@ using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Systems;
 using Game.Components;
-using MathLib;
+using MathLib.Structures;
 
 namespace Game.Systems
 {

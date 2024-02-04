@@ -4,20 +4,21 @@ using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Components;
 using GameLib.Mechanics.Move.Components;
+using System;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec30Once)]
-    [AttributeSystemPriority(5)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
-    public class MoveSystem : SystemExistComponents<Pozition, Speed>, ISystemAction, ISystemParallel
+    [SystemCalculate(SystemCalculateInterval.Sec30Once)]
+    [SystemPriority(5)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
+    public class MoveSystem : SystemExistComponents<Position, Speed>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, Pozition pozition, Speed speed, float deltatime)
+        public override void Action(Guid entityId, Position position, Speed speed, float deltatime)
         {
-            pozition.X += speed.dX * DeltaTime;
-            pozition.Y += speed.dY * DeltaTime;
-            pozition.Z += speed.dZ * DeltaTime;
+            position.X += speed.dX * DeltaTime;
+            position.Y += speed.dY * DeltaTime;
+            position.Z += speed.dZ * DeltaTime;
         }
     }
 }

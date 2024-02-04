@@ -17,6 +17,7 @@ namespace GameLib.Mechanics.Move.Components
         /// Длинна пути в метрах
         /// </summary>
         public float Len;
+
         /// <summary>
         /// Длинна пути в метрах по оси X
         /// </summary>
@@ -29,6 +30,7 @@ namespace GameLib.Mechanics.Move.Components
         /// Длинна пути в метрах по оси Z
         /// </summary>
         public float LenZ;
+
         /// <summary>
         /// Нормализованный вектор направления по оси X
         /// </summary>

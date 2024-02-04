@@ -1,6 +1,7 @@
 ﻿using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces.Components;
+using System;
 
 namespace ECSCore.Interfaces.ECS
 {
@@ -22,13 +23,13 @@ namespace ECSCore.Interfaces.ECS
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="Entity"> Сущьность (Если найдена) / null </param>
         /// <returns> Результат получения сущьности </returns>
-        bool GetEntity(int id, out Entity Entity);
+        bool GetEntity(Guid id, out Entity Entity);
 
         /// <summary>
         /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        void RemoveEntity(int id);
+        void RemoveEntity(Guid id);
 
         /// <summary>
         /// Добавить компонент.
@@ -45,14 +46,14 @@ namespace ECSCore.Interfaces.ECS
         /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        bool GetComponent<T>(int idEntity, out T component) where T : IComponent;
+        bool GetComponent<T>(Guid idEntity, out T component) where T : IComponent;
 
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <returns></returns>
-        void RemoveComponent<T>(int idEntity) where T : IComponent;
+        void RemoveComponent<T>(Guid idEntity) where T : IComponent;
 
         /// <summary>
         /// Пауза

@@ -3,76 +3,115 @@ using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
-using GameLib.Datas;
 using GameLib.Mechanics.Production.Components;
 using GameLib.Mechanics.Production.Datas;
+using GameLib.Mechanics.Products.Enums;
+using GameLib.Mechanics.Stantion.Components;
 using GameLib.Products;
-using GameLib.Providers;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace GameLib.Mechanics.Production.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(50)]
+    [SystemEnable]
     public class ProductionBuilderSystem : SystemExistComponents<Components.Production>, ISystemActionAdd
     {
         public override void ActionAdd(Components.Production production, Entity entity)
         {
-            var componentType = production.GetType();
-            if (componentType.IsGenericType)
+            var productionInfo = ProductionInfoProvider.GetProductionInfo(production.ProductType);
+
+            var productionModuleComponent = new ProductionModule()
             {
-                var productType = componentType.GetGenericArguments().First();
-                if (ProductionInfoProvider.GetProductionInfo(ProductTypeProvider.GetProductType(productType), out var productionInfo))
+                Enable = true,
+                TimeCycleInSec = productionInfo.CycleTimeInSec,
+                CountProductOfCycle = productionInfo.Product.CountInCycle
+            };
+            var warehouseProductionModuleComponent = new WarehouseProductionModule()
+            {
+                PercentFillingRaws = 80,
+                VolumeMax = 1000
+            };
+
+            productionModuleComponent.ProductType = productionInfo.Product.ProductType;
+            productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
+            productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
+
+            warehouseProductionModuleComponent.Product = new KeyValuePair<ProductType, Count>(
+                productionInfo.Product.ProductType,
+                new Count()
                 {
-                    var productionModuleComponent = new ProductionModule()
+                    Value = 0
+                });
+
+            foreach (var rawInfo in productionInfo.Raws)
+            {
+                productionModuleComponent.RawExpenses.Add(
+                    rawInfo.ProductType,
+                    new Expense()
                     {
-                        Enable = true,
-                        TimeCycleInSec = productionInfo.CycleTimeInSec,
-                        CountProductOfCycle = productionInfo.Product.CountInCycle
-                    };
-                    var warehouseComponent = new WarehouseProductionModul()
+                        Value = rawInfo.CountInCycle
+                    });
+                warehouseProductionModuleComponent.Raws.Add(
+                    rawInfo.ProductType,
+                    new Count()
                     {
-                        PercentFillingRaws = 80,
-                        VolumeMax = 1000
-                    };
+                        Value = 0,
+                        MaxLimit = rawInfo.CountInCycle * 5
+                    });
+            }
 
-                    productionModuleComponent.ProductType = productionInfo.Product.ProductType;
-                    productionModuleComponent.TimeCycleInSec = productionInfo.CycleTimeInSec;
-                    productionModuleComponent.CountProductOfCycle = productionInfo.Product.CountInCycle;
+            PrepareStantion(entity, productionInfo);
 
-                    warehouseComponent.Product = new KeyValuePair<ProductType, Count>(
-                        productionInfo.Product.ProductType,
-                        new Count()
-                        {
-                            Value = 0
-                        });
+            entity.AddComponent(productionModuleComponent);
+            entity.AddComponent(warehouseProductionModuleComponent);
+            entity.AddComponent(productionInfo);
+            entity.AddComponent(new BridgeProductionModulToStantion());
 
-                    foreach (var rawInfo in productionInfo.Raws)
-                    {
-                        productionModuleComponent.RawExpenses.Add(
-                            rawInfo.ProductType,
-                            new Expense()
-                            {
-                                Value = rawInfo.CountInCycle
-                            });
-                        warehouseComponent.Raws.Add(
-                            rawInfo.ProductType,
-                            new Count()
-                            {
-                                Value = 0,
-                                MaxValue = rawInfo.CountInCycle + rawInfo.CountInCycle
-                            });
-                    }
+            entity.RemoveComponent<ProductionModuleBuild>();
+        }
 
-                    entity.Add(productionModuleComponent);
-                    entity.Add(warehouseComponent);
-                    entity.Add(productionInfo);
-                    entity.Add(new BridgeProductionModulToStantion());
+        private void PrepareStantion(Entity entity, ProductionInfo productionInfo)
+        {
+            if (entity.ExternalEntity == null)
+            {
+                //Todo Add component error or component msg
+                return;
+            }
 
-                    entity.Remove<ProductionModuleBuild>();
-                };
+            if (!entity.ExternalEntity.TryGetComponent<Warehouse>(out var warehouseStantion))
+            {
+                warehouseStantion = new Warehouse();
+                entity.ExternalEntity.AddComponent(warehouseStantion);
+            }
+
+            AddProductInfo(warehouseStantion, productionInfo);
+            AddRawInfos(warehouseStantion, productionInfo);
+        }
+
+        private void AddProductInfo(Warehouse warehouseStantion, ProductionInfo productionInfo)
+        {
+            if (!warehouseStantion.Products.TryGetValue(productionInfo.Product.ProductType, out var warehouseProductInfo))
+            {
+                warehouseProductInfo = new WarehouseProductInfo();
+                warehouseStantion.Products.Add(productionInfo.Product.ProductType, warehouseProductInfo);
+            }
+
+            warehouseProductInfo.IsProduct = true;
+        }
+
+        private void AddRawInfos(Warehouse warehouseStantion, ProductionInfo productionInfo)
+        {
+            foreach (var raw in productionInfo.Raws)
+            {
+                if (!warehouseStantion.Products.TryGetValue(raw.ProductType, out var warehouseProductInfo))
+                {
+                    warehouseProductInfo = new WarehouseProductInfo();
+                    warehouseStantion.Products.Add(raw.ProductType, warehouseProductInfo);
+                }
+
+                warehouseProductInfo.IsRaw = true;
             }
         }
     }

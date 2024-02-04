@@ -54,6 +54,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,18 +63,80 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\LifeTimeInformationAttribute.cs" />
+    <Compile Include="Collections\AvailableInformations\AvailableInformations.cs" />
+    <Compile Include="Collections\AvailableInformations\Information.cs" />
+    <Compile Include="Collections\AvailableInformations\InformationLifeTimeProvider.cs" />
+    <Compile Include="Collections\AvailableInformations\Informations.cs" />
+    <Compile Include="Collections\QuadTree\TreeItem.cs" />
+    <Compile Include="Collections\QuadTree\TreeNode.cs" />
+    <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Constants\SectorSize.cs" />
+    <Compile Include="Entitys\Stantion.cs" />
+    <Compile Include="Extensions\TypeExtensions.cs" />
+    <Compile Include="Mechanics\Company\Components\GetCompany.cs" />
+    <Compile Include="Mechanics\Company\Components\RefOwnerCompany.cs" />
+    <Compile Include="Mechanics\Company\Systems\CompanyGetReferenceSystem.cs" />
+    <Compile Include="Mechanics\Company\Systems\AsteroidInformationExpirationsControlSystem.cs" />
+    <Compile Include="Mechanics\MineralExtraction\AI\Components\SetMiningAIState.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\Commands\ShipCommandMoveToStantion.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\Commands\ShipCommandMoveToAsteroid.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\Commands\ShipCommandSearch.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\Commands\ShipCommandSupplyStantion.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Systems\MiningAIControlSystem.cs" />
+    <Compile Include="Mechanics\Move\Components\StartMoveToEntity.cs" />
+    <Compile Include="Mechanics\Production\Datas\Count.cs" />
+    <Compile Include="Mechanics\Products\Components\AddProductToShipHold.cs" />
+    <Compile Include="Mechanics\Products\Configs\ProductInfoProvider.cs" />
+    <Compile Include="Mechanics\Products\Extensions\MineralTypeExtensions.cs" />
+    <Compile Include="Mechanics\Products\Extensions\ProductTypeExtensions.cs" />
+    <Compile Include="Mechanics\Products\ProductInfo.cs" />
+    <Compile Include="Mechanics\Stantion\Components\Warehouse.cs" />
+    <Compile Include="Mechanics\Stantion\Components\WarehouseProductInfo.cs" />
+    <Compile Include="Static\SpaceEntityManager.cs" />
+    <Compile Include="Structures\Circle.cs" />
+    <Compile Include="Structures\Point2d.cs" />
+    <Compile Include="Structures\Quad.cs" />
+    <Compile Include="WorkFlow\QuadTree.cs" />
+    <Compile Include="WorkFlow\QuadTreeBase.cs" />
+    <Compile Include="Collections\QuadTree\QuadTree.cs" />
     <Compile Include="Attributes\ProductTypeAttribute.cs" />
-    <Compile Include="Components\Warehouse.cs" />
-    <Compile Include="Datas\Count.cs" />
+    <Compile Include="Components\Energy\EnergyRegeneration.cs" />
+    <Compile Include="Components\Energy\EnergyCapacity.cs" />
+    <Compile Include="Components\Energy\Energy.cs" />
+    <Compile Include="Components\Hold.cs" />
+    <Compile Include="Components\Position.cs" />
+    <Compile Include="Components\Weight.cs" />
+    <Compile Include="Entitys\Ship.cs" />
     <Compile Include="Exceptions\ExceptionProductNotHaveAttribute.cs" />
-    <Compile Include="Products\Lvl0\Battery.cs" />
-    <Compile Include="Products\Lvl0\Ore.cs" />
-    <Compile Include="Products\Lvl1\Iron.cs" />
-    <Compile Include="Components\Product.cs" />
+    <Compile Include="Mechanics\Balance\Components\MineralsSettings.cs" />
+    <Compile Include="Mechanics\Balance\Entites\MineralsBalancer.cs" />
+    <Compile Include="Mechanics\Company\Components\OwnerСompany.cs" />
+    <Compile Include="Mechanics\Company\Components\RegistrationInformation.cs" />
+    <Compile Include="Mechanics\Company\Components\KnownInformations.cs" />
+    <Compile Include="Mechanics\Company\Entites\Company.cs" />
+    <Compile Include="Mechanics\Company\Systems\RegistrationInformationSystem.cs" />
+    <Compile Include="Mechanics\Company\Systems\StantionInformationExpirationsControlSystem.cs" />
+    <Compile Include="Mechanics\Company\Systems\ShipInformationExpirationsControlSystem.cs" />
+    <Compile Include="Mechanics\Scanning\Components\ShipModuleScanner.cs" />
+    <Compile Include="Mechanics\Scanning\Systems\ScannerSystem.cs" />
+    <Compile Include="Mechanics\MineralExtraction\AI\Components\MiningAI.cs" />
+    <Compile Include="Mechanics\MineralExtraction\AI\Enums\MiningAIState.cs" />
+    <Compile Include="Mechanics\Sector\Components\SectorSize.cs" />
+    <Compile Include="Mechanics\Sector\Components\SpeedLimit.cs" />
+    <Compile Include="Mechanics\Sector\Entites\Sector.cs" />
+    <Compile Include="WorkFlow\Mining.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\AsteroidMineral.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\Commands\ShipCommandMining.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\ShipMiningSetting.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Components\ShipModuleMining.cs" />
+    <Compile Include="Mechanics\MineralExtraction\Entites\Asteroid.cs" />
+    <Compile Include="Mechanics\Products\Enums\MineralType.cs" />
+    <Compile Include="Mechanics\Trading\Components\ShipModuleTrading.cs" />
     <Compile Include="Mechanics\Production\Datas\Expense.cs" />
-    <Compile Include="Entitys\DynamicEntitys\Entitys.cs" />
-    <Compile Include="Entitys\StaticEntitys\Entitys.cs" />
-    <Compile Include="Mechanics\Move\Components\PozitionSV.cs" />
+    <Compile Include="WorkFlow\DynamicEntitys\Entitys.cs" />
+    <Compile Include="WorkFlow\StaticEntitys\Entitys.cs" />
+    <Compile Include="Mechanics\Move\Components\PositionSV.cs" />
     <Compile Include="Mechanics\Move\Components\Acceleration.cs" />
     <Compile Include="Mechanics\Move\Components\WayToStop.cs" />
     <Compile Include="Mechanics\Move\Components\Way.cs" />
@@ -92,25 +155,22 @@
     <Compile Include="Mechanics\Production\Components\ProductionInfo.cs" />
     <Compile Include="Mechanics\Production\Components\ProductionModule.cs" />
     <Compile Include="Mechanics\Production\Components\ProductionModuleBuild.cs" />
-    <Compile Include="Mechanics\Production\Components\WarehouseProductionModul.cs" />
-    <Compile Include="Mechanics\Production\Datas\ProductInfo.cs" />
+    <Compile Include="Mechanics\Production\Components\WarehouseProductionModule.cs" />
+    <Compile Include="Mechanics\Production\Datas\ProductionCountInfo.cs" />
     <Compile Include="Mechanics\Production\Entites\ModuleProduction.cs" />
-    <Compile Include="Products\ProductType.cs" />
-    <Compile Include="Providers\ProductionInfoProvider.cs" />
-    <Compile Include="Products\ProductTypeMatcher.cs" />
+    <Compile Include="Mechanics\Products\Enums\ProductType.cs" />
+    <Compile Include="Mechanics\Production\Configs\ProductionInfoProvider.cs" />
     <Compile Include="Mechanics\Production\Systems\BridgeProductionModulToStantionSystem.cs" />
     <Compile Include="Mechanics\Production\Systems\ProductionBuilderSystem.cs" />
     <Compile Include="Mechanics\Production\Systems\ProductionSystem.cs" />
     <Compile Include="Providers\ProductTypeProvider.cs" />
-    <Compile Include="WorkFlow\NewProduct\Products.cs" />
-    <Compile Include="Components\Components.cs" />
+    <Compile Include="WorkFlow\Components.cs" />
     <Compile Include="GetAssembly.cs" />
-    <Compile Include="Ship\ShipModules.cs" />
-    <Compile Include="Ship\ShipBodys.cs" />
+    <Compile Include="WorkFlow\Ship\ShipModules.cs" />
+    <Compile Include="WorkFlow\Ship\ShipBodys.cs" />
     <Compile Include="WorkFlow\Products\Products.cs" />
-    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="WorkFlow\Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WorkFlow\WorkFlowProduction\Products.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ECSCoreLib\ECSCoreLib.csproj">
@@ -123,14 +183,17 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Matchers\" />
     <Folder Include="Mechanics\AI\" />
-    <Folder Include="Mechanics\Balance\" />
-    <Folder Include="Mechanics\Trade\" />
-    <Folder Include="Products\Lvl2\" />
-    <Folder Include="Products\Lvl3\" />
-    <Folder Include="Products\Lvl4\" />
-    <Folder Include="Products\Lvl5\" />
+    <Folder Include="Mechanics\Balance\Systems\" />
+    <Folder Include="Mechanics\Products\Systems\" />
+    <Folder Include="Mechanics\Sector\Systems\" />
+    <Folder Include="Mechanics\Stantion\Systems\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Mechanics\MineralExtraction\Mining.md" />
+    <None Include="Mechanics\Move\Move.md" />
+    <None Include="Mechanics\Production\Productions.md" />
+    <None Include="Mechanics\Products\Products.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

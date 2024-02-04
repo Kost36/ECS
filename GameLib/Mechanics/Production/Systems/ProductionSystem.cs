@@ -3,25 +3,29 @@ using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
 using GameLib.Mechanics.Production.Components;
+using System;
 
 namespace GameLib.Mechanics.Production.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
-    public class ProductionSystem : SystemExistComponents<ProductionModule, WarehouseProductionModul>, ISystemAction
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(50)]
+    [SystemEnable]
+    public class ProductionSystem : SystemExistComponents<ProductionModule, WarehouseProductionModule>, ISystemAction
     {
-        public override void Action(int entityId, ProductionModule productionModule, WarehouseProductionModul warehouseProductionModul, float deltatime)
+        public override void Action(Guid entityId, ProductionModule productionModule, WarehouseProductionModule warehouseProductionModul, float deltatime)
         {
             if (productionModule.Enable)
             {
                 //Контроль производства
                 productionModule.Work = true;
+
+                //Проверка, что сырья достаточно
                 foreach (var raw in warehouseProductionModul.Raws)
                 {
                     if (productionModule.RawExpenses[raw.Key].Value > raw.Value.Value)
                     {
                         productionModule.Work = false;
+                        //Todo IECS.AddComponent(new MsgComponent(id= entityId, msg = "msg"));
                         return;
                     }
                 }
@@ -36,14 +40,14 @@ namespace GameLib.Mechanics.Production.Systems
                     {
                         productionModule.CycleCompletionPercentage -= 100;
 
-                        warehouseProductionModul.Product.Value.Value += productionModule.CountProductOfCycle;
-
                         foreach (var rawExpense in productionModule.RawExpenses)
                         {
                             warehouseProductionModul.Raws[rawExpense.Key].Value -= rawExpense.Value.Value;
                         }
-                    } //Если производственный цикл завершен
-                } //Если модуль работает
+
+                        warehouseProductionModul.Product.Value.Value += productionModule.CountProductOfCycle;
+                    }
+                }
             }
         }
     }

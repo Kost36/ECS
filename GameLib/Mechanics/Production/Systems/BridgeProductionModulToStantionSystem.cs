@@ -3,48 +3,63 @@ using ECSCore.BaseObjects;
 using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
-using GameLib.Components;
-using GameLib.Datas;
 using GameLib.Mechanics.Production.Components;
+using GameLib.Mechanics.Production.Datas;
+using GameLib.Mechanics.Stantion.Components;
+using System;
 
 namespace GameLib.Mechanics.Production.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Min1Once)]
-    [AttributeSystemPriority(50)]
-    [AttributeSystemEnable]
-    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModul>, ISystemActionAdd, ISystemAction
+    [SystemCalculate(SystemCalculateInterval.Min1Once)]
+    [SystemPriority(50)]
+    [SystemEnable]
+    public class BridgeProductionModulToStantionSystem : SystemExistComponents<BridgeProductionModulToStantion, WarehouseProductionModule>, ISystemActionAdd, ISystemAction
     {
-        public override void ActionAdd(BridgeProductionModulToStantion _, WarehouseProductionModul warehouseProductionModul, Entity entity)
+        public override void ActionAdd(BridgeProductionModulToStantion _, WarehouseProductionModule warehouseProductionModul, Entity entity)
         {
             MoveProducts(entity, warehouseProductionModul);
         }
 
-        public override void Action(int entityId, BridgeProductionModulToStantion _, WarehouseProductionModul warehouseProductionModul, float deltaTime)
+        public override void Action(Guid entityId, BridgeProductionModulToStantion _, WarehouseProductionModule warehouseProductionModule, float deltaTime)
         {
             //Должна быть отдельная система для изменения процента заполнения склада Raw материалами (при добавлении компонента должно присвоиться значение процента и рассчитаться значения по каждому компоненту)
             //Вызывается при измнении настроек и при добавлении (инициализации)
 
+            if (!IsMoveNeed(warehouseProductionModule))
+            {
+                return;
+            }
+
             if (IECS.GetEntity(entityId, out var entity))
             {
-                MoveProducts(entity, warehouseProductionModul);
+                MoveProducts(entity, warehouseProductionModule);
             } //Получаем сущьность производственного модуля
+        }
+
+        /// <summary>
+        /// Необходимо ли перемещение
+        /// </summary>
+        /// <returns></returns>
+        private bool IsMoveNeed(WarehouseProductionModule warehouseProductionModule)
+        {
+            return true; //Проверить необходимость перемещений, что бы не тянуть сущьности раз в секунду (IECS.GetEntity)
         }
 
         /// <summary>
         /// Перемещение товаров между складами станции и производственного модуля
         /// </summary>
         /// <param name="entity"> Сущьность производственного модуля </param>
-        /// <param name="warehouseModul"> Склад производственного модуля </param>
-        private void MoveProducts(Entity entity, WarehouseProductionModul warehouseModul)
+        /// <param name="warehouseModule"> Склад производственного модуля </param>
+        private void MoveProducts(Entity entity, WarehouseProductionModule warehouseModule)
         {
-            if (entity.ParentEntity != null)
+            if (entity.ExternalEntity != null)
             {
-                if (entity.ParentEntity.Get<Warehouse>(out var warehouseStantion))
+                if (entity.ExternalEntity.TryGetComponent<Warehouse>(out var warehouseStantion))
                 {
-                    MoveProduct(warehouseModul, warehouseStantion);
-                    MoveRaws(warehouseStantion, warehouseModul);
-                } //Если у станции есть склад
-            } //Если у производственного модуля есть родительская сущьность станции
+                    MoveProduct(warehouseModule, warehouseStantion);
+                    MoveRaws(warehouseStantion, warehouseModule);
+                }
+            }
         }
 
         /// <summary>
@@ -52,26 +67,19 @@ namespace GameLib.Mechanics.Production.Systems
         /// </summary>
         /// <param name="warehouseModule"> Склад производственного модуля </param>
         /// <param name="warehouseStantion"> Склад станции </param>
-        private void MoveProduct(WarehouseProductionModul warehouseModule, Warehouse warehouseStantion)
+        private void MoveProduct(WarehouseProductionModule warehouseModule, Warehouse warehouseStantion)
         {
             if(warehouseModule.Product.Value.Value == 0)
             {
                 return;
-            } //Если продукт отсутствует на складе производственного модуля
+            }
 
-            Count count;
-            if (warehouseStantion.Products.TryGetValue(warehouseModule.Product.Key, out count))
+            if (!warehouseStantion.Products.TryGetValue(warehouseModule.Product.Key, out var warehouseProductInfo))
             {
-                Move(warehouseModule.Product.Value, count); //Переместим продукт на склад станции
-            } //Если на складе станции есть продукт
-            else
-            {
-                warehouseStantion.Products.Add(warehouseModule.Product.Key, new Count()); //Добавим продукт на склад станции
-                if (warehouseStantion.Products.TryGetValue(warehouseModule.Product.Key, out count))
-                {
-                    Move(warehouseModule.Product.Value, count); //Переместим продукт на склад станции
-                }
-            } //Если на складе станции нету продукта
+                //Todo Add component error or component msg
+            }
+
+            Move(warehouseModule.Product.Value, warehouseProductInfo); //Переместим продукт на склад станции
         }
 
         /// <summary>
@@ -79,20 +87,20 @@ namespace GameLib.Mechanics.Production.Systems
         /// </summary>
         /// <param name="warehouseStantion"> Склад станции </param>
         /// <param name="warehouseModule"> Склад производственного модуля </param>
-        private void MoveRaws(Warehouse warehouseStantion, WarehouseProductionModul warehouseModule)
+        private void MoveRaws(Warehouse warehouseStantion, WarehouseProductionModule warehouseModule)
         {
             foreach (var raw in warehouseModule.Raws)
             {
-                if (warehouseStantion.Products.TryGetValue(raw.Key, out var count))
+                if (warehouseStantion.Products.TryGetValue(raw.Key, out var warehouseProductInfo))
                 {
-                    if (count.Value == 0)
+                    if (warehouseProductInfo.Count == 0)
                     {
                         continue;
-                    } //Если продукт отсутствует на складе станции
+                    }
 
-                    Move(count, raw.Value); //Переместить товар на склад производственного модуля
-                } //Если на складе станции есть сырьевой товар для производственного модуля
-            } //Перемещаем на склад производственного модуля сырье со склада станции
+                    Move(warehouseProductInfo, raw.Value); //Переместить товар на склад производственного модуля
+                }
+            }
         }
 
         /// <summary>
@@ -100,21 +108,39 @@ namespace GameLib.Mechanics.Production.Systems
         /// </summary>
         /// <param name="source"> Источник </param>
         /// <param name="destination"> Приемник </param>
-        private void Move(Count source, Count destination)
+        private void Move(Count source, WarehouseProductInfo destination)
         {
-            var availableСapacity = destination.MaxValue - destination.Value; //Разрешенное количество товара для перемещения на склад
+            var availableСapacity = destination.MaxLimit - destination.Count; //Разрешенное количество товара для перемещения на склад
             if (availableСapacity > source.Value)
             {
-                destination.Value += source.Value;
+                destination.Count += source.Value;
                 source.Value = 0;
-            } //Если на складе хватает места для перемещения товара
+            }
+            else
+            {
+                destination.Count += availableСapacity;
+                source.Value -= availableСapacity;
+            }
+        }
+
+        /// <summary>
+        /// Переместить продукт
+        /// </summary>
+        /// <param name="source"> Источник </param>
+        /// <param name="destination"> Приемник </param>
+        private void Move(WarehouseProductInfo source, Count destination)
+        {
+            var availableСapacity = destination.MaxLimit - destination.Value; //Разрешенное количество товара для перемещения на склад производственного модуля
+            if (availableСapacity > source.Count)
+            {
+                destination.Value += source.Count;
+                source.Count = 0;
+            }
             else
             {
                 destination.Value += availableСapacity;
-                source.Value -= availableСapacity;
-            } //Если на складе не хватает места для перемещения товара
+                source.Count -= availableСapacity;
+            }
         }
     }
 }
-
-//TODO При добавлении моста есть смысл включить закупку сырья? Или этим должны заниматься AI станции \ Игрок? 

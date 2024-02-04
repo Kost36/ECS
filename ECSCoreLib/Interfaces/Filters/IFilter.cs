@@ -108,7 +108,7 @@ namespace ECSCore.Interfaces.Filters
         /// Удалить сущьность
         /// </summary>
         /// <param name="entityId"> Идентификатор уничтоженной сущьности</param>
-        void RemoveEntity(int entityId);
+        void RemoveEntity(Guid entityId);
     }
 
     /// <summary>
@@ -116,8 +116,8 @@ namespace ECSCore.Interfaces.Filters
     /// </summary>
     internal interface IFilterActionGroup
     {
-        void TryAdd(int entityId);
-        void TryRemove(int entityId);
-        void TryRemoveEntity(int entityId);
+        void TryAdd(Guid entityId);
+        void TryRemove(Guid entityId);
+        void TryRemoveEntity(Guid entityId);
     }
 }

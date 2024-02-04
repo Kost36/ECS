@@ -1,25 +1,17 @@
-﻿using GameLib.Products;
-using System;
+﻿using System;
 
 namespace GameLib.Attributes
 {
     /// <summary>
-    /// Атрибут типа продукта
+    /// Атрибут тип продукта
     /// </summary>
     public sealed class ProductTypeAttribute : Attribute
     {
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="productType"> Тип продукта </param>
-        public ProductTypeAttribute(ProductType productType)
+        public ProductTypeAttribute(Mechanics.Products.Enums.ProductType type)
         {
-            ProductType = productType;
+            Type = type;
         }
 
-        /// <summary>
-        /// Тип продукта
-        /// </summary>
-        public ProductType ProductType { get; set; }
+        public Mechanics.Products.Enums.ProductType Type { get; set; }
     }
 }

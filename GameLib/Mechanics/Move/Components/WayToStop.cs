@@ -13,6 +13,7 @@ namespace GameLib.Mechanics.Move.Components
         /// Длинна пути торможения в метрах
         /// </summary>
         public float Len;
+
         /// <summary>
         /// Флаг - наличие энергии, для полного останова
         /// </summary>

@@ -2,19 +2,20 @@
 using ECSCore.Enums;
 using ECSCore.Interfaces.Systems;
 using ECSCore.Systems;
-using GameLib.Components;
+using GameLib.Components.Energy;
 using GameLib.Mechanics.Move.Components;
-using MathLib;
+using MathLib.Structures;
+using System;
 
 namespace GameLib.Mechanics.Move.Systems
 {
-    [AttributeSystemCalculate(SystemCalculateInterval.Sec1Once)]
-    [AttributeSystemPriority(1)]
-    [AttributeSystemEnable]
-    [AttributeSystemParallelCountThreads(8)]
-    public class AccelerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Enargy>, ISystemAction, ISystemParallel
+    [SystemCalculate(SystemCalculateInterval.Sec1Once)]
+    [SystemPriority(1)]
+    [SystemEnable]
+    [SystemParallelCountThreads(8)]
+    public class AccelerateSystem : SystemExistComponents<SpeedSV, Acceleration, Speed, Energy>, ISystemAction, ISystemParallel
     {
-        public override void Action(int entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Enargy enargy, float deltatime)
+        public override void Action(Guid entityId, SpeedSV speedSV, Acceleration acceleration, Speed speed, Energy enargy, float deltatime)
         {
             float enargyUse = acceleration.EnargyUse * DeltaTime;
             float acc = acceleration.Acc * DeltaTime;
@@ -29,7 +30,7 @@ namespace GameLib.Mechanics.Move.Systems
                         {
                             if (acceleration.SpeedOk)
                             {
-                                IECS.RemoveComponent<Acceleration>(entityId); //Удалить компонент ускорения
+                                IECS.RemoveComponent<Acceleration>(entityId);
                             }
                             else
                             {
@@ -43,6 +44,7 @@ namespace GameLib.Mechanics.Move.Systems
 
                 speedSV.Update = false;
                 acceleration.SpeedOk = false;
+
                 //Ускорение
                 if (speedSV.dXSV < speed.dX)
                 {

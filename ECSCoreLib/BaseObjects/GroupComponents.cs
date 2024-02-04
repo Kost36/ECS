@@ -17,7 +17,7 @@ namespace ECSCore.BaseObjects
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public abstract bool TryAddComponentForEntity(int entityId, IECSSystem eCS, out Entity entity);
+        public abstract bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity);
 
         /// <summary>
         /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
@@ -26,7 +26,7 @@ namespace ECSCore.BaseObjects
         /// <param name="eCS"> ссылка на ECS </param>
         /// <param name="entity"> Ссылка на сущьность </param>
         /// <returns> </returns>
-        public abstract bool TryRemoveComponentForEntity(int entityId, IECSSystem eCS, out Entity entity);
+        public abstract bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity);
 
         /// <summary>
         /// Получить список типов компонент, которые должны быть на сущьности

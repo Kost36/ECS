@@ -25,6 +25,7 @@ namespace GameLib.Mechanics.Move.Components
         /// (m/sec)
         /// </summary>
         public float dZSV;
+
         /// <summary>
         /// Заданная скорость
         /// (m/sec)

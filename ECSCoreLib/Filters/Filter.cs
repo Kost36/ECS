@@ -6,37 +6,25 @@ using System.Collections.Generic;
 namespace ECSCore.Filters
 {
     /// <summary>
-    /// Группа для 1 компонента
+    /// Фильтр для группы с одним компонентом
     /// </summary>
     internal class Filter<TGroupComponents> : FilterBase
         where TGroupComponents : IGroupComponents
     {
-        #region Конструктор
+        private TGroupComponents _groupComponents;
+
         public Filter()
         {
             Init();
         }
-        #endregion
 
-        #region Поля
-        /// <summary>
-        /// Экземпляр объекта группы компонент, для взаимодействия
-        /// </summary>
-        private TGroupComponents _groupComponents;
-        #endregion
+        public Dictionary<Guid, TGroupComponents> Collection { get; set; } = new Dictionary<Guid, TGroupComponents>();
 
-        #region Свойства
-        public Dictionary<int, TGroupComponents> Collection { get; set; } = new Dictionary<int, TGroupComponents>();
-        #endregion
-
-        #region IFilterDebug Реализация
         /// <summary>
         /// Количество отслеживаемых сущьностей в фильтре
         /// </summary>
         public override int Count => Collection.Count;
-        #endregion
 
-        #region IFilterInit Реализация
         /// <summary>
         /// Типы имеющихся компонент
         /// </summary>
@@ -56,9 +44,7 @@ namespace ECSCore.Filters
             TypesExistComponents = _groupComponents.GetTypesExistComponents();
             TypesWithoutComponents = new List<Type>();// _groupComponents.GetTypesWithoutComponents();
         }
-        #endregion
 
-        #region IFilterActionGroup Реализация
         /// <summary>
         /// Проверить наличие у сущьности исключающих в фильтре компонент
         /// </summary>
@@ -68,7 +54,7 @@ namespace ECSCore.Filters
         {
             foreach (Type typeWithoutComponent in TypesWithoutComponents)
             {
-                if (entity.CheckExist(typeWithoutComponent))
+                if (entity.CheckExistComponent(typeWithoutComponent))
                 {
                     return true;
                 } //Если исключающий компонент есть на сущьности
@@ -80,7 +66,7 @@ namespace ECSCore.Filters
         /// Удалить группу компонент из коллекции фильтра
         /// </summary>
         /// <param name="entityId"> Идентификатор сущьности </param>
-        private void RemoveFromCollection(int entityId)
+        private void RemoveFromCollection(Guid entityId)
         {
             lock (Collection)
             {
@@ -99,7 +85,7 @@ namespace ECSCore.Filters
             }
         }
 
-        public override void TryAdd(int entityId)
+        public override void TryAdd(Guid entityId)
         {
             lock (Collection)
             {
@@ -129,7 +115,8 @@ namespace ECSCore.Filters
                 }
             }
         }
-        public override void TryRemove(int entityId)
+
+        public override void TryRemove(Guid entityId)
         {
             lock (_groupComponents)
             {
@@ -146,13 +133,13 @@ namespace ECSCore.Filters
                 } //Если у сущьности есть хотя бы один исключающих компонент
             }
         }
-        public override void TryRemoveEntity(int entityId)
+
+        public override void TryRemoveEntity(Guid entityId)
         {
             lock (Collection)
             {
                 Collection.Remove(entityId);
             }
         }
-        #endregion
     }
 }

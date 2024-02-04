@@ -17,20 +17,6 @@ namespace ECSCore.Managers
     /// </summary>
     public class ManagerSystems
     {
-        #region Конструктор
-        /// <summary>
-        /// Анализ и компоновка данных
-        /// </summary>
-        internal ManagerSystems(ECS ecs, Assembly assembly, ManagerFilters managerFilters)
-        {
-            _ecs = ecs;
-            Init(assembly, managerFilters); //Инициализация 
-            _thread = new Thread(Start); //Инициализация потока
-            _thread.Start(); //Пуск 
-        }
-        #endregion
-
-        #region Поля
         /// <summary>
         /// Ссылка на ECS
         /// </summary>
@@ -63,7 +49,6 @@ namespace ECSCore.Managers
         /// Скорость выполнения систем
         /// </summary>
         private float _speedRun = 1f;
-
         /// <summary>
         /// Количесвто активных систем
         /// </summary>
@@ -94,13 +79,15 @@ namespace ECSCore.Managers
         /// Время работы менеджера
         /// </summary>
         private long _timeWorkManagerSystemTicks;
-        ///// <summary>
-        ///// Диагностический таймер выполнения системы
-        ///// </summary>
-        //private readonly Stopwatch _stopwatchRunSystem = new Stopwatch();
-        #endregion
 
-        #region Свойства
+        internal ManagerSystems(ECS ecs, Assembly assembly, ManagerFilters managerFilters)
+        {
+            _ecs = ecs;
+            Init(assembly, managerFilters);
+            _thread = new Thread(Start);
+            _thread.Start();
+        }
+
         /// <summary>
         /// Количество существующих систем
         /// </summary>
@@ -137,9 +124,7 @@ namespace ECSCore.Managers
         /// Необходимо оптимизировать нагрузку
         /// </summary>
         public bool IsNotHaveTimeToBeCalculateFilters { get { return _flagHaveDelayCalculateFilters; } }
-        #endregion
 
-        #region Публичные методы
         /// <summary>
         /// Получить полную информацию о состоянии систем
         /// </summary>
@@ -147,37 +132,41 @@ namespace ECSCore.Managers
         public StringBuilder GetInfo(bool small = false)
         {
             StringBuilder info = new StringBuilder();
+
+            var systems = new List<JobSystem>();
             lock (_systemQueue)
             {
-                foreach (JobSystem jobSystem in _systemQueue)
+                systems = _systemQueue.OrderByDescending(system => system.SystemStatistic.PercentTimeUsePerformance).ToList();
+            }
+
+            foreach (JobSystem jobSystem in systems)
+            {
+                if (small)
                 {
-                    if (small)
-                    {
-                        info = info.Append(
-                            $" PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance:P};" +
-                            $" MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs:F4}; " +
-                            $" AverTimeUseInMs: {jobSystem.SystemStatistic.AverTimeUseMs:F4}; " +
-                            $" MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs:F4}; " +
-                            $" AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs:F4}; " +
-                            $" Name: {jobSystem.System.GetType().FullName}; " +
-                            $" IsEnable: {jobSystem.System.IsEnable}; " +
-                            $" IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
-                    }
-                    else
-                    {
-                        info = info.Append($"<<<<<<<<<<InfoOfSystem>>>>>>>>>> \r\n");
-                        info = info.Append($"Name: {jobSystem.System.GetType().FullName} \r\n");
-                        info = info.Append($"IsEnable: {jobSystem.System.IsEnable} \r\n");
-                        info = info.Append($"Priority: {jobSystem.System.Priority} (0-NotUse; 1-MaxPriority; 50-MinPriority) \r\n");
-                        info = info.Append($"IntervalRunInTicks: {jobSystem.System.IntervalTicks} \r\n");
-                        info = info.Append($"IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
-                        info = info.Append($"UseCount: {jobSystem.SystemStatistic.SummUseCount} \r\n");
-                        info = info.Append($"MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs} \r\n");
-                        info = info.Append($"AverTimeUseMs: {jobSystem.SystemStatistic.AverTimeUseMs} \r\n");
-                        info = info.Append($"MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs} \r\n");
-                        info = info.Append($"AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs} \r\n");
-                        info = info.Append($"PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance} \r\n");
-                    }
+                    info = info.Append(
+                        $" PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance:P};" +
+                        $" MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs:F4}; " +
+                        $" AverTimeUseInMs: {jobSystem.SystemStatistic.AverTimeUseMs:F4}; " +
+                        $" MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs:F4}; " +
+                        $" AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs:F4}; " +
+                        $" Name: {jobSystem.System.GetType().FullName}; " +
+                        $" IsEnable: {jobSystem.System.IsEnable}; " +
+                        $" IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
+                }
+                else
+                {
+                    info = info.Append($"<<<<<<<<<<InfoOfSystem>>>>>>>>>> \r\n");
+                    info = info.Append($"Name: {jobSystem.System.GetType().FullName} \r\n");
+                    info = info.Append($"IsEnable: {jobSystem.System.IsEnable} \r\n");
+                    info = info.Append($"Priority: {jobSystem.System.Priority} (0-NotUse; 1-MaxPriority; 50-MinPriority) \r\n");
+                    info = info.Append($"IntervalRunInTicks: {jobSystem.System.IntervalTicks} \r\n");
+                    info = info.Append($"IntervalRunInMs: {jobSystem.System.IntervalTicks / TimeSpan.TicksPerMillisecond} \r\n");
+                    info = info.Append($"UseCount: {jobSystem.SystemStatistic.SummUseCount} \r\n");
+                    info = info.Append($"MaxTimeUseInMs: {jobSystem.SystemStatistic.MaxTimeUseMs} \r\n");
+                    info = info.Append($"AverTimeUseMs: {jobSystem.SystemStatistic.AverTimeUseMs} \r\n");
+                    info = info.Append($"MaxTimeFilterCalculateMs: {jobSystem.SystemStatistic.MaxTimeFilterCalculateMs} \r\n");
+                    info = info.Append($"AverTimeFilterCalculateMs: {jobSystem.SystemStatistic.AverTimeFilterCalculateMs} \r\n");
+                    info = info.Append($"PercentTimeUsePerformance: {jobSystem.SystemStatistic.PercentTimeUsePerformance} \r\n");
                 }
             }
             return info;
@@ -220,9 +209,6 @@ namespace ECSCore.Managers
             return false;
         } //TODO сокрытие
 
-        /// <summary>
-        /// Задать скорость
-        /// </summary>
         internal void SetSpeed(ECSSpeed eCSSpeed)
         {
             switch (eCSSpeed)
@@ -248,14 +234,9 @@ namespace ECSCore.Managers
                 case ECSSpeed.X_16_0:
                     _speedRun = 16;
                     break;
-            } //В зависимости от выбранного перечисления
+            }
         }
 
-        /// <summary>
-        /// Задать скорость
-        /// </summary>
-        /// <param name="speedRun"> Скорость в пределах: от 0.1 до 32 </param>
-        /// <returns> Устанговленная скорость </returns>
         internal float SetSpeed(float speedRun)
         {
             if (speedRun < 0.1)
@@ -266,17 +247,14 @@ namespace ECSCore.Managers
             {
                 speedRun = 32f;
             }
-            _speedRun = speedRun;
-            return _speedRun;
+
+            return _speedRun = speedRun;
         }
 
-        /// <summary>
-        /// Освободить ресурсы
-        /// </summary>
         internal void Despose()
         {
             //TODO Завершить потоки менеджера систем
-            _stopCMD = true; //Команда на останов
+            _stopCMD = true;
             while (true)
             {
                 if (_thread.ThreadState == System.Threading.ThreadState.Stopped)
@@ -287,194 +265,172 @@ namespace ECSCore.Managers
                 {
                     Thread.Sleep(1000); //TODO Завершить потоки менеджера систем
                     return;
-                } //Если бит сбросился в false. значит менеджер остановил все системы и завершил все потоки
-            }  //Пока бит останова не сбросится в false
+                }
+            }
         }
 
-        #endregion
-
-        #region Приватные методы инициализации
-        /// <summary>
-        /// инициализация систем
-        /// </summary>
-        /// <param name="assembly"> Ссылка на сборку с реализациями систем </param>
-        /// <param name="managerFilters"> Ссылка на менеджер фильтров </param>
         private void Init(Assembly assembly, ManagerFilters managerFilters)
         {
-            Type typeISystem = typeof(ISystem); //Получим тип интерфейса
-            Type[] types = assembly.GetTypes(); //Получаем все типы сборки 
-            List<Type> typesSystems = types.Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract).ToList(); //Получим все системы в сборке
+            Type typeISystem = typeof(ISystem);
+            Type[] types = assembly.GetTypes();
+            List<Type> typesSystems = types
+                .Where(t => typeISystem.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+                .ToList();
+            
             foreach (Type typeSystem in typesSystems)
             {
-                SystemBase system = (SystemBase)Activator.CreateInstance(typeSystem); //Создадим систему
-                system.GetAttributes(); //Подтяжка аттребут
-                system.Init(managerFilters, _ecs); //Инициализация системы
-                AddSystem(system); //Добавим в список
-            } //Пройдемся по всем системам 
+                SystemBase system = (SystemBase)Activator.CreateInstance(typeSystem);
+                system.GetAttributes();
+                system.Init(managerFilters, _ecs);
+                AddSystem(system);
+            }
         }
 
-        /// <summary>
-        /// Добавить систему в список
-        /// </summary>
-        /// <param name="system"> Система </param>
         private void AddSystem(ISystem system)
         {
             _systems.Add(system);
         }
-        #endregion
 
-        #region Приватные методы работы менеджера
-        /// <summary>
-        /// Запуск потока
-        /// </summary>
         private void Start()
         {
-            FillingQueue(); //Заполнение очереди выполнения систем
+            FillingQueue();
             if (_systemQueue.Count == 0)
             {
                 throw new ExceptionECSHaveNotSystem("Нет реализованных систем");
-            } //Если систем нету 
+            }
+
             while (true)
             {
+                if (_stopCMD)
+                {
+                    return;
+                }
+
                 if (_speedRun == 0)
                 {
                     Thread.Sleep(1);
                     continue;
-                } //Если режим паузы: скорость = 0;
-                Run(); //Анализ и выполнение систем
-                if (_stopCMD)
-                {
-                    return; //Выход из метода
-                } //Если есть команда на останов
-            } //Постоянно выполняем
+                }
+
+                Run();
+            }
         }
 
-        /// <summary>
-        /// Заполнить очередь выполнения систем
-        /// </summary>
         private void FillingQueue()
         {
             _ticksStart = DateTime.Now.Ticks;
             _ticksPoint = _ticksStart;
+
             foreach (SystemBase system in _systems)
             {
                 _systemQueue.Insert(0, new JobSystem(system, _ticksStart));
+
                 if (system.IsEnable)
                 {
-                    _countEnableSystems++; //Кол-во включенных систем
-                } //Считаем кол-во включенных систем
-                SortSystemQueue(); //Переместим систему на свою позицию выполнения
-            } //Добавим все системы в очередь
+                    _countEnableSystems++;
+                }
+
+                SortSystemQueue();
+            }
         }
 
-        /// <summary>
-        /// Работа систем
-        /// </summary>
         private void Run()
         {
-            SetTicksPoint(); //Зададим новую фактическую метку времени
+            SetTicksPoint();
+
             lock (_systemQueue)
             {
                 if (_systemQueue[0].TicksNextRun <= _ticksPoint)
                 {
-                    StartCalculateJobSystem(_systemQueue[0]); //Запускаем выполнение системы
+                    StartCalculateJobSystem(_systemQueue[0]);
+
                     if (_systemQueue.Count>1)
                     {
                         if (_systemQueue[1].TicksNextRun <= _ticksPoint)
                         {
-                            _flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
+                            _flagHaveDelayRunSystem = true;
                             //_freeTime = 0; //Сброс свободного времени
-                            _timeDelayExecuted = (float)(_ticksPoint - _systemQueue[1].TicksNextRun) / (float)TimeSpan.TicksPerMillisecond; //Считаем время задержки выполнения систем
+                            _timeDelayExecuted = (float)(_ticksPoint - _systemQueue[1].TicksNextRun) / (float)TimeSpan.TicksPerMillisecond;
                             return;
-                        } //Если следующая система тоже должна выполниться
-                    } //Если систем больше 1
+                        }
+                    }
+
                     return;
-                } //Если настало время выполнения первой в очереди системы
+                }
 
                 foreach (JobSystem jobSystem in _systemQueue)
                 {
                     if (jobSystem.TicksEarlyExecution <= _ticksPoint)
                     {
-                        StartCalculateJobSystem(jobSystem); //Запускаем выполнение системы
+                        StartCalculateJobSystem(jobSystem);
                         return; //TODO Проверка необходимости запуска м запуск след системы
-                    } //Если настало время выполнения или настало время предварительного выполнения
-                } //Проходимся по очереди системам на запуск (Контролим время предварительного запуска)
+                    }
+                }
 
                 //Контроль успеваемости ECS за обработкой систем
-                long freeTimeTicks = ControlFreeTimeTicks(ControlTypeDelay.DelayRunSystem); //Вычисляем свободное время (С контролем успеваемости ECS обрабатывать все системы вовремя)
+                long freeTimeTicks = ControlFreeTimeTicks(ControlTypeDelay.DelayRunSystem);
                 if (freeTimeTicks == 0) 
                 { 
                     return;
-                } //Если нет свободного времени, выход
+                }
 
                 //Вычисление фильтров систем в свободное время
                 foreach (JobSystem jobSystem in _systemQueue)
                 {
-                    jobSystem.FilterCalculateTime(freeTimeTicks); //Посчитаем фильтр
-                    freeTimeTicks = ControlFreeTimeTicks(); //Вычисляем свободное время
+                    jobSystem.FilterCalculateTime(freeTimeTicks);
+                    freeTimeTicks = ControlFreeTimeTicks();
                     if (freeTimeTicks == 0)
                     {
                         return;
-                    } //Если нет свободного времени, выход
-                } //Проходимся по очереди системам на запуск (Вычисляем фильтры)
+                    }
+                }
 
                 //Контроль успеваемости ECS за обработкой фильтров
-                freeTimeTicks = ControlFreeTimeTicks(ControlTypeDelay.DelayCalculateFiltersSystem); //Вычисляем свободное время (С контролем успеваемости ECS обрабатывать все системы и фильтра вовремя)
+                freeTimeTicks = ControlFreeTimeTicks(ControlTypeDelay.DelayCalculateFiltersSystem);
                 if (freeTimeTicks == 0)
                 {
                     return;
-                } //Если нет свободного времени, выход
-                Thread.Sleep(1); //Значение 0 - недает процессору простаивать => в холостую грузит процессор до 25-40%
+                }
+
+                Thread.Sleep(1);
             }
         }
 
-        /// <summary>
-        /// Запуск обработки системы (Вынесенный метод) 
-        /// </summary>
         private void StartCalculateJobSystem(JobSystem jobSystem)
         {
             if (jobSystem.System.IsEnable == false)
             {
-                jobSystem.SetTicks(DateTime.MaxValue.Ticks); //Максимальное время запуска выполнения системы
+                jobSystem.SetTicks(DateTime.MaxValue.Ticks);
                 _countEnableSystems--;
                 _сountDisableSystems++;
-                SortSystemQueue(); //Сортировка очереди
+                SortSystemQueue();
                 return;
-            } //Если система выключена, то смещаем ее в конец
-            jobSystem.CalculateNextRun(); //Вычислить время след. выполнения
-            SortSystemQueue(); //Сортировка очереди
-            CalculateFreeTime(); //Рассчет свободного времени
+            }
+
+            jobSystem.CalculateNextRun();
+            SortSystemQueue();
+            CalculateFreeTime();
             //TODO Фиксировать связанные компоненты!!!!
-            jobSystem.Run(_ticksPoint, _timeWorkManagerSystemTicks, _speedRun); //Обработка системы
+
+            jobSystem.Run(_ticksPoint, _timeWorkManagerSystemTicks, _speedRun);
         }
 
-        /// <summary>
-        /// Вычислить свободное время до следующей системы
-        /// </summary>
         private void CalculateFreeTime()
         {
             _freeTime = (float)(_systemQueue[0].TicksNextRun - _ticksPoint) / (float)TimeSpan.TicksPerMillisecond;
             //_timeDelayExecuted = 0; // Время задержки выполнения систем
         }
 
-        /// <summary>
-        /// Задать метку фактического времени
-        /// </summary>
         private void SetTicksPoint()
         {
-            _ticksPoint = DateTime.Now.Ticks; //Новая метка времени
-            _timeWorkManagerSystemTicks = _ticksPoint - _ticksStart; //Время работы приложения
+            _ticksPoint = DateTime.Now.Ticks;
+            _timeWorkManagerSystemTicks = _ticksPoint - _ticksStart;
         }
 
-        /// <summary>
-        /// Вычисляем свободное время в тиках
-        /// </summary>
-        /// <param name="controlTypeDelay"> Перечисление нужного контроля </param>
-        /// <returns> свободное время в тиках </returns>
         private long ControlFreeTimeTicks(ControlTypeDelay controlTypeDelay = ControlTypeDelay.Not)
         {
-            SetTicksPoint(); //Зададим новую фактическую метку времени
-            long freeTicks = _systemQueue[0].TicksNextRun - _ticksPoint; //Вычисляем свободное время на вычисление фильтров
+            SetTicksPoint();
+            long freeTicks = _systemQueue[0].TicksNextRun - _ticksPoint;
             if (freeTicks < 0)
             {
                 switch (controlTypeDelay)
@@ -483,30 +439,27 @@ namespace ECSCore.Managers
                         //_flagHaveDelayRunSystem = true; //Не успеваем выполнять системы
                         break;
                     case ControlTypeDelay.DelayCalculateFiltersSystem:
-                        _flagHaveDelayCalculateFilters = true; //Не успеваем вычислять фильтра
+                        _flagHaveDelayCalculateFilters = true;
                         break;
                 }
                 return 0;
-            } //Если свободного времени нету
+            }
             else
             {
                 switch (controlTypeDelay)
                 {
                     case ControlTypeDelay.DelayRunSystem:
-                        _flagHaveDelayRunSystem = false; //Успеваем выполнять системы
+                        _flagHaveDelayRunSystem = false; 
                         _timeDelayExecuted = 0;
                         break;
                     case ControlTypeDelay.DelayCalculateFiltersSystem:
-                        _flagHaveDelayCalculateFilters = false; //Успеваем вычислять фильтра
+                        _flagHaveDelayCalculateFilters = false;
                         break;
                 }
                 return freeTicks;
-            } //Если есть свободное время
+            }
         }
 
-        /// <summary>
-        /// Сортировака очереди систем
-        /// </summary>
         private void SortSystemQueue()
         {
             lock (_systemQueue)
@@ -515,12 +468,11 @@ namespace ECSCore.Managers
                 {
                     if (_systemQueue[i].TicksNextRun > _systemQueue[i + 1].TicksNextRun)
                     {
-                        //Меняем системы местами
                         JobSystem jobSystem = _systemQueue[i];
                         _systemQueue[i] = _systemQueue[i + 1];
                         _systemQueue[i + 1] = jobSystem;
-                    } //Если следующая в очереди система должна выполниться раньше
-                } //Сдвигает первую систему на новую позицию, соответствующую времени выполнения системы
+                    }
+                }
                 
                 long ticksMaxValue = DateTime.MaxValue.Ticks;
                 for (int i = _systemQueue.Count - 1; i > 0; i--)
@@ -529,27 +481,25 @@ namespace ECSCore.Managers
                     {
                         if (_systemQueue[i].TicksNextRun == ticksMaxValue)
                         {
-                            _systemQueue[i].SetTicks(_ticksPoint); //Сброс данных
-                            _systemQueue[i].CalculateNextRun(); //Рассчитать след выполнение системы
+                            _systemQueue[i].SetTicks(_ticksPoint);
+                            _systemQueue[i].CalculateNextRun();
                             _countEnableSystems++;
                             _сountDisableSystems--;
                             for (int j = i; j > 0; j--)
                             {
                                 if (_systemQueue[j].TicksNextRun < _systemQueue[j - 1].TicksNextRun)
                                 {
-                                    //Меняем системы местами
                                     JobSystem jobSystem = _systemQueue[j];
                                     _systemQueue[j] = _systemQueue[j - 1];
                                     _systemQueue[j - 1] = jobSystem;
-                                } //Если предидущая в очереди система должна выполниться позже
-                            } //Сдвигает систему на новую позицию, соответствующую времени выполнения системы
-                        } //Если система только включилась
-                        return; //Если нашли включенную систему, смещаем только ее и выходим.
-                    } //Если система включена
-                } //Проверяем включение систем, и сдвигаем на соответствующее место
+                                }
+                            }
+                        }
+                        return;
+                    }
+                }
             }
         }
-        #endregion
     }
 }
 

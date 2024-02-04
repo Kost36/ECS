@@ -1,12 +1,9 @@
-﻿using ECSCore;
-using ECSCore.Interfaces.ECS;
-using GameLib;
-using GameLib.Components;
-using GameLib.Datas;
-using GameLib.Entitys.StaticEntitys;
+﻿using ECSCore.Interfaces.ECS;
+using GameLib.Entitys;
 using GameLib.Mechanics.Production.Components;
-using GameLib.Products;
-using GameLib.Products.Lvl1;
+using GameLib.Mechanics.Production.Entites;
+using GameLib.Mechanics.Products.Enums;
+using GameLib.Mechanics.Stantion.Components;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -16,77 +13,139 @@ using System.Threading;
 namespace GameLibTests
 {
     [TestClass()]
-    public class ProductionTests
+    public sealed class ProductionTests : BaseTest
     {
-        private static IECS IECS;
-        private static IECSDebug IECSDebug;
-
-        public void Init()
-        {
-            ECS.Initialization(GetAssembly.Get());
-            IECS = ECS.InstanceIECS;
-            IECSDebug = ECS.InstanceDebug;
-
-            Console.WriteLine("ОК");
-            Assert.IsNotNull(IECS);
-            Debug.WriteLine(IECSDebug.GetInfo());
-        }
-
         [TestMethod()]
-        public void Test()
+        public void ProductionTest()
         {
-            Init();
-            var entity = IECS.AddEntity(new Stantion());
-            entity.Add(new Warehouse()
+            var stantion = IECS.AddEntity(new Stantion());
+            stantion.AddComponent(new Warehouse()
             {
                 VolumeMax = 100000,
-                Products = new Dictionary<ProductType, Count>() 
+                Products = new Dictionary<ProductType, WarehouseProductInfo>()
                 {
-                    { ProductType.Battery, new Count() { Value = 1000, MaxValue = 5000 } },
-                    { ProductType.Ore, new Count() { Value = 1000, MaxValue = 5000 } }
+                    { ProductType.Enargy, new WarehouseProductInfo() { Count = 1000, MaxLimit = 5000 } },
+                    { ProductType.Ice, new WarehouseProductInfo() { Count = 1000, MaxLimit = 5000 } }
                 }
             });
 
-            var entity1 = entity.AddChild(new GameLib.Entitys.StaticEntitys.ProductionModule());
-            entity1.Add(new Production<Iron>());
+            var entity1 = stantion.AddNestedEntity(new ModuleProduction());
+            entity1.AddComponent(new Production() { ProductType = ProductType.Water });
 
             Thread.Sleep(1000);
 
-            entity.Get<Warehouse>(out var warehouseStantion);
-            entity1.Get<WarehouseProductionModul>(out var warehouseModule);
-            entity1.Get<GameLib.Mechanics.Production.Components.ProductionModule>(out var productionModule);
+            stantion.TryGetComponent<Warehouse>(out var warehouseStantion);
+            entity1.TryGetComponent<WarehouseProductionModule>(out var warehouseModule);
+            entity1.TryGetComponent<ProductionModule>(out var productionModule);
 
             var end = false;
             var secCount = 0;
             while (!end)
             {
                 Thread.Sleep(1000);
-                
-                if( warehouseStantion.Products.TryGetValue(ProductType.Iron, out var irone)) { }
+
+                if (warehouseStantion.Products.TryGetValue(ProductType.Water, out var water)) { }
 
                 Debug.WriteLine($"{Environment.NewLine}" +
                     $"Stantion: {Environment.NewLine}" +
-                    $"EntityId [{entity.Id}] " +
-                    $"Enargy [{warehouseStantion.Products[ProductType.Battery]?.Value}] " +
-                    $"Ore [{warehouseStantion.Products[ProductType.Ore]?.Value}] " +
-                    $"Irone [{irone?.Value}] ");
+                    $"EntityId [{stantion.Id}] " +
+                    $"Enargy [{warehouseStantion.Products[ProductType.Enargy]?.Count}] " +
+                    $"Ice [{warehouseStantion.Products[ProductType.Ice]?.Count}] " +
+                    $"Water [{water?.Count}] ");
 
                 Debug.WriteLine($"ProductionModule: {Environment.NewLine}" +
                     $"Module enable [{productionModule.Enable}] " +
                     $"Module work [{productionModule.Work}] " +
                     $"Module cycle [{productionModule.CycleCompletionPercentage}]% " +
                     $"EntityId [{entity1.Id}] " +
-                    $"Enargy [{warehouseModule.Raws[ProductType.Battery].Value}] " +
-                    $"Ore [{warehouseModule.Raws[ProductType.Ore].Value}] " +
-                    $"Irone [{warehouseModule.Product.Value.Value}] ");
+                    $"Enargy [{warehouseModule.Raws[ProductType.Enargy].Value}] " +
+                    $"Ice [{warehouseModule.Raws[ProductType.Ice].Value}] " +
+                    $"Water [{warehouseModule.Product.Value.Value}] ");
 
                 secCount++;
                 if (secCount > 185) //Прошло 3 минуты 5 сек
                 {
-                    Assert.IsTrue(warehouseStantion.Products[ProductType.Iron]?.Value > 0, "Not add irone to stantion");
+                    Assert.IsTrue(warehouseStantion.Products[ProductType.Ice]?.Count > 0, "Not add irone to stantion");
                 }
 
-                if (irone?.Value > 100)
+                if (water?.Count > 100)
+                {
+                    return;
+                } //Ожидать результат по таймауту и бросать TestFail, если не дождались
+            }
+        }
+
+        [TestMethod()]
+        public void ProductionTwoProductsTest()
+        {
+            var entity = IECS.AddEntity(new Stantion());
+            entity.AddComponent(new Warehouse()
+            {
+                VolumeMax = 100000,
+                Products = new Dictionary<ProductType, WarehouseProductInfo>()
+                {
+                    { ProductType.Enargy, new WarehouseProductInfo() { Count = 2000, MaxLimit = 5000 } },
+                    { ProductType.Ice, new WarehouseProductInfo() { Count = 2000, MaxLimit = 5000 } }
+                }
+            });
+
+            var entity1 = entity.AddNestedEntity(new ModuleProduction());
+            entity1.AddComponent(new Production() { ProductType = ProductType.Water });
+
+            var entity2 = entity.AddNestedEntity(new ModuleProduction());
+            entity2.AddComponent(new Production() { ProductType = ProductType.Grain });
+
+            Thread.Sleep(1000);
+
+            entity.TryGetComponent<Warehouse>(out var warehouseStantion);
+            entity1.TryGetComponent<WarehouseProductionModule>(out var warehouseModule1);
+            entity1.TryGetComponent<ProductionModule>(out var productionModule1);
+            entity2.TryGetComponent<WarehouseProductionModule>(out var warehouseModule2);
+            entity2.TryGetComponent<ProductionModule>(out var productionModule2);
+
+            var end = false;
+            var secCount = 0;
+            while (!end)
+            {
+                Thread.Sleep(1000);
+
+                if (warehouseStantion.Products.TryGetValue(ProductType.Water, out var water)) { }
+                if (warehouseStantion.Products.TryGetValue(ProductType.Grain, out var grain)) { }
+
+                Debug.WriteLine($"{Environment.NewLine}" +
+                    $"Stantion: {Environment.NewLine}" +
+                    $"EntityId [{entity.Id}] " +
+                    $"Enargy [{warehouseStantion.Products[ProductType.Enargy]?.Count}] " +
+                    $"Ice [{warehouseStantion.Products[ProductType.Ice]?.Count}] " +
+                    $"Water [{water?.Count}] " +
+                    $"Grain [{grain?.Count}] ");
+
+                Debug.WriteLine($"ProductionModule1: {Environment.NewLine}" +
+                    $"Module enable [{productionModule1.Enable}] " +
+                    $"Module work [{productionModule1.Work}] " +
+                    $"Module cycle [{productionModule1.CycleCompletionPercentage}]% " +
+                    $"EntityId [{entity1.Id}] " +
+                    $"Enargy [{warehouseModule1.Raws[ProductType.Enargy].Value}] " +
+                    $"Ice [{warehouseModule1.Raws[ProductType.Ice].Value}] " +
+                    $"Water [{warehouseModule1.Product.Value.Value}] ");
+
+                Debug.WriteLine($"ProductionModule2: {Environment.NewLine}" +
+                    $"Module enable [{productionModule2.Enable}] " +
+                    $"Module work [{productionModule2.Work}] " +
+                    $"Module cycle [{productionModule2.CycleCompletionPercentage}]% " +
+                    $"EntityId [{entity2.Id}] " +
+                    $"Enargy [{warehouseModule2.Raws[ProductType.Enargy].Value}] " +
+                    $"Water [{warehouseModule2.Raws[ProductType.Water].Value}] " +
+                    $"Grain [{warehouseModule2.Product.Value.Value}] ");
+
+                secCount++;
+                if (secCount > 185) //Прошло 3 минуты 5 сек
+                {
+                    Assert.IsTrue(warehouseStantion.Products[ProductType.Ice]?.Count > 0, "Not add irone to stantion");
+                    Assert.IsTrue(warehouseStantion.Products[ProductType.Grain]?.Count > 0, "Not add irone to stantion");
+                }
+
+                if (grain?.Count > 20)
                 {
                     return;
                 } //Ожидать результат по таймауту и бросать TestFail, если не дождались

@@ -138,7 +138,7 @@ namespace ECSCore
         /// <param name="id"> Идентификатор сущьности </param>
         /// <param name="Entity"> Сущьность (Если есть) / null </param>
         /// <returns> Флаг наличия сущьности </returns>
-        public bool GetEntity(int id, out Entity Entity)
+        public bool GetEntity(Guid id, out Entity Entity)
         {
             return _managerEntitys.Get(id, out Entity);
         }
@@ -147,7 +147,7 @@ namespace ECSCore
         /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
         /// </summary>
         /// <param name="id"> Идентификатор сущьности </param>
-        public void RemoveEntity(int id)
+        public void RemoveEntity(Guid id)
         {
             _managerEntitys.Remove(id);
             _managerFilters.Remove(id);
@@ -166,7 +166,7 @@ namespace ECSCore
             {
                 return;
             } //Получим сущьность от менеджера сущьностей
-            entity.AddComponent(component); //Добавить к сущьности
+            entity.AddComponentInternal(component); //Добавить к сущьности
             _managerFilters.Add<T>(component); //Передать менеджеру фильтров 
         } // TODO При добавлении компонента, который уже есть на сущьности кинет исключение: продумать действия в данной ситуации, и синхронизировать действие для Entity и Filters, что бы небыло разногласий
 
@@ -178,7 +178,7 @@ namespace ECSCore
         /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
-        public bool GetComponent<T>(int idEntity, out T component)
+        public bool GetComponent<T>(Guid idEntity, out T component)
             where T : IComponent
         {
             if (_managerEntitys.Get(idEntity, out Entity entity) == false)
@@ -186,7 +186,7 @@ namespace ECSCore
                 component = default;
                 return false;
             } //Если у менеджера сущьностей нету сущьности
-            return entity.Get(out component); //Получим компонент у сущьности
+            return entity.TryGetComponent(out component); //Получим компонент у сущьности
         }
 
         /// <summary>
@@ -195,14 +195,14 @@ namespace ECSCore
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
         /// <param name="idEntity"> Идентификатор сущьности </param>
         /// <returns></returns>
-        public void RemoveComponent<T>(int idEntity)
+        public void RemoveComponent<T>(Guid idEntity)
             where T : IComponent
         {
             if (_managerEntitys.Get(idEntity, out Entity Entity) == false)
             {
                 return;
             }
-            Entity.RemoveComponent<T>();
+            Entity.RemoveComponentInternal<T>();
             _managerFilters.Remove<T>(idEntity);
         }
 

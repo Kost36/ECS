@@ -16,11 +16,13 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
     {
         private static IECS IECS;
         private static IECSDebug IECSDebug;
-        private static Entity _entity;
 
         [TestMethod()]
         public void Test_00_InitializationIECS()
         {
+            IECS?.Despose();
+            Thread.Sleep(500);
+
             Ship ship = new();
             ECS.Initialization(ship.GetType().Assembly);
             IECS = ECS.InstanceIECS;
@@ -45,11 +47,11 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
                 for (int i = 0; i < 100; i++)
                 {
                     Entity ship = IECS.AddEntity(new Ship());
-                    ship.Add(new Pozition() { X = 0, Y = 0, Z = 0 });
+                    ship.AddComponent(new Pozition() { X = 0, Y = 0, Z = 0 });
                     //Thread.Sleep(1);
-                    ship.Add(new PozitionSV() { X = 1000, Y = 1000, Z = 1000 });
+                    ship.AddComponent(new PozitionSV() { X = 1000, Y = 1000, Z = 1000 });
                     //Thread.Sleep(1);
-                    ship.Add(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
+                    ship.AddComponent(new Enargy() { EnargyFact = 100, EnargyMax = 1000 });
                     j++;
                 }
 

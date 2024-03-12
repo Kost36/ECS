@@ -16,7 +16,7 @@ namespace ECSCore.Attributes
     /// FactTime = 100081 => RunSystem and Set OldRun = 100100, EarlyRun = 100180, NextRun = 100200
     /// NextRun  = 100100
     /// </summary>
-    public class SystemEarlyExecution : Attribute
+    public sealed class SystemEarlyExecution : Attribute
     {
         /// <summary>
         /// Процент времени порога предварительного выполнения
@@ -26,19 +26,21 @@ namespace ECSCore.Attributes
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="percentThresholdTime"> Процент времени порога раннего выполнения (Считается от интервала вы полнения системы) </param>
+        /// <param name="percentThresholdTime"> Процент времени порога раннего выполнения (Считается от интервала выполнения системы) </param>
         public SystemEarlyExecution(float percentThresholdTime = 0)
         {
             if (percentThresholdTime < 0)
             {
-                percentThresholdTime = 0;
+                PercentThresholdTime = 0;
             }
             else if (percentThresholdTime > 50)
             {
-                percentThresholdTime = 50f;
+                PercentThresholdTime = 50f;
             }
-
-            PercentThresholdTime = percentThresholdTime;
+            else
+            {
+                PercentThresholdTime = percentThresholdTime;
+            }
         }
     }
 }

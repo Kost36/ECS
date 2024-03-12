@@ -5,12 +5,12 @@ namespace ECSCore.Attributes
     /// <summary>
     /// Атрибут количества потоков, для обработки системы.
     /// </summary>
-    public class SystemParallelCountThreads : Attribute
+    public sealed class SystemParallelCountThreads : Attribute
     {
         /// <summary>
         /// Кол-во параллельных потоков обработки системы
         /// </summary>
-        public int CountThreads { get; private set; } = 1;
+        public int CountThreads { get; private set; }
 
         /// <summary>
         /// Конструктор
@@ -20,14 +20,16 @@ namespace ECSCore.Attributes
         {
             if (countThreads > 128)
             {
-                countThreads = 128;
+                CountThreads = 128;
             } //Верхний лимит
             else if (countThreads < 1)
             {
-                countThreads = 1;
+                CountThreads = 1;
             } //Нижний лимит
-
-            CountThreads = countThreads;
+            else
+            {
+                CountThreads = countThreads;
+            }
         }
     }
 }

@@ -4,18 +4,18 @@ using System;
 namespace ECSCore.Attributes
 {
     /// <summary>
-    /// Атрибут частоты обработки системы; 
+    /// Атрибут частоты обработки системы;
     /// Задается одно из:
     /// * Желательный CPS (CalculatePerSecond),
     /// * Желательный интервал (мс),
     /// * Перечисление
     /// </summary>
-    public class SystemCalculate : Attribute
+    public sealed class SystemCalculate : Attribute
     {
         /// <summary>
         /// Интервал обработки системы (ms)
         /// </summary>
-        public int CalculateInterval { get; private set; } = (int)SystemCalculateInterval.Sec1Once;
+        public int CalculateInterval { get; private set; }
 
         /// <summary>
         /// Конструктор
@@ -57,7 +57,7 @@ namespace ECSCore.Attributes
         /// Конструктор
         /// </summary>
         /// <param name="interval">
-        /// Желательный интервал (CalculateInterval) в милисекундах.  
+        /// Желательный интервал (CalculateInterval) в милисекундах.
         /// Пределы: 17 - 86.400.000;
         /// 17         ~ 60 раз в секунду;
         /// 33         ~ 30 раз в секунду;
@@ -72,14 +72,16 @@ namespace ECSCore.Attributes
         {
             if (interval > 86400000)
             {
-                interval = 86400000;
+                CalculateInterval = 86400000;
             } //Верхний лимит
             else if (interval < 17)
             {
-                interval = 17;
+                CalculateInterval = 17;
             } //Нижний лимит
-
-            CalculateInterval = interval;
+            else
+            {
+                CalculateInterval = interval;
+            }
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace ECSCore.Attributes
     /// 50 - Минимальный приоритет;
     /// 0 - Неприоритетная система (Невыполняется, если более приоритетные системы не успевают вовремя обрабатываться);
     /// </summary>
-    public class SystemPriority : Attribute
+    public sealed class SystemPriority : Attribute
     {
         /// <summary>
         /// 50 - min priority => 1 - max priority;
@@ -32,14 +32,16 @@ namespace ECSCore.Attributes
         {
             if (priority < 0)
             {
-                priority = 0;
+                Priority = 0;
             }
-            if (priority > 50)
+            else if (priority > 50)
             {
-                priority = 50;
+                Priority = 50;
             }
-
-            Priority = priority;
+            else
+            {
+                Priority = priority;
+            }
         }
     }
 }

@@ -3,9 +3,9 @@
 namespace ECSCore.Attributes
 {
     /// <summary>
-    /// Атрибут работы системы 
+    /// Атрибут работы системы
     /// </summary>
-    public class SystemEnable : Attribute
+    public sealed class SystemEnable : Attribute
     {
         /// <summary>
         /// Работа системы

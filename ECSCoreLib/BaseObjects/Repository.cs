@@ -53,7 +53,6 @@ namespace ECSCore.BaseObjects
         /// </summary>
         public List<string> GetSaves()
         {
-            TypeFileSave typeFileSave = _typeFileSave;
             return Directory.GetFiles(_pathFolder).ToList();
         }
 

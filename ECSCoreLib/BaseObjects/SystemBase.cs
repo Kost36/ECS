@@ -21,7 +21,7 @@ namespace ECSCore.BaseObjects
 
         #region ISystemRunTime Реализация
         /// <summary>
-        /// Интервал времени между предидущим выполнением и фактическим.
+        /// Интервал времени между предыдущим выполнением и фактическим.
         /// Размерность: sec
         /// </summary>
         public float DeltaTime { get; set; }
@@ -116,100 +116,59 @@ namespace ECSCore.BaseObjects
         }
 
         /// <summary>
-        /// Предварительная инициализация системы (Подтяжка аттребутов)
+        /// Предварительная инициализация системы на основании атрибутов и их значений.
         /// </summary>
         internal void GetAttributes()
         {
             Type type = this.GetType();
             //Аттрибуты
 
-            //Приоритет выполнения системы
-            SystemPriority attributeSystemPriority = type.GetCustomAttribute<SystemPriority>();
-            if (attributeSystemPriority == null)
-            {
-                throw new ExceptionSystemNotHaveAttribute(typeof(SystemPriority), type);
-            } //Если у системы нету атрибута приоритетности
-            else
-            {
-                Priority = attributeSystemPriority.Priority;
-            } //Если у системы есть атрибут приоритетности
+            // Приоритет выполнения системы
+            // Если атрибута нет, то дальнейшее выполнение невозможно.
+            // Если атрибут есть, то извлекаем и сохраняем значение.
+            Priority = type.GetCustomAttribute<SystemPriority>()?.Priority
+                ?? throw new ExceptionSystemNotHaveAttribute(typeof(SystemPriority), type);
 
-            //Интервал обработки системы
-            SystemCalculate attributeSystemCalculate = type.GetCustomAttribute<SystemCalculate>();
-            if (attributeSystemCalculate == null)
-            {
-                throw new ExceptionSystemNotHaveAttribute(typeof(SystemCalculate), type);
-            } //Если у системы нету атрибута интервала обработки 
-            IntervalTicks = attributeSystemCalculate.CalculateInterval * TimeSpan.TicksPerMillisecond;
+            // Интервал обработки системы
+            // Если атрибута нет, то дальнейшее выполнение невозможно.
+            // Если атрибут есть, то вычисляем количество тиков отведенных на выполнение.
+            IntervalTicks = type.GetCustomAttribute<SystemCalculate>()?.CalculateInterval * TimeSpan.TicksPerMillisecond
+                ?? throw new ExceptionSystemNotHaveAttribute(typeof(SystemCalculate), type);
 
-            //Активация / блокировка системы
-            IsEnable = true; //Стандартно: все системы включены
-            SystemEnable attributeSystemEnable = type.GetCustomAttribute<SystemEnable>();
-            if (attributeSystemEnable != null)
-            {
-                IsEnable = attributeSystemEnable.IsEnable;
-            } //Если у системы есть атрибут активации
+            // Активация/блокировка системы
+            // Если атрибута нет, то считаем что система активна.
+            // Если атрибут есть, то извлекаем значение активности системы из атрибута.
+            IsEnable = type.GetCustomAttribute<SystemEnable>()?.IsEnable ?? true;
 
-            //Возможность раннего/предварительного выполнения системы
-            EarlyExecutionTicks = 0; //Стандартно: - предварительное выполнение системы выключено
-            SystemEarlyExecution attributeSystemEarlyExecution = type.GetCustomAttribute<SystemEarlyExecution>();
-            if (attributeSystemEarlyExecution != null)
-            {
-                EarlyExecutionTicks = (long)(((float)IntervalTicks / 100f) * attributeSystemEarlyExecution.PercentThresholdTime);
-            } //Если у системы есть атрибут предварительного выполнения 
+            // Возможность раннего/предварительного выполнения системы
+            // Если атрибута нет, то время на предварительное выполнение не предоставляется.
+            // Если атрибут есть, то вычисляем количество тиков для предварительного выполнения.
+            EarlyExecutionTicks = (long?)(type.GetCustomAttribute<SystemEarlyExecution>()?.PercentThresholdTime / 100f * IntervalTicks)
+                ?? 0L;
 
-            //Количество потоков для распараллеливания
-            CountThreads = 1; //Стандартно: если включено распараллеливание, то выполняется в одном отдельном потоке
-            SystemParallelCountThreads attributeSystemParallelCountThreads = type.GetCustomAttribute<SystemParallelCountThreads>();
-            if (attributeSystemParallelCountThreads != null)
-            {
-                CountThreads = attributeSystemParallelCountThreads.CountThreads;
-            } //Если у системы есть атрибут - колличества потоков для параллельного выполнения 
+            // Количество потоков для распараллеливания
+            // Если атрибута нет, то выполнение осуществляется в одном потоке.
+            // Если атрибут есть, то извлекаем и сохраняем значение.
+            CountThreads = type.GetCustomAttribute<SystemParallelCountThreads>()?.CountThreads ?? 1;
 
-            //Исключающиеся из системы компонент
-            ExcludeComponentSystem attributeExcludeComponentSystem = type.GetCustomAttribute<ExcludeComponentSystem>();
-            if (attributeExcludeComponentSystem != null)
-            {
-                ExcludeComponentType = attributeExcludeComponentSystem.ExcludeComponentType;
-            } //Если у системы есть атрибут - исключающиеся из системы компонента 
+            // Исключающиеся из системы компонент
+            // Если атрибута нет, то тип исключающегося компонента null.
+            // Если атрибут есть, то извлекаем и сохраняем тип компонента.
+            ExcludeComponentType = type.GetCustomAttribute<ExcludeComponentSystem>()?.ExcludeComponentType;
 
+            // Интерфейсы
+            IsAction = this is ISystemAction;
+            IsActionAdd = this is ISystemActionAdd;
+            IsActionRemove = this is ISystemActionRemove;
+            IsUseInjectThread = this is ISystemUseInjectThread;
+            IsManualControlAction = this is ISystemManualControlAction;
 
-            //Интерфейсы
-            IsActionAdd = false;
-            if (this is ISystemActionAdd)
+            IsParallel = this is ISystemParallel;
+            if (IsParallel && CountThreads == 0)
             {
-                IsActionAdd = true;
+                CountThreads = 1; // Потоков не должно быть 0
             }
-            IsAction = false;
-            if (this is ISystemAction)
-            {
-                IsAction = true;
-            }
-            IsActionRemove = false;
-            if (this is ISystemActionRemove)
-            {
-                IsActionRemove = true;
-            }
-            IsParallel = false;
-            if (this is ISystemParallel)
-            {
-                IsParallel = true;
-                if (CountThreads==0)
-                {
-                    CountThreads = 1;
-                } //Потоков не должно быть 0
-            }
-            IsManualControlAction = false;
-            if (this is ISystemManualControlAction)
-            {
-                IsManualControlAction = true;
-            }
-            IsUseInjectThread = false;
-            if (this is ISystemUseInjectThread)
-            {
-                IsUseInjectThread = true;
-            }
-        }
+    }
 
         /// <summary>
         /// Получить количество элементов в фильтре
@@ -256,31 +215,21 @@ namespace ECSCore.BaseObjects
         /// Выполнить AсtionAdd системы
         /// </summary>
         /// <typeparam name="TGroupComponents"> generic группы компонентов </typeparam>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <param name="groupComponents"> группа компонентов </param>
         internal void RunAсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
             where TGroupComponents : IGroupComponents
         {
-            if (IsUseInjectThread)
-            {
-                AсtionAdd(groupComponents, entity); //Синхронно в введенном потоке
-                return;
-            } //Если выполнение должно быть синхронно в введенном потоке
             AсtionAdd(groupComponents, entity);
         }
 
         /// <summary>
         /// Выполнить AсtionRemove системы
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         internal void RunAсtionRemove(Guid entityId)
         {
-            if (IsUseInjectThread)
-            {
-                ActionRemove(entityId); //Синхронно в введенном потоке
-                return;
-            } //Если выполнение должно быть синхронно в введенном потоке
-            ActionRemove(entityId); 
+            ActionRemove(entityId);
         }
         #endregion
 
@@ -299,7 +248,7 @@ namespace ECSCore.BaseObjects
         /// Реализация AсtionAdd системы
         /// </summary>
         /// <typeparam name="TGroupComponents"> generic группы компонентов </typeparam>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <param name="groupComponents"> группа компонентов </param>
         internal abstract void AсtionAdd<TGroupComponents>(TGroupComponents groupComponents, Entity entity)
             where TGroupComponents : IGroupComponents;
@@ -312,7 +261,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Метод обработки удаленной группы компонент из фильтра системы
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         public virtual void ActionRemove(Guid entityId) { }
         #endregion
     }

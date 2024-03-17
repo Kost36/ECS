@@ -11,7 +11,7 @@ namespace ECSCore.BaseObjects
     public abstract class ComponentBase : IComponent
     {
         /// <summary>
-        /// Идентификатор сущьности, на которой висит компонент
+        /// Идентификатор сущности, на которой висит компонент
         /// </summary>
         public Guid Id { get; set; }
     }

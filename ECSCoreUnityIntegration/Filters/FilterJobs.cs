@@ -55,7 +55,7 @@ namespace ECSCore.Filters
         #endregion
     }
     /// <summary>
-    /// Задание на удаление компонентов сущьности из фильтра
+    /// Задание на удаление компонентов сущности из фильтра
     /// </summary>
     internal class JobTryRemoveId : IJobToFilter
     {

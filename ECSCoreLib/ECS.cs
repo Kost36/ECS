@@ -61,7 +61,7 @@ namespace ECSCore
         /// Инициализация ECS
         /// </summary>
         /// <param name="assembly"> ссылка на сборку (Где находятся: Компоненты / Cистемы) </param>
-        /// <exception cref="ExceptionECSIsInitializated"> </exception>
+        /// <exception cref="ECSIsAlreadyInitializedException"> </exception>
         public static void Initialization(Assembly assembly) //ECSSetting ecsSetting, 
         {
             if (_ecs == null)
@@ -70,9 +70,9 @@ namespace ECSCore
             } //Если экземпляра нету
             else
             {
-                throw new ExceptionECSIsInitializated("ECS was initialized before");
+                throw new ECSIsAlreadyInitializedException("ECS was initialized before");
             }
-            _ecs._managerEntitys = new ManagerEntitys(); //Инициализация менеджера сущьностей
+            _ecs._managerEntitys = new ManagerEntitys(); //Инициализация менеджера сущностей
             _ecs._managerFilters = new ManagerFilters(_ecs); //Создадим менеджера фильтров
             _ecs._managerSystems = new ManagerSystems(_ecs, assembly, _ecs._managerFilters); //Создадим менеджера систем
 
@@ -87,7 +87,7 @@ namespace ECSCore
         private static ECS _ecs;
 
         /// <summary>
-        /// Менеджер сущьностей
+        /// Менеджер сущностей
         /// </summary>
         private ManagerEntitys _managerEntitys;
 
@@ -104,7 +104,7 @@ namespace ECSCore
 
         #region Свойства
         /// <summary>
-        /// Менеджер сущьностей
+        /// Менеджер сущностей
         /// </summary>
         public ManagerEntitys ManagerEntitys { get { return _managerEntitys; } }
 
@@ -121,11 +121,11 @@ namespace ECSCore
 
         #region Публичные методы
 
-        #region Сущьности
+        #region Сущности
         /// <summary>
-        /// Добавить сущьность
+        /// Добавить сущность
         /// </summary>
-        /// <param name="entity"> Сущьность </param>
+        /// <param name="entity"> сущность </param>
         /// <returns> IEntity (с присвоенным id) / null </returns>
         public Entity AddEntity(Entity entity)
         {
@@ -133,20 +133,20 @@ namespace ECSCore
         }
 
         /// <summary>
-        /// Получить сущьность по Id, если есть
+        /// Получить сущность по Id, если есть
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
-        /// <param name="Entity"> Сущьность (Если есть) / null </param>
-        /// <returns> Флаг наличия сущьности </returns>
+        /// <param name="id"> Идентификатор сущности </param>
+        /// <param name="Entity"> Сущность (Если есть) / null </param>
+        /// <returns> Флаг наличия сущности </returns>
         public bool GetEntity(Guid id, out Entity Entity)
         {
             return _managerEntitys.Get(id, out Entity);
         }
 
         /// <summary>
-        /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
+        /// Уничтожить сущность по Id (компоненты сущности тоже будут уничтожены)
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         public void RemoveEntity(Guid id)
         {
             _managerEntitys.Remove(id);
@@ -158,24 +158,24 @@ namespace ECSCore
         /// <summary>
         /// Добавить компонент.
         /// </summary>
-        /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
+        /// <param name="component"> Компонент с заданным Id сущности, которой он пренадлежит </param>
         public void AddComponent<T>(T component)
             where T : IComponent
         {
             if (_managerEntitys.Get(component.Id, out Entity entity) == false)
             {
                 return;
-            } //Получим сущьность от менеджера сущьностей
-            entity.AddComponentInternal(component); //Добавить к сущьности
+            } //Получим сущность от менеджера сущностей
+            entity.AddComponentInternal(component); //Добавить к сущности
             _managerFilters.Add<T>(component); //Передать менеджеру фильтров 
-        } // TODO При добавлении компонента, который уже есть на сущьности кинет исключение: продумать действия в данной ситуации, и синхронизировать действие для Entity и Filters, что бы небыло разногласий
+        } // TODO При добавлении компонента, который уже есть на сущности кинет исключение: продумать действия в данной ситуации, и синхронизировать действие для Entity и Filters, что бы небыло разногласий
 
         /// <summary>
         /// Получить компонент, если есть.
         /// Возвращает компонент из менеджера компонентов
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
-        /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
+        /// <param name="idEntity"> Идентификатор сущности, на которой должен быть компонент </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool GetComponent<T>(Guid idEntity, out T component)
@@ -185,15 +185,15 @@ namespace ECSCore
             {
                 component = default;
                 return false;
-            } //Если у менеджера сущьностей нету сущьности
-            return entity.TryGetComponent(out component); //Получим компонент у сущьности
+            } //Если у менеджера сущностей нету сущности
+            return entity.TryGetComponent(out component); //Получим компонент у сущности
         }
 
         /// <summary>
         /// Удалить компонент (Если есть)
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
-        /// <param name="idEntity"> Идентификатор сущьности </param>
+        /// <param name="idEntity"> Идентификатор сущности </param>
         /// <returns></returns>
         public void RemoveComponent<T>(Guid idEntity)
             where T : IComponent

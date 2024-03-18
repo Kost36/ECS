@@ -21,7 +21,7 @@ namespace ECSCore.Filters
         public Dictionary<Guid, TGroupComponents> Collection { get; set; } = new Dictionary<Guid, TGroupComponents>();
 
         /// <summary>
-        /// Количество отслеживаемых сущьностей в фильтре
+        /// Количество отслеживаемых сущностей в фильтре
         /// </summary>
         public override int Count => Collection.Count;
 
@@ -46,10 +46,10 @@ namespace ECSCore.Filters
         }
 
         /// <summary>
-        /// Проверить наличие у сущьности исключающих в фильтре компонент
+        /// Проверить наличие у сущности исключающих в фильтре компонент
         /// </summary>
-        /// <param name="entity"> Ссылка на сущьность </param>
-        /// <returns> true - у сущьности присутствуют исключающие компоненты </returns>
+        /// <param name="entity"> Ссылка на сущность </param>
+        /// <returns> true - у сущности присутствуют исключающие компоненты </returns>
         private bool CheckHaveWithoutComponents(Entity entity)
         {
             foreach (Type typeWithoutComponent in TypesWithoutComponents)
@@ -57,7 +57,7 @@ namespace ECSCore.Filters
                 if (entity.CheckExistComponent(typeWithoutComponent))
                 {
                     return true;
-                } //Если исключающий компонент есть на сущьности
+                } //Если исключающий компонент есть на сущности
             } //Проходимся по всем исключающим компонентам
             return false; 
         }
@@ -65,7 +65,7 @@ namespace ECSCore.Filters
         /// <summary>
         /// Удалить группу компонент из коллекции фильтра
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         private void RemoveFromCollection(Guid entityId)
         {
             lock (Collection)
@@ -100,7 +100,7 @@ namespace ECSCore.Filters
                         if (CheckHaveWithoutComponents(entity))
                         {
                             return;
-                        } //Если у сущьности присутствуют исключающие компоненты
+                        } //Если у сущности присутствуют исключающие компоненты
                         foreach (SystemBase system in InterestedSystems)
                         {
                             if (system.IsEnable && system.IsActionAdd)
@@ -124,13 +124,13 @@ namespace ECSCore.Filters
                 {
                     RemoveFromCollection(entityId); // Удалить группу из коллекции фильтра
                     return;
-                } //Если у сущьности нету хотя бы одного включающего компонента
-                //Иначе, если у сущьности есть все включающие компоненты, то проверяем исключающие компоненты!
+                } //Если у сущности нету хотя бы одного включающего компонента
+                //Иначе, если у сущности есть все включающие компоненты, то проверяем исключающие компоненты!
                 else if (CheckHaveWithoutComponents(entity))
                 {
                     RemoveFromCollection(entityId); // Удалить группу из коллекции фильтра
                     return;
-                } //Если у сущьности есть хотя бы один исключающих компонент
+                } //Если у сущности есть хотя бы один исключающих компонент
             }
         }
 

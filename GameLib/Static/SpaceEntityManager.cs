@@ -9,7 +9,7 @@ using System.Linq;
 namespace GameLib.Static
 {
     /// <summary>
-    /// Менеджер сущьностей в пространстве
+    /// Менеджер сущностей в пространстве
     /// </summary>
     public static class SpaceEntityManager
     {
@@ -22,7 +22,7 @@ namespace GameLib.Static
                 max: new Point2d(SectorSize.StartPozitionX + SectorSize.Width, SectorSize.StartPozitionY + SectorSize.Height)));
 
         /// <summary>
-        /// Добавить сущьность или обновить позицию сущьности
+        /// Добавить сущность или обновить позицию сущности
         /// </summary>
         /// <param name="position"></param>
         public static void AddOrUpdatePosition(Position position)
@@ -34,7 +34,7 @@ namespace GameLib.Static
         }
 
         /// <summary>
-        /// Удалить сущьность
+        /// Удалить сущность
         /// </summary>
         public static void Remove(Position position)
         {
@@ -45,7 +45,7 @@ namespace GameLib.Static
         }
 
         /// <summary>
-        /// Получить идентификаторы сущьностей, которые находятся в радиусе
+        /// Получить идентификаторы сущностей, которые находятся в радиусе
         /// </summary>
         public static List<Guid> GetIdEntitesInRadius(Position position, long radius)
         {
@@ -66,8 +66,8 @@ namespace GameLib.Static
 }
 
 //Todo 
-//1) Сущьность пропадает из пространства (к примеру произошла стыковка корабля со станцией) 
-//2) Сущьность уничтожена
-//3) Сущьность переместилась
+//1) Сущность пропадает из пространства (к примеру произошла стыковка корабля со станцией) 
+//2) Сущность уничтожена
+//3) Сущность переместилась
 //4) Уйти от статики
 //5) Потокобезопасность

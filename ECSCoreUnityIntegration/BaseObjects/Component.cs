@@ -13,7 +13,7 @@ namespace ECSCore.BaseObjects
     public abstract class Component : IComponent
     {
         /// <summary>
-        /// Идентификатор сущьности
+        /// Идентификатор сущности
         /// </summary>
         public int Id { get; set; }
     }

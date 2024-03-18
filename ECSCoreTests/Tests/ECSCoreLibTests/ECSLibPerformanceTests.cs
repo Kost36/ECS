@@ -97,7 +97,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
 
                 if (IECS.GetEntity(entityId, out Entity entity))
                 {
-                    Debug.WriteLine($"Сущьность: {entityId}");
+                    Debug.WriteLine($"Сущность: {entityId}");
                     if (entity.TryGetComponent(out Enargy enargy))
                     {
                         Debug.WriteLine($"Энергия: {enargy.EnargyFact}/{enargy.EnargyMax}");
@@ -162,4 +162,4 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
     }
 }
 
-//Редко - не добавилось ускорение на сущьность 
+//Редко - не добавилось ускорение на сущность 

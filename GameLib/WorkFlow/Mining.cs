@@ -13,7 +13,7 @@ namespace GameLib.WorkFlow
         /// </summary>
         public MineralType MinralType;
         /// <summary>
-        /// Идентификатор сущьности астероида
+        /// Идентификатор сущности астероида
         /// </summary>
         public int AsteroidEntityId;
         /// <summary>
@@ -21,7 +21,7 @@ namespace GameLib.WorkFlow
         /// </summary>
         public int QuantityForMining;
         /// <summary>
-        /// Идентификатор сущьности станции для выгрузки (Не тут должен находиться)
+        /// Идентификатор сущности станции для выгрузки (Не тут должен находиться)
         /// </summary>
         public int StantionEntityId;
     }
@@ -36,7 +36,7 @@ namespace GameLib.WorkFlow
         /// </summary>
         public MineralType MinralType;
         /// <summary>
-        /// Идентификатор сущьности астероида
+        /// Идентификатор сущности астероида
         /// </summary>
         public int AsteroidEntityId;
         /// <summary>

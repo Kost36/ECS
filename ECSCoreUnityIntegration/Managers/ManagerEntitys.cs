@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace ECSCore.Managers
 {
     /// <summary>
-    /// Менеджер сущьностей
+    /// Менеджер сущностей
     /// </summary>
     public class ManagerEntitys
     {
@@ -43,14 +43,14 @@ namespace ECSCore.Managers
         /// </summary>
         private int _startCountCapacity = 10;
         /// <summary>
-        /// Коллекция сущьностей
+        /// Коллекция сущностей
         /// </summary>
         private Dictionary<int, Entity> _entities;
         #endregion
 
         #region Свойства
         /// <summary>
-        /// Количество существующих сущьностей
+        /// Количество существующих сущностей
         /// </summary>
         public int CountEntitys
         {
@@ -60,39 +60,39 @@ namespace ECSCore.Managers
 
         #region Публичные методы
         /// <summary>
-        /// Добавить сущьность
+        /// Добавить сущность
         /// 1) Присваивает Id
-        /// 2) Добавляет сущьность в коллекцию 
+        /// 2) Добавляет сущность в коллекцию 
         /// </summary>
-        /// <param name="entity"> Экземпляр сущьности </param>
+        /// <param name="entity"> Экземпляр сущности </param>
         /// <returns> IEntity (с присвоенным Id) / null </returns>
         internal Entity Add(Entity entity)
         {
             return Registration(entity); //Присвоим id и добавим в коллекцию
         }
         /// <summary>
-        /// Получить сущьность по id, если есть
+        /// Получить сущность по id, если есть
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности</param>
-        /// <param name="Entity"> Сущьность (Если есть) / null </param>
-        /// <returns> Флаг наличия сущьности </returns>
+        /// <param name="id"> Идентификатор сущности</param>
+        /// <param name="Entity"> Сущность (Если есть) / null </param>
+        /// <returns> Флаг наличия сущности </returns>
         internal bool Get(int id, out Entity Entity)
         {
             return _entities.TryGetValue(id, out Entity);
         }
         /// <summary>
-        /// Удаление сущьности по id
+        /// Удаление сущности по id
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         internal bool Remove(int id)
         {
-            return RemoveEntity(id); //Удалим сущьность
+            return RemoveEntity(id); //Удалим сущность
         }
         #endregion
 
         #region Приватные методы
         /// <summary>
-        /// Добавим сущьность в коллекцию
+        /// Добавим сущность в коллекцию
         /// </summary>
         /// <param name="entity"></param>
         /// <returns> IEntity / null </returns>
@@ -112,19 +112,19 @@ namespace ECSCore.Managers
             //TODO проверить!!!
             //if (_entities.TryAdd(entity.Id, entity)) //Добавим в коллекцию
             //{
-            //    return entity; //Вернем сущьность
+            //    return entity; //Вернем сущность
             //} //Если добавлено
             _queueFreeID.Enqueue(entity.Id); //Вернем id в очередь свободных id
             return null;
         }
         /// <summary>
-        /// Удаление сущьности
+        /// Удаление сущности
         /// </summary>
-        /// <param name="entity"> экземпляр сущьности </param>
+        /// <param name="entity"> экземпляр сущности </param>
         private bool RemoveEntity(int id)
         {
             _queueFreeID.Enqueue(id); //Запишем освободившийся id в очередь
-            return _entities.Remove(id); //Удалим сущьность из коллекции
+            return _entities.Remove(id); //Удалим сущность из коллекции
         }
         #endregion
     }

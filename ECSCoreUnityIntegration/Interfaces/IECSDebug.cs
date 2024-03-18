@@ -11,7 +11,7 @@ namespace ECSCore.Interfaces
     public interface IECSDebug
     {
         /// <summary>
-        /// Менеджер сущьностей
+        /// Менеджер сущностей
         /// </summary>
         ManagerEntitys ManagerEntitys { get; }
         /// <summary>

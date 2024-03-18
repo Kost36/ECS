@@ -83,7 +83,7 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             var entity2 = IECS.AddEntity(new Ship());
             entity1.AddComponent(new Pozition() { X = 0, Y = 0, Z = 0 });
             Assert.AreEqual(1, entity1.Components.Count);
-            Assert.ThrowsException<ExceptionEntityHaveComponent>(() => entity1.AddComponent(new Pozition() { X = 1, Y = 1, Z = 1 }));
+            Assert.ThrowsException<EntityAlreadyHaveComponentException>(() => entity1.AddComponent(new Pozition() { X = 1, Y = 1, Z = 1 }));
             Assert.AreEqual(1, entity1.Components.Count);
             IECS.AddComponent(new Pozition() { X = 10, Y = 10, Z = 10, Id = entity2.Id });
             Assert.IsTrue(IECS.GetEntity(entity2.Id, out Entity entity));

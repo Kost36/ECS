@@ -6,7 +6,7 @@ using System.Linq;
 namespace GameLib.Collections.AvailableInformations
 {
     /// <summary>
-    /// Коллекция доступной информации о сущьностях одного типа
+    /// Коллекция доступной информации о сущностях одного типа
     /// </summary>
     public sealed class Informations
     {
@@ -23,7 +23,7 @@ namespace GameLib.Collections.AvailableInformations
         }
 
         /// <summary>
-        /// Добавить или обновить инофрмацию о сущьности
+        /// Добавить или обновить инофрмацию о сущности
         /// </summary>
         public void AddOrUpdate(Entity entity)
         {
@@ -65,7 +65,7 @@ namespace GameLib.Collections.AvailableInformations
         }
 
         /// <summary>
-        /// Удалить инофрмацию о сущьности
+        /// Удалить инофрмацию о сущности
         /// </summary>
         public void Remove(Guid id)
         {
@@ -73,7 +73,7 @@ namespace GameLib.Collections.AvailableInformations
         }
 
         /// <summary>
-        /// Получить всю доступную информацию о сущьностях
+        /// Получить всю доступную информацию о сущностях
         /// </summary>
         public List<Entity> GetAllEntites()
         {

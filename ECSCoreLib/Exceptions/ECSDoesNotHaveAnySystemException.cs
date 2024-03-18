@@ -5,9 +5,9 @@ namespace ECSCore.Exceptions
     /// <summary>
     /// Исключение. Нет проинициализированных систем
     /// </summary>
-    public class ExceptionECSHaveNotSystem : Exception
+    public sealed class ECSDoesNotHaveAnySystemException : Exception
     {
-        internal ExceptionECSHaveNotSystem(string msg) : base(message: msg)
+        internal ECSDoesNotHaveAnySystemException(string msg) : base(message: msg)
         {
         }
     }

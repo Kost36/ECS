@@ -8,7 +8,7 @@ namespace ECSCore.Interfaces.Components
     public interface IComponent
     {
         /// <summary>
-        /// Идентификатор сущьности, на которой находится компонент
+        /// Идентификатор сущности, на которой находится компонент
         /// </summary>
         Guid Id { get; set; }
     }

@@ -118,9 +118,9 @@ namespace ECSCore.Managers
             }
         }
         /// <summary>
-        /// Удалить заданный тип компонента, имеющий заданный id сущьности из фильтров
+        /// Удалить заданный тип компонента, имеющий заданный id сущности из фильтров
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         internal void Remove<T>(int id)
         {
             if (_ecs.GetEntity(id, out Entity entity))
@@ -134,7 +134,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Удалить все компоненты с id, из фильтров
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         internal void Remove(int id)
         {
             foreach (IFilter filter in _filters)
@@ -199,7 +199,7 @@ namespace ECSCore.Managers
             } //Пройдемся по всем группам 
         }
         /// <summary>
-        /// Получить общее количество сущьностей в фильтрах
+        /// Получить общее количество сущностей в фильтрах
         /// </summary>
         private int GetAllEntityCount()
         {

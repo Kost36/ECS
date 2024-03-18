@@ -3,7 +3,7 @@
 namespace GameLib.Attributes
 {
     /// <summary>
-    /// Атрибут время хранения информации о сущьности / компоненнте
+    /// Атрибут время хранения информации о сущности / компоненнте
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
     public sealed class LifeTimeInformationAttribute : Attribute

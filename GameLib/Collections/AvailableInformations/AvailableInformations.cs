@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace GameLib.Collections.AvailableInformations
 {
     /// <summary>
-    /// Доступная информация о сущьностях / сущьностях с наличием компонента
+    /// Доступная информация о сущностях / сущностях с наличием компонента
     /// </summary>
     public sealed class AvailableInformations
     {
@@ -15,7 +15,7 @@ namespace GameLib.Collections.AvailableInformations
         private readonly Dictionary<string, Informations> _collections = new Dictionary<string, Informations>();
 
         /// <summary>
-        /// Добавить или обновить инофрмацию о сущьности
+        /// Добавить или обновить инофрмацию о сущности
         /// </summary>
         public void AddOrUpdate(Entity entity)
         {
@@ -31,7 +31,7 @@ namespace GameLib.Collections.AvailableInformations
         }
 
         /// <summary>
-        /// Добавить или обновить инофрмацию о сущьности имеющей компонент
+        /// Добавить или обновить инофрмацию о сущности имеющей компонент
         /// </summary>
         public void AddOrUpdate(Entity entity, ComponentBase component)
         {
@@ -60,7 +60,7 @@ namespace GameLib.Collections.AvailableInformations
         }
 
         /// <summary>
-        /// Удалить информацию о сущьности
+        /// Удалить информацию о сущности
         /// </summary>
         public void Remove(Guid guid)
         {
@@ -71,7 +71,7 @@ namespace GameLib.Collections.AvailableInformations
         }
 
         /// <summary>
-        /// Получить все известные сущьности определенного типа
+        /// Получить все известные сущности определенного типа
         /// </summary>
         public List<Entity> GetAllEntites(Type entityType)
         {

@@ -5,9 +5,9 @@ namespace ECSCore.Exceptions
     /// <summary>
     /// Исключение. ECS уже проинициализирован
     /// </summary>
-    public class ExceptionECSIsInitializated : Exception
+    public sealed class ECSIsAlreadyInitializedException : Exception
     {
-        internal ExceptionECSIsInitializated(string msg) : base(message: msg)
+        internal ECSIsAlreadyInitializedException(string msg) : base(message: msg)
         {
         }
     }

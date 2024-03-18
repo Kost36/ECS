@@ -19,11 +19,11 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_1 ExistComponent1;
 
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// Проверить, удовлетворяет ли сущность условию добавления ее группы компонент в фильтр
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -34,15 +34,15 @@ namespace ECSCore.GroupComponents
                     ExistComponent1 = existComponent_1;
                     return true;
                 }
-            } //Если сущьность есть
+            } //Если сущность есть
             return false;
         }
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// Проверить, удовлетворяет ли сущность условию удаления ее группы компонент из фильтра
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -53,11 +53,11 @@ namespace ECSCore.GroupComponents
                     return true;
                 }
                 return false;
-            } //Если сущьность есть
+            } //Если сущность есть
             return true;
         }
         /// <summary>
-        /// Получить список типов компонент, которые должны быть на сущьности
+        /// Получить список типов компонент, которые должны быть на сущности
         /// </summary>
         /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
@@ -90,11 +90,11 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_2 ExistComponent2;
 
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// Проверить, удовлетворяет ли сущность условию добавления ее группы компонент в фильтр
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -109,15 +109,15 @@ namespace ECSCore.GroupComponents
                         return true;
                     }
                 }
-            } //Если сущьность есть
+            } //Если сущность есть
             return false;
         }
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// Проверить, удовлетворяет ли сущность условию удаления ее группы компонент из фильтра
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -132,11 +132,11 @@ namespace ECSCore.GroupComponents
                     return true;
                 }
                 return false;
-            } //Если сущьность есть
+            } //Если сущность есть
             return true;
         }
         /// <summary>
-        /// Получить список типов компонент, которые должны быть на сущьности
+        /// Получить список типов компонент, которые должны быть на сущности
         /// </summary>
         /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
@@ -175,11 +175,11 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_3 ExistComponent3;
 
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// Проверить, удовлетворяет ли сущность условию добавления ее группы компонент в фильтр
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -198,15 +198,15 @@ namespace ECSCore.GroupComponents
                         }
                     }
                 }
-            } //Если сущьность есть
+            } //Если сущность есть
             return false;
         }
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// Проверить, удовлетворяет ли сущность условию удаления ее группы компонент из фильтра
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -225,11 +225,11 @@ namespace ECSCore.GroupComponents
                     return true;
                 }
                 return false;
-            } //Если сущьность есть
+            } //Если сущность есть
             return true;
         }
         /// <summary>
-        /// Получить список типов компонент, которые должны быть на сущьности
+        /// Получить список типов компонент, которые должны быть на сущности
         /// </summary>
         /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
@@ -275,11 +275,11 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_4 ExistComponent4;
 
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// Проверить, удовлетворяет ли сущность условию добавления ее группы компонент в фильтр
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -302,15 +302,15 @@ namespace ECSCore.GroupComponents
                         }
                     }
                 }
-            } //Если сущьность есть
+            } //Если сущность есть
             return false;
         }
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// Проверить, удовлетворяет ли сущность условию удаления ее группы компонент из фильтра
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -333,11 +333,11 @@ namespace ECSCore.GroupComponents
                     return true;
                 }
                 return false;
-            } //Если сущьность есть
+            } //Если сущность есть
             return true;
         }
         /// <summary>
-        /// Получить список типов компонент, которые должны быть на сущьности
+        /// Получить список типов компонент, которые должны быть на сущности
         /// </summary>
         /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
@@ -391,11 +391,11 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_5 ExistComponent5;
 
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// Проверить, удовлетворяет ли сущность условию добавления ее группы компонент в фильтр
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -422,15 +422,15 @@ namespace ECSCore.GroupComponents
                         }
                     }
                 }
-            } //Если сущьность есть
+            } //Если сущность есть
             return false;
         }
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// Проверить, удовлетворяет ли сущность условию удаления ее группы компонент из фильтра
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -457,11 +457,11 @@ namespace ECSCore.GroupComponents
                     return true;
                 }
                 return false;
-            } //Если сущьность есть
+            } //Если сущность есть
             return true;
         }
         /// <summary>
-        /// Получить список типов компонент, которые должны быть на сущьности
+        /// Получить список типов компонент, которые должны быть на сущности
         /// </summary>
         /// <returns></returns>
         public override List<Type> GetTypesExistComponents()
@@ -522,11 +522,11 @@ namespace ECSCore.GroupComponents
         internal ExistComponent_6 ExistComponent6;
 
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию добавления ее группы компонент в фильтр
+        /// Проверить, удовлетворяет ли сущность условию добавления ее группы компонент в фильтр
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryAddComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -557,15 +557,15 @@ namespace ECSCore.GroupComponents
                         }
                     }
                 }
-            } //Если сущьность есть
+            } //Если сущность есть
             return false;
         }
         /// <summary>
-        /// Проверить, удовлетворяет ли сущьность условию удаления ее группы компонент из фильтра
+        /// Проверить, удовлетворяет ли сущность условию удаления ее группы компонент из фильтра
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="eCS"> ссылка на ECS </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         /// <returns> </returns>
         public override bool TryRemoveComponentForEntity(Guid entityId, IECSSystem eCS, out Entity entity)
         {
@@ -596,11 +596,11 @@ namespace ECSCore.GroupComponents
                     return true;
                 }
                 return false;
-            } //Если сущьность есть
+            } //Если сущность есть
             return true;
         }
         /// <summary>
-        /// Получить список типов компонент, которые должны быть на сущьности
+        /// Получить список типов компонент, которые должны быть на сущности
         /// </summary>
         /// <returns></returns>
         public override List<Type> GetTypesExistComponents()

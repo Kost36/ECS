@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 namespace Game.Entitys
 {
     /// <summary>
-    /// Сущьность корабля
+    /// Сущность корабля
     /// </summary>
     public class Ship : Entity { }
     /// <summary>
-    /// Сущьность станции
+    /// Сущность станции
     /// </summary>
     public class Stantion : Entity { }
 }

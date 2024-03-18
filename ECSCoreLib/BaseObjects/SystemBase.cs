@@ -127,13 +127,13 @@ namespace ECSCore.BaseObjects
             // Если атрибута нет, то дальнейшее выполнение невозможно.
             // Если атрибут есть, то извлекаем и сохраняем значение.
             Priority = type.GetCustomAttribute<SystemPriority>()?.Priority
-                ?? throw new ExceptionSystemNotHaveAttribute(typeof(SystemPriority), type);
+                ?? throw new SystemDoesNotHaveAttributeException(typeof(SystemPriority), type);
 
             // Интервал обработки системы
             // Если атрибута нет, то дальнейшее выполнение невозможно.
             // Если атрибут есть, то вычисляем количество тиков отведенных на выполнение.
             IntervalTicks = type.GetCustomAttribute<SystemCalculate>()?.CalculateInterval * TimeSpan.TicksPerMillisecond
-                ?? throw new ExceptionSystemNotHaveAttribute(typeof(SystemCalculate), type);
+                ?? throw new SystemDoesNotHaveAttributeException(typeof(SystemCalculate), type);
 
             // Активация/блокировка системы
             // Если атрибута нет, то считаем что система активна.

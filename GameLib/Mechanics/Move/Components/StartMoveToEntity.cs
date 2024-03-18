@@ -4,13 +4,13 @@ using System;
 namespace GameLib.Mechanics.Move.Components
 {
     /// <summary>
-    /// Компонент запуска перемещения к сущьности.
+    /// Компонент запуска перемещения к сущности.
     /// </summary>
     [Serializable]
     public class StartMoveToEntity : ComponentBase
     {
         /// <summary>
-        /// Сущьность к которой нужно переместиться
+        /// Сущность к которой нужно переместиться
         /// </summary>
         public Guid TargetEntityId;
     }

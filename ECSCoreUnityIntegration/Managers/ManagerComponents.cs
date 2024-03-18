@@ -102,7 +102,7 @@ namespace ECSCore.Managers
         /// Получить компонент, если есть
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         internal bool Get<T>(int id, out T component)
@@ -111,7 +111,7 @@ namespace ECSCore.Managers
             return Search<T>(id, out component);
         }
         /// <summary>
-        /// Получить все компоненты сущьности
+        /// Получить все компоненты сущности
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -131,9 +131,9 @@ namespace ECSCore.Managers
             return Components;
         }
         /// <summary>
-        /// Удалить заданный тип компонента, имеющий заданный id сущьности
+        /// Удалить заданный тип компонента, имеющий заданный id сущности
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         /// <param name="typeComponent"> Тип компонента </param>
         internal bool Remove<T>(int id)
         {
@@ -142,7 +142,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Удалить все компоненты с id
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         internal void Remove(int id)
         {
             RemoveComponents(id);
@@ -184,7 +184,7 @@ namespace ECSCore.Managers
         /// Получить компонент, если есть
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         private bool Search<T>(int id, out T component)
@@ -205,9 +205,9 @@ namespace ECSCore.Managers
             return false;
         }
         /// <summary>
-        /// Удалить заданный тип компонента, имеющий заданный id сущьности
+        /// Удалить заданный тип компонента, имеющий заданный id сущности
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         /// <param name="typeComponent"> Тип компонента </param>
         private bool RemoveComponent(int id, Type typeComponent)
         {
@@ -226,7 +226,7 @@ namespace ECSCore.Managers
         /// <summary>
         /// Удалить все компоненты с id
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         private void RemoveComponents(int id)
         {
             lock (_collections)
@@ -319,7 +319,7 @@ namespace ECSCore.Managers
         /// Получить компонент, если есть
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool Get<T>(int id, out T component)

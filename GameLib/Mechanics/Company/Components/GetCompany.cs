@@ -9,7 +9,7 @@ namespace GameLib.Mechanics.Company.Components
     public class GetCompany : ComponentBase
     {
         /// <summary>
-        /// Id сущьности компанию
+        /// Id сущности компанию
         /// </summary>
         public Guid CompanyEntityId;
     }

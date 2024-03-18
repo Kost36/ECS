@@ -9,7 +9,7 @@ namespace GameLib.Collections.AvailableInformations
     public sealed class Information
     {
         /// <summary>
-        /// Сущьность
+        /// Сущность
         /// </summary>
         public Entity Entity;
         /// <summary>

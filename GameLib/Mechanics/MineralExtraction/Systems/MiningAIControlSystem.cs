@@ -274,7 +274,7 @@ namespace GameLib.Mechanics.MineralExtraction.Systems
                 return;
             }
 
-            //Todo Найти точку на окружности с радиусом _distanceStop от максимального края объекта targetEntity в зависимости от размера целевой сущьности
+            //Todo Найти точку на окружности с радиусом _distanceStop от максимального края объекта targetEntity в зависимости от размера целевой сущности
             //При этом учесть направление в сторону shipEntity и размер shipEntity
             var positionSVComponent = new PositionSV() { X = targetPositionComponent.X - _distanceStop, Y = targetPositionComponent.Y, Z = targetPositionComponent.Z };
 

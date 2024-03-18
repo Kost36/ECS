@@ -4,35 +4,35 @@ using System;
 namespace ECSCore.Interfaces
 {
     /// <summary>
-    /// Интерфейс сущьности
+    /// Интерфейс сущности
     /// </summary>
     public interface IEntity
     {
         /// <summary>
-        /// Идентификатор сущьности
+        /// Идентификатор сущности
         /// </summary>
         Guid Id { get; set; }
 
         /// <summary>
-        /// Ссылка на внешнюю сущьность, в которой находится текущая сущьность
+        /// Ссылка на внешнюю сущность, в которой находится текущая сущность
         /// </summary>
         IEntity ExternalEntity { get; set; }
 
         /// <summary>
-        /// Добавить вложенную сущьность
+        /// Добавить вложенную сущность
         /// </summary>
-        /// <param name="entity"> вложенная сущьность </param>
+        /// <param name="entity"> вложенная сущность </param>
         IEntity AddNestedEntity<T>(T entity)
             where T : IEntity;
 
         /// <summary>
-        /// Получить вложенную сущьность
+        /// Получить вложенную сущность
         /// </summary>
         bool TryGetNestedEntity<T>(Guid idChildEntity, out T entity)
             where T : IEntity;
 
         /// <summary>
-        /// Удалить вложенную сущьность
+        /// Удалить вложенную сущность
         /// </summary>
         bool RemoveNestedEntity<T>(Guid idChildEntity, out T entity)
             where T : IEntity;
@@ -70,7 +70,7 @@ namespace ECSCore.Interfaces
             where T : IComponent;
 
         /// <summary>
-        /// Уничтожить сущьность
+        /// Уничтожить сущность
         /// </summary>
         void Death();
     }

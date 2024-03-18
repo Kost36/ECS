@@ -33,7 +33,7 @@ namespace GameLib.Mechanics.Production.Systems
             if (IECS.GetEntity(entityId, out var entity))
             {
                 MoveProducts(entity, warehouseProductionModule);
-            } //Получаем сущьность производственного модуля
+            } //Получаем сущность производственного модуля
         }
 
         /// <summary>
@@ -42,13 +42,13 @@ namespace GameLib.Mechanics.Production.Systems
         /// <returns></returns>
         private bool IsMoveNeed(WarehouseProductionModule warehouseProductionModule)
         {
-            return true; //Проверить необходимость перемещений, что бы не тянуть сущьности раз в секунду (IECS.GetEntity)
+            return true; //Проверить необходимость перемещений, что бы не тянуть сущности раз в секунду (IECS.GetEntity)
         }
 
         /// <summary>
         /// Перемещение товаров между складами станции и производственного модуля
         /// </summary>
-        /// <param name="entity"> Сущьность производственного модуля </param>
+        /// <param name="entity"> Сущность производственного модуля </param>
         /// <param name="warehouseModule"> Склад производственного модуля </param>
         private void MoveProducts(Entity entity, WarehouseProductionModule warehouseModule)
         {

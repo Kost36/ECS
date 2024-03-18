@@ -72,7 +72,7 @@ namespace ECSCore
             {
                 _ecs._startCapacityCollections = startCapacityCollections;
             }
-            _ecs._managerEntitys = new ManagerEntitys(_ecs, _ecs._startCapacityCollections); //Инициализация менеджера сущьностей
+            _ecs._managerEntitys = new ManagerEntitys(_ecs, _ecs._startCapacityCollections); //Инициализация менеджера сущностей
             _ecs._managerComponents = new ManagerComponents(_ecs, _ecs._startCapacityCollections); //Инициализация менеджера компонент
             _ecs._managerFilters = new ManagerFilters(_ecs, assembly, _ecs._startCapacityCollections); //Создадим менеджера фильтров
             _ecs._managerSystems = new ManagerSystems(_ecs, assembly, _ecs._managerFilters); //Создадим менеджера систем
@@ -87,7 +87,7 @@ namespace ECSCore
         /// </summary>
         private static ECS _ecs;
         /// <summary>
-        /// Менеджер сущьностей
+        /// Менеджер сущностей
         /// </summary>
         private ManagerEntitys _managerEntitys;
         /// <summary>
@@ -110,7 +110,7 @@ namespace ECSCore
 
         #region Свойства
         /// <summary>
-        /// Менеджер сущьностей
+        /// Менеджер сущностей
         /// </summary>
         public ManagerEntitys ManagerEntitys { get { return _managerEntitys; } }
         /// <summary>
@@ -129,30 +129,30 @@ namespace ECSCore
 
         #region Публичные методы
 
-        #region Сущьности
+        #region Сущности
         /// <summary>
-        /// Добавить сущьность
+        /// Добавить сущность
         /// </summary>
-        /// <param name="entity"> Сущьность </param>
+        /// <param name="entity"> Сущность </param>
         /// <returns> IEntity (с присвоенным id) / null </returns>
         public Entity AddEntity(Entity entity)
         {
             return _managerEntitys.Add(entity);
         }
         /// <summary>
-        /// Получить сущьность по Id, если есть
+        /// Получить сущность по Id, если есть
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
-        /// <param name="Entity"> Сущьность (Если есть) / null </param>
-        /// <returns> Флаг наличия сущьности </returns>
+        /// <param name="id"> Идентификатор сущности </param>
+        /// <param name="Entity"> сущность (Если есть) / null </param>
+        /// <returns> Флаг наличия сущности </returns>
         public bool GetEntity(int id, out Entity Entity)
         {
             return _managerEntitys.Get(id, out Entity);
         }
         /// <summary>
-        /// Уничтожить сущьность по Id (компоненты сущьности тоже будут уничтожены)
+        /// Уничтожить сущность по Id (компоненты сущности тоже будут уничтожены)
         /// </summary>
-        /// <param name="id"> Идентификатор сущьности </param>
+        /// <param name="id"> Идентификатор сущности </param>
         public void RemoveEntity(int id)
         {
             _managerEntitys.Remove(id);
@@ -165,22 +165,22 @@ namespace ECSCore
         /// <summary>
         /// Добавить компонент.
         /// </summary>
-        /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
+        /// <param name="component"> Компонент с заданным Id сущности, которой он пренадлежит </param>
         public void AddComponent<T>(T component)
             where T : Component
         {
             if (_managerEntitys.Get(component.Id, out Entity Entity) == false)
             {
                 return;
-            } //Получим сущьность от менеджера сущьностей
-            Entity.AddComponent(component); //Добавить к сущьности
+            } //Получим сущность от менеджера сущностей
+            Entity.AddComponent(component); //Добавить к сущности
             _managerComponents.Add(component); //Передать менеджеру компонент
             _managerFilters.Add(component); //Передать менеджеру фильтров
         }
         /// <summary>
         /// Добавить компонент.
         /// </summary>
-        /// <param name="component"> Компонент с заданным Id сущьности, которой он пренадлежит </param>
+        /// <param name="component"> Компонент с заданным Id сущности, которой он пренадлежит </param>
         public void AddComponent<T>(T component, Entity Entity)
             where T : Component
         {
@@ -189,9 +189,9 @@ namespace ECSCore
                 if (_managerEntitys.Get(component.Id, out Entity) == false)
                 {
                     return;
-                } //Получим сущьность от менеджера сущьностей
-            } //Если сущьность не задана
-            Entity.AddComponent(component); //Добавить к сущьности
+                } //Получим сущность от менеджера сущностей
+            } //Если сущность не задана
+            Entity.AddComponent(component); //Добавить к сущности
             _managerComponents.Add(component); //Передать менеджеру компонент
             _managerFilters.Add(component); //Передать менеджеру фильтров
         }
@@ -200,7 +200,7 @@ namespace ECSCore
         /// Возвращает компонент из менеджера компонентов
         /// </summary>
         /// <typeparam name="T"> Generic компонента (Настледуется от Component) </typeparam>
-        /// <param name="idEntity"> Идентификатор сущьности, на которой должен быть компонент </param>
+        /// <param name="idEntity"> Идентификатор сущности, на которой должен быть компонент </param>
         /// <param name="component"> Компонент (Если есть) / null </param>
         /// <returns> Флаг наличия компонента </returns>
         public bool GetComponent<T>(int idEntity, out T component)

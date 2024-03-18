@@ -7,7 +7,7 @@ using GameLib.Mechanics.Company.Components;
 namespace GameLib.Mechanics.Company.Systems
 {
     /// <summary>
-    /// Система регистрирует информацию об известных сущьностях
+    /// Система регистрирует информацию об известных сущностях
     /// </summary>
     [SystemCalculate(ECSCore.Enums.SystemCalculateInterval.Sec1Once)]
     [SystemPriority(50)]

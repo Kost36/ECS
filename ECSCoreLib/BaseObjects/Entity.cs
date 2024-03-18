@@ -166,7 +166,7 @@ namespace ECSCore.BaseObjects
         {
             if (TryGetComponentInternal(out T _))
             {
-                throw new ExceptionEntityHaveComponent($"У сущности: {Id} уже есть компонент: {typeof(T).Name}");
+                throw new EntityAlreadyHaveComponentException($"У сущности: {Id} уже есть компонент: {typeof(T).Name}");
             }
 
             lock (Components)

@@ -296,7 +296,7 @@ namespace ECSCore.Managers
             FillingQueue();
             if (_systemQueue.Count == 0)
             {
-                throw new ExceptionECSHaveNotSystem("Нет реализованных систем");
+                throw new ECSDoesNotHaveAnySystemException("Нет реализованных систем");
             }
 
             while (true)

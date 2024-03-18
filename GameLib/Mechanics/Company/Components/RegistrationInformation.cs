@@ -9,7 +9,7 @@ namespace GameLib.Mechanics.Company.Components
     public class RegistrationInformation : ComponentBase
     {
         /// <summary>
-        /// Идентификатор сущьности, по которой получена информация
+        /// Идентификатор сущности, по которой получена информация
         /// </summary>
         public Guid EntityId;
     }

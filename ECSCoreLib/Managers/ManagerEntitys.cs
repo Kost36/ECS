@@ -6,7 +6,7 @@ using System.Linq;
 namespace ECSCore.Managers
 {
     /// <summary>
-    /// Менеджер сущьностей
+    /// Менеджер сущностей
     /// </summary>
     public class ManagerEntitys
     {
@@ -19,7 +19,7 @@ namespace ECSCore.Managers
         /// </summary>
         //private readonly Queue<Guid> _queueFreeID = new Queue<int>();
         /// <summary>
-        /// Коллекция сущьностей
+        /// Коллекция сущностей
         /// </summary>
         private readonly Dictionary<Guid, Entity> _entitys;
 
@@ -29,7 +29,7 @@ namespace ECSCore.Managers
         }
 
         /// <summary>
-        /// Количество существующих сущьностей
+        /// Количество существующих сущностей
         /// </summary>
         public int CountEntitys
         {
@@ -37,7 +37,7 @@ namespace ECSCore.Managers
         }
 
         /// <summary>
-        /// Получить первый id сущьности из коллекции
+        /// Получить первый id сущности из коллекции
         /// </summary>
         /// <returns></returns>
         public Guid GetIdFirstEntity()

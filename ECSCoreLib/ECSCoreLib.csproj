@@ -80,10 +80,10 @@
     <Compile Include="Enums\TypeFileSave.cs" />
     <Compile Include="Enums\SystemCalculateInterval.cs" />
     <Compile Include="Enums\SystemActionType.cs" />
-    <Compile Include="Exceptions\ExceptionECSHaveNotSystem.cs" />
-    <Compile Include="Exceptions\ExceptionEntityHaveComponent.cs" />
-    <Compile Include="Exceptions\ExceptionECSIsInitializated.cs" />
-    <Compile Include="Exceptions\ExceptionSystemNotHaveAttribute.cs" />
+    <Compile Include="Exceptions\ECSDoesNotHaveAnySystemException.cs" />
+    <Compile Include="Exceptions\EntityAlreadyHaveComponentException.cs" />
+    <Compile Include="Exceptions\ECSIsAlreadyInitializedException.cs" />
+    <Compile Include="Exceptions\SystemDoesNotHaveAttributeException.cs" />
     <Compile Include="Filters\Jobs\JobTryRemoveEntity.cs" />
     <Compile Include="Filters\Jobs\JobTryRemove.cs" />
     <Compile Include="GroupComponents\GroupComponents.cs" />

@@ -56,8 +56,8 @@ namespace ECSCore.Interfaces.Filters
         /// <summary>
         /// Проверяет группу на выбранные типы компонент
         /// </summary>
-        /// <param name="typesExistComponents"> Типы компонент, которые должны быть на сущьности </param>
-        /// <param name="typesWithoutComponents"> Типы компонент, которых недолжно быть на сущьности </param>
+        /// <param name="typesExistComponents"> Типы компонент, которые должны быть на сущности </param>
+        /// <param name="typesWithoutComponents"> Типы компонент, которых недолжно быть на сущности </param>
         /// <returns></returns>
         bool CheckFilter(List<Type> typesExistComponents, List<Type> typesWithoutComponents);
 
@@ -74,7 +74,7 @@ namespace ECSCore.Interfaces.Filters
     internal interface IFilterDebug
     {
         /// <summary>
-        /// Колличество сущьностей в фильтре
+        /// Колличество сущностей в фильтре
         /// </summary>
         int Count { get; }
     }
@@ -94,20 +94,20 @@ namespace ECSCore.Interfaces.Filters
         Queue<IJobToFilter> JobToFilters { get; set; }
 
         /// <summary>
-        /// Добавить, если сущьность подходит под фильтр
+        /// Добавить, если сущность подходит под фильтр
         /// </summary>
-        /// <param name="component"> Добавленный к сущьности компонент </param>
-        /// <param name="entity"> ссылка на сущьность </param>
+        /// <param name="component"> Добавленный к сущности компонент </param>
+        /// <param name="entity"> ссылка на сущность </param>
         void Add(IComponent component, Entity entity);
         /// <summary>
         /// Удалить, если есть в фильтре
         /// </summary>
-        /// <param name="entity"> ссылка на сущьность </param>
+        /// <param name="entity"> ссылка на сущность </param>
         void Remove<T>(Entity entity);
         /// <summary>
-        /// Удалить сущьность
+        /// Удалить сущность
         /// </summary>
-        /// <param name="entityId"> Идентификатор уничтоженной сущьности</param>
+        /// <param name="entityId"> Идентификатор уничтоженной сущности</param>
         void RemoveEntity(Guid entityId);
     }
 

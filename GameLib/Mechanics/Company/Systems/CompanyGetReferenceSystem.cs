@@ -7,7 +7,7 @@ using GameLib.Mechanics.Company.Components;
 namespace GameLib.Mechanics.Company.Systems
 {
     /// <summary>
-    /// Система получает ссылку на компанию владельца сущьности
+    /// Система получает ссылку на компанию владельца сущности
     /// </summary>
     [SystemCalculate(ECSCore.Enums.SystemCalculateInterval.Sec1Once)]
     [SystemPriority(50)]

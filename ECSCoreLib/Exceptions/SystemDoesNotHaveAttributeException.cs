@@ -5,9 +5,9 @@ namespace ECSCore.Exceptions
     /// <summary>
     /// Исключение. Система не имеет необходимого атрибута
     /// </summary>
-    public class ExceptionSystemNotHaveAttribute : Exception 
+    public sealed class SystemDoesNotHaveAttributeException : Exception
     {
-        internal ExceptionSystemNotHaveAttribute(Type attributeType, Type systemType) 
+        internal SystemDoesNotHaveAttributeException(Type attributeType, Type systemType)
         {
             AttributeType = attributeType;
             SystemType = systemType;

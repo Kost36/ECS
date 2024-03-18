@@ -5,13 +5,13 @@ using System.Collections.Generic;
 namespace ECSCore.BaseObjects
 {
     /// <summary>
-    /// Базовый класс сущьности.
-    /// Все сущьности наследовать от данного класса
+    /// Базовый класс сущности.
+    /// Все сущности наследовать от данного класса
     /// </summary>
     public abstract class Entity : IEntity
     {
         /// <summary>
-        /// Идентификатор сущьности
+        /// Идентификатор сущности
         /// </summary>
         public int Id { get; set; }
         /// <summary>
@@ -46,7 +46,7 @@ namespace ECSCore.BaseObjects
             ECS.Instance.RemoveComponent<T>(this.Id, this);
         }
         /// <summary>
-        /// Уничтожить сущьность
+        /// Уничтожить сущность
         /// </summary>
         public void Death()
         {
@@ -58,7 +58,7 @@ namespace ECSCore.BaseObjects
         public List<Component> Components { get; } = new List<Component>();
 
         /// <summary>
-        /// Добавить компонент в коллекцию сущьности
+        /// Добавить компонент в коллекцию сущности
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>
@@ -76,7 +76,7 @@ namespace ECSCore.BaseObjects
             }
         }
         /// <summary>
-        /// Удалить компонент из коллекции сущьности
+        /// Удалить компонент из коллекции сущности
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="component"></param>

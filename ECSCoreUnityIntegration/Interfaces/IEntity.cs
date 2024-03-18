@@ -8,12 +8,12 @@ using System.Text;
 namespace ECSCore.Interfaces
 {
     /// <summary>
-    /// Интерфейс сущьности
+    /// Интерфейс сущности
     /// </summary>
     internal interface IEntity
     {
         /// <summary>
-        /// Идентификатор сущьности
+        /// Идентификатор сущности
         /// </summary>
         int Id { get; set; }
 
@@ -39,7 +39,7 @@ namespace ECSCore.Interfaces
         void Remove<T>()
             where T : Component;
         /// <summary>
-        /// Уничтожить сущьность
+        /// Уничтожить сущность
         /// </summary>
         void Death();
     }

@@ -14,7 +14,7 @@ namespace Game.Components.Tasks
     //public class TaskBuy : Component
     //{
     //    /// <summary>
-    //    /// Идентификатор сущьности поставщика, у которой нужно совершить покупку
+    //    /// Идентификатор сущности поставщика, у которой нужно совершить покупку
     //    /// </summary>
     //    public int IdEntityVendor;
     //    /// <summary>
@@ -32,7 +32,7 @@ namespace Game.Components.Tasks
     //public class TaskSell : Component
     //{
     //    /// <summary>
-    //    /// Идентификатор сущьности покупателя, которой нужно продать товар
+    //    /// Идентификатор сущности покупателя, которой нужно продать товар
     //    /// </summary>
     //    public int IdEntityVendor;
     //    /// <summary>

@@ -23,14 +23,14 @@ namespace ECSCore.Systems
     /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
     /// 
     /// Возможные интерфейсы: 
-    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущности в фильтр системы
     /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
-    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущности из фильтра системы
     /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
     /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
     /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
     /// </summary>
-    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1> : SystemBase
         where ExistComponentT1 : IComponent
     {
@@ -115,13 +115,13 @@ namespace ECSCore.Systems
         /// Метод обработки добавленной группы компонент в фильтр
         /// </summary>
         /// <param name="existComponentT1"> Компонент №1 </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, Entity entity) { }
 
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
         public virtual void Action(Guid entityId, ExistComponentT1 existComponentT1, float deltaTime) { }
@@ -139,15 +139,15 @@ namespace ECSCore.Systems
     /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
     /// 
     /// Возможные интерфейсы: 
-    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущности в фильтр системы
     /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
-    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущности из фильтра системы
     /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
     /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
     /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
     /// </summary>
-    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -237,13 +237,13 @@ namespace ECSCore.Systems
         /// </summary>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, Entity entity) { }
 
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="deltaTime"> Изменение времени с предидущего вызова данной системы (Размерность: секунды) </param>
@@ -262,16 +262,16 @@ namespace ECSCore.Systems
     /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
     /// 
     /// Возможные интерфейсы: 
-    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущности в фильтр системы
     /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
-    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущности из фильтра системы
     /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
     /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
     /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
     /// </summary>
-    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -320,7 +320,6 @@ namespace ECSCore.Systems
             }
         }
 
-
         private void Run(object state)
         {
             foreach (var item in Filter.Collection)
@@ -364,13 +363,13 @@ namespace ECSCore.Systems
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="existComponentT3"> Компонент №3 </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, Entity entity) { }
 
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="existComponentT3"> Компонент №3 </param>
@@ -390,17 +389,17 @@ namespace ECSCore.Systems
     /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
     /// 
     /// Возможные интерфейсы: 
-    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущности в фильтр системы
     /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
-    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущности из фильтра системы
     /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
     /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
     /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
     /// </summary>
-    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -494,13 +493,13 @@ namespace ECSCore.Systems
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="existComponentT3"> Компонент №3 </param>
         /// <param name="existComponentT4"> Компонент №4 </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, Entity entity) { }
 
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="existComponentT3"> Компонент №3 </param>
@@ -521,18 +520,18 @@ namespace ECSCore.Systems
     /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
     /// 
     /// Возможные интерфейсы: 
-    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущности в фильтр системы
     /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
-    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущности из фильтра системы
     /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
     /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
     /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
     /// </summary>
-    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT5"> Компонент №5 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT5"> Компонент №5 (Имеющийся у сущности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -628,13 +627,13 @@ namespace ECSCore.Systems
         /// <param name="existComponentT3"> Компонент №3 </param>
         /// <param name="existComponentT4"> Компонент №4 </param>
         /// <param name="existComponentT5"> Компонент №5 </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, Entity entity) { }
 
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="existComponentT3"> Компонент №3 </param>
@@ -656,19 +655,19 @@ namespace ECSCore.Systems
     /// AttributeSystemParallelCountThreads - Возможность распараллелить систему на n потоков
     /// 
     /// Возможные интерфейсы: 
-    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущьности в фильтр системы
+    /// ISystemActionAdd - Активировать вызов соответствующего метода, при добавлении группы компонент одной сущности в фильтр системы
     /// ISystemAction - Активировать периодический вызов соответствующего метода обработки группы компонент, которые находятся в фильтре 
-    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущьности из фильтра системы
+    /// ISystemActionRemove - Активировать вызов соответствующего метода, при удалении группы компонент одной сущности из фильтра системы
     /// ISystemParallel - Активировать распараллеливание вызовов Action системы на n потоков
     /// ISystemManualControlAction - Активировать периодический вызов метода ручной обработки коллекции фильтра, для оптимизации
     /// ISystemUseInjectThread - Активировать вызов методов обработки в введенном STA потоке зависимого приложения
     /// </summary>
-    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT5"> Компонент №5 (Имеющийся у сущьности, для обработки системой) </typeparam>
-    /// <typeparam name="ExistComponentT6"> Компонент №6 (Имеющийся у сущьности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT1"> Компонент №1 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT2"> Компонент №2 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT3"> Компонент №3 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT4"> Компонент №4 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT5"> Компонент №5 (Имеющийся у сущности, для обработки системой) </typeparam>
+    /// <typeparam name="ExistComponentT6"> Компонент №6 (Имеющийся у сущности, для обработки системой) </typeparam>
     public abstract class SystemExistComponents<ExistComponentT1, ExistComponentT2, ExistComponentT3, ExistComponentT4, ExistComponentT5, ExistComponentT6> : SystemBase
         where ExistComponentT1 : IComponent
         where ExistComponentT2 : IComponent
@@ -767,13 +766,13 @@ namespace ECSCore.Systems
         /// <param name="existComponentT4"> Компонент №4 </param>
         /// <param name="existComponentT5"> Компонент №5 </param>
         /// <param name="existComponentT6"> Компонент №6 </param>
-        /// <param name="entity"> Ссылка на сущьность </param>
+        /// <param name="entity"> Ссылка на сущность </param>
         public virtual void ActionAdd(ExistComponentT1 existComponentT1, ExistComponentT2 existComponentT2, ExistComponentT3 existComponentT3, ExistComponentT4 existComponentT4, ExistComponentT5 existComponentT5, ExistComponentT6 existComponentT6, Entity entity) { }
 
         /// <summary>
         /// Метод периодической оброаботки имеющихся в фильтре групп компонент
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         /// <param name="existComponentT1"> Компонент №1 </param>
         /// <param name="existComponentT2"> Компонент №2 </param>
         /// <param name="existComponentT3"> Компонент №3 </param>

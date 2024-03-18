@@ -211,18 +211,18 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Assert.AreEqual(startCountEntitys + 1, IECSDebug.ManagerEntitys.CountEntitys);
             Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
             Assert.AreEqual(null, ship.ExternalEntity);
-            Assert.AreEqual(0, ship.NestedEntites.Count);
+            Assert.AreEqual(0, ship.NestedEntities.Count);
 
             Entity shipChild = (Entity)ship.AddNestedEntity(new Ship());
             Assert.AreEqual(startCountEntitys + 2, IECSDebug.ManagerEntitys.CountEntitys);
             Assert.IsTrue(IECS.GetEntity(ship.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
             Assert.IsNull(ship.ExternalEntity);
-            Assert.AreEqual(1, ship.NestedEntites.Count);
+            Assert.AreEqual(1, ship.NestedEntities.Count);
             Assert.IsTrue(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
             Assert.IsNotNull(shipChild.ExternalEntity);
             Assert.AreEqual(ship.Id, shipChild.ExternalEntity.Id);
-            Assert.AreEqual(0, shipChild.NestedEntites.Count);
+            Assert.AreEqual(0, shipChild.NestedEntities.Count);
 
             Entity shipChild1 = (Entity)ship.AddNestedEntity(new Ship());
             Assert.AreEqual(startCountEntitys + 3, IECSDebug.ManagerEntitys.CountEntitys);
@@ -230,15 +230,15 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
             Assert.IsNull(ship.ExternalEntity);
-            Assert.AreEqual(2, ship.NestedEntites.Count);
+            Assert.AreEqual(2, ship.NestedEntities.Count);
             Assert.IsTrue(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
             Assert.IsTrue(ship.TryGetNestedEntity(shipChild1.Id, out IEntity _));
             Assert.IsNotNull(shipChild.ExternalEntity);
             Assert.AreEqual(ship.Id, shipChild.ExternalEntity.Id);
-            Assert.AreEqual(0, shipChild.NestedEntites.Count);
+            Assert.AreEqual(0, shipChild.NestedEntities.Count);
             Assert.IsNotNull(shipChild1.ExternalEntity);
             Assert.AreEqual(ship.Id, shipChild1.ExternalEntity.Id);
-            Assert.AreEqual(0, shipChild1.NestedEntites.Count);
+            Assert.AreEqual(0, shipChild1.NestedEntities.Count);
 
             Assert.IsTrue(ship.RemoveNestedEntity(shipChild1.Id, out IEntity entity));
             Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 3);
@@ -246,14 +246,14 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
             Assert.IsTrue(ship.ExternalEntity == null);
-            Assert.IsTrue(ship.NestedEntites.Count == 1);
+            Assert.IsTrue(ship.NestedEntities.Count == 1);
             Assert.IsTrue(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
             Assert.IsFalse(ship.TryGetNestedEntity(shipChild1.Id, out IEntity _));
             Assert.IsTrue(shipChild.ExternalEntity != null);
             Assert.IsTrue(shipChild.ExternalEntity.Id == ship.Id);
-            Assert.IsTrue(shipChild.NestedEntites.Count == 0);
+            Assert.IsTrue(shipChild.NestedEntities.Count == 0);
             Assert.IsTrue(shipChild1.ExternalEntity == null);
-            Assert.IsTrue(shipChild1.NestedEntites.Count == 0);
+            Assert.IsTrue(shipChild1.NestedEntities.Count == 0);
 
             ship.Death();
             Assert.IsTrue(IECSDebug.ManagerEntitys.CountEntitys == startCountEntitys + 2);
@@ -261,13 +261,13 @@ namespace ECSCoreLibTests.Tests.ECSCoreLibTests
             Assert.IsTrue(IECS.GetEntity(shipChild.Id, out _));
             Assert.IsTrue(IECS.GetEntity(shipChild1.Id, out _));
             Assert.IsTrue(ship.ExternalEntity == null);
-            Assert.IsTrue(ship.NestedEntites.Count == 0);
+            Assert.IsTrue(ship.NestedEntities.Count == 0);
             Assert.IsFalse(ship.TryGetNestedEntity(shipChild.Id, out IEntity _));
             Assert.IsFalse(ship.TryGetNestedEntity(shipChild1.Id, out IEntity _));
             Assert.IsTrue(shipChild.ExternalEntity == null);
-            Assert.IsTrue(shipChild.NestedEntites.Count == 0);
+            Assert.IsTrue(shipChild.NestedEntities.Count == 0);
             Assert.IsTrue(shipChild1.ExternalEntity == null);
-            Assert.IsTrue(shipChild1.NestedEntites.Count == 0);
+            Assert.IsTrue(shipChild1.NestedEntities.Count == 0);
         }
 
         [TestMethod()]

@@ -36,7 +36,7 @@ namespace ECSCore.BaseObjects
 
         #region IFilterDebug Реализуется наследником
         /// <summary>
-        /// Количество отслеживаемых сущьностей в фильтре
+        /// Количество отслеживаемых сущностей в фильтре
         /// </summary>
         public abstract int Count { get; }
         #endregion
@@ -130,10 +130,10 @@ namespace ECSCore.BaseObjects
         } //TODO Lock только на получение объекта из очереди. Add Performance
 
         /// <summary>
-        /// Добавить, если сущьность подходит под фильтр
+        /// Добавить, если сущность подходит под фильтр
         /// </summary>
-        /// <param name="component"> Добавленный к сущьности компонент </param>
-        /// <param name="entity"> ссылка на сущьность </param>
+        /// <param name="component"> Добавленный к сущности компонент </param>
+        /// <param name="entity"> ссылка на сущность </param>
         public void Add(IComponent component, Entity entity)
         {
             if (ComponetTypeIsInteresting(component.GetType()))
@@ -152,7 +152,7 @@ namespace ECSCore.BaseObjects
         /// <summary>
         /// Удалить, если есть в фильтре
         /// </summary>
-        /// <param name="entity"> ссылка на сущьность </param>
+        /// <param name="entity"> ссылка на сущность </param>
         public void Remove<T>(Entity entity)
         {
             if (ComponetTypeIsInteresting(typeof(T)))
@@ -169,9 +169,9 @@ namespace ECSCore.BaseObjects
         }
 
         /// <summary>
-        /// Удалить из фильтра сущьность
+        /// Удалить из фильтра сущность
         /// </summary>
-        /// <param name="entityId"> Идентификатор сущьности </param>
+        /// <param name="entityId"> Идентификатор сущности </param>
         public void RemoveEntity(Guid entityId)
         {
             lock (JobToFilters)
